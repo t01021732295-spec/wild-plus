@@ -182,3 +182,10 @@ idea {
         downloadJavadoc = true
     }
 }
+
+// CI에서 서버 콘솔에 명령어를 보내 기능을 시험할 수 있도록 표준 입력 연결
+tasks.matching { it.name == 'runServer' }.configureEach {
+    if (it instanceof JavaExec) {
+        it.standardInput = System.in
+    }
+}

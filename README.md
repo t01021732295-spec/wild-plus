@@ -1,25 +1,62 @@
+# 야생 플러스 (Wild Plus)
 
-Installation information
-=======
+마인크래프트 **Java 26.3 · NeoForge** 모드. 야생을 조금 더 재미있게 만들어 줍니다.
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+## 설치 (CurseForge)
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+1. CurseForge에서 **Minecraft 26.3 + NeoForge** 프로필을 만든다 (Create Custom Profile → 버전 26.3, 모드 로더 NeoForge).
+2. 이 저장소의 **Releases → latest** 에서 `wildplus-1.0.0.jar` 를 받는다.
+3. 프로필의 `…` 메뉴 → **Open Folder** → `mods` 폴더에 jar를 넣고 실행.
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+## 기능
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+### 🌕 블러드문
+- 밤이 시작될 때 12% 확률로 발생 (월드 생성 후 3일간은 없음)
+- 화면 위 붉은 보스바로 남은 시간 표시, 하늘이 어둡고 안개가 짙어짐
+- 10초마다 플레이어 주변에 몬스터가 추가로 출몰하고, 새로 나타난 몬스터는 **힘·신속** 버프
+- 처치 시 30% 확률로 **핏빛 파편**, 경험치 2배
+- 블러드문 밤에는 **잠을 잘 수 없음**
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+### ⭐ 정예 몹
+- 자연 스폰된 몬스터 5%가 정예 몹 (블러드문 중 15%)
+- 금색 이름표, 체력 2배, 공격력 +50%, 방어력 +4, 넉백 저항
+- 처치 시 핏빛 파편 1~3개 + 금·다이아몬드·귀환의 두루마리·행운의 부적 확률, 경험치 3배
+
+### ⚔ 핏빛 강철 장비
+| 아이템 | 제작 |
+|---|---|
+| 핏빛 강철 주괴 | 철 주괴 1 + 핏빛 파편 4 (모양 없이) |
+| 검·곡괭이·도끼·삽 | 철 도구와 같은 모양 (주괴 + 막대기) |
+| 투구·흉갑·레깅스·부츠 | 철 갑옷과 같은 모양 |
+
+- 성능: 철과 다이아몬드 사이 (다이아몬드 블록까지 채굴 가능, 인챈트가 잘 붙음)
+- **검**: 흡혈 — 입힌 피해의 20%만큼 회복
+- **갑옷 4부위 세트**: 밤에 몬스터에게 받는 피해 15% 감소
+
+### 🗺 탐험 보물
+던전·폐광·난파선·폐허 포털·전초기지 등 상자에는 일반 보물, 사막·정글 사원·매장된 보물·저택·고대 도시·요새·보루·엔드 시티 상자에는 희귀 보물이 추가로 들어갑니다.
+- **귀환의 두루마리**: 3초간 읽으면 침대(없으면 월드 스폰)로 순간이동. 종이 + 엔더 진주 + 핏빛 파편 2로도 제작 가능
+- **행운의 부적**: 인벤토리에 있으면 행운 효과 (아주 희귀)
+- **여행자의 도시락**: 배고픔 8 + 신속 1분. 빵 + 익힌 고기·생선 + 말린 켈프 + 사과 → 2개
+
+### 🌶 고추 농사와 요리
+- **고추 씨앗**: 잔디·큰 잔디·고사리를 부수면 8% 확률로 획득 (고추 1개로 씨앗 2개 제작 가능)
+- 밭에 심으면 밀처럼 자람, 다 자라면 고추 1~3개
+| 음식 | 만드는 법 | 효과 |
+|---|---|---|
+| 고추 | 수확 | 화염 저항 20초 |
+| 얼큰한 스튜 | 그릇 + 고추 2 + 구운 감자 + 당근 | 배고픔 10, 힘·화염 저항 90초 |
+| 꿀 토스트 | 빵 + 꿀 병 | 재생 8초 |
+| 생고기 꼬치 (2개) | 막대기 2 + 날고기(소·돼지·양·닭·토끼) + 고추 | — |
+| 매콤 꼬치구이 | 생고기 꼬치를 화로·훈연기·모닥불에 굽기 | 배고픔 9, 성급함 1분 |
+
+## 설정
+월드 폴더(또는 서버)의 `config/wildplus-synced.toml` 에서 블러드문 확률, 유예 일수, 추가 출몰 수, 정예 몹 확률을 바꿀 수 있습니다. 모드 목록 화면의 **설정** 버튼으로도 가능합니다.
+
+## 명령어 (치트 허용 시)
+- `/wildplus bloodmoon start` — 블러드문 바로 시작
+- `/wildplus bloodmoon stop` — 블러드문 종료
+
+## 개발
+- 코드 수정 후 `main` 에 푸시하면 GitHub Actions가 빌드·서버 테스트를 거쳐 Releases의 `latest` 를 갱신합니다.
+- 텍스처: `python3 tools/gen_textures.py`, 데이터(JSON): `python3 tools/gen_data.py`

@@ -40,7 +40,7 @@ jobs:
           set -o pipefail
           mkdir -p run
           echo "eula=true" > run/eula.txt
-          printf 'online-mode=false\nlevel-type=minecraft\\:normal\n' > run/server.properties
+          printf 'online-mode=false\npause-when-empty-seconds=0\n' > run/server.properties
           # 서버를 켜서 모드 로드 + 기능 동작을 명령어로 확인 후 종료
           (
             sleep 150
@@ -93,9 +93,13 @@ jobs:
         run: sudo apt-get update -q && sudo apt-get install -y -q xvfb libgl1-mesa-dri mesa-utils imagemagick x11-utils
       - name: Client smoke test
         timeout-minutes: 15
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          MESA_GL_VERSION_OVERRIDE: '4.5'
+          SDL_VIDEO_DRIVER: x11
         run: |
           ./gradlew compileJava --no-daemon -q
-          xvfb-run -s "-screen 0 1280x720x24" bash -c '
+          xvfb-run -a -s "-screen 0 1280x720x24 +extension GLX +render -noreset" bash -c '
             ./gradlew runClient --no-daemon > client.log 2>&1 &
             for i in $(seq 1 60); do sleep 5; grep -q -E "Sound engine started|Created: .*minecraft:textures/atlas/blocks" client.log && break; done
             sleep 40
