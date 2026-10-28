@@ -42,7 +42,7 @@ jobs:
             javap -cp "$JAR" -p "$c" 2>&1 | grep -v -E '^\s*(private static final long|private static final int [A-Z_]+;$)' || true
           done < .github/probe-classes.txt > out/probe.txt
           if [ -f .github/probe-grep.txt ]; then
-            while IFS='|' read -r file pattern ctx; do
+            while IFS=$'\t' read -r file pattern ctx; do
               [ -z "$file" ] && continue
               echo "######## grep $file :: $pattern"
               grep -n -E -A "${ctx:-3}" "$pattern" "src/$file" 2>&1 | head -200 || true
