@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:paper",
+    "minecraft:ender_pearl",
+    "wildplus:blood_shard",
+    "wildplus:blood_shard"
+  ],
+  "result": {
+    "id": "wildplus:recall_scroll",
+    "count": 1
+  }
+}

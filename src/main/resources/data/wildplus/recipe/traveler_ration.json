@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:bread",
+    [
+      "minecraft:cooked_beef",
+      "minecraft:cooked_porkchop",
+      "minecraft:cooked_mutton",
+      "minecraft:cooked_chicken",
+      "minecraft:cooked_rabbit",
+      "minecraft:cooked_cod",
+      "minecraft:cooked_salmon"
+    ],
+    "minecraft:dried_kelp",
+    "minecraft:apple"
+  ],
+  "result": {
+    "id": "wildplus:traveler_ration",
+    "count": 2
+  }
+}

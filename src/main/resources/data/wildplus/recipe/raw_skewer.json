@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:stick",
+    "minecraft:stick",
+    [
+      "minecraft:beef",
+      "minecraft:porkchop",
+      "minecraft:mutton",
+      "minecraft:chicken",
+      "minecraft:rabbit"
+    ],
+    "wildplus:chili"
+  ],
+  "result": {
+    "id": "wildplus:raw_skewer",
+    "count": 2
+  }
+}

@@ -4,6 +4,9 @@ name: API Probe
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   probe:
     runs-on: ubuntu-latest
@@ -46,6 +49,12 @@ jobs:
             done < .github/probe-grep.txt >> out/probe.txt
           fi
           wc -c out/probe.txt
-          echo "===BEGIN PROBE==="
-          cat out/probe.txt
-          echo "===END PROBE==="
+
+      - name: Publish probe
+        run: |
+          mkdir -p /tmp/pub && cp out/probe.txt /tmp/pub/
+          cd /tmp/pub
+          git init -q -b ci-probe
+          git config user.name "ci"; git config user.email "ci@users.noreply.github.com"
+          git add . && git commit -qm probe
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" ci-probe

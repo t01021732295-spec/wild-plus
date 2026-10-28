@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "XXX",
+    "X X",
+    "X X"
+  ],
+  "key": {
+    "X": "wildplus:bloodsteel_ingot"
+  },
+  "result": {
+    "id": "wildplus:bloodsteel_leggings",
+    "count": 1
+  }
+}

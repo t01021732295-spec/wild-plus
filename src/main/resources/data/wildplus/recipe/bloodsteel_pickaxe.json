@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "XXX",
+    " # ",
+    " # "
+  ],
+  "key": {
+    "X": "wildplus:bloodsteel_ingot",
+    "#": "minecraft:stick"
+  },
+  "result": {
+    "id": "wildplus:bloodsteel_pickaxe",
+    "count": 1
+  }
+}

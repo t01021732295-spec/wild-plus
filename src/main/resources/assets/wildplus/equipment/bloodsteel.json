@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "wildplus:bloodsteel"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "wildplus:bloodsteel"
+      }
+    ]
+  }
+}

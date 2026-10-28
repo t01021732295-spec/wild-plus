@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:chili"
+  ],
+  "result": {
+    "id": "wildplus:chili_seeds",
+    "count": 2
+  }
+}

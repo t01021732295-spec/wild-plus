@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "ingredient": "wildplus:raw_skewer",
+  "result": {
+    "id": "wildplus:spicy_skewer"
+  },
+  "experience": 0.35,
+  "cookingtime": 100
+}

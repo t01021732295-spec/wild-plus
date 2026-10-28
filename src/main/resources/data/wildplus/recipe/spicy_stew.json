@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:bowl",
+    "wildplus:chili",
+    "wildplus:chili",
+    "minecraft:baked_potato",
+    "minecraft:carrot"
+  ],
+  "result": {
+    "id": "wildplus:spicy_stew",
+    "count": 1
+  }
+}
