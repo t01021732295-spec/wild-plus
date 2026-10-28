@@ -48,6 +48,15 @@ jobs:
               grep -n -E -A "${ctx:-3}" "$pattern" "src/$file" 2>&1 | head -200 || true
             done < .github/probe-grep.txt >> out/probe.txt
           fi
+          # 바닐라 데이터 파일 원본 형식 확인
+          ALL=$(find build ~/.gradle -name '*.jar' 2>/dev/null)
+          while read -r f; do
+            [ -z "$f" ] && continue
+            echo "######## file $f"
+            for j in $ALL; do
+              if unzip -l "$j" "$f" >/dev/null 2>&1; then unzip -p "$j" "$f"; echo; echo "(from $(basename $j))"; break; fi
+            done
+          done < .github/probe-files.txt >> out/probe.txt
           wc -c out/probe.txt
 
       - name: Publish probe
