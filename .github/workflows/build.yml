@@ -44,13 +44,34 @@ jobs:
           # 서버를 켜서 모드 로드 + 기능 동작을 명령어로 확인 후 종료
           (
             sleep 150
-            for c in "forceload add 0 0" "setblock 0 120 0 minecraft:farmland" "setblock 0 121 0 wildplus:chili_crop[age=7]" \
-                     "loot spawn 0 125 0 mine 0 121 0 minecraft:stick" "setblock 0 121 0 wildplus:chili_crop[age=2]" \
-                     "loot spawn 0 125 0 mine 0 121 0 minecraft:stick" "loot spawn 0 125 0 loot wildplus:inject/treasure_rare" \
-                     "loot spawn 0 125 0 loot minecraft:chests/simple_dungeon" "time set 14000" "wildplus bloodmoon start" \
-                     "give @a wildplus:bloodsteel_sword" "wildplus bloodmoon stop" "time set 1000"; do
-              echo "$c"; sleep 2
+            run() { echo "$1"; sleep 2; }
+            run "forceload add 0 0"
+            run "setblock 0 120 0 minecraft:farmland"
+            for age in 7 2; do
+              run "kill @e[type=minecraft:item]"
+              run "setblock 0 121 0 wildplus:chili_crop[age=$age]"
+              run "loot spawn 0 125 0 mine 0 121 0 minecraft:stick"
+              echo "say TEST crop age=$age"; sleep 1
+              run "execute as @e[type=minecraft:item] run data get entity @s Item"
             done
+            run "kill @e[type=minecraft:item]"
+            run "loot spawn 0 125 0 loot wildplus:inject/treasure_rare"
+            echo "say TEST treasure_rare"; sleep 1
+            run "execute as @e[type=minecraft:item] run data get entity @s Item"
+            run "kill @e[type=minecraft:item]"
+            run "loot spawn 0 125 0 loot minecraft:chests/simple_dungeon"
+            echo "say TEST dungeon"; sleep 1
+            run "execute as @e[type=minecraft:item] run data get entity @s Item"
+            run "kill @e[type=minecraft:item]"
+            run "setblock 0 120 0 minecraft:grass_block"
+            run "setblock 0 121 0 minecraft:short_grass"
+            for k in $(seq 1 40); do echo "loot spawn 0 125 0 mine 0 121 0 minecraft:stick"; sleep 0.2; done
+            echo "say TEST grass x40"; sleep 1
+            run "execute as @e[type=minecraft:item] run data get entity @s Item"
+            run "time set 14000"
+            run "wildplus bloodmoon start"
+            run "wildplus bloodmoon stop"
+            run "time set 1000"
             sleep 10; echo "stop"
           ) | timeout 540 ./gradlew runServer --no-daemon 2>&1 | tee server.log || true
           grep -q 'Done (' server.log
@@ -90,7 +111,7 @@ jobs:
           distribution: 'temurin'
       - uses: gradle/actions/setup-gradle@v4
       - name: Install virtual display
-        run: sudo apt-get update -q && sudo apt-get install -y -q xvfb libgl1-mesa-dri mesa-utils imagemagick x11-utils
+        run: sudo apt-get update -q && sudo apt-get install -y -q xvfb libgl1-mesa-dri mesa-utils imagemagick x11-utils mesa-vulkan-drivers libvulkan1 vulkan-tools
       - name: Client smoke test
         timeout-minutes: 15
         env:
@@ -99,7 +120,7 @@ jobs:
           SDL_VIDEO_DRIVER: x11
         run: |
           ./gradlew compileJava --no-daemon -q
-          xvfb-run -a -s "-screen 0 1280x720x24 +extension GLX +render -noreset" bash -c '
+          xvfb-run -a -s "-screen 0 1280x720x24+32 +extension GLX +render -noreset" bash -c '
             ./gradlew runClient --no-daemon > client.log 2>&1 &
             for i in $(seq 1 60); do sleep 5; grep -q -E "Sound engine started|Created: .*minecraft:textures/atlas/blocks" client.log && break; done
             sleep 40
