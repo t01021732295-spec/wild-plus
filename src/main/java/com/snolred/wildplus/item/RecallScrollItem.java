@@ -1,7 +1,6 @@
 package com.snolred.wildplus.item;
 
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,6 +14,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.portal.TeleportTransition;
 
 /**
  * 귀환의 두루마리: 3초 동안 읽으면 침대(리스폰 지점) 또는 월드 스폰으로 순간이동.
@@ -51,34 +51,33 @@ public class RecallScrollItem extends Item {
     public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
         if (entity instanceof ServerPlayer player && level instanceof ServerLevel) {
             if (Recall.teleportHome(player)) {
-                player.displayClientMessage(Component.translatable("message.wildplus.recall.success")
-                        .withStyle(ChatFormatting.LIGHT_PURPLE), true);
+                player.sendOverlayMessage(Component.translatable("message.wildplus.recall.success")
+                        .withStyle(ChatFormatting.LIGHT_PURPLE));
                 if (!player.getAbilities().instabuild) {
                     stack.shrink(1);
                 }
                 player.getCooldowns().addCooldown(stack, 20 * 10);
             } else {
-                player.displayClientMessage(Component.translatable("message.wildplus.recall.fail")
-                        .withStyle(ChatFormatting.RED), true);
+                player.sendOverlayMessage(Component.translatable("message.wildplus.recall.fail")
+                        .withStyle(ChatFormatting.RED));
             }
         }
         return stack;
     }
 
-    /** 순간이동 로직은 버전 차이를 흡수하기 위해 따로 둔다 */
+    /** 침대·리스폰 정박기 위치(없으면 월드 스폰)로 이동. 바닐라 리스폰 계산을 그대로 사용한다. */
     static final class Recall {
         static boolean teleportHome(ServerPlayer player) {
             ServerLevel from = player.level();
-            BlockPos dest = RecallTarget.find(player);
-            ServerLevel target = RecallTarget.level(player);
-            if (dest == null || target == null) {
+            TeleportTransition transition = player.findRespawnPositionAndUseSpawnBlock(false, TeleportTransition.DO_NOTHING);
+            if (transition == null) {
                 return false;
             }
             from.playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
-            player.teleportTo(target, dest.getX() + 0.5, dest.getY(), dest.getZ() + 0.5,
-                    java.util.Set.of(), player.getYRot(), player.getXRot(), true);
-            target.playSound(null, dest, SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
+            player.teleport(transition);
+            player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
+                    SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 1.0F);
             return true;
         }
     }

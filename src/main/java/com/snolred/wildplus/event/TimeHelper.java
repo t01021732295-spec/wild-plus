@@ -7,6 +7,6 @@ final class TimeHelper {
     private TimeHelper() {}
 
     static long dayTime(ServerLevel level) {
-        return level.getDayTime();
+        return level.getOverworldClockTime();
     }
 }

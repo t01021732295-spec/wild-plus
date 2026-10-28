@@ -16,6 +16,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
@@ -42,6 +43,8 @@ public final class BloodMoon {
     private static boolean active;
     private static long lastRolledDay = Long.MIN_VALUE;
     private static ServerBossEvent bar;
+    private static boolean sawNight;
+    private static final java.util.UUID BAR_ID = java.util.UUID.nameUUIDFromBytes("wildplus:blood_moon".getBytes(java.nio.charset.StandardCharsets.UTF_8));
 
     private BloodMoon() {}
 
@@ -65,7 +68,9 @@ public final class BloodMoon {
                     && level.getRandom().nextDouble() < WildConfig.BLOOD_MOON_CHANCE.get()) {
                 start(level);
             }
-        } else if (!night && active) {
+        } else if (night && active) {
+            sawNight = true;
+        } else if (!night && active && sawNight) {
             stop(level, true);
         }
 
@@ -84,9 +89,11 @@ public final class BloodMoon {
             return;
         }
         active = true;
+        long tod = TimeHelper.dayTime(level) % 24000L;
+        sawNight = tod >= NIGHT_START && tod < NIGHT_END;
         lastRolledDay = TimeHelper.dayTime(level) / 24000L;
         if (bar == null) {
-            bar = new ServerBossEvent(Component.translatable("bossbar.wildplus.blood_moon").withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD),
+            bar = new ServerBossEvent(BAR_ID, Component.translatable("bossbar.wildplus.blood_moon").withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD),
                     BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.NOTCHED_10);
             bar.setDarkenScreen(true);
             bar.setCreateWorldFog(true);
@@ -141,7 +148,7 @@ public final class BloodMoon {
     // ───────── 추가 출몰 ─────────
 
     private static final List<EntityType<? extends Mob>> HORDE = List.of(
-            EntityType.ZOMBIE, EntityType.ZOMBIE, EntityType.SKELETON, EntityType.SPIDER, EntityType.CREEPER);
+            EntityTypes.ZOMBIE, EntityTypes.ZOMBIE, EntityTypes.SKELETON, EntityTypes.SPIDER, EntityTypes.CREEPER);
 
     private static void spawnExtras(ServerLevel level) {
         int count = WildConfig.BLOOD_MOON_EXTRA_SPAWNS.getAsInt();
@@ -197,8 +204,8 @@ public final class BloodMoon {
     public static void onSleep(CanPlayerSleepEvent event) {
         if (isActive(event.getLevel()) && event.getVanillaProblem() == null) {
             event.setProblem(net.minecraft.world.entity.player.Player.BedSleepingProblem.OTHER_PROBLEM);
-            event.getEntity().displayClientMessage(Component.translatable("message.wildplus.blood_moon.no_sleep")
-                    .withStyle(ChatFormatting.RED), true);
+            event.getEntity().sendOverlayMessage(Component.translatable("message.wildplus.blood_moon.no_sleep")
+                    .withStyle(ChatFormatting.RED));
         }
     }
 

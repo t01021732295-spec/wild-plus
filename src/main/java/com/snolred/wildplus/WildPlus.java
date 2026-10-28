@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.snolred.wildplus.event.BloodMoon;
 import com.snolred.wildplus.event.EliteMobs;
 import com.snolred.wildplus.event.GearEffects;
+import com.snolred.wildplus.event.WildCommands;
 import com.snolred.wildplus.registry.ModBlocks;
 import com.snolred.wildplus.registry.ModItems;
 import com.snolred.wildplus.registry.ModTabs;
@@ -28,8 +29,9 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(BloodMoon.class);
         NeoForge.EVENT_BUS.register(EliteMobs.class);
         NeoForge.EVENT_BUS.register(GearEffects.class);
+        NeoForge.EVENT_BUS.register(WildCommands.class);
 
-        modContainer.registerConfig(ModConfig.Type.SERVER, WildConfig.SPEC);
+        modContainer.registerConfig(ModConfig.Type.SYNCED, WildConfig.SPEC);
     }
 
     public static Identifier id(String path) {

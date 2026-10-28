@@ -12,12 +12,10 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.component.Consumables;
@@ -74,10 +72,10 @@ public final class ModItems {
             p -> new Item(p.sword(BLOODSTEEL, 3.0F, -2.4F)));
     public static final DeferredItem<Item> BLOODSTEEL_PICKAXE = ITEMS.registerItem("bloodsteel_pickaxe",
             p -> new Item(p.pickaxe(BLOODSTEEL, 1.0F, -2.8F)));
-    public static final DeferredItem<AxeItem> BLOODSTEEL_AXE = ITEMS.registerItem("bloodsteel_axe",
-            p -> new AxeItem(BLOODSTEEL, 5.5F, -3.0F, p));
-    public static final DeferredItem<ShovelItem> BLOODSTEEL_SHOVEL = ITEMS.registerItem("bloodsteel_shovel",
-            p -> new ShovelItem(BLOODSTEEL, 1.5F, -3.0F, p));
+    public static final DeferredItem<Item> BLOODSTEEL_AXE = ITEMS.registerItem("bloodsteel_axe",
+            p -> new Item(p.axe(BLOODSTEEL, 5.5F, -3.0F)));
+    public static final DeferredItem<Item> BLOODSTEEL_SHOVEL = ITEMS.registerItem("bloodsteel_shovel",
+            p -> new Item(p.shovel(BLOODSTEEL, 1.5F, -3.0F)));
 
     public static final DeferredItem<Item> BLOODSTEEL_HELMET = ITEMS.registerItem("bloodsteel_helmet",
             p -> new Item(p.humanoidArmor(BLOODSTEEL_ARMOR, ArmorType.HELMET)));
