@@ -49,6 +49,11 @@ neoForge {
     runs {
         client {
             client()
+            // CI 화면 확인용: MC_QUICKPLAY 환경 변수가 있으면 해당 월드로 바로 접속
+            def quickPlay = System.getenv('MC_QUICKPLAY')
+            if (quickPlay) {
+                programArguments.addAll('--quickPlaySingleplayer', quickPlay)
+            }
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }

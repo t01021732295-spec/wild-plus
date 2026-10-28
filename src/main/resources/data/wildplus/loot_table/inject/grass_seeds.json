@@ -3,13 +3,19 @@
   "pools": [
     {
       "rolls": 1,
-      "bonus_rolls": 0,
-      "conditions": [
-        {
-          "condition": "minecraft:random_chance",
-          "chance": 0.08
-        }
-      ],
+      "condition": {
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:random_chance",
+            "chance": 0.08
+          },
+          {
+            "type": "minecraft:inverted",
+            "term": "minecraft:tool/can_shear"
+          }
+        ]
+      },
       "entries": [
         {
           "type": "minecraft:item",

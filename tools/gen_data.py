@@ -174,38 +174,38 @@ def recipes():
 def item_entry(name, weight, lo=1, hi=1):
     e = {"type": "minecraft:item", "name": name, "weight": weight}
     if hi > 1:
-        e["functions"] = [{"function": "minecraft:set_count", "count": {"type": "minecraft:uniform", "min": lo, "max": hi}}]
+        e["modifier"] = {"type": "minecraft:set_count", "count": {"type": "minecraft:uniform", "min": lo, "max": hi}}
     return e
 
 
 def loot():
-    ripe = [{"condition": "minecraft:block_state_property", "block": i("chili_crop"), "properties": {"age": "7"}}]
-    unripe = [{"condition": "minecraft:inverted", "term": ripe[0]}]
+    # 26.x 루트 테이블 형식: condition(단일 객체) / modifier / match_block
+    ripe = {"type": "minecraft:match_block", "blocks": i("chili_crop"), "state": {"age": "7"}}
     write(DATA / "loot_table/blocks/chili_crop.json", {
         "type": "minecraft:block",
+        "modifier": {"type": "minecraft:explosion_decay"},
         "pools": [
-            # 다 자랐으면 고추 1~3개
-            {"rolls": 1, "bonus_rolls": 0, "conditions": ripe, "entries": [{
-                "type": "minecraft:item", "name": i("chili"),
-                "functions": [{"function": "minecraft:set_count",
-                               "count": {"type": "minecraft:uniform", "min": 1, "max": 3}}]}]},
-            # 덜 자랐으면 씨앗 1개
-            {"rolls": 1, "bonus_rolls": 0, "conditions": unripe, "entries": [{
-                "type": "minecraft:item", "name": i("chili_seeds")}]},
-            # 다 자랐으면 씨앗 1개 + 행운 보너스
-            {"rolls": 1, "bonus_rolls": 0, "conditions": ripe, "entries": [{
+            # 다 자랐으면 고추 1~3개, 아니면 씨앗 1개
+            {"rolls": 1, "entries": [{
+                "type": "minecraft:alternatives", "children": [
+                    {"type": "minecraft:item", "name": i("chili"), "condition": ripe,
+                     "modifier": {"type": "minecraft:set_count",
+                                  "count": {"type": "minecraft:uniform", "min": 1, "max": 3}}},
+                    {"type": "minecraft:item", "name": i("chili_seeds")},
+                ]}]},
+            # 다 자랐으면 씨앗 + 행운 보너스
+            {"rolls": 1, "condition": ripe, "entries": [{
                 "type": "minecraft:item", "name": i("chili_seeds"),
-                "functions": [{"function": "minecraft:apply_bonus", "enchantment": "minecraft:fortune",
-                               "formula": "minecraft:binomial_with_bonus_count",
-                               "parameters": {"extra": 1, "probability": 0.5714286}}]}]},
+                "modifier": {"type": "minecraft:apply_bonus", "enchantment": "minecraft:fortune",
+                             "formula": "minecraft:binomial_with_bonus_count",
+                             "parameters": {"extra": 1, "probability": 0.5714286}}}]},
         ],
-        "functions": [{"function": "minecraft:explosion_decay"}],
         "random_sequence": i("blocks/chili_crop"),
     })
     # 상자에 추가로 굴리는 보물 테이블
     write(DATA / "loot_table/inject/treasure_common.json", {
         "type": "minecraft:chest",
-        "pools": [{"rolls": {"type": "minecraft:uniform", "min": 1, "max": 2}, "bonus_rolls": 0, "entries": [
+        "pools": [{"rolls": {"type": "minecraft:uniform", "min": 1, "max": 2}, "entries": [
             {"type": "minecraft:empty", "weight": 30},
             item_entry(i("blood_shard"), 20, 1, 4),
             item_entry(i("chili_seeds"), 15, 2, 5),
@@ -218,7 +218,7 @@ def loot():
     })
     write(DATA / "loot_table/inject/treasure_rare.json", {
         "type": "minecraft:chest",
-        "pools": [{"rolls": {"type": "minecraft:uniform", "min": 1, "max": 3}, "bonus_rolls": 0, "entries": [
+        "pools": [{"rolls": {"type": "minecraft:uniform", "min": 1, "max": 3}, "entries": [
             {"type": "minecraft:empty", "weight": 10},
             item_entry(i("blood_shard"), 20, 2, 6),
             item_entry(i("recall_scroll"), 15, 1, 2),
@@ -230,8 +230,11 @@ def loot():
     })
     write(DATA / "loot_table/inject/grass_seeds.json", {
         "type": "minecraft:block",
-        "pools": [{"rolls": 1, "bonus_rolls": 0,
-                   "conditions": [{"condition": "minecraft:random_chance", "chance": 0.08}],
+        "pools": [{"rolls": 1,
+                   "condition": {"type": "minecraft:all_of", "terms": [
+                       {"type": "minecraft:random_chance", "chance": 0.08},
+                       {"type": "minecraft:inverted", "term": "minecraft:tool/can_shear"},
+                   ]},
                    "entries": [{"type": "minecraft:item", "name": i("chili_seeds")}]}],
         "random_sequence": i("inject/grass_seeds"),
     })
@@ -294,7 +297,7 @@ def assets():
           {"variants": {f"age={a}": {"model": i(f"block/chili_crop_stage{s}")} for a, s in stage.items()}})
     for s in range(4):
         write(ASSETS / f"models/block/chili_crop_stage{s}.json",
-              {"parent": "minecraft:block/crop", "render_type": "minecraft:cutout",
+              {"parent": "minecraft:block/crop",
                "textures": {"crop": i(f"block/chili_crop_stage{s}")}})
     write(ASSETS / "equipment/bloodsteel.json", {"layers": {
         "humanoid": [{"texture": i("bloodsteel")}],
