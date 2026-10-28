@@ -78,9 +78,7 @@ jobs:
             run "weather clear"
             run "fill -8 119 -8 8 119 14 minecraft:grass_block"
             run "fill -8 120 -8 8 128 14 minecraft:air"
-            run "setworldspawn 0 120 0 0"
-            run "gamerule spawn_radius 0"
-            run "gamerule spawnRadius 0"
+            run "setworldspawn 0 120 0 0 0"
             run "fill -4 119 3 -1 119 3 minecraft:farmland"
             run "setblock -4 120 3 wildplus:chili_crop[age=0]"
             run "setblock -3 120 3 wildplus:chili_crop[age=3]"
@@ -112,14 +110,34 @@ jobs:
         run: |
           sudo apt-get update -q && sudo apt-get install -y -q xvfb libgl1-mesa-dri mesa-vulkan-drivers libvulkan1 imagemagick x11-utils xdotool
           mkdir -p run/saves && cp -r run/world run/saves/wildtest
+          pip install -q nbtlib
+          python3 - <<'PY'
+          import nbtlib
+          f = nbtlib.load('run/saves/wildtest/level.dat')
+          d = f['Data'] if 'Data' in f else f
+          print('level.dat keys:', sorted(d.keys()))
+          d['allowCommands'] = nbtlib.Byte(1)
+          f.save()
+          PY
           printf 'onboardAccessibility:false\npauseOnLostFocus:false\nlang:ko_kr\n' > run/options.txt
           xvfb-run -a -s "-screen 0 1280x720x24+32 +extension GLX +render -noreset" bash -c '
             ./gradlew runClient --no-daemon > client.log 2>&1 &
             for i in $(seq 1 90); do sleep 5; grep -q -E "logged in with entity id|Loaded [0-9]+ advancements|joined the game" client.log && break; done
-            sleep 45
+            sleep 40
+            cmd() { xdotool key t; sleep 1; xdotool type --delay 40 "$1"; sleep 0.5; xdotool key Return; sleep 1.5; }
+            cmd "/tp @s 0.5 120 0.5 0 12"
+            for it in bloodsteel_sword bloodsteel_pickaxe bloodsteel_axe bloodsteel_shovel blood_shard bloodsteel_ingot recall_scroll lucky_charm traveler_ration chili_seeds chili spicy_stew honey_toast raw_skewer spicy_skewer bloodsteel_helmet bloodsteel_chestplate bloodsteel_leggings bloodsteel_boots; do
+              cmd "/give @s wildplus:$it"
+            done
+            sleep 6
             xdotool key F1 || true
-            sleep 3
+            sleep 2
             import -window root shot-world.png || true
+            xdotool key F1 || true
+            sleep 1
+            xdotool key e || true
+            sleep 3
+            import -window root shot-inventory.png || true
             pkill -f java || true
           ' || true
           ls -la shot-world.png || true
@@ -134,7 +152,7 @@ jobs:
           [ -f server.log ] && tail -c 80000 server.log > /tmp/pub/server-tail.txt || true
           [ -f client.log ] && grep -i -E "wildplus|missing|unable to|failed to load|exception|error" client.log | grep -v -E "DEBUG|Masking|ALSA" | head -c 150000 > /tmp/pub/client-filtered.txt || true
           [ -f client.log ] && tail -c 60000 client.log > /tmp/pub/client-tail.txt || true
-          [ -f shot-world.png ] && cp shot-world.png /tmp/pub/ || true
+          cp shot-*.png /tmp/pub/ 2>/dev/null || true
           echo "build=${{ steps.build.outcome }} smoke=${{ steps.smoke.outcome }} sha=${{ github.sha }}" > /tmp/pub/status.txt
           cd /tmp/pub
           git init -q -b ci-log
