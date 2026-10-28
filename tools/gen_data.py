@@ -180,21 +180,24 @@ def item_entry(name, weight, lo=1, hi=1):
 
 def loot():
     ripe = [{"condition": "minecraft:block_state_property", "block": i("chili_crop"), "properties": {"age": "7"}}]
+    unripe = [{"condition": "minecraft:inverted", "term": ripe[0]}]
     write(DATA / "loot_table/blocks/chili_crop.json", {
         "type": "minecraft:block",
         "pools": [
-            {"rolls": 1, "bonus_rolls": 0, "entries": [{
-                "type": "minecraft:alternatives", "children": [
-                    {"type": "minecraft:item", "name": i("chili"), "conditions": ripe,
-                     "functions": [{"function": "minecraft:set_count",
-                                    "count": {"type": "minecraft:uniform", "min": 1, "max": 3}}]},
-                    {"type": "minecraft:item", "name": i("chili_seeds")},
-                ]}]},
+            # 다 자랐으면 고추 1~3개
+            {"rolls": 1, "bonus_rolls": 0, "conditions": ripe, "entries": [{
+                "type": "minecraft:item", "name": i("chili"),
+                "functions": [{"function": "minecraft:set_count",
+                               "count": {"type": "minecraft:uniform", "min": 1, "max": 3}}]}]},
+            # 덜 자랐으면 씨앗 1개
+            {"rolls": 1, "bonus_rolls": 0, "conditions": unripe, "entries": [{
+                "type": "minecraft:item", "name": i("chili_seeds")}]},
+            # 다 자랐으면 씨앗 1개 + 행운 보너스
             {"rolls": 1, "bonus_rolls": 0, "conditions": ripe, "entries": [{
                 "type": "minecraft:item", "name": i("chili_seeds"),
                 "functions": [{"function": "minecraft:apply_bonus", "enchantment": "minecraft:fortune",
                                "formula": "minecraft:binomial_with_bonus_count",
-                               "parameters": {"extra": 2, "probability": 0.5714286}}]}]},
+                               "parameters": {"extra": 1, "probability": 0.5714286}}]}]},
         ],
         "functions": [{"function": "minecraft:explosion_decay"}],
         "random_sequence": i("blocks/chili_crop"),

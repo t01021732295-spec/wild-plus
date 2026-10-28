@@ -41,8 +41,18 @@ jobs:
           mkdir -p run
           echo "eula=true" > run/eula.txt
           printf 'online-mode=false\nlevel-type=minecraft\\:normal\n' > run/server.properties
-          # 서버를 켜서 모드가 정상 로드되는지 확인 후 종료
-          ( sleep 240; echo "stop" ) | timeout 540 ./gradlew runServer --no-daemon 2>&1 | tee server.log || true
+          # 서버를 켜서 모드 로드 + 기능 동작을 명령어로 확인 후 종료
+          (
+            sleep 150
+            for c in "forceload add 0 0" "setblock 0 120 0 minecraft:farmland" "setblock 0 121 0 wildplus:chili_crop[age=7]" \
+                     "loot spawn 0 125 0 mine 0 121 0 minecraft:stick" "setblock 0 121 0 wildplus:chili_crop[age=2]" \
+                     "loot spawn 0 125 0 mine 0 121 0 minecraft:stick" "loot spawn 0 125 0 loot wildplus:inject/treasure_rare" \
+                     "loot spawn 0 125 0 loot minecraft:chests/simple_dungeon" "time set 14000" "wildplus bloodmoon start" \
+                     "give @a wildplus:bloodsteel_sword" "wildplus bloodmoon stop" "time set 1000"; do
+              echo "$c"; sleep 2
+            done
+            sleep 10; echo "stop"
+          ) | timeout 540 ./gradlew runServer --no-daemon 2>&1 | tee server.log || true
           grep -q 'Done (' server.log
 
       - name: Publish logs for debugging
@@ -51,7 +61,7 @@ jobs:
           mkdir -p /tmp/pub
           [ -f build.log ] && grep -E -B2 -A6 "error:|warning: \[|FAILURE|What went wrong|Exception|BUILD" build.log | head -c 200000 > /tmp/pub/build-errors.txt || true
           [ -f build.log ] && tail -c 60000 build.log > /tmp/pub/build-tail.txt || true
-          [ -f server.log ] && grep -i -E "wildplus|error|exception|caused by|Done \(|failed" server.log | head -c 200000 > /tmp/pub/server-filtered.txt || true
+          [ -f server.log ] && grep -i -E "wildplus|error|exception|caused by|Done \(|failed|Dropped|Blood Moon|time to|block|Unknown|Incorrect|Could not" server.log | head -c 200000 > /tmp/pub/server-filtered.txt || true
           [ -f server.log ] && tail -c 80000 server.log > /tmp/pub/server-tail.txt || true
           echo "build=${{ steps.build.outcome }} smoke=${{ steps.smoke.outcome }} sha=${{ github.sha }}" > /tmp/pub/status.txt
           cd /tmp/pub
@@ -69,3 +79,38 @@ jobs:
           gh release delete latest -y --cleanup-tag || true
           gh release create latest "$JAR" --title "Wild Plus (최신 빌드)" \
             --notes "Minecraft 26.3 · NeoForge 용. 이 jar 파일을 CurseForge 프로필의 mods 폴더에 넣으세요."
+
+  client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install virtual display
+        run: sudo apt-get update -q && sudo apt-get install -y -q xvfb libgl1-mesa-dri mesa-utils imagemagick x11-utils
+      - name: Client smoke test
+        timeout-minutes: 15
+        run: |
+          ./gradlew compileJava --no-daemon -q
+          xvfb-run -s "-screen 0 1280x720x24" bash -c '
+            ./gradlew runClient --no-daemon > client.log 2>&1 &
+            for i in $(seq 1 60); do sleep 5; grep -q -E "Sound engine started|Created: .*minecraft:textures/atlas/blocks" client.log && break; done
+            sleep 40
+            import -window root shot.png || true
+            pkill -f "java" || true
+          ' || true
+      - name: Publish client logs
+        if: always()
+        run: |
+          mkdir -p /tmp/pub
+          [ -f client.log ] && grep -i -E "wildplus|missing|unable to|failed to load|exception|error" client.log | grep -v -i "DEBUG" | head -c 150000 > /tmp/pub/client-filtered.txt || true
+          [ -f client.log ] && tail -c 60000 client.log > /tmp/pub/client-tail.txt || true
+          [ -f shot.png ] && cp shot.png /tmp/pub/ || true
+          cd /tmp/pub
+          git init -q -b ci-client
+          git config user.name "ci"; git config user.email "ci@users.noreply.github.com"
+          git add . && git commit -qm "client ${{ github.sha }}"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" ci-client
