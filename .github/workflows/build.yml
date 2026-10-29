@@ -222,6 +222,16 @@ jobs:
             import -window root shot-world2.png || true
             xdotool key F1 || true
             sleep 1
+            # 미스릴 괭이(핫바 5번)로 3x3 경작 시험
+            cmd "/tp @s 100.5 120 -3.5 0 70"
+            sleep 2
+            xdotool key 5; sleep 1
+            xdotool click 3; sleep 2
+            xdotool key F1 || true
+            sleep 1
+            import -window root shot-hoe.png || true
+            xdotool key F1 || true
+            sleep 1
             xdotool key e || true
             sleep 3
             import -window root shot-inventory.png || true
