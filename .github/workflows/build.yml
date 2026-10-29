@@ -297,6 +297,7 @@ jobs:
             sleep 2
             import -window root shot-mobs.png || true
             xdotool key F1 || true
+            cmd "/gamemode spectator"
             cmd "/tp @s 406.5 136 -9 0 48"
             sleep 20
             xdotool key F1 || true
