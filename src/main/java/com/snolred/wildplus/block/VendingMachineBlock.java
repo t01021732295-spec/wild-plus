@@ -1,6 +1,5 @@
 package com.snolred.wildplus.block;
 
-import com.mojang.serialization.MapCodec;
 import com.snolred.wildplus.economy.Coins;
 import com.snolred.wildplus.registry.ModBlockEntities;
 import net.minecraft.ChatFormatting;
@@ -42,17 +41,11 @@ import org.jspecify.annotations.Nullable;
  * 주인만 부술 수 있다.
  */
 public class VendingMachineBlock extends BaseEntityBlock {
-    public static final MapCodec<VendingMachineBlock> CODEC = simpleCodec(VendingMachineBlock::new);
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public VendingMachineBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
-    }
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
     }
 
     @Override
