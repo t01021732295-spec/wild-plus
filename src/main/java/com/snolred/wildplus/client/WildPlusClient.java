@@ -3,7 +3,7 @@ package com.snolred.wildplus.client;
 import com.snolred.wildplus.WildPlus;
 import com.snolred.wildplus.registry.ModItems;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.resources.language.I18n;
+import net.minecraft.locale.Language;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.network.chat.Component;
@@ -37,7 +37,7 @@ public class WildPlusClient {
         else {
             // 그 외 아이템은 번역 파일에 tooltip.wildplus.<아이템 이름> 이 있으면 표시
             Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
-            if (WildPlus.MODID.equals(id.getNamespace()) && I18n.exists("tooltip.wildplus." + id.getPath())) {
+            if (WildPlus.MODID.equals(id.getNamespace()) && Language.getInstance().has("tooltip.wildplus." + id.getPath())) {
                 key = id.getPath();
             }
         }
