@@ -1,2 +1,4 @@
-data/minecraft/tags/block/stone_ore_replaceables.json
-data/minecraft/worldgen/biome/plains.json
+data/minecraft/worldgen/feature/ore_iron.json
+data/minecraft/worldgen/feature/ore_diamond_small.json
+data/minecraft/tags/item/enchantable/durability.json
+data/minecraft/tags/item/fishes.json

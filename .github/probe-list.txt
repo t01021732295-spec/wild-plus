@@ -1,2 +1,0 @@
-ore_iron
-worldgen/[a-z_]+/$

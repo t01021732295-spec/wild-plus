@@ -502,7 +502,9 @@ def main():
     (eq / "humanoid_leggings").mkdir(parents=True, exist_ok=True)
     armor_layer(False).save(eq / "humanoid/bloodsteel.png")
     armor_layer(True).save(eq / "humanoid_leggings/bloodsteel.png")
-    print("ok", len(ITEMS), "items,", len(CROP), "crop stages")
+    import textures_v2
+    textures_v2.build()
+    print("ok", len(ITEMS), "items,", len(CROP), "crop stages + v2")
 
 
 if __name__ == "__main__":
