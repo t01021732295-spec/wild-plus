@@ -1,4 +1,9 @@
-data/minecraft/worldgen/feature/ore_iron.json
-data/minecraft/worldgen/feature/ore_diamond_small.json
-data/minecraft/tags/item/enchantable/durability.json
-data/minecraft/tags/item/fishes.json
+data/minecraft/worldgen/structure/pillager_outpost.json
+data/minecraft/worldgen/structure/igloo.json
+data/minecraft/worldgen/structure_set/pillager_outposts.json
+data/minecraft/worldgen/template_pool/pillager_outpost/base_plates.json
+data/minecraft/tags/worldgen/biome/has_structure/pillager_outpost.json
+data/minecraft/loot_table/entities/vindicator.json
+data/minecraft/loot_table/entities/slime.json
+assets/minecraft/items/vindicator_spawn_egg.json
+assets/minecraft/models/item/vindicator_spawn_egg.json

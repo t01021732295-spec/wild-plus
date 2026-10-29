@@ -1,0 +1,16 @@
+/WanderingTrader\.class$
+/AbstractVillager\.class$
+/MerchantOffer\.class$
+/ItemCost\.class$
+/Vindicator\.class$
+/AbstractIllager\.class$
+/monster/[a-z/]*Slime\.class$
+/(WanderingTraderRenderer|VindicatorRenderer|IllagerRenderer|SlimeRenderer)\.class$
+/(VillagerRenderState|IllagerRenderState|SlimeRenderState)\.class$
+/EntityType\$Builder\.class$
+/SpawnPlacements\.class$
+/SpawnPlacementTypes\.class$
+/monster/Monster\.class$
+/component/CustomData\.class$
+/SpawnEggItem\.class$
+/MobRenderer\.class$

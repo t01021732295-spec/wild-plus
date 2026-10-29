@@ -1,0 +1,2 @@
+data/minecraft/structure/igloo/top.nbt
+data/minecraft/structure/pillager_outpost/feature_cage_with_allays.nbt

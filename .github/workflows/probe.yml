@@ -62,6 +62,40 @@ jobs:
               unzip -l "$j" 2>/dev/null | awk '{print $4}' | grep -E -f .github/probe-list.txt | sed "s|^|$(basename $j): |" | head -300
             done >> out/probe.txt
           fi
+          # 정규식으로 클래스 찾아 javap
+          if [ -f .github/probe-javap.txt ]; then
+            for j in $ALL; do
+              case "$j" in *sources*) continue;; esac
+              unzip -l "$j" 2>/dev/null | awk '{print $4}' | grep -E -f .github/probe-javap.txt | sed 's/\.class$//; s|/|.|g' | while read -r c; do
+                echo "######## $c"
+                javap -cp "$j" -p "$c" 2>&1 | grep -v -E 'lambda\$' || true
+              done
+            done | awk '!seen[$0]++ || !/^########/' >> out/probe.txt
+          fi
+          # 구조물 NBT 요약
+          if [ -f .github/probe-nbt.txt ]; then
+            pip install -q nbtlib
+            while read -r f; do
+              [ -z "$f" ] && continue
+              for j in $ALL; do
+                if unzip -l "$j" "$f" >/dev/null 2>&1; then unzip -p "$j" "$f" > /tmp/x.nbt; break; fi
+              done
+              echo "######## nbt $f"
+              python3 -c "
+          import nbtlib,sys
+          t=nbtlib.load('/tmp/x.nbt')
+          r=t if 'blocks' in t else t.get('', t)
+          print('keys', list(r.keys()))
+          print('DataVersion', r.get('DataVersion'))
+          print('size', r.get('size'))
+          print('palette[:6]', [p.snbt() if hasattr(p,'snbt') else p for p in list(r.get('palette', []))[:6]])
+          b=list(r.get('blocks', []))
+          print('blocks', len(b), [x.snbt() for x in b[:3]])
+          print('block with nbt', [x.snbt()[:400] for x in b if 'nbt' in x][:2])
+          print('entities', [e.snbt()[:600] for e in list(r.get('entities', []))[:2]])
+          " 2>&1
+            done < .github/probe-nbt.txt >> out/probe.txt
+          fi
           wc -c out/probe.txt
 
       - name: Publish probe
