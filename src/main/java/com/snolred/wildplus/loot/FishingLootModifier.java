@@ -87,7 +87,10 @@ public class FishingLootModifier extends LootModifier {
         List<Item> pool = new ArrayList<>();
         List<Integer> weights = new ArrayList<>();
 
-        add(pool, weights, ModItems2.GOLDEN_CARP.get(), 2);
+        // 황금 잉어는 별도 확률 (새 어종 중 6% → 전체 물고기의 약 1.5%, 비취 낚싯대 3%)
+        if (random.nextFloat() < 0.06F) {
+            return ModItems2.GOLDEN_CARP.get();
+        }
         if (biome.is(Tags.Biomes.IS_RIVER)) {
             add(pool, weights, ModItems2.RAINBOW_TROUT.get(), night ? 5 : 12);
         } else if (!night) {
@@ -108,6 +111,9 @@ public class FishingLootModifier extends LootModifier {
 
         int total = 0;
         for (int w : weights) total += w;
+        if (total <= 0) {
+            return ModItems2.RAINBOW_TROUT.get();
+        }
         int roll = random.nextInt(total);
         for (int i = 0; i < pool.size(); i++) {
             roll -= weights.get(i);

@@ -82,8 +82,8 @@ jobs:
             run "fill 40 119 20 48 119 28 minecraft:farmland[moisture=7]"
             run "fill 40 120 20 48 120 28 wildplus:tomato_crop[age=0]"
             # ── 2차: 광석 생성 ──
-            run "place feature wildplus:ore_mythril 0 0 0"
-            run "place feature wildplus:ore_jade 0 30 0"
+            for y in -40 -20 -8 10 20; do run "place feature wildplus:ore_mythril 0 $y 0"; done
+            for y in -10 30 60; do run "place feature wildplus:ore_jade 8 $y 8"; done
             # ── 2차: 작물 수확 ──
             run "kill @e[type=minecraft:item]"
             run "setblock 0 120 0 minecraft:farmland"
