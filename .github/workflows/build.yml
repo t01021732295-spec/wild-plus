@@ -8,6 +8,11 @@ on:
 permissions:
   contents: write
 
+# 새 커밋이 올라오면 이전 빌드는 취소 (로그·릴리스가 섞이지 않도록)
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
