@@ -297,13 +297,13 @@ jobs:
             sleep 2
             import -window root shot-mobs.png || true
             xdotool key F1 || true
-            cmd "/tp @s 406.5 127 -7 0 30"
+            cmd "/tp @s 406.5 136 -9 0 48"
             sleep 20
             xdotool key F1 || true
             sleep 2
             import -window root shot-trading-post.png || true
             xdotool key F1 || true
-            cmd "/tp @s 423.5 129 -6 0 38"
+            cmd "/tp @s 423.5 138 -8 0 52"
             sleep 15
             xdotool key F1 || true
             sleep 2

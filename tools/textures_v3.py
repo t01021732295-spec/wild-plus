@@ -144,8 +144,12 @@ def bandit_skin(seed):
 
 def golden_slime_skin(seed):
     s = Skin(64, 32, seed)
-    # 바깥 젤리 (반투명)
-    s.box(0, 0, 8, 8, 8, "#ffd84a9c", noise=0.05)
+    # 바깥 젤리: 컷아웃 렌더링이라 체크무늬로 비치는 느낌을 낸다
+    s.box(0, 0, 8, 8, 8, "#ffd84a", noise=0.05)
+    for y in range(0, 16):
+        for x in range(0, 32):
+            if (x + y) % 2 == 0:
+                s.im.putpixel((x, y), (0, 0, 0, 0))
     # 안쪽 몸통
     s.box(0, 16, 6, 6, 6, "#e0a81e", noise=0.1)
     for (x, y) in [(8, 24), (10, 25), (7, 27), (11, 23)]:

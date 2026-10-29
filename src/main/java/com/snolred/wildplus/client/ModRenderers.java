@@ -2,7 +2,14 @@ package com.snolred.wildplus.client;
 
 import com.snolred.wildplus.WildPlus;
 import com.snolred.wildplus.registry.ModEntities;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.model.geom.ModelLayers;
+import net.minecraft.client.model.monster.slime.SlimeModel;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.SlimeRenderer;
 import net.minecraft.client.renderer.entity.VindicatorRenderer;
 import net.minecraft.client.renderer.entity.WanderingTraderRenderer;
@@ -64,11 +71,28 @@ public final class ModRenderers {
 
         GoldenSlimeRenderer(EntityRendererProvider.Context ctx) {
             super(ctx);
+            // 바닐라 바깥 젤리 층은 초록 텍스처가 고정이라 황금색 층으로 교체
+            this.layers.clear();
+            this.addLayer(new GoldenOuterLayer(this, ctx.getModelSet()));
         }
 
         @Override
         public Identifier getTextureLocation(SlimeRenderState state) {
             return TEXTURE;
+        }
+    }
+
+    static final class GoldenOuterLayer extends RenderLayer<SlimeRenderState, SlimeModel> {
+        private final SlimeModel model;
+
+        GoldenOuterLayer(RenderLayerParent<SlimeRenderState, SlimeModel> parent, EntityModelSet models) {
+            super(parent);
+            this.model = new SlimeModel(models.bakeLayer(ModelLayers.SLIME_OUTER));
+        }
+
+        @Override
+        public void submit(PoseStack poseStack, SubmitNodeCollector collector, int light, SlimeRenderState state, float yRot, float xRot) {
+            renderColoredCutoutModel(this.model, GoldenSlimeRenderer.TEXTURE, poseStack, collector, light, state, 0xFFFFFFFF, 1);
         }
     }
 }
