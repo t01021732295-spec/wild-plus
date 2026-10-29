@@ -57,6 +57,11 @@ jobs:
               if unzip -l "$j" "$f" >/dev/null 2>&1; then unzip -p "$j" "$f"; echo; echo "(from $(basename $j))"; break; fi
             done
           done < .github/probe-files.txt >> out/probe.txt
+          if [ -f .github/probe-list.txt ]; then
+            for j in $ALL; do
+              unzip -l "$j" 2>/dev/null | awk '{print $4}' | grep -E -f .github/probe-list.txt | sed "s|^|$(basename $j): |" | head -300
+            done >> out/probe.txt
+          fi
           wc -c out/probe.txt
 
       - name: Publish probe

@@ -1,3 +1,0 @@
-net/minecraft/world/level/block/Blocks.java	IRON_ORE =|DEEPSLATE_IRON_ORE =|DIAMOND_ORE =|IRON_BLOCK =	6
-net/minecraft/world/item/Items.java	DIAMOND_HOE|FISHING_ROD|BONE_MEAL	3
-net/minecraft/world/item/BoneMealItem.java	public static	12
