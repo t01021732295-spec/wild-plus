@@ -213,8 +213,8 @@ jobs:
             run "place template wildplus:bandit_camp 416 120 0"
             run "summon wildplus:merchant 380.5 120 5.5 {NoAI:1b,Rotation:[180f,0f]}"
             run "summon wildplus:blacksmith_merchant 378.5 120 6.5 {NoAI:1b,Rotation:[160f,0f]}"
-            run "summon wildplus:bandit 386.5 120 7.5 {NoAI:1b,Rotation:[200f,0f]}"
-            run "summon wildplus:golden_slime 389.5 120 6.5 {NoAI:1b,Size:2}"
+            run "summon wildplus:bandit 386.5 120 7.5 {NoAI:1b,PersistenceRequired:1b,Rotation:[200f,0f]}"
+            run "summon wildplus:golden_slime 388.5 120 6.5 {NoAI:1b,PersistenceRequired:1b,Size:2}"
             run "setblock 383 120 4 wildplus:vending_machine[facing=north]{product:{id:\"minecraft:bread\",count:1},price:3,infinite:1b}"
             run "setblock 384 120 4 wildplus:vending_machine[facing=north]{product:{id:\"wildplus:recall_scroll\",count:1},price:40,infinite:1b}"
             sleep 10; echo "stop"
@@ -297,11 +297,17 @@ jobs:
             sleep 2
             import -window root shot-mobs.png || true
             xdotool key F1 || true
-            cmd "/tp @s 415 133 -11 0 38"
-            sleep 6
+            cmd "/tp @s 406.5 127 -7 0 30"
+            sleep 20
             xdotool key F1 || true
             sleep 2
-            import -window root shot-structures.png || true
+            import -window root shot-trading-post.png || true
+            xdotool key F1 || true
+            cmd "/tp @s 423.5 129 -6 0 38"
+            sleep 15
+            xdotool key F1 || true
+            sleep 2
+            import -window root shot-bandit-camp.png || true
             xdotool key F1 || true
             sleep 1
             xdotool key e || true
