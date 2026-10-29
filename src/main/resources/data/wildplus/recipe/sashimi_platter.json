@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:bowl",
+    [
+      "wildplus:rainbow_trout",
+      "wildplus:ice_smelt",
+      "wildplus:anglerfish",
+      "wildplus:golden_carp",
+      "wildplus:moonlight_fish",
+      "minecraft:cod",
+      "minecraft:salmon"
+    ],
+    [
+      "wildplus:rainbow_trout",
+      "wildplus:ice_smelt",
+      "wildplus:anglerfish",
+      "wildplus:golden_carp",
+      "wildplus:moonlight_fish",
+      "minecraft:cod",
+      "minecraft:salmon"
+    ]
+  ],
+  "result": {
+    "id": "wildplus:sashimi_platter",
+    "count": 1
+  }
+}

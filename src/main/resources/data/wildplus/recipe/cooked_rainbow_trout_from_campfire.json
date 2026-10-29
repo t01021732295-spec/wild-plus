@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "ingredient": "wildplus:rainbow_trout",
+  "result": {
+    "id": "wildplus:cooked_rainbow_trout"
+  },
+  "experience": 0.35,
+  "cookingtime": 600
+}

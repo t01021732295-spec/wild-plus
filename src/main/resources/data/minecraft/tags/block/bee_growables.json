@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "wildplus:chili_crop"
+    "wildplus:chili_crop",
+    "wildplus:tomato_crop",
+    "wildplus:strawberry_crop"
   ]
 }

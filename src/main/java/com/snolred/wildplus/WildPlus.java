@@ -7,6 +7,8 @@ import com.snolred.wildplus.event.GearEffects;
 import com.snolred.wildplus.event.WildCommands;
 import com.snolred.wildplus.registry.ModBlocks;
 import com.snolred.wildplus.registry.ModItems;
+import com.snolred.wildplus.registry.ModItems2;
+import com.snolred.wildplus.registry.ModLoot;
 import com.snolred.wildplus.registry.ModTabs;
 import net.minecraft.resources.Identifier;
 import net.neoforged.bus.api.IEventBus;
@@ -23,7 +25,9 @@ public class WildPlus {
 
     public WildPlus(IEventBus modEventBus, ModContainer modContainer) {
         ModBlocks.BLOCKS.register(modEventBus);
+        ModItems2.init();
         ModItems.ITEMS.register(modEventBus);
+        ModLoot.MODIFIERS.register(modEventBus);
         ModTabs.TABS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(BloodMoon.class);

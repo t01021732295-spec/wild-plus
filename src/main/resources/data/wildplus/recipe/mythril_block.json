@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": "wildplus:mythril_ingot"
+  },
+  "result": {
+    "id": "wildplus:mythril_block",
+    "count": 1
+  }
+}

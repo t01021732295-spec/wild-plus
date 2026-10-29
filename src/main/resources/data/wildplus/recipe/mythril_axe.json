@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "XX",
+    "X#",
+    " #"
+  ],
+  "key": {
+    "X": "wildplus:mythril_ingot",
+    "#": "minecraft:stick"
+  },
+  "result": {
+    "id": "wildplus:mythril_axe",
+    "count": 1
+  }
+}

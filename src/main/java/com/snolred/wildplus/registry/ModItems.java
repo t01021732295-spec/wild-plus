@@ -123,7 +123,7 @@ public final class ModItems {
             p -> p.food(new FoodProperties.Builder().nutrition(9).saturationModifier(1.2F).build(),
                     effect(new MobEffectInstance(MobEffects.HASTE, 20 * 60, 0))));
 
-    private static Consumable effect(MobEffectInstance... effects) {
+    static Consumable effect(MobEffectInstance... effects) {
         Consumable.Builder builder = Consumables.defaultFood();
         for (MobEffectInstance e : effects) {
             builder.onConsume(new ApplyStatusEffectsConsumeEffect(e));

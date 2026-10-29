@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "wildplus:mythril_ore",
+    "wildplus:deepslate_mythril_ore",
+    "wildplus:jade_ore",
+    "wildplus:deepslate_jade_ore",
+    "wildplus:mythril_block",
+    "wildplus:jade_block",
+    "wildplus:sprinkler"
+  ]
+}

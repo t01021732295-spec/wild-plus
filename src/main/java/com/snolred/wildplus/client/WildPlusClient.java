@@ -3,6 +3,9 @@ package com.snolred.wildplus.client;
 import com.snolred.wildplus.WildPlus;
 import com.snolred.wildplus.registry.ModItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.resources.language.I18n;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -31,6 +34,13 @@ public class WildPlusClient {
         else if (isArmor(stack.getItem())) key = "bloodsteel_armor";
         else if (stack.is(ModItems.RECALL_SCROLL.get())) key = "recall_scroll";
         else if (stack.is(ModItems.LUCKY_CHARM.get())) key = "lucky_charm";
+        else {
+            // 그 외 아이템은 번역 파일에 tooltip.wildplus.<아이템 이름> 이 있으면 표시
+            Identifier id = BuiltInRegistries.ITEM.getKey(stack.getItem());
+            if (WildPlus.MODID.equals(id.getNamespace()) && I18n.exists("tooltip.wildplus." + id.getPath())) {
+                key = id.getPath();
+            }
+        }
         if (key != null) {
             event.getToolTip().add(1, Component.translatable("tooltip.wildplus." + key).withStyle(ChatFormatting.GRAY));
         }

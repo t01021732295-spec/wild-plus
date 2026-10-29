@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "wildplus:bloodsteel_pickaxe"
+    "wildplus:bloodsteel_pickaxe",
+    "wildplus:mythril_pickaxe"
   ]
 }

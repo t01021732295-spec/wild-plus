@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " J ",
+    "IWI",
+    " I "
+  ],
+  "key": {
+    "J": "wildplus:jade",
+    "I": "wildplus:mythril_ingot",
+    "W": "minecraft:water_bucket"
+  },
+  "result": {
+    "id": "wildplus:sprinkler",
+    "count": 1
+  }
+}

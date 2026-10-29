@@ -35,7 +35,7 @@ jobs:
       - name: Server smoke test
         id: smoke
         if: steps.build.outcome == 'success'
-        timeout-minutes: 10
+        timeout-minutes: 18
         run: |
           set -o pipefail
           mkdir -p run
@@ -43,8 +43,9 @@ jobs:
           printf 'online-mode=false\npause-when-empty-seconds=0\n' > run/server.properties
           # 서버를 켜서 모드 로드 + 기능 동작을 명령어로 확인 후 종료
           (
-            sleep 150
-            run() { echo "$1"; sleep 2; }
+            until grep -q 'Done (' server.log 2>/dev/null; do sleep 2; done
+            sleep 8
+            run() { echo "$1"; sleep 0.7; }
             run "forceload add 0 0"
             run "setblock 0 120 0 minecraft:farmland"
             for age in 7 2; do
@@ -68,9 +69,55 @@ jobs:
             for k in $(seq 1 40); do echo "loot spawn 0 125 0 mine 0 121 0 minecraft:stick"; sleep 0.2; done
             echo "say TEST grass x40"; sleep 1
             run "execute as @e[type=minecraft:item] run data get entity @s Item"
+            # ── 2차: 스프링클러 성장 비교 (스프링클러 있는 밭 vs 없는 밭) ──
+            run "forceload add 16 16 60 40"
+            run "fill 20 119 20 28 119 28 minecraft:farmland[moisture=7]"
+            run "fill 20 120 20 28 120 28 wildplus:tomato_crop[age=0]"
+            run "setblock 24 120 24 wildplus:sprinkler"
+            run "fill 40 119 20 48 119 28 minecraft:farmland[moisture=7]"
+            run "fill 40 120 20 48 120 28 wildplus:tomato_crop[age=0]"
+            # ── 2차: 광석 생성 ──
+            run "place feature wildplus:ore_mythril 0 0 0"
+            run "place feature wildplus:ore_jade 0 30 0"
+            # ── 2차: 작물 수확 ──
+            run "kill @e[type=minecraft:item]"
+            run "setblock 0 120 0 minecraft:farmland"
+            for c in "tomato_crop[age=7]" "tomato_crop[age=3]" "strawberry_crop[age=7]" "strawberry_crop[age=1]"; do
+              run "setblock 0 121 0 wildplus:$c"
+              run "loot spawn 0 125 0 mine 0 121 0 minecraft:stick"
+            done
+            echo "say TEST crops2"; sleep 1
+            run "execute as @e[type=minecraft:item] run data get entity @s Item"
+            run "kill @e[type=minecraft:item]"
+            run "loot spawn 0 125 0 loot wildplus:gameplay/sunken_chest"
+            echo "say TEST sunken_chest"; sleep 1
+            run "execute as @e[type=minecraft:item] run data get entity @s Item"
+            run "kill @e[type=minecraft:item]"
+            # ── 2차: 낚시 (일반 낚싯대 / 비취 낚싯대 / 비 오는 날) ──
+            for rod in minecraft:fishing_rod wildplus:jade_fishing_rod; do
+              for k in $(seq 1 80); do echo "loot spawn 0 125 0 fish minecraft:gameplay/fishing 0 121 0 $rod"; sleep 0.15; done
+              echo "say TEST fishing $rod"; sleep 1
+              run "execute as @e[type=minecraft:item] run data get entity @s Item"
+              run "kill @e[type=minecraft:item]"
+            done
+            run "weather thunder"
+            for k in $(seq 1 60); do echo "loot spawn 0 125 0 fish minecraft:gameplay/fishing 0 121 0 wildplus:jade_fishing_rod"; sleep 0.15; done
+            echo "say TEST fishing thunder"; sleep 1
+            run "execute as @e[type=minecraft:item] run data get entity @s Item"
+            run "kill @e[type=minecraft:item]"
+            run "weather clear"
+            # 스프링클러 결과: 아직 age=0 인 작물 수 (적을수록 많이 자람)
+            echo "say TEST sprinkler_plot"; sleep 1
+            run "fill 20 120 20 28 120 28 minecraft:air replace wildplus:tomato_crop[age=0]"
+            echo "say TEST control_plot"; sleep 1
+            run "fill 40 120 20 48 120 28 minecraft:air replace wildplus:tomato_crop[age=0]"
             run "time set 14000"
             run "wildplus bloodmoon start"
             run "wildplus bloodmoon stop"
+            for k in $(seq 1 60); do echo "loot spawn 0 125 0 fish minecraft:gameplay/fishing 0 121 0 wildplus:jade_fishing_rod"; sleep 0.15; done
+            echo "say TEST fishing night"; sleep 1
+            run "execute as @e[type=minecraft:item] run data get entity @s Item"
+            run "kill @e[type=minecraft:item]"
             run "time set 1000"
             # 클라이언트 화면 확인용 전시장
             run "gamerule advance_time false"
@@ -95,8 +142,36 @@ jobs:
               run "summon minecraft:item_display $x.5 122.2 6 {billboard:\"vertical\",transformation:{scale:[0.9f,0.9f,0.9f],translation:[0f,0f,0f],left_rotation:[0f,0f,0f,1f],right_rotation:[0f,0f,0f,1f]},item:{id:\"wildplus:$it\",count:1}}"
               x=$((x+1))
             done
+            # 2차 전시장 (x=100)
+            run "forceload add 88 -12 116 20"
+            run "fill 92 119 -8 108 119 14 minecraft:grass_block"
+            run "fill 92 120 -8 108 128 14 minecraft:air"
+            bx=95
+            for b in mythril_ore deepslate_mythril_ore mythril_block jade_ore deepslate_jade_ore jade_block; do
+              run "setblock $bx 120 7 wildplus:$b"; bx=$((bx+2))
+            done
+            run "fill 95 119 3 100 119 4 minecraft:farmland[moisture=7]"
+            ax=95
+            for a in 0 3 5 7 7 7; do
+              run "setblock $ax 120 3 wildplus:tomato_crop[age=$a]"
+              run "setblock $ax 120 4 wildplus:strawberry_crop[age=$a]"
+              ax=$((ax+1))
+            done
+            run "setblock 102 120 4 wildplus:sprinkler"
+            x=96
+            for it in raw_mythril mythril_ingot jade mythril_sword mythril_pickaxe mythril_axe mythril_shovel mythril_hoe jade_fishing_rod; do
+              run "summon minecraft:item_display $x.5 125.2 8 {billboard:\"vertical\",item:{id:\"wildplus:$it\",count:1}}"; x=$((x+1))
+            done
+            x=96
+            for it in rainbow_trout cooked_rainbow_trout golden_carp moonlight_fish storm_eel grilled_eel anglerfish ice_smelt sunken_chest; do
+              run "summon minecraft:item_display $x.5 124.2 8 {billboard:\"vertical\",item:{id:\"wildplus:$it\",count:1}}"; x=$((x+1))
+            done
+            x=96
+            for it in tomato_seeds tomato strawberry fertilizer tomato_soup pizza strawberry_tart sashimi_platter fish_stew; do
+              run "summon minecraft:item_display $x.5 123.2 8 {billboard:\"vertical\",item:{id:\"wildplus:$it\",count:1}}"; x=$((x+1))
+            done
             sleep 10; echo "stop"
-          ) | timeout 540 ./gradlew runServer --no-daemon 2>&1 | tee server.log || true
+          ) | timeout 1000 ./gradlew runServer --no-daemon 2>&1 | tee server.log || true
           grep -q 'Done (' server.log
 
       - name: Client visual test
@@ -126,13 +201,20 @@ jobs:
             sleep 40
             cmd() { xdotool key t; sleep 1; xdotool type --delay 40 "$1"; sleep 0.5; xdotool key Return; sleep 1.5; }
             cmd "/tp @s 0.5 120 0.5 0 12"
-            for it in bloodsteel_sword bloodsteel_pickaxe bloodsteel_axe bloodsteel_shovel blood_shard bloodsteel_ingot recall_scroll lucky_charm traveler_ration chili_seeds chili spicy_stew honey_toast raw_skewer spicy_skewer bloodsteel_helmet bloodsteel_chestplate bloodsteel_leggings bloodsteel_boots; do
+            for it in mythril_sword mythril_pickaxe mythril_axe mythril_shovel mythril_hoe jade_fishing_rod raw_mythril mythril_ingot jade rainbow_trout cooked_rainbow_trout golden_carp moonlight_fish storm_eel grilled_eel anglerfish ice_smelt sunken_chest tomato_seeds tomato strawberry fertilizer tomato_soup pizza strawberry_tart sashimi_platter fish_stew mythril_ore deepslate_mythril_ore mythril_block jade_ore deepslate_jade_ore jade_block sprinkler; do
               cmd "/give @s wildplus:$it"
             done
             sleep 6
             xdotool key F1 || true
             sleep 2
             import -window root shot-world.png || true
+            xdotool key F1 || true
+            sleep 1
+            cmd "/tp @s 100.5 120 0.5 0 12"
+            sleep 8
+            xdotool key F1 || true
+            sleep 2
+            import -window root shot-world2.png || true
             xdotool key F1 || true
             sleep 1
             xdotool key e || true

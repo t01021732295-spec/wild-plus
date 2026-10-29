@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "wildplus:bloodsteel_shovel"
+    "wildplus:bloodsteel_shovel",
+    "wildplus:mythril_shovel"
   ]
 }

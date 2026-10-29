@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "wildplus:rainbow_trout",
+    "wildplus:cooked_rainbow_trout",
+    "wildplus:golden_carp",
+    "wildplus:moonlight_fish",
+    "wildplus:storm_eel",
+    "wildplus:anglerfish",
+    "wildplus:ice_smelt"
+  ]
+}

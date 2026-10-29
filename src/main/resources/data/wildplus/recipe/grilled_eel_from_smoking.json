@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smoking",
+  "category": "food",
+  "ingredient": "wildplus:storm_eel",
+  "result": {
+    "id": "wildplus:grilled_eel"
+  },
+  "experience": 0.35,
+  "cookingtime": 100
+}

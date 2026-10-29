@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:bowl",
+    [
+      "wildplus:rainbow_trout",
+      "wildplus:ice_smelt",
+      "wildplus:anglerfish",
+      "wildplus:golden_carp",
+      "wildplus:moonlight_fish",
+      "minecraft:cod",
+      "minecraft:salmon",
+      "wildplus:storm_eel"
+    ],
+    "wildplus:chili",
+    "wildplus:tomato"
+  ],
+  "result": {
+    "id": "wildplus:fish_stew",
+    "count": 1
+  }
+}

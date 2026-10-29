@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": [
+    "wildplus:mythril_ore",
+    "wildplus:deepslate_mythril_ore"
+  ],
+  "result": {
+    "id": "wildplus:mythril_ingot"
+  },
+  "experience": 0.8,
+  "cookingtime": 200
+}

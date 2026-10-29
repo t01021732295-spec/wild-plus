@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": [
+    "wildplus:jade_ore",
+    "wildplus:deepslate_jade_ore"
+  ],
+  "result": {
+    "id": "wildplus:jade"
+  },
+  "experience": 1.0,
+  "cookingtime": 200
+}

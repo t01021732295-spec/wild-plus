@@ -317,6 +317,8 @@ def main():
     loot()
     modifiers()
     tags()
+    import data_v2
+    data_v2.build(LANG_KO, LANG_EN)
     n = sum(1 for _ in RES.rglob("*.json"))
     print("ok", n, "json files")
 

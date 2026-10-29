@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "wildplus:bloodsteel_axe"
+    "wildplus:bloodsteel_axe",
+    "wildplus:mythril_axe"
   ]
 }

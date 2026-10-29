@@ -8,7 +8,7 @@
         "terms": [
           {
             "type": "minecraft:random_chance",
-            "chance": 0.08
+            "chance": 0.14
           },
           {
             "type": "minecraft:inverted",
@@ -19,7 +19,18 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "wildplus:chili_seeds"
+          "name": "wildplus:chili_seeds",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:tomato_seeds",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:strawberry",
+          "weight": 2
         }
       ]
     }

@@ -1,0 +1,7 @@
+{
+  "type": "wildplus:fishing",
+  "condition": {
+    "type": "neoforge:loot_table_id",
+    "loot_table_id": "minecraft:gameplay/fishing"
+  }
+}
