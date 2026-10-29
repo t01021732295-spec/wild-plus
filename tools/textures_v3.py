@@ -156,6 +156,44 @@ def golden_slime_skin(seed):
     return s.im
 
 
+def vending_textures():
+    """자판기: 빨간 금속 몸체, 앞면은 유리창 안에 상품 칸 + 동전 투입구"""
+    red, dark, light, edge = "#b8202a", "#7a121a", "#e0484e", "#3a080c"
+    side = Skin(16, 16, 41)
+    side.rect(0, 0, 16, 16, red, 0.05)
+    side.rect(0, 0, 16, 1, edge)
+    side.rect(0, 15, 16, 1, edge)
+    side.rect(0, 0, 1, 16, edge)
+    side.rect(15, 0, 1, 16, edge)
+    side.rect(1, 1, 14, 1, light)
+    side.rect(2, 12, 12, 1, dark)
+    top = Skin(16, 16, 42)
+    top.rect(0, 0, 16, 16, dark, 0.05)
+    top.rect(1, 1, 14, 14, red, 0.05)
+    front = Skin(16, 16, 43)
+    front.rect(0, 0, 16, 16, red, 0.04)
+    front.rect(0, 0, 16, 1, edge)
+    front.rect(0, 15, 16, 1, edge)
+    front.rect(0, 0, 1, 16, edge)
+    front.rect(15, 0, 1, 16, edge)
+    front.rect(1, 1, 10, 11, "#1a2a33")          # 유리창
+    front.rect(2, 2, 8, 9, "#2e4a5a")
+    goods = ["#f2c230", "#3e8a2a", "#e0362c", "#c8d0d8", "#d9733a", "#7b3fbf"]
+    for row in range(3):
+        front.rect(2, 4 + row * 3, 8, 1, "#9aa4ae")    # 선반
+        for col in range(4):
+            front.rect(2 + col * 2, 2 + row * 3, 1, 2, goods[(row * 4 + col) % len(goods)])
+    front.rect(2, 2, 1, 1, "#ffffff")            # 유리 반사
+    front.rect(3, 3, 1, 1, "#cfe8f2")
+    front.rect(12, 2, 3, 3, "#2a2a2a")           # 버튼판
+    front.rect(13, 3, 1, 1, "#f2c230")
+    front.rect(12, 6, 3, 1, "#1a1a1a")           # 동전 투입구
+    front.rect(13, 6, 1, 1, "#000000")
+    front.rect(2, 13, 9, 2, "#1a1a1a")           # 꺼내는 곳
+    front.rect(12, 9, 3, 2, "#f2c230")           # 동전 표시
+    return front.im, side.im, top.im
+
+
 def build():
     for name, pal in COIN_PALETTES.items():
         save(render(COIN, pal), f"item/{name}.png")
@@ -164,6 +202,11 @@ def build():
     save(egg("#5a3a22", "#9aa4ae"), "item/blacksmith_merchant_spawn_egg.png")
     save(egg("#2e2e36", "#8a1a1a"), "item/bandit_spawn_egg.png")
     save(egg("#f2c230", "#fff6b0"), "item/golden_slime_spawn_egg.png")
+    f, sd, tp = vending_textures()
+    (ROOT / "block").mkdir(parents=True, exist_ok=True)
+    f.save(ROOT / "block/vending_machine_front.png")
+    sd.save(ROOT / "block/vending_machine_side.png")
+    tp.save(ROOT / "block/vending_machine_top.png")
     ent = ROOT / "entity"
     ent.mkdir(parents=True, exist_ok=True)
     merchant_skin(31, "#2f6a34", "#f2c230", "#6a4a2a", "#24502a").save(ent / "merchant.png")

@@ -504,6 +504,8 @@ def main():
     armor_layer(True).save(eq / "humanoid_leggings/bloodsteel.png")
     import textures_v2
     textures_v2.build()
+    import textures_v3
+    textures_v3.build()
     print("ok", len(ITEMS), "items,", len(CROP), "crop stages + v2")
 
 

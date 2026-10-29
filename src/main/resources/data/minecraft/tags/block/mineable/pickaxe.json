@@ -7,6 +7,7 @@
     "wildplus:deepslate_jade_ore",
     "wildplus:mythril_block",
     "wildplus:jade_block",
-    "wildplus:sprinkler"
+    "wildplus:sprinkler",
+    "wildplus:vending_machine"
   ]
 }

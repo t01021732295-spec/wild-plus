@@ -1,6 +1,7 @@
 package com.snolred.wildplus.client;
 
 import com.snolred.wildplus.WildPlus;
+import com.snolred.wildplus.economy.Coins;
 import com.snolred.wildplus.registry.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.locale.Language;
@@ -43,6 +44,10 @@ public class WildPlusClient {
         }
         if (key != null) {
             event.getToolTip().add(1, Component.translatable("tooltip.wildplus." + key).withStyle(ChatFormatting.GRAY));
+        }
+        if (Coins.isPouch(stack)) {
+            event.getToolTip().add(1, Component.translatable("tooltip.wildplus.pouch_value", Coins.describe(Coins.pouchValue(stack)))
+                    .withStyle(ChatFormatting.GOLD));
         }
     }
 

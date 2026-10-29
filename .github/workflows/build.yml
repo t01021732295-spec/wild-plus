@@ -40,7 +40,7 @@ jobs:
       - name: Server smoke test
         id: smoke
         if: steps.build.outcome == 'success'
-        timeout-minutes: 18
+        timeout-minutes: 22
         run: |
           set -o pipefail
           mkdir -p run
@@ -175,8 +175,50 @@ jobs:
             for it in tomato_seeds tomato strawberry fertilizer tomato_soup pizza strawberry_tart sashimi_platter fish_stew; do
               run "summon minecraft:item_display $x.5 123.2 8 {billboard:\"vertical\",item:{id:\"wildplus:$it\",count:1}}"; x=$((x+1))
             done
+            # ── 3차: 몹·구조물·자판기 시험 ──
+            run "forceload add 360 -16 440 32"
+            for mob in merchant blacksmith_merchant bandit golden_slime; do run "summon wildplus:$mob 0 121 6"; done
+            echo "say TEST mobs"; sleep 1
+            run "execute as @e[type=wildplus:merchant] run data get entity @s id"
+            run "execute as @e[type=wildplus:bandit] run data get entity @s HandItems"
+            run "execute as @e[type=wildplus:golden_slime] run data get entity @s Size"
+            run "kill @e[type=wildplus:bandit]"
+            run "kill @e[type=wildplus:golden_slime]"
+            run "kill @e[type=minecraft:item]"
+            run "loot spawn 0 125 0 loot wildplus:entities/bandit"
+            run "loot spawn 0 125 0 loot wildplus:chests/bandit_camp"
+            run "loot spawn 0 125 0 loot wildplus:chests/trading_post"
+            echo "say TEST loot3"; sleep 1
+            run "execute as @e[type=minecraft:item] run data get entity @s Item"
+            run "kill @e[type=minecraft:item]"
+            run "setblock 0 121 3 wildplus:vending_machine[facing=north]{product:{id:\"minecraft:bread\",count:1},price:3,infinite:1b}"
+            sleep 2
+            echo "say TEST vending"; sleep 1
+            run "data get block 0 121 3"
+            run "execute if entity @e[type=minecraft:item_display,tag=wildplus_vending]"
+            run "place structure wildplus:trading_post 600 70 600"
+            run "place structure wildplus:bandit_camp 700 70 600"
+            echo "say TEST structures"; sleep 1
+            run "locate structure wildplus:trading_post"
+            sleep 4
+            run "locate structure wildplus:bandit_camp"
+            sleep 4
+            # 3차 전시장 (x=372~432): 바닥 + 구조물 템플릿 + 상인·자판기
+            for x0 in 372 404; do
+              run "fill $x0 119 -12 $((x0+31)) 119 25 minecraft:grass_block"
+              run "fill $x0 120 -12 $((x0+31)) 127 25 minecraft:air"
+              run "fill $x0 128 -12 $((x0+31)) 135 25 minecraft:air"
+            done
+            run "place template wildplus:trading_post 400 120 0"
+            run "place template wildplus:bandit_camp 416 120 0"
+            run "summon wildplus:merchant 380.5 120 5.5 {NoAI:1b,Rotation:[180f,0f]}"
+            run "summon wildplus:blacksmith_merchant 378.5 120 6.5 {NoAI:1b,Rotation:[160f,0f]}"
+            run "summon wildplus:bandit 386.5 120 7.5 {NoAI:1b,Rotation:[200f,0f]}"
+            run "summon wildplus:golden_slime 389.5 120 6.5 {NoAI:1b,Size:2}"
+            run "setblock 383 120 4 wildplus:vending_machine[facing=north]{product:{id:\"minecraft:bread\",count:1},price:3,infinite:1b}"
+            run "setblock 384 120 4 wildplus:vending_machine[facing=north]{product:{id:\"wildplus:recall_scroll\",count:1},price:40,infinite:1b}"
             sleep 10; echo "stop"
-          ) | timeout 1000 ./gradlew runServer --no-daemon 2>&1 | tee server.log || true
+          ) | timeout 1200 ./gradlew runServer --no-daemon 2>&1 | tee server.log || true
           grep -q 'Done (' server.log
 
       - name: Client visual test
@@ -230,6 +272,36 @@ jobs:
             xdotool key F1 || true
             sleep 1
             import -window root shot-hoe.png || true
+            xdotool key F1 || true
+            sleep 1
+            # ── 3차: 상인 거래창 · 자판기 구매 · 구조물 ──
+            cmd "/gamemode creative"
+            cmd "/clear @s"
+            cmd "/give @s wildplus:silver_coin 5"
+            cmd "/give @s wildplus:copper_coin 7"
+            cmd "/tp @s 380.5 120 3.3 0 8"
+            sleep 3
+            xdotool click 3; sleep 3
+            import -window root shot-trade.png || true
+            xdotool key Escape; sleep 2
+            cmd "/gamemode survival"
+            cmd "/tp @s 383.5 120 2.6 0 35"
+            sleep 3
+            xdotool click 3; sleep 1
+            xdotool click 3; sleep 1
+            import -window root shot-vending.png || true
+            cmd "/gamemode creative"
+            cmd "/tp @s 383.5 121 -2.5 0 15"
+            sleep 4
+            xdotool key F1 || true
+            sleep 2
+            import -window root shot-mobs.png || true
+            xdotool key F1 || true
+            cmd "/tp @s 415 133 -11 0 38"
+            sleep 6
+            xdotool key F1 || true
+            sleep 2
+            import -window root shot-structures.png || true
             xdotool key F1 || true
             sleep 1
             xdotool key e || true

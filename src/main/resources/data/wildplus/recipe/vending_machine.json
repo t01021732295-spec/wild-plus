@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "IGI",
+    "ICI",
+    "IRI"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "G": "minecraft:glass_pane",
+    "C": "wildplus:copper_coin",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "wildplus:vending_machine",
+    "count": 1
+  }
+}

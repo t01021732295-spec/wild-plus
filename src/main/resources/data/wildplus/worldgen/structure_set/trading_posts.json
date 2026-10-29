@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 581239471,
+    "separation": 8,
+    "spacing": 26
+  },
+  "structures": [
+    {
+      "structure": "wildplus:trading_post",
+      "weight": 1
+    }
+  ]
+}

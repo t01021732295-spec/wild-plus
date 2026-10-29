@@ -4,6 +4,7 @@ import com.snolred.wildplus.WildPlus;
 import com.snolred.wildplus.block.ChiliCropBlock;
 import com.snolred.wildplus.block.SimpleCropBlock;
 import com.snolred.wildplus.block.SprinklerBlock;
+import com.snolred.wildplus.block.VendingMachineBlock;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -39,6 +40,10 @@ public final class ModBlocks {
             p -> new SimpleCropBlock(p, () -> ModItems2.STRAWBERRY.get()), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT));
     public static final DeferredBlock<SprinklerBlock> SPRINKLER = BLOCKS.registerBlock("sprinkler",
             SprinklerBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(2.0F, 6.0F).noOcclusion());
+
+    // ───────── 거래 ─────────
+    public static final DeferredBlock<VendingMachineBlock> VENDING_MACHINE = BLOCKS.registerBlock("vending_machine",
+            VendingMachineBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 1200.0F));
 
     private ModBlocks() {}
 }

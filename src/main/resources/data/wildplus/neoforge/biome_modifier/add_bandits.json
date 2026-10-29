@@ -1,0 +1,13 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#wildplus:has_bandits",
+  "spawners": {
+    "type": "wildplus:bandit",
+    "count": {
+      "type": "minecraft:uniform",
+      "min_inclusive": 1,
+      "max_inclusive": 3
+    },
+    "weight": 12
+  }
+}
