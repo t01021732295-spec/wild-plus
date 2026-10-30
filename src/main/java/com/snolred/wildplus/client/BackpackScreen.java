@@ -35,16 +35,16 @@ public class BackpackScreen extends AbstractContainerScreen<BackpackMenu> {
     @Override
     public void extractBackground(GuiGraphicsExtractor g, int mouseX, int mouseY, float partialTick) {
         super.extractBackground(g, mouseX, mouseY, partialTick);
+        UiKit.panel(g, leftPos, topPos, imageWidth, imageHeight);
+        // 등급 색 띠 (제목 옆 작은 표시)
         int[] c = COLORS[menu.tier];
-        int bagBottom = topPos + 18 + menu.rows * 18 + 2;
-        UiKit.panel(g, leftPos, topPos, imageWidth, imageHeight, c[0], 0xFFC6C6C6);
-        g.fill(leftPos + 3, topPos + 3, leftPos + imageWidth - 3, bagBottom, c[1]);
+        g.fill(leftPos + 4, topPos + 4, leftPos + 6, topPos + 14, c[1]);
         UiKit.slots(g, leftPos, topPos, menu);
     }
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor g, int mouseX, int mouseY) {
-        g.text(this.font, this.title, 8, 5, 0xFF202020, false);
+        g.text(this.font, this.title, 9, 6, UiKit.TEXT, false);
         g.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xFF404040, false);
     }
 

@@ -46,7 +46,7 @@ public final class ShipPrices {
         // 몹 전리품
         put(m, Items.ROTTEN_FLESH, 2); put(m, Items.BONE, 10); put(m, Items.STRING, 10); put(m, Items.GUNPOWDER, 25);
         put(m, Items.SPIDER_EYE, 15); put(m, Items.ENDER_PEARL, 150); put(m, Items.BLAZE_ROD, 200); put(m, Items.LEATHER, 30);
-        put(m, Items.FEATHER, 5); put(m, Items.WHITE_WOOL, 10); put(m, Items.SLIME_BALL, 30); put(m, Items.PHANTOM_MEMBRANE, 100);
+        put(m, Items.FEATHER, 5); put(m, Items.SLIME_BALL, 30); put(m, Items.PHANTOM_MEMBRANE, 100);
         table = m;
         return m;
     }

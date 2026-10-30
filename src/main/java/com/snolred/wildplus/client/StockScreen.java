@@ -40,7 +40,8 @@ public class StockScreen extends AbstractContainerScreen<StockMenu> {
     @Override
     public void extractBackground(GuiGraphicsExtractor g, int mouseX, int mouseY, float partialTick) {
         super.extractBackground(g, mouseX, mouseY, partialTick);
-        UiKit.panel(g, leftPos, topPos, W, H, 0xFF1A2A3A, 0xFF0E1620);
+        UiKit.panel(g, leftPos, topPos, W, H);
+        UiKit.inset(g, leftPos + 4, topPos + 17, W - 8, H - 21, 0xFF0E1620);
         for (int i = 0; i < StockMenu.N; i++) {
             if (i % 2 == 0) {
                 g.fill(leftPos + 4, topPos + TOP + i * ROW - 1, leftPos + W - 4, topPos + TOP + i * ROW + 17, 0xFF16222E);
@@ -50,10 +51,10 @@ public class StockScreen extends AbstractContainerScreen<StockMenu> {
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor g, int mouseX, int mouseY) {
-        g.text(this.font, this.title, 8, 6, 0xFFFFFFFF, true);
+        g.text(this.font, this.title, 8, 6, UiKit.TEXT, false);
         boolean live = menu.live();
         g.text(this.font, Component.literal((live ? "● 실시간 시세 " : "● 가상 시세 (인터넷 연결 안 됨) ") + menu.updated),
-                120, 6, live ? 0xFF7CFC6A : 0xFFFFB040, false);
+                110, 6, live ? 0xFF1E7A2E : 0xFFA05A00, false);
         g.text(this.font, Component.literal("종목"), 8, 22, 0xFF8899AA, false);
         g.text(this.font, Component.literal("현재가(동)"), 78, 22, 0xFF8899AA, false);
         g.text(this.font, Component.literal("등락"), 132, 22, 0xFF8899AA, false);

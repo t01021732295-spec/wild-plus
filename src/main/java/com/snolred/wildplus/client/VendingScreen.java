@@ -94,20 +94,13 @@ public class VendingScreen extends AbstractContainerScreen<VendingMenu> {
     public void extractBackground(GuiGraphicsExtractor g, int mouseX, int mouseY, float partialTick) {
         super.extractBackground(g, mouseX, mouseY, partialTick);
         int x = leftPos, y = topPos;
-        // 자판기 몸체
-        g.fill(x, y, x + 176, y + 128, BODY_DARK);
-        g.fill(x + 2, y + 2, x + 174, y + 126, BODY);
-        // 유리 진열장
-        g.fill(x + 4, y + 16, x + 110, y + 114, GLASS);
-        g.fill(x + 5, y + 17, x + 109, y + 113, GLASS_LIGHT);
+        // 마인크래프트 기본 창 + 움푹 들어간 유리 진열장 · 조작판
+        UiKit.panel(g, x, y, 176, 222);
+        UiKit.inset(g, x + 4, y + 16, 106, 98, GLASS);
         for (int row = 0; row < 3; row++) {
             g.fill(x + 5, y + 51 + row * 32, x + 109, y + 52 + row * 32, 0xFF9AA4AE); // 선반
         }
-        // 오른쪽 조작판
-        g.fill(x + 114, y + 18, x + 172, y + 116, PANEL);
-        // 인벤토리 영역
-        g.fill(x, y + 128, x + 176, y + 222, INV_BG);
-        g.fill(x, y + 128, x + 176, y + 129, 0xFF555555);
+        UiKit.inset(g, x + 114, y + 16, 58, 100, PANEL);
         for (Slot slot : menu.slots) {
             if (slot.isActive()) {
                 drawSlot(g, x + slot.x, y + slot.y, slot.index == VendingMenu.SLOT_COIN || slot.index == VendingMenu.SLOT_TRAY);
@@ -116,14 +109,12 @@ public class VendingScreen extends AbstractContainerScreen<VendingMenu> {
     }
 
     private static void drawSlot(GuiGraphicsExtractor g, int sx, int sy, boolean highlight) {
-        g.fill(sx - 1, sy - 1, sx + 17, sy + 17, SLOT_DARK);
-        g.fill(sx, sy, sx + 17, sy + 17, SLOT_LIGHT);
-        g.fill(sx, sy, sx + 16, sy + 16, highlight ? 0xFF6E6E2A : SLOT_FILL);
+        UiKit.inset(g, sx - 1, sy - 1, 18, 18, highlight ? 0xFF9A8A4A : SLOT_FILL);
     }
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor g, int mouseX, int mouseY) {
-        g.text(this.font, this.title, this.titleLabelX, this.titleLabelY, 0xFFFFFFFF, true);
+        g.text(this.font, this.title, this.titleLabelX, this.titleLabelY, UiKit.TEXT, false);
         g.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xFF404040, false);
         g.text(this.font, Component.translatable("gui.wildplus.vending.coin_slot"), 118, 32, 0xFFFFD84A, false);
         long credit = menu.credit();
@@ -132,12 +123,12 @@ public class VendingScreen extends AbstractContainerScreen<VendingMenu> {
         g.text(this.font, Component.translatable("gui.wildplus.vending.tray"), 118, 90, 0xFFFFD84A, false);
         if (menu.isOwner()) {
             if (!menu.isManaging()) {
-                g.text(this.font, Component.translatable("gui.wildplus.vending.hint_owner"), 6, 118, 0xFFFFE0A0, false);
+                g.text(this.font, Component.translatable("gui.wildplus.vending.hint_owner"), 6, 118, 0xFF7A4A10, false);
             }
         } else if (menu.isInfinite()) {
-            g.text(this.font, Component.translatable("gui.wildplus.vending.fixed"), 6, 118, 0xFFFFE0A0, false);
+            g.text(this.font, Component.translatable("gui.wildplus.vending.fixed"), 6, 118, 0xFF7A4A10, false);
         } else {
-            g.text(this.font, Component.translatable("gui.wildplus.vending.fixed_owned"), 6, 118, 0xFFFFE0A0, false);
+            g.text(this.font, Component.translatable("gui.wildplus.vending.fixed_owned"), 6, 118, 0xFF7A4A10, false);
         }
     }
 

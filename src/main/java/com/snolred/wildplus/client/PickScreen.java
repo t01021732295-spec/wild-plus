@@ -77,17 +77,17 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
     @Override
     public void extractBackground(GuiGraphicsExtractor g, int mouseX, int mouseY, float partialTick) {
         super.extractBackground(g, mouseX, mouseY, partialTick);
-        UiKit.panel(g, leftPos, topPos, W, H, 0xFF2A1F4A, 0xFF3D2E6B);
+        UiKit.panel(g, leftPos, topPos, W, H);
     }
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor g, int mouseX, int mouseY) {
-        g.text(this.font, this.title, 8, 6, 0xFFFFFFFF, true);
-        g.text(this.font, Component.literal(menu.header), 8, 18, 0xFFD8C8FF, false);
+        g.text(this.font, this.title, 8, 6, UiKit.TEXT, false);
+        g.text(this.font, Component.literal(menu.header), 8, 18, 0xFF5A3A8A, false);
         if (menu.entries.isEmpty()) {
-            g.text(this.font, Component.literal(menu.empty), 8, 40, 0xFFBBBBBB, false);
+            g.text(this.font, Component.literal(menu.empty), 8, 40, 0xFF606060, false);
         }
-        g.text(this.font, Component.literal((page + 1) + " / " + pages()), 58, H - 19, 0xFFBBBBBB, false);
+        g.text(this.font, Component.literal((page + 1) + " / " + pages()), 58, H - 19, 0xFF606060, false);
     }
 
     @Override

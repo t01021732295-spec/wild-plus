@@ -235,6 +235,24 @@ jobs:
             run "setblock 384 120 4 wildplus:vending_machine[facing=north]{item0:{id:\"minecraft:torch\",count:32},item1:{id:\"wildplus:recall_scroll\",count:2},item3:{id:\"minecraft:arrow\",count:16},item4:{id:\"wildplus:fertilizer\",count:8},item8:{id:\"minecraft:diamond\",count:1},prices:[I;1,40,10,2,3,10,10,10,99],infinite:1b}"
             run "setblock 385 120 4 wildplus:gacha_machine[facing=north]"
             run "setblock 381 120 4 wildplus:grave[facing=north]{items:[{id:\"minecraft:diamond\",count:3}],owner_name:\"Tester\"}"
+            # 5차 전시장 (z=-6 줄, 앞면이 북쪽)
+            run "setblock 380 120 -6 wildplus:warp_point"
+            run "setblock 382 120 -6 wildplus:warp_point"
+            run "setblock 384 120 -6 wildplus:stock_terminal[facing=north]"
+            run "setblock 386 120 -6 wildplus:atm[facing=north]"
+            run "setblock 388 120 -6 wildplus:bounty_board[facing=north]"
+            run "setblock 390 120 -6 wildplus:exchange[facing=north]"
+            run "setblock 392 120 -6 wildplus:shipping_bin"
+            # 5차 서버 시험: 주식 시세, 출하 상자 아침 판매
+            run "wildplus stocks refresh"
+            sleep 15
+            run "setblock 2 121 3 wildplus:shipping_bin{items:[{id:\"minecraft:diamond\",count:2},{id:\"minecraft:dirt\",count:5}],owner:[I;1,2,3,4]}"
+            sleep 3
+            run "time add 24000"
+            sleep 4
+            echo "say TEST shipping"; sleep 1
+            run "data get block 2 121 3 items"
+            run "wildplus interest"
             # 편의 기능 시험장: 나무 기둥(x=395), 다 자란 밀(x=398)
             run "fill 395 120 3 395 125 3 minecraft:oak_log"
             run "fill 394 126 2 396 127 4 minecraft:oak_leaves[persistent=true]"
@@ -380,6 +398,68 @@ jobs:
             import -window root shot-grave.png || true
             xdotool click 3; sleep 2
             import -window root shot-grave-after.png || true
+            # ── 5차: 요리책 · 워프 · 주식 · 은행 · 의뢰 · 환전 · 출하 · 배낭 · 인챈트 ──
+            cmd "/gamemode creative"
+            cmd "/clear @s"
+            cmd "/wildplus cookbook"
+            xdotool key 1; sleep 0.5; xdotool click 3; sleep 2
+            import -window root shot-cookbook.png || true
+            xdotool key Escape; sleep 1
+            cmd "/clear @s"
+            cmd "/give @s wildplus:gold_coin 20"
+            cmd "/tp @s 382.5 120 -8.3 0 20"
+            sleep 3; xdotool click 3; sleep 2; xdotool key Escape; sleep 1
+            cmd "/tp @s 380.5 120 -8.3 0 20"
+            sleep 3; xdotool click 3; sleep 2
+            import -window root shot-warp.png || true
+            xdotool mousemove 639 240; sleep 0.5; xdotool click 1; sleep 3
+            cmd "/execute if entity @s[x=382,y=120,z=-6,dx=1,dy=3,dz=1] run say WARP_OK"
+            sleep 1
+            cmd "/tp @s 384.5 120 -8.3 0 20"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-stocks.png || true
+            xdotool mousemove 755 208; sleep 0.5; xdotool click 1; sleep 1
+            xdotool mousemove 600 470; sleep 1
+            import -window root shot-stocks-bought.png || true
+            xdotool key Escape; sleep 1
+            cmd "/tp @s 386.5 120 -8.3 0 20"
+            sleep 2; xdotool click 3; sleep 2
+            xdotool mousemove 503 300; sleep 0.5; xdotool click 1; sleep 1
+            xdotool mousemove 600 470; sleep 1
+            import -window root shot-bank.png || true
+            xdotool key Escape; sleep 1
+            cmd "/tp @s 388.5 120 -8.3 0 20"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-bounty.png || true
+            xdotool key Escape; sleep 1
+            cmd "/give @s wildplus:copper_coin 25"
+            cmd "/tp @s 390.5 120 -8.3 0 20"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-exchange.png || true
+            xdotool key Escape; sleep 1
+            cmd "/tp @s 392.5 120 -8.3 0 20"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-shipping.png || true
+            xdotool key Escape; sleep 1
+            cmd "/clear @s"
+            cmd "/give @s wildplus:gold_backpack"
+            xdotool key 1; sleep 0.5; xdotool click 3; sleep 2
+            import -window root shot-backpack.png || true
+            xdotool key Escape; sleep 1
+            cmd "/item replace entity @s weapon.mainhand with minecraft:diamond_sword"
+            cmd "/enchant @s minecraft:sharpness 7"
+            cmd "/enchant @s minecraft:looting 5"
+            sleep 1
+            cmd "/clear @s"
+            for it in jade_sword jade_pickaxe jade_axe jade_shovel jade_hoe jade_helmet jade_chestplate jade_leggings jade_boots mythril_helmet mythril_chestplate mythril_leggings mythril_boots mythril_sword warp_point teleporter lottery_ticket copper_backpack silver_backpack gold_backpack stock_terminal atm bounty_board exchange shipping_bin; do
+              cmd "/give @s wildplus:$it"
+            done
+            cmd "/tp @s 386.5 121 -11 0 10"
+            sleep 2
+            xdotool key e || true
+            sleep 2
+            import -window root shot-new-items.png || true
+            xdotool key Escape; sleep 1
             cmd "/gamemode spectator"
             cmd "/tp @s 406.5 136 -9 0 48"
             sleep 20
