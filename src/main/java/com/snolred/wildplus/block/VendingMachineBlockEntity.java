@@ -36,7 +36,7 @@ import org.jspecify.annotations.Nullable;
  * - 플레이어가 설치하면 그 사람이 주인 → 상품·가격을 직접 정한다.
  * - 구조물에서 발견된 자판기(infinite)는 주인이 없고, 정해진 상품·가격이 무한 재고로 팔린다.
  */
-public class VendingMachineBlockEntity extends BlockEntity implements MenuProvider, ItemOwner {
+public class VendingMachineBlockEntity extends BlockEntity implements MenuProvider, ItemOwner, net.minecraft.world.WorldlyContainer {
     public static final int SLOTS = 9;
     public static final int MAX_PRICE = 9999;
 
@@ -105,6 +105,77 @@ public class VendingMachineBlockEntity extends BlockEntity implements MenuProvid
             markUpdated();
         }
         return out;
+    }
+
+    // ───────── 호퍼 자동 보충 ─────────
+    // 호퍼·드로퍼로 아래 칸 옆면이나 밑면에 넣으면 진열 칸이 채워진다.
+    // 같은 상품이 있는 칸을 먼저 채우고, 없으면 빈 칸에 넣는다. 꺼내기(아래 호퍼로 빼 가기)는 막는다.
+    // 무한 재고 자판기(야생)는 보충할 필요가 없어서 받지 않는다.
+    private static final int[] ALL_SLOTS = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+
+    @Override
+    public int[] getSlotsForFace(net.minecraft.core.Direction side) {
+        return ALL_SLOTS;
+    }
+
+    @Override
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable net.minecraft.core.Direction side) {
+        if (infinite || stack.isEmpty() || slot < 0 || slot >= SLOTS) return false;
+        ItemStack here = items.getItem(slot);
+        if (!here.isEmpty()) {
+            return ItemStack.isSameItemSameComponents(here, stack) && here.getCount() < here.getMaxStackSize();
+        }
+        // 빈 칸: 같은 상품이 들어 있고 아직 자리가 남은 칸이 있으면 그쪽이 먼저
+        for (int i = 0; i < SLOTS; i++) {
+            ItemStack o = items.getItem(i);
+            if (!o.isEmpty() && ItemStack.isSameItemSameComponents(o, stack) && o.getCount() < o.getMaxStackSize()) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean canTakeItemThroughFace(int slot, ItemStack stack, net.minecraft.core.Direction side) {
+        return false;
+    }
+
+    @Override
+    public int getContainerSize() {
+        return SLOTS;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+
+    @Override
+    public ItemStack getItem(int slot) {
+        return items.getItem(slot);
+    }
+
+    @Override
+    public ItemStack removeItem(int slot, int amount) {
+        return infinite ? ItemStack.EMPTY : items.removeItem(slot, amount);
+    }
+
+    @Override
+    public ItemStack removeItemNoUpdate(int slot) {
+        return infinite ? ItemStack.EMPTY : items.removeItemNoUpdate(slot);
+    }
+
+    @Override
+    public void setItem(int slot, ItemStack stack) {
+        items.setItem(slot, stack);
+    }
+
+    @Override
+    public boolean stillValid(Player player) {
+        return false; // 화면은 자판기 메뉴로만 연다
+    }
+
+    @Override
+    public void clearContent() {
+        // 외부에서 통째로 비우는 것은 허용하지 않음
     }
 
     public void markUpdated() {

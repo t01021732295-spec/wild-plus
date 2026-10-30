@@ -253,6 +253,12 @@ jobs:
             echo "say TEST shipping"; sleep 1
             run "data get block 2 121 3 items"
             run "wildplus interest"
+            # 호퍼 자동 보충: 빵 5개 든 자판기 옆 호퍼(빵 10, 사과 3) → 빵 15 + 사과 3
+            run "setblock 4 121 6 wildplus:vending_machine[facing=north]{item0:{id:\"minecraft:bread\",count:5}}"
+            run "setblock 5 121 6 minecraft:hopper[facing=west]{Items:[{Slot:0b,id:\"minecraft:bread\",count:10},{Slot:1b,id:\"minecraft:apple\",count:3}]}"
+            sleep 8
+            echo "say TEST hopper"; sleep 1
+            run "data get block 4 121 6"
             # 편의 기능 시험장: 나무 기둥(x=395), 다 자란 밀(x=398)
             run "fill 395 120 3 395 125 3 minecraft:oak_log"
             run "fill 394 126 2 396 127 4 minecraft:oak_leaves[persistent=true]"
