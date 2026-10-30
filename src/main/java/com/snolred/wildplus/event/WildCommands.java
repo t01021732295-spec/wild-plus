@@ -35,6 +35,10 @@ public final class WildCommands {
                     ctx.getSource().sendSuccess(() -> Component.literal("이자 지급 완료"), true);
                     return 1;
                 }))
+                .then(Commands.literal("guide").executes(ctx -> {
+                    ctx.getSource().getPlayerOrException().getInventory().add(com.snolred.wildplus.economy.Guidebook.create());
+                    return 1;
+                }))
                 .then(Commands.literal("cookbook").executes(ctx -> {
                     ctx.getSource().getPlayerOrException().getInventory().add(com.snolred.wildplus.economy.Cookbook.create());
                     return 1;

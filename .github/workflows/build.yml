@@ -412,6 +412,13 @@ jobs:
             import -window root shot-cookbook.png || true
             xdotool key Escape; sleep 1
             cmd "/clear @s"
+            cmd "/wildplus guide"
+            xdotool key 1; sleep 0.5; xdotool click 3; sleep 2
+            for k in $(seq 1 11); do xdotool key Next; sleep 0.3; done
+            sleep 1
+            import -window root shot-guide.png || true
+            xdotool key Escape; sleep 1
+            cmd "/clear @s"
             cmd "/give @s wildplus:gold_coin 20"
             cmd "/tp @s 382.5 120 -8.3 0 20"
             sleep 3; xdotool click 3; sleep 2; xdotool key Escape; sleep 1

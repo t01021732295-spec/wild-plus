@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -68,6 +69,14 @@ public final class EconomyTick {
             tag.putBoolean("wildplus_cookbook", true);
             if (!player.getInventory().add(Cookbook.create())) {
                 net.minecraft.world.Containers.dropItemStack(player.level(), player.getX(), player.getY(), player.getZ(), Cookbook.create());
+            }
+        }
+        // 첫 접속(또는 1.4.0 이후 처음): 제작 안내서 한 권
+        if (!tag.getBooleanOr("wildplus_guide", false)) {
+            tag.putBoolean("wildplus_guide", true);
+            ItemStack guide = com.snolred.wildplus.economy.Guidebook.create();
+            if (!player.getInventory().add(guide)) {
+                net.minecraft.world.Containers.dropItemStack(player.level(), player.getX(), player.getY(), player.getZ(), guide);
             }
         }
     }

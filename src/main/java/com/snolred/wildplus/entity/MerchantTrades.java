@@ -62,6 +62,7 @@ public final class MerchantTrades {
             sell(o, com.snolred.wildplus.registry.ModItems4.SHIPPING_BIN.get(), 1, 20, 4);
             sell(o, com.snolred.wildplus.registry.ModItems4.EXCHANGE.get(), 1, 50, 4);
             sellStack(o, com.snolred.wildplus.economy.Cookbook.create(), 5);
+            sellStack(o, com.snolred.wildplus.economy.Guidebook.create(), 5);
             sell(o, ModItems.LUCKY_CHARM.get(), 1, 500, 1);
         } else {
             // ── 매입: 광물 ──
