@@ -53,6 +53,9 @@ public final class MerchantTrades {
             sell(o, ModItems2.JADE_FISHING_ROD.get(), 1, 100);
             sell(o, ModItems3.COIN_POUCH.get(), 1, 15);
             sell(o, ModItems3.VENDING_MACHINE.get(), 1, 80);
+            sell(o, ModItems3.GACHA_MACHINE.get(), 1, 120);
+            sell(o, ModItems3.MAGNET_CHARM.get(), 1, 150);
+            sell(o, ModItems3.PORTABLE_CRAFTING_TABLE.get(), 1, 30);
             sell(o, ModItems.LUCKY_CHARM.get(), 1, 500, 1);
         } else {
             // ── 매입: 광물 ──

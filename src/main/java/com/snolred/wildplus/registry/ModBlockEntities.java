@@ -2,6 +2,7 @@ package com.snolred.wildplus.registry;
 
 import com.snolred.wildplus.WildPlus;
 import com.snolred.wildplus.block.VendingMachineBlockEntity;
+import com.snolred.wildplus.block.GraveBlockEntity;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -14,6 +15,9 @@ public final class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<VendingMachineBlockEntity>> VENDING_MACHINE =
             BLOCK_ENTITIES.register("vending_machine",
                     () -> new BlockEntityType<>(VendingMachineBlockEntity::new, ModBlocks.VENDING_MACHINE.get()));
+
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GraveBlockEntity>> GRAVE =
+            BLOCK_ENTITIES.register("grave", () -> new BlockEntityType<>(GraveBlockEntity::new, ModBlocks.GRAVE.get()));
 
     private ModBlockEntities() {}
 }

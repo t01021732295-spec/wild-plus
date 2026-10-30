@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:crafting_table",
+    "minecraft:leather",
+    "minecraft:string"
+  ],
+  "result": {
+    "id": "wildplus:portable_crafting_table",
+    "count": 1
+  }
+}

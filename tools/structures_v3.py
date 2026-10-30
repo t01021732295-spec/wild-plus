@@ -84,11 +84,15 @@ def chest(loot, facing="north"):
             Compound({"id": String("minecraft:chest"), "LootTable": String(loot)}))
 
 
-def vending(product, price, facing):
-    return ("wildplus:vending_machine", {"facing": facing},
-            Compound({"id": String("wildplus:vending_machine"),
-                      "product": Compound({"id": String(product), "count": Int(1)}),
-                      "price": Int(price), "infinite": Byte(1)}))
+def vending(products, facing):
+    """구조물 자판기: 정해진 상품·가격, 무한 재고. products = [(아이템, 진열 개수, 가격), ...] 최대 9개"""
+    nbt = Compound({"id": String("wildplus:vending_machine"), "infinite": Byte(1)})
+    prices = [10] * 9
+    for idx, (item, count, price) in enumerate(products[:9]):
+        nbt[f"item{idx}"] = Compound({"id": String(item), "count": Int(count)})
+        prices[idx] = price
+    nbt["prices"] = nbtlib.IntArray([Int(p) for p in prices])
+    return ("wildplus:vending_machine", {"facing": facing}, nbt)
 
 
 FENCE = {"east": "false", "west": "false", "north": "false", "south": "false", "waterlogged": "false"}
@@ -129,10 +133,16 @@ def trading_post():
     t.set(9, 1, 8, "minecraft:anvil", {"facing": "east"})
     t.set(10, 1, 8, "minecraft:smithing_table")
     t.set(6, 1, 8, *chest("wildplus:chests/trading_post", "north"))
-    # 자판기 (오른쪽 바깥, 동쪽을 바라봄)
-    for z, (product, price) in zip([4, 5, 6], [("minecraft:bread", 2), ("wildplus:fertilizer", 3), ("wildplus:recall_scroll", 40)]):
-        t.set(12, 1, z, *vending(product, price, "east"))
-    t.set(12, 2, 5, "minecraft:lantern", {"hanging": "false", "waterlogged": "false"})
+    # 자판기 둘 + 뽑기 기계 (오른쪽 바깥, 동쪽을 바라봄)
+    food = [("minecraft:bread", 8, 2), ("wildplus:pizza", 4, 4), ("wildplus:honey_toast", 4, 5),
+            ("wildplus:tomato_soup", 1, 6), ("wildplus:traveler_ration", 4, 8), ("minecraft:cooked_beef", 8, 4),
+            ("wildplus:strawberry_tart", 4, 5), ("minecraft:golden_carrot", 8, 6), ("minecraft:cake", 1, 15)]
+    goods = [("minecraft:torch", 32, 1), ("wildplus:fertilizer", 8, 3), ("wildplus:tomato_seeds", 8, 2),
+             ("minecraft:oak_sapling", 4, 2), ("minecraft:arrow", 16, 2), ("wildplus:recall_scroll", 2, 40),
+             ("minecraft:shears", 1, 15), ("minecraft:lead", 2, 10), ("wildplus:coin_pouch", 1, 15)]
+    t.set(12, 1, 4, *vending(food, "east"))
+    t.set(12, 1, 5, "wildplus:gacha_machine", {"facing": "east"})
+    t.set(12, 1, 6, *vending(goods, "east"))
     # 상인
     t.entity(4.5, 1.0, 5.5, mob("wildplus:merchant", 180.0))
     t.entity(8.5, 1.0, 5.5, mob("wildplus:blacksmith_merchant", 180.0))

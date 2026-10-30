@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "wildplus:block/gacha_machine_front",
+    "side": "wildplus:block/gacha_machine_side",
+    "top": "wildplus:block/gacha_machine_top"
+  }
+}

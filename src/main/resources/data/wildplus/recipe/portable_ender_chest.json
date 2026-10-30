@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:ender_chest",
+    "minecraft:leather",
+    "minecraft:string",
+    "wildplus:jade"
+  ],
+  "result": {
+    "id": "wildplus:portable_ender_chest",
+    "count": 1
+  }
+}

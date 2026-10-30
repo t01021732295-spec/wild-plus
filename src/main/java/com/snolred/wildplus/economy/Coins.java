@@ -85,6 +85,20 @@ public final class Coins {
         return true;
     }
 
+    /** 돈을 돌려준다: 동전 주머니가 있으면 주머니에, 없으면 동전으로 */
+    public static void refund(Player player, long amount) {
+        if (amount <= 0) return;
+        Inventory inv = player.getInventory();
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack s = inv.getItem(i);
+            if (isPouch(s)) {
+                setPouchValue(s, pouchValue(s) + amount);
+                return;
+            }
+        }
+        give(player, amount);
+    }
+
     /** 금액을 가장 적은 개수의 동전으로 */
     public static List<ItemStack> toCoins(long amount) {
         List<ItemStack> out = new ArrayList<>();

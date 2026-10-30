@@ -1,17 +1,27 @@
 package com.snolred.wildplus.block;
 
 import com.snolred.wildplus.economy.Coins;
+import com.snolred.wildplus.menu.VendingMenu;
 import com.snolred.wildplus.registry.ModBlockEntities;
-import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.UUIDUtil;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.Containers;
-import net.minecraft.world.entity.Display;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.ItemOwner;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -21,175 +31,192 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 /**
- * 자판기 데이터: 상품(1종류)·재고·가격·주인·수익.
- * infinite=true 이면 주인 없는 무한 재고 자판기 (구조물에 배치되는 것).
- * 머리 위에 상품을 보여주는 아이템 디스플레이를 띄운다.
+ * 자판기: 진열 칸 9개 (칸마다 상품 한 묶음 = 재고) + 칸별 가격.
+ * - 플레이어가 설치하면 그 사람이 주인 → 상품·가격을 직접 정한다.
+ * - 구조물에서 발견된 자판기(infinite)는 주인이 없고, 정해진 상품·가격이 무한 재고로 팔린다.
  */
-public class VendingMachineBlockEntity extends BlockEntity {
-    private ItemStack product = ItemStack.EMPTY;   // 상품 견본 (개수 1)
-    private int stock;
-    private int price = 10;                        // 1개당 가격 (동)
+public class VendingMachineBlockEntity extends BlockEntity implements MenuProvider, ItemOwner {
+    public static final int SLOTS = 9;
+    public static final int MAX_PRICE = 9999;
+
+    private final SimpleContainer items = new SimpleContainer(SLOTS) {
+        @Override
+        public void setChanged() {
+            super.setChanged();
+            VendingMachineBlockEntity.this.markUpdated();
+        }
+    };
+    private final int[] prices = new int[SLOTS];
     private long earnings;
     private boolean infinite;
     private @Nullable UUID owner;
     private String ownerName = "";
-    private @Nullable UUID displayId;
-    private float spin;
+    private @Nullable UUID legacyDisplay;   // 1.2.0 의 공중 진열 엔티티 (정리용)
 
     public VendingMachineBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.VENDING_MACHINE.get(), pos, state);
+        java.util.Arrays.fill(prices, 10);
     }
 
     // ───────── 접근자 ─────────
-    public ItemStack product() { return product; }
-    public int stock() { return infinite ? Integer.MAX_VALUE : stock; }
-    public int price() { return price; }
+    public SimpleContainer items() { return items; }
+    public int price(int slot) { return prices[slot]; }
     public long earnings() { return earnings; }
     public boolean infinite() { return infinite; }
     public String ownerName() { return ownerName; }
     public boolean hasOwner() { return owner != null; }
 
-    public boolean canManage(Player player) {
-        if (owner == null) return player.isCreative();
-        return owner.equals(player.getUUID()) || player.isCreative();
+    /** 상품·가격을 바꿀 수 있는 사람: 자기가 설치한 자판기의 주인만 */
+    public boolean isOwner(Player player) {
+        return owner != null && owner.equals(player.getUUID());
     }
 
     public void setOwner(Player player) {
         this.owner = player.getUUID();
         this.ownerName = player.getName().getString();
-        setChanged();
+        markUpdated();
     }
 
-    public void setPrice(int price) {
-        this.price = Math.max(1, price);
-        setChanged();
-    }
-
-    /** 상품 보충. 다른 상품이 들어 있으면 0 반환 */
-    public int addStock(ItemStack held) {
-        if (!product.isEmpty() && !ItemStack.isSameItemSameComponents(product, held)) {
-            return 0;
-        }
-        if (product.isEmpty()) {
-            product = held.copyWithCount(1);
-        }
-        int n = held.getCount();
-        if (!infinite) stock += n;
-        held.shrink(n);
-        setChanged();
-        return n;
-    }
-
-    /** 재고 회수 (주인) */
-    public ItemStack takeAllStock() {
-        if (product.isEmpty() || infinite) return ItemStack.EMPTY;
-        ItemStack out = product.copyWithCount(stock);
-        stock = 0;
-        product = ItemStack.EMPTY;
-        setChanged();
-        return out;
+    public void setPrice(int slot, int price) {
+        prices[slot] = Math.max(1, Math.min(MAX_PRICE, price));
+        markUpdated();
     }
 
     public long takeEarnings() {
         long e = earnings;
         earnings = 0;
-        setChanged();
+        markUpdated();
         return e;
     }
 
-    /** 판매 처리: 재고 차감·수익 적립. 실제로 건넨 개수 반환 */
-    public int sell(int count) {
-        if (product.isEmpty()) return 0;
-        int n = infinite ? count : Math.min(count, stock);
-        if (!infinite) {
-            stock -= n;
-            earnings += (long) n * price;
-            if (stock <= 0) {
-                stock = 0;
-            }
+    /** 칸 하나를 판매: 꺼낸 상품(1개) 반환, 못 팔면 EMPTY */
+    public ItemStack sellOne(int slot) {
+        ItemStack stock = items.getItem(slot);
+        if (stock.isEmpty()) {
+            return ItemStack.EMPTY;
         }
-        setChanged();
-        return n;
+        ItemStack out = stock.copyWithCount(1);
+        if (!infinite) {
+            stock.shrink(1);
+            earnings += prices[slot];
+            items.setChanged();
+        } else {
+            markUpdated();
+        }
+        return out;
     }
 
-    // ───────── 저장 ─────────
+    public void markUpdated() {
+        setChanged();
+        if (level != null && !level.isClientSide()) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+
+    // ───────── 진열 렌더링용 (ItemOwner) ─────────
+    @Override
+    public Level level() {
+        return getLevel();
+    }
+
+    @Override
+    public Vec3 position() {
+        return Vec3.atCenterOf(getBlockPos());
+    }
+
+    @Override
+    public float getVisualRotationYInDegrees() {
+        return getBlockState().getValue(VendingMachineBlock.FACING).toYRot();
+    }
+
+    // ───────── 화면 ─────────
+    @Override
+    public Component getDisplayName() {
+        if (infinite) {
+            return Component.translatable("container.wildplus.vending_machine.wild");
+        }
+        return ownerName.isEmpty()
+                ? Component.translatable("block.wildplus.vending_machine")
+                : Component.translatable("container.wildplus.vending_machine.owned", ownerName);
+    }
+
+    @Override
+    public @Nullable AbstractContainerMenu createMenu(int id, Inventory inv, Player player) {
+        return new VendingMenu(id, inv, this, isOwner(player) && !infinite);
+    }
+
+    // ───────── 저장·동기화 ─────────
     @Override
     protected void saveAdditional(ValueOutput out) {
         super.saveAdditional(out);
-        if (!product.isEmpty()) {
-            out.store("product", ItemStack.CODEC, product);
+        for (int i = 0; i < SLOTS; i++) {
+            ItemStack s = items.getItem(i);
+            if (!s.isEmpty()) {
+                out.store("item" + i, ItemStack.CODEC, s);
+            }
         }
-        out.putInt("stock", stock);
-        out.putInt("price", price);
+        out.putIntArray("prices", prices.clone());
         out.putLong("earnings", earnings);
         out.putBoolean("infinite", infinite);
         out.putString("owner_name", ownerName);
         if (owner != null) out.store("owner", UUIDUtil.CODEC, owner);
-        if (displayId != null) out.store("display", UUIDUtil.CODEC, displayId);
     }
 
     @Override
     protected void loadAdditional(ValueInput in) {
         super.loadAdditional(in);
-        product = in.read("product", ItemStack.CODEC).map(s -> s.copyWithCount(1)).orElse(ItemStack.EMPTY);
-        stock = in.getIntOr("stock", 0);
-        price = Math.max(1, in.getIntOr("price", 10));
+        for (int i = 0; i < SLOTS; i++) {
+            items.setItem(i, in.read("item" + i, ItemStack.CODEC).orElse(ItemStack.EMPTY), false);
+        }
+        in.getIntArray("prices").ifPresent(arr -> {
+            for (int i = 0; i < SLOTS && i < arr.length; i++) prices[i] = Math.max(1, arr[i]);
+        });
         earnings = in.getLongOr("earnings", 0L);
         infinite = in.getBooleanOr("infinite", false);
         ownerName = in.getStringOr("owner_name", "");
-        Optional<UUID> o = in.read("owner", UUIDUtil.CODEC);
-        owner = o.orElse(null);
-        displayId = in.read("display", UUIDUtil.CODEC).orElse(null);
+        owner = in.read("owner", UUIDUtil.CODEC).orElse(null);
+        // 1.2.0 형식(상품 1종 + stock/price) 변환
+        in.read("product", ItemStack.CODEC).ifPresent(product -> {
+            int stock = infinite ? 1 : in.getIntOr("stock", 0);
+            int price = Math.max(1, in.getIntOr("price", 10));
+            int slot = 0;
+            while (stock > 0 && slot < SLOTS) {
+                int n = Math.min(stock, product.getMaxStackSize());
+                items.setItem(slot, product.copyWithCount(n), false);
+                prices[slot] = price;
+                stock -= n;
+                slot++;
+            }
+        });
+        legacyDisplay = in.read("display", UUIDUtil.CODEC).orElse(null);
     }
 
-    // ───────── 상품 진열 (머리 위 아이템 디스플레이) ─────────
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public @Nullable Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this, BlockEntity::getUpdateTag);
+    }
+
+    /** 예전 버전의 공중 진열 엔티티 정리 */
     public static void serverTick(Level level, BlockPos pos, BlockState state, VendingMachineBlockEntity be) {
-        if (!(level instanceof ServerLevel server) || level.getGameTime() % 4 != 0) {
-            return;
+        if (be.legacyDisplay != null && level instanceof ServerLevel server) {
+            Entity e = server.getEntity(be.legacyDisplay);
+            if (e != null) e.discard();
+            be.legacyDisplay = null;
+            be.markUpdated();
         }
-        Entity existing = be.displayId == null ? null : server.getEntity(be.displayId);
-        boolean soldOut = be.product.isEmpty() || (!be.infinite && be.stock <= 0);
-        if (soldOut) {
-            if (existing != null) existing.discard();
-            if (be.displayId != null) {
-                be.displayId = null;
-                be.setChanged();
-            }
-            return;
-        }
-        Display.ItemDisplay display;
-        if (existing instanceof Display.ItemDisplay d) {
-            display = d;
-        } else {
-            display = new Display.ItemDisplay(EntityTypes.ITEM_DISPLAY, server);
-            display.setPos(pos.getX() + 0.5, pos.getY() + 1.45, pos.getZ() + 0.5);
-            display.addTag("wildplus_vending");
-            server.addFreshEntity(display);
-            be.displayId = display.getUUID();
-            be.setChanged();
-        }
-        if (!ItemStack.isSameItemSameComponents(display.getSlot(0).get(), be.product)) {
-            display.getSlot(0).set(be.product.copy());
-        }
-        be.spin = (be.spin + 12.0F) % 360.0F;
-        display.setYRot(be.spin);
     }
 
     @Override
     public void preRemoveSideEffects(BlockPos pos, BlockState state) {
         super.preRemoveSideEffects(pos, state);
         if (level instanceof ServerLevel server) {
-            if (displayId != null) {
-                Entity e = server.getEntity(displayId);
-                if (e != null) e.discard();
-            }
-            if (!infinite && !product.isEmpty()) {
-                int left = stock;
-                while (left > 0) {
-                    int n = Math.min(left, product.getMaxStackSize());
-                    Containers.dropItemStack(server, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, product.copyWithCount(n));
-                    left -= n;
-                }
+            if (!infinite) {
+                Containers.dropContents(server, pos, items);
             }
             for (ItemStack coin : Coins.toCoins(earnings)) {
                 Containers.dropItemStack(server, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, coin);

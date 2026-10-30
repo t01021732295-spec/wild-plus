@@ -12,6 +12,8 @@ import com.snolred.wildplus.registry.ModItems3;
 import com.snolred.wildplus.registry.ModEntities;
 import com.snolred.wildplus.registry.ModBlockEntities;
 import com.snolred.wildplus.event.EconomyEvents;
+import com.snolred.wildplus.event.QolEvents;
+import com.snolred.wildplus.registry.ModMenus;
 import com.snolred.wildplus.registry.ModLoot;
 import com.snolred.wildplus.registry.ModTabs;
 import net.minecraft.resources.Identifier;
@@ -33,6 +35,7 @@ public class WildPlus {
         ModItems3.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
+        ModMenus.MENUS.register(modEventBus);
         modEventBus.addListener(ModEntities::onAttributes);
         modEventBus.addListener(ModEntities::onSpawnPlacements);
         ModItems.ITEMS.register(modEventBus);
@@ -44,6 +47,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(GearEffects.class);
         NeoForge.EVENT_BUS.register(WildCommands.class);
         NeoForge.EVENT_BUS.register(EconomyEvents.class);
+        NeoForge.EVENT_BUS.register(QolEvents.class);
 
         modContainer.registerConfig(ModConfig.Type.SYNCED, WildConfig.SPEC);
     }

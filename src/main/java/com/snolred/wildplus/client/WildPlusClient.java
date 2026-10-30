@@ -24,6 +24,12 @@ import net.neoforged.neoforge.event.entity.player.ItemTooltipEvent;
 public class WildPlusClient {
     public WildPlusClient(ModContainer container) {
         container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+        container.registerConfig(net.neoforged.fml.config.ModConfig.Type.CLIENT, ClientConfig.SPEC);
+    }
+
+    @SubscribeEvent
+    static void onMenuScreens(net.neoforged.neoforge.client.event.RegisterMenuScreensEvent event) {
+        event.register(com.snolred.wildplus.registry.ModMenus.VENDING.get(), VendingScreen::new);
     }
 
     @SubscribeEvent

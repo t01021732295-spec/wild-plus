@@ -37,6 +37,41 @@ public final class WildConfig {
 
     static {
         BUILDER.pop();
+        BUILDER.push("convenience");
+    }
+
+    public static final ModConfigSpec.BooleanValue TREE_FELLING = BUILDER
+            .comment("웅크린 채 도끼로 원목을 캐면 나무 전체를 벤다")
+            .translation("wildplus.configuration.treeFelling")
+            .define("treeFelling", true);
+
+    public static final ModConfigSpec.BooleanValue VEIN_MINING = BUILDER
+            .comment("웅크린 채 곡괭이로 광석을 캐면 이어진 광맥 전체를 캔다")
+            .translation("wildplus.configuration.veinMining")
+            .define("veinMining", true);
+
+    public static final ModConfigSpec.BooleanValue RIGHT_CLICK_HARVEST = BUILDER
+            .comment("다 자란 작물을 우클릭하면 수확하고 다시 심는다")
+            .translation("wildplus.configuration.rightClickHarvest")
+            .define("rightClickHarvest", true);
+
+    public static final ModConfigSpec.BooleanValue GRAVES = BUILDER
+            .comment("죽으면 아이템을 무덤에 보관한다")
+            .translation("wildplus.configuration.graves")
+            .define("graves", true);
+
+    static {
+        BUILDER.pop();
+        BUILDER.push("economy");
+    }
+
+    public static final ModConfigSpec.IntValue GACHA_PRICE = BUILDER
+            .comment("뽑기 기계 1회 가격 (동)")
+            .translation("wildplus.configuration.gachaPrice")
+            .defineInRange("gachaPrice", 10, 1, 10000);
+
+    static {
+        BUILDER.pop();
     }
 
     public static final ModConfigSpec SPEC = BUILDER.build();

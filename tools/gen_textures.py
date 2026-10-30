@@ -506,6 +506,8 @@ def main():
     textures_v2.build()
     import textures_v3
     textures_v3.build()
+    import textures_v4
+    textures_v4.build()
     print("ok", len(ITEMS), "items,", len(CROP), "crop stages + v2")
 
 

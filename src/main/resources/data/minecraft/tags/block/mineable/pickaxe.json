@@ -8,6 +8,8 @@
     "wildplus:mythril_block",
     "wildplus:jade_block",
     "wildplus:sprinkler",
-    "wildplus:vending_machine"
+    "wildplus:vending_machine",
+    "wildplus:gacha_machine",
+    "wildplus:grave"
   ]
 }

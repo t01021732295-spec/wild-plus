@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/grave"
+    },
+    "facing=east": {
+      "model": "wildplus:block/grave",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/grave",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/grave",
+      "y": 270
+    }
+  }
+}

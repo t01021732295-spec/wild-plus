@@ -3,6 +3,8 @@ package com.snolred.wildplus.registry;
 import static com.snolred.wildplus.registry.ModItems.ITEMS;
 
 import com.snolred.wildplus.item.CoinPouchItem;
+import com.snolred.wildplus.item.MagnetCharmItem;
+import com.snolred.wildplus.item.PortableItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -25,6 +27,15 @@ public final class ModItems3 {
             p -> new SpawnEggItem(p.spawnEgg(ModEntities.BANDIT.get())));
     public static final DeferredItem<SpawnEggItem> GOLDEN_SLIME_SPAWN_EGG = ITEMS.registerItem("golden_slime_spawn_egg",
             p -> new SpawnEggItem(p.spawnEgg(ModEntities.GOLDEN_SLIME.get())));
+
+    // ───────── 4차: 놀거리·편의 ─────────
+    public static final DeferredItem<BlockItem> GACHA_MACHINE = ITEMS.registerSimpleBlockItem("gacha_machine", ModBlocks.GACHA_MACHINE);
+    public static final DeferredItem<MagnetCharmItem> MAGNET_CHARM = ITEMS.registerItem("magnet_charm",
+            MagnetCharmItem::new, p -> p.stacksTo(1).rarity(Rarity.UNCOMMON));
+    public static final DeferredItem<PortableItem> PORTABLE_CRAFTING_TABLE = ITEMS.registerItem("portable_crafting_table",
+            p -> new PortableItem(p, PortableItem.Kind.CRAFTING), p -> p.stacksTo(1));
+    public static final DeferredItem<PortableItem> PORTABLE_ENDER_CHEST = ITEMS.registerItem("portable_ender_chest",
+            p -> new PortableItem(p, PortableItem.Kind.ENDER_CHEST), p -> p.stacksTo(1).rarity(Rarity.UNCOMMON));
 
     public static void init() {}
 

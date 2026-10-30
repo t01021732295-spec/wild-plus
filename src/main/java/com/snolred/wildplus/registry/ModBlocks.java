@@ -5,6 +5,8 @@ import com.snolred.wildplus.block.ChiliCropBlock;
 import com.snolred.wildplus.block.SimpleCropBlock;
 import com.snolred.wildplus.block.SprinklerBlock;
 import com.snolred.wildplus.block.VendingMachineBlock;
+import com.snolred.wildplus.block.GachaMachineBlock;
+import com.snolred.wildplus.block.GraveBlock;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -43,7 +45,14 @@ public final class ModBlocks {
 
     // ───────── 거래 ─────────
     public static final DeferredBlock<VendingMachineBlock> VENDING_MACHINE = BLOCKS.registerBlock("vending_machine",
-            VendingMachineBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 1200.0F));
+            VendingMachineBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 1200.0F).noOcclusion());
+
+    public static final DeferredBlock<GachaMachineBlock> GACHA_MACHINE = BLOCKS.registerBlock("gacha_machine",
+            GachaMachineBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 1200.0F));
+
+    // ───────── 편의 ─────────
+    public static final DeferredBlock<GraveBlock> GRAVE = BLOCKS.registerBlock("grave",
+            GraveBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).strength(2.0F, 3600000.0F).noOcclusion().noLootTable());
 
     private ModBlocks() {}
 }

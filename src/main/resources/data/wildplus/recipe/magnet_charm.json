@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "I I",
+    "R R",
+    "MIM"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone",
+    "M": "wildplus:mythril_ingot"
+  },
+  "result": {
+    "id": "wildplus:magnet_charm",
+    "count": 1
+  }
+}
