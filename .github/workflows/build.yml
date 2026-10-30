@@ -195,11 +195,14 @@ jobs:
             sleep 2
             echo "say TEST vending"; sleep 1
             run "data get block 0 121 3"
-            # 2칸 자판기: 위 칸 자동 생성 → 위 칸을 부수면 아래 칸도 함께 부서지고 자판기 1개만 떨어짐
+            # 2칸 자판기: 위 칸 자동 생성 / 위 칸만 없어지면 다시 채움 / 아래 칸을 부수면 위 칸도 사라지고 자판기 1개만 떨어짐
             run "execute if block 0 122 3 wildplus:vending_machine[half=upper] run say TALL_OK"
-            run "setblock 0 122 3 minecraft:air destroy"
+            run "setblock 0 122 3 minecraft:air"
+            sleep 2
+            run "execute if block 0 122 3 wildplus:vending_machine[half=upper] if block 0 121 3 wildplus:vending_machine run say TALL_HEAL_OK"
+            run "setblock 0 121 3 minecraft:air destroy"
             sleep 1
-            run "execute if block 0 121 3 minecraft:air run say PAIR_BREAK_OK"
+            run "execute if block 0 122 3 minecraft:air run say PAIR_BREAK_OK"
             run "execute as @e[type=minecraft:item,x=0,y=121,z=3,distance=..4] run data get entity @s Item"
             run "kill @e[type=minecraft:item]"
             for k in $(seq 1 30); do echo "loot spawn 0 125 0 loot wildplus:gameplay/gacha"; sleep 0.15; done

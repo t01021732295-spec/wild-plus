@@ -72,28 +72,30 @@ public class VendingMachineBlock extends BaseEntityBlock {
         }
     }
 
-    /** 한쪽 칸이 사라지면 다른 칸도 사라진다 (문과 같은 방식) */
+    /**
+     * 아래 칸이 사라지면 위 칸도 사라진다.
+     * 아래 칸(상품·수익이 든 본체)은 위 칸이 피스톤 등으로 없어져도 그대로 남고, 위 칸은 곧 다시 채워진다
+     * → 남의 자판기나 야생 자판기를 피스톤으로 부숴 털어 갈 수 없음.
+     */
     @Override
     protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess ticks, BlockPos pos, Direction dir,
                                      BlockPos neighborPos, BlockState neighborState, RandomSource random) {
-        DoubleBlockHalf half = state.getValue(HALF);
-        if (dir.getAxis() == Direction.Axis.Y && (half == DoubleBlockHalf.LOWER) == (dir == Direction.UP)) {
-            return neighborState.is(this) && neighborState.getValue(HALF) != half
+        if (state.getValue(HALF) == DoubleBlockHalf.UPPER && dir == Direction.DOWN) {
+            return neighborState.is(this) && neighborState.getValue(HALF) == DoubleBlockHalf.LOWER
                     ? state.setValue(FACING, neighborState.getValue(FACING))
                     : Blocks.AIR.defaultBlockState();
         }
         return super.updateShape(state, level, ticks, pos, dir, neighborPos, neighborState, random);
     }
 
-    /** 창조 모드에서 위 칸을 부수면 아래 칸이 아이템을 떨어뜨리지 않게 */
+    /** 위 칸을 부수면 아래 칸(본체)도 함께 부순다. 서바이벌이면 자판기 아이템·상품·수익이 떨어짐 */
     @Override
     public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-        if (!level.isClientSide() && player.isCreative() && state.getValue(HALF) == DoubleBlockHalf.UPPER) {
+        if (!level.isClientSide() && state.getValue(HALF) == DoubleBlockHalf.UPPER) {
             BlockPos below = pos.below();
             BlockState lower = level.getBlockState(below);
             if (lower.is(this) && lower.getValue(HALF) == DoubleBlockHalf.LOWER) {
-                level.setBlock(below, Blocks.AIR.defaultBlockState(), Block.UPDATE_ALL | Block.UPDATE_SUPPRESS_DROPS);
-                level.levelEvent(player, 2001, below, Block.getId(lower));
+                level.destroyBlock(below, !player.isCreative(), player);
             }
         }
         return super.playerWillDestroy(level, pos, state, player);

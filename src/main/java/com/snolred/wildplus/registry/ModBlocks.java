@@ -45,8 +45,7 @@ public final class ModBlocks {
 
     // ───────── 거래 ─────────
     public static final DeferredBlock<VendingMachineBlock> VENDING_MACHINE = BLOCKS.registerBlock("vending_machine",
-            VendingMachineBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 1200.0F).noOcclusion()
-                    .pushReaction(net.minecraft.world.level.material.PushReaction.BLOCK));
+            VendingMachineBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 1200.0F).noOcclusion());
 
     public static final DeferredBlock<GachaMachineBlock> GACHA_MACHINE = BLOCKS.registerBlock("gacha_machine",
             GachaMachineBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 1200.0F));
