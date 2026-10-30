@@ -290,6 +290,7 @@ jobs:
             xdotool key F1 || true
             sleep 1
             # ── 3차: 상인 거래창 · 자판기 구매 · 구조물 ──
+            cmd "/effect give @s minecraft:resistance 900 255 true"
             cmd "/gamemode creative"
             cmd "/clear @s"
             cmd "/give @s wildplus:silver_coin 5"
