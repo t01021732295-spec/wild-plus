@@ -28,5 +28,8 @@ public final class ModMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.ExchangeMenu>> EXCHANGE =
             MENUS.register("exchange", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.ExchangeMenu::new));
 
+    public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.EnhanceMenu>> ENHANCE =
+            MENUS.register("enhance", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.EnhanceMenu::new));
+
     private ModMenus() {}
 }

@@ -26,5 +26,9 @@ public final class ModBlockEntities {
             BLOCK_ENTITIES.register("shipping_bin", () -> new BlockEntityType<>(com.snolred.wildplus.block.ShippingBinBlockEntity::new,
                     ModBlocks.SHIPPING_BIN.get()));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.ChunkLoaderBlockEntity>> CHUNK_LOADER =
+            BLOCK_ENTITIES.register("chunk_loader", () -> new BlockEntityType<>(com.snolred.wildplus.block.ChunkLoaderBlockEntity::new,
+                    ModBlocks.CHUNK_LOADER.get()));
+
     private ModBlockEntities() {}
 }

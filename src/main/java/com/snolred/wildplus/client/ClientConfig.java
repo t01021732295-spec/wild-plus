@@ -16,6 +16,11 @@ public final class ClientConfig {
             .translation("wildplus.configuration.hudCoords")
             .define("hudCoords", true);
 
+    public static final ModConfigSpec.BooleanValue HEALTH_BARS = BUILDER
+            .comment("몬스터 머리 위에 체력바 표시")
+            .translation("wildplus.configuration.healthBars")
+            .define("healthBars", true);
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 
     private ClientConfig() {}

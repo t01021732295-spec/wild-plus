@@ -131,9 +131,15 @@ public class StockMenu extends AbstractContainerMenu {
             h[1] -= basis;
             h[0] -= n;
             wd.setDirty();
+            long profit = gain - basis;
+            long tax = 0;
+            if (profit > 0) {
+                tax = profit - com.snolred.wildplus.economy.Tax.collect(sp.level().getServer(), sp.getUUID(), profit);
+                gain -= tax;
+                profit -= tax;
+            }
             Coins.refund(sp, gain);
             sp.level().playSound(null, sp.blockPosition(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.5F, 0.8F);
-            long profit = gain - basis;
             sp.sendOverlayMessage(Component.translatable("message.wildplus.stock.sold", stock.name(), n, gain,
                     (profit >= 0 ? "+" : "") + profit).withStyle(profit >= 0 ? ChatFormatting.RED : ChatFormatting.BLUE));
         }

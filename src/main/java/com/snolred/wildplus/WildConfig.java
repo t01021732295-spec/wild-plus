@@ -70,6 +70,11 @@ public final class WildConfig {
             .translation("wildplus.configuration.gachaPrice")
             .defineInRange("gachaPrice", 10, 1, 10000);
 
+    public static final ModConfigSpec.BooleanValue TAX_ENABLED = BUILDER
+            .comment("소득세 (하루 소득 누진 5%~30%)")
+            .translation("wildplus.configuration.taxEnabled")
+            .define("taxEnabled", true);
+
     static {
         BUILDER.pop();
     }

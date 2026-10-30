@@ -93,10 +93,11 @@ public class ShippingBinBlockEntity extends BlockEntity {
         remainderCenti = centi % 100;
         setChanged();
         if (sold == 0 || owner == null) return;
-        WildData.get(server.getServer()).addBalance(owner, coins);
+        long net = com.snolred.wildplus.economy.Tax.collect(server.getServer(), owner, coins);
+        WildData.get(server.getServer()).addBalance(owner, net);
         ServerPlayer p = server.getServer().getPlayerList().getPlayer(owner);
         if (p != null) {
-            p.sendSystemMessage(Component.translatable("message.wildplus.shipping.sold", sold, coins).withStyle(ChatFormatting.GOLD));
+            p.sendSystemMessage(Component.translatable("message.wildplus.shipping.sold", sold, coins, coins - net, net).withStyle(ChatFormatting.GOLD));
         }
     }
 

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "wildplus:block/weather_station_front",
+    "side": "minecraft:block/cut_copper",
+    "top": "minecraft:block/daylight_detector_top"
+  }
+}

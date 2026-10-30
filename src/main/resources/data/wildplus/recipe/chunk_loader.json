@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:gold_coin",
+    "minecraft:ender_pearl",
+    "minecraft:obsidian"
+  ],
+  "result": {
+    "id": "wildplus:chunk_loader",
+    "count": 1
+  }
+}

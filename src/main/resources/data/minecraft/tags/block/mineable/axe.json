@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "wildplus:bounty_board",
-    "wildplus:shipping_bin"
+    "wildplus:shipping_bin",
+    "wildplus:enhance_table"
   ]
 }

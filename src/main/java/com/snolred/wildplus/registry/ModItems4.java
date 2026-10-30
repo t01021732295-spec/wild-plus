@@ -82,6 +82,12 @@ public final class ModItems4 {
             p -> new BackpackItem(p, 2), p -> p.stacksTo(1).rarity(Rarity.RARE));
     public static final DeferredItem<LotteryTicketItem> LOTTERY_TICKET = ITEMS.registerItem("lottery_ticket", LotteryTicketItem::new);
 
+    // ───────── 6차 ─────────
+    public static final DeferredItem<BlockItem> CHUNK_LOADER = ITEMS.registerSimpleBlockItem("chunk_loader", ModBlocks.CHUNK_LOADER);
+    public static final DeferredItem<BlockItem> ENHANCE_TABLE = ITEMS.registerSimpleBlockItem("enhance_table", ModBlocks.ENHANCE_TABLE);
+    public static final DeferredItem<BlockItem> PHARMACY = ITEMS.registerSimpleBlockItem("pharmacy", ModBlocks.PHARMACY);
+    public static final DeferredItem<BlockItem> WEATHER_STATION = ITEMS.registerSimpleBlockItem("weather_station", ModBlocks.WEATHER_STATION);
+
     public static void init() {}
 
     private ModItems4() {}

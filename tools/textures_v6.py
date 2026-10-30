@@ -127,7 +127,52 @@ CRATE_TOP = [
 CRATE_PAL = {**SP, "M": "#9a9aa2", "k": "#111111", "G": "#8a6a10", "Y": "#f2c230"}
 
 
+PHARMACY = [
+    "QQQQQQQQQQQQQQQQ",
+    "QqqqqqGGqqqqqqqQ",
+    "QqqqqqGGqqqqqqqQ",
+    "QqqqGGGGGGqqqqqQ",
+    "QqqqGGGGGGqqqqqQ",
+    "QqqqqqGGqqqqqqqQ",
+    "QqqqqqGGqqqqqqqQ",
+    "QkkkkkkkkkkkkkkQ",
+    "QkwRwkwBwkwYwkkQ",
+    "QkRRRkBBBkYYYkkQ",
+    "QkRRRkBBBkYYYkkQ",
+    "QsssssssssssssssQ"[:16],
+    "QkwPwkwGwkwOwkkQ",
+    "QkPPPkGGGkOOOkkQ",
+    "QsssssssssssssQQ"[:16],
+    "QQQQQQQQQQQQQQQQ",
+]
+PHARMACY_PAL = {"Q": "#cfc8bc", "q": "#ece6dc", "G": "#2fa84a", "k": "#3a3a3e", "s": "#8a8a90", "w": "#e8f4ff",
+                "R": "#d83a3a", "B": "#3a6ad8", "Y": "#e8c82a", "P": "#b04ad8", "O": "#e8862a"}
+
+WEATHER = [
+    "CCCCCCCCCCCCCCCC",
+    "CcccccccccccccdC",
+    "CcYYcccccwwwccdC",
+    "CcYYccccwwwwwcdC",
+    "Ccccccccccccccdc"[:16],
+    "CcccckkkkkkccccC",
+    "CccckWWWWWWkcccC",
+    "CcckWWWWWWWWkccC",
+    "CcckWWWWNWWWkccC",
+    "CcckWWWNWWWWkccC",
+    "CcckWWNWWWWWkccC",
+    "CccckWWWWWWkcccC",
+    "CcccckkkkkkccccC",
+    "CcccccccccccccdC",
+    "CddddddddddddddC",
+    "CCCCCCCCCCCCCCCC",
+]
+WEATHER_PAL = {"C": "#8a4a2e", "c": "#c8704a", "d": "#a3553a", "Y": "#f8d040", "w": "#eef4f8", "k": "#3a2a20",
+               "W": "#f4f0e4", "N": "#c82a2a"}
+
+
 def build():
+    save(render(PHARMACY, PHARMACY_PAL), "block/pharmacy_front.png")
+    save(render(WEATHER, WEATHER_PAL), "block/weather_station_front.png")
     for tier, (light, dark) in TRIM.items():
         pal = {**LEATHER, "B": light, "b": dark}
         rows = [r.replace("L", "L") for r in BACKPACK]

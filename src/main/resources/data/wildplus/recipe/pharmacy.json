@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PNP",
+    "QBQ",
+    "QSQ"
+  ],
+  "key": {
+    "P": "minecraft:glass_pane",
+    "N": "minecraft:nether_wart",
+    "Q": "minecraft:quartz_block",
+    "B": "minecraft:brewing_stand",
+    "S": "wildplus:silver_coin"
+  },
+  "result": {
+    "id": "wildplus:pharmacy",
+    "count": 1
+  }
+}

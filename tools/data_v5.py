@@ -1,7 +1,6 @@
 """5차 데이터: 비취·미스릴 장비, 워프·텔레포트기·배낭, 경제(주식·은행·의뢰·출하·복권), 인챈트 상향."""
 from data_v2 import ASSETS, DATA, MC, i, merge_tag, write
 from data_v2 import shaped, shapeless
-import data_v5_enchant
 
 TOOLS = ["sword", "pickaxe", "axe", "shovel", "hoe"]
 ARMOR = ["helmet", "chestplate", "leggings", "boots"]
@@ -239,4 +238,3 @@ def build(lang_ko, lang_en):
     recipes()
     loot()
     tags()
-    data_v5_enchant.build()

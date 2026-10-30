@@ -133,9 +133,10 @@ public class BountyMenu extends AbstractContainerMenu {
             }
         }
         wd.markBountyDone(sp.getUUID(), day, id);
-        Coins.refund(sp, b.reward());
+        long net = com.snolred.wildplus.economy.Tax.collect(sp.level().getServer(), sp.getUUID(), b.reward());
+        Coins.refund(sp, net);
         sp.level().playSound(null, sp.blockPosition(), SoundEvents.VILLAGER_YES, SoundSource.PLAYERS, 0.7F, 1.0F);
-        sp.sendSystemMessage(Component.translatable("message.wildplus.bounty.done", b.stack().getHoverName(), b.stack().getCount(), b.reward())
+        sp.sendSystemMessage(Component.translatable("message.wildplus.bounty.done", b.stack().getHoverName(), b.stack().getCount(), net)
                 .withStyle(ChatFormatting.GOLD));
         return true;
     }

@@ -41,8 +41,9 @@ public class LotteryTicketItem extends Item {
                 sp.sendOverlayMessage(Component.translatable("message.wildplus.lottery.lose").withStyle(ChatFormatting.GRAY));
                 level.playSound(null, sp.blockPosition(), SoundEvents.VILLAGER_NO, SoundSource.PLAYERS, 0.6F, 1.0F);
             } else {
-                Coins.refund(sp, prize);
-                sp.sendOverlayMessage(Component.translatable("message.wildplus.lottery.win", prize).withStyle(ChatFormatting.GOLD));
+                long net = com.snolred.wildplus.economy.Tax.collect(sp.level().getServer(), sp.getUUID(), prize);
+                Coins.refund(sp, net);
+                sp.sendOverlayMessage(Component.translatable("message.wildplus.lottery.win", prize, prize - net).withStyle(ChatFormatting.GOLD));
                 level.playSound(null, sp.blockPosition(), prize >= 500 ? SoundEvents.UI_TOAST_CHALLENGE_COMPLETE : SoundEvents.PLAYER_LEVELUP,
                         SoundSource.PLAYERS, 0.8F, 1.2F);
                 if (prize >= 500) {

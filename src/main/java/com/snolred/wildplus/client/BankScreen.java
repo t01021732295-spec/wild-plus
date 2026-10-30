@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 /** 은행 ATM 화면: 잔액 표시창 + 입금 · 출금 · 송금 버튼 */
 public class BankScreen extends AbstractContainerScreen<BankMenu> {
-    private static final int W = 220, H = 196;
+    private static final int W = 220, H = 216;
     private Button sendButton;
 
     public BankScreen(BankMenu menu, Inventory inv, Component title) {
@@ -70,6 +70,10 @@ public class BankScreen extends AbstractContainerScreen<BankMenu> {
         String who = menu.names.isEmpty() ? "접속한 사람 없음" : menu.names.get(Math.min(menu.target(), menu.names.size() - 1));
         g.text(this.font, Component.literal(who), 30, 144, 0xFFFFFFFF, true);
         g.text(this.font, Component.literal(String.format("%,d동", menu.amount())), 134, 144, UiKit.TEXT, false);
+        long inc = menu.incomeToday();
+        g.text(this.font, Component.literal(String.format("오늘 소득 %,d동 · 낸 세금 %,d동", inc, menu.taxToday())), 8, 184, 0xFF7A2A2A, false);
+        g.text(this.font, Component.literal(String.format("지금 세율 %d%% · 국고 %,d동", com.snolred.wildplus.economy.Tax.currentRate(inc),
+                menu.treasury())), 8, 196, 0xFF505050, false);
     }
 
     @Override

@@ -61,6 +61,9 @@ public final class MerchantTrades {
             sell(o, com.snolred.wildplus.registry.ModItems4.COPPER_BACKPACK.get(), 1, 60, 4);
             sell(o, com.snolred.wildplus.registry.ModItems4.SHIPPING_BIN.get(), 1, 20, 4);
             sell(o, com.snolred.wildplus.registry.ModItems4.EXCHANGE.get(), 1, 50, 4);
+            sell(o, com.snolred.wildplus.registry.ModItems4.CHUNK_LOADER.get(), 1, 100, 8);
+            sell(o, com.snolred.wildplus.registry.ModItems4.PHARMACY.get(), 1, 150, 2);
+            sell(o, com.snolred.wildplus.registry.ModItems4.WEATHER_STATION.get(), 1, 300, 2);
             sellStack(o, com.snolred.wildplus.economy.Cookbook.create(), 5);
             sellStack(o, com.snolred.wildplus.economy.Guidebook.create(), 5);
             sell(o, ModItems.LUCKY_CHARM.get(), 1, 500, 1);
@@ -87,6 +90,7 @@ public final class MerchantTrades {
             sell(o, ModItems.BLOODSTEEL_SWORD.get(), 1, 150);
             sell(o, ModItems.BLOODSTEEL_CHESTPLATE.get(), 1, 200);
             sell(o, Items.ANVIL, 1, 40);
+            sell(o, com.snolred.wildplus.registry.ModItems4.ENHANCE_TABLE.get(), 1, 250, 2);
             sell(o, Items.EXPERIENCE_BOTTLE, 4, 30);
         }
         return o;

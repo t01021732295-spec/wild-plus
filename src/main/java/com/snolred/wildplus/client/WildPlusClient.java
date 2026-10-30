@@ -36,6 +36,30 @@ public class WildPlusClient {
         event.register(com.snolred.wildplus.registry.ModMenus.BANK.get(), BankScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.BOUNTY.get(), BountyScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.EXCHANGE.get(), ExchangeScreen::new);
+        event.register(com.snolred.wildplus.registry.ModMenus.ENHANCE.get(), EnhanceScreen::new);
+    }
+
+    /** 몬스터(또는 다친 생물) 머리 위 이름표 자리에 체력바를 그린다 */
+    @SubscribeEvent
+    static void onNameTag(net.neoforged.neoforge.client.event.RenderNameTagEvent.CanRender event) {
+        if (!ClientConfig.HEALTH_BARS.getAsBoolean()) return;
+        if (!(event.getEntity() instanceof net.minecraft.world.entity.LivingEntity le)
+                || le instanceof net.minecraft.world.entity.player.Player
+                || le instanceof net.minecraft.world.entity.decoration.ArmorStand || !le.isAlive()) return;
+        float hp = le.getHealth(), max = le.getMaxHealth();
+        boolean hostile = le instanceof net.minecraft.world.entity.monster.Enemy;
+        if (!hostile && hp >= max) return;
+        net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+        if (mc.player == null || mc.player.distanceToSqr(le) > 24 * 24) return;
+        int filled = Math.max(0, Math.min(10, Math.round(10 * hp / Math.max(1.0F, max))));
+        ChatFormatting color = hp > max * 0.5F ? ChatFormatting.GREEN : hp > max * 0.25F ? ChatFormatting.YELLOW : ChatFormatting.RED;
+        net.minecraft.network.chat.MutableComponent c = Component.empty();
+        if (le.hasCustomName() && le.getCustomName() != null) c.append(le.getCustomName()).append(" ");
+        c.append(Component.literal("■".repeat(filled)).withStyle(color));
+        c.append(Component.literal("■".repeat(10 - filled)).withStyle(ChatFormatting.DARK_GRAY));
+        c.append(Component.literal(String.format(" %.0f/%.0f", Math.ceil(hp), max)).withStyle(ChatFormatting.WHITE));
+        event.setContent(c);
+        event.setCanRender(net.neoforged.neoforge.common.util.TriState.TRUE);
     }
 
     @SubscribeEvent

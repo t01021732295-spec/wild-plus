@@ -73,5 +73,19 @@ public final class ModBlocks {
     public static final DeferredBlock<com.snolred.wildplus.block.ShippingBinBlock> SHIPPING_BIN = BLOCKS.registerBlock("shipping_bin",
             com.snolred.wildplus.block.ShippingBinBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL));
 
+    // ───────── 6차 ─────────
+    public static final DeferredBlock<com.snolred.wildplus.block.ChunkLoaderBlock> CHUNK_LOADER = BLOCKS.registerBlock("chunk_loader",
+            com.snolred.wildplus.block.ChunkLoaderBlock::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.LODESTONE).strength(3.5F, 1200.0F).lightLevel(s -> 7));
+    public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> ENHANCE_TABLE = BLOCKS.registerBlock("enhance_table",
+            p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.menu.EnhanceMenu::open),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SMITHING_TABLE).lightLevel(s -> 4));
+    public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> PHARMACY = BLOCKS.registerBlock("pharmacy",
+            p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.economy.Services::openPharmacy),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BLOCK));
+    public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> WEATHER_STATION = BLOCKS.registerBlock("weather_station",
+            p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.economy.Services::openWeather),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK));
+
     private ModBlocks() {}
 }

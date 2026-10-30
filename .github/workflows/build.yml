@@ -243,6 +243,10 @@ jobs:
             run "setblock 388 120 -6 wildplus:bounty_board[facing=north]"
             run "setblock 390 120 -6 wildplus:exchange[facing=north]"
             run "setblock 392 120 -6 wildplus:shipping_bin"
+            run "setblock 394 120 -6 wildplus:enhance_table[facing=north]"
+            run "setblock 396 120 -6 wildplus:pharmacy[facing=north]"
+            run "setblock 398 120 -6 wildplus:weather_station[facing=north]"
+            run "setblock 400 120 -6 wildplus:chunk_loader"
             # 5차 서버 시험: 주식 시세, 출하 상자 아침 판매
             run "wildplus stocks refresh"
             sleep 15
@@ -253,6 +257,7 @@ jobs:
             echo "say TEST shipping"; sleep 1
             run "data get block 2 121 3 items"
             run "wildplus interest"
+            run "wildplus treasury"
             # 호퍼 자동 보충: 빵 5개 든 자판기 옆 호퍼(빵 10, 사과 3) → 빵 15 + 사과 3
             run "setblock 4 121 6 wildplus:vending_machine[facing=north]{item0:{id:\"minecraft:bread\",count:5}}"
             run "setblock 5 121 6 minecraft:hopper[facing=west]{Items:[{Slot:0b,id:\"minecraft:bread\",count:10},{Slot:1b,id:\"minecraft:apple\",count:3}]}"
@@ -459,12 +464,31 @@ jobs:
             xdotool key 1; sleep 0.5; xdotool click 3; sleep 2
             import -window root shot-backpack.png || true
             xdotool key Escape; sleep 1
-            cmd "/item replace entity @s weapon.mainhand with minecraft:diamond_sword"
-            cmd "/enchant @s minecraft:sharpness 7"
-            cmd "/enchant @s minecraft:looting 5"
+            # 강화대: 날카로움 V 검 → VI (200동)
+            cmd "/clear @s"
+            cmd "/give @s minecraft:diamond_sword[enchantments={sharpness:5}]"
+            cmd "/give @s wildplus:gold_coin 5"
+            cmd "/tp @s 394.5 120 -8.3 0 20"
+            sleep 2; xdotool key 1; sleep 0.5; xdotool click 3; sleep 2
+            xdotool mousemove 491 530; sleep 0.5; xdotool keydown shift; xdotool click 1; xdotool keyup shift; sleep 1
+            xdotool mousemove 817 210; sleep 0.5; xdotool click 1; sleep 1
+            xdotool mousemove 600 470; sleep 1
+            import -window root shot-enhance.png || true
+            xdotool key Escape; sleep 1
+            cmd "/tp @s 396.5 120 -8.3 0 20"
+            sleep 2; xdotool click 3; sleep 2
+            xdotool mousemove 639 240; sleep 0.5; xdotool click 1; sleep 1
+            import -window root shot-pharmacy.png || true
+            xdotool key Escape; sleep 1
+            cmd "/give @s wildplus:gold_coin 5"
+            cmd "/tp @s 398.5 120 -8.3 0 20"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-weather.png || true
+            xdotool key Escape; sleep 1
+            cmd "/setblock 400 120 -6 minecraft:air"
             sleep 1
             cmd "/clear @s"
-            for it in jade_sword jade_pickaxe jade_axe jade_shovel jade_hoe jade_helmet jade_chestplate jade_leggings jade_boots mythril_helmet mythril_chestplate mythril_leggings mythril_boots mythril_sword warp_point teleporter lottery_ticket copper_backpack silver_backpack gold_backpack stock_terminal atm bounty_board exchange shipping_bin; do
+            for it in jade_sword jade_pickaxe jade_axe jade_shovel jade_hoe jade_helmet jade_chestplate jade_leggings jade_boots mythril_helmet mythril_chestplate mythril_leggings mythril_boots mythril_sword warp_point teleporter lottery_ticket copper_backpack silver_backpack gold_backpack stock_terminal atm bounty_board exchange shipping_bin chunk_loader enhance_table pharmacy weather_station; do
               cmd "/give @s wildplus:$it"
             done
             cmd "/tp @s 386.5 121 -11 0 10"

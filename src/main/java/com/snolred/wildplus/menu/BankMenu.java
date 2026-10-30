@@ -30,7 +30,7 @@ public class BankMenu extends AbstractContainerMenu {
     public static final int DEP_ALL = 0, DEP_100 = 1, DEP_10 = 2;
     public static final int WD_10 = 10, WD_100 = 11, WD_1000 = 12, WD_ALL = 13;
     public static final int AMT_10 = 20, AMT_100 = 21, AMT_1000 = 22, AMT_RESET = 23, PREV = 24, NEXT = 25, SEND = 26;
-    public static final int D_BAL = 0, D_CASH = 2, D_AMT = 4, D_TARGET = 6, DATA = 7;
+    public static final int D_BAL = 0, D_CASH = 2, D_AMT = 4, D_TARGET = 6, D_INCOME = 7, D_TAX = 9, D_TREASURY = 11, DATA = 13;
 
     public final List<String> names;
     private final List<UUID> ids;
@@ -63,13 +63,18 @@ public class BankMenu extends AbstractContainerMenu {
         this.data = new ContainerData() {
             @Override
             public int get(int index) {
-                long v = switch (index / 2 * 2) {
-                    case D_BAL -> WildData.get(player.level().getServer()).balance(player.getUUID());
-                    case D_CASH -> Coins.totalValue(player);
-                    case D_AMT -> amount;
-                    default -> target;
-                };
-                return index == D_TARGET ? target : (int) (index % 2 == 1 ? Math.min(32767, v / 10000) : v % 10000);
+                if (index == D_TARGET) return target;
+                int base = index < D_TARGET ? index / 2 * 2 : D_INCOME + (index - D_INCOME) / 2 * 2;
+                boolean hi = (index - base) == 1;
+                net.minecraft.server.MinecraftServer server = player.level().getServer();
+                long v;
+                if (base == D_BAL) v = WildData.get(server).balance(player.getUUID());
+                else if (base == D_CASH) v = Coins.totalValue(player);
+                else if (base == D_AMT) v = amount;
+                else if (base == D_INCOME) v = com.snolred.wildplus.economy.Tax.today(server, player.getUUID())[0];
+                else if (base == D_TAX) v = com.snolred.wildplus.economy.Tax.today(server, player.getUUID())[1];
+                else v = WildData.get(server).treasury;
+                return (int) (hi ? Math.min(32767, v / 10000) : v % 10000);
             }
 
             @Override
@@ -107,6 +112,9 @@ public class BankMenu extends AbstractContainerMenu {
     public long cash() { return read(D_CASH); }
     public long amount() { return read(D_AMT); }
     public int target() { return data.get(D_TARGET); }
+    public long incomeToday() { return read(D_INCOME); }
+    public long taxToday() { return read(D_TAX); }
+    public long treasury() { return read(D_TREASURY); }
 
     @Override
     public boolean clickMenuButton(Player who, int id) {

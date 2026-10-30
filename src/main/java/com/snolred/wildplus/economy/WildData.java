@@ -91,6 +91,13 @@ public class WildData extends SavedData {
         setDirty();
     }
 
+    // ───────── 세금 · 청크로더 ─────────
+    /** 플레이어 → [날짜, 그날 소득, 그날 낸 세금] */
+    public final Map<UUID, long[]> taxes = new HashMap<>();
+    public long treasury;
+    /** "차원|청크x|청크z" → 그 청크에 놓인 청크로더 수 */
+    public final Map<String, Integer> chunkLoaders = new HashMap<>();
+
     // ───────── 저장 ─────────
     private CompoundTag encode() {
         CompoundTag root = new CompoundTag();
@@ -129,6 +136,13 @@ public class WildData extends SavedData {
         CompoundTag bountyTag = new CompoundTag();
         bounties.forEach((k, v) -> bountyTag.putLongArray(k.toString(), v.clone()));
         root.put("bounties", bountyTag);
+        CompoundTag taxTag = new CompoundTag();
+        taxes.forEach((k, v) -> taxTag.putLongArray(k.toString(), v.clone()));
+        root.put("taxes", taxTag);
+        root.putLong("treasury", treasury);
+        CompoundTag loaders = new CompoundTag();
+        chunkLoaders.forEach((k, v) -> { if (v > 0) loaders.putInt(k, v); });
+        root.put("chunk_loaders", loaders);
         return root;
     }
 
@@ -178,6 +192,15 @@ public class WildData extends SavedData {
                 if (arr.length >= 2) d.bounties.put(u, new long[]{arr[0], arr[1]});
             }));
         }
+        CompoundTag taxTag = root.getCompoundOrEmpty("taxes");
+        for (String k : taxTag.keySet()) {
+            parse(k).ifPresent(u -> taxTag.getLongArray(k).ifPresent(arr -> {
+                if (arr.length >= 3) d.taxes.put(u, new long[]{arr[0], arr[1], arr[2]});
+            }));
+        }
+        d.treasury = root.getLongOr("treasury", 0L);
+        CompoundTag loaders = root.getCompoundOrEmpty("chunk_loaders");
+        for (String k : loaders.keySet()) d.chunkLoaders.put(k, loaders.getIntOr(k, 0));
         return d;
     }
 

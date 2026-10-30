@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "LGL",
+    "ISI"
+  ],
+  "key": {
+    "L": "minecraft:lapis_lazuli",
+    "G": "wildplus:gold_coin",
+    "I": "minecraft:iron_ingot",
+    "S": "minecraft:smithing_table"
+  },
+  "result": {
+    "id": "wildplus:enhance_table",
+    "count": 1
+  }
+}

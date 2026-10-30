@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "CDC",
+    "CSC",
+    "CCC"
+  ],
+  "key": {
+    "C": "minecraft:copper_ingot",
+    "D": "minecraft:daylight_detector",
+    "S": "wildplus:gold_coin"
+  },
+  "result": {
+    "id": "wildplus:weather_station",
+    "count": 1
+  }
+}
