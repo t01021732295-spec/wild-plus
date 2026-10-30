@@ -91,7 +91,7 @@ def enchant():
         "max_cost": {"base": 50, "per_level_above_first": 10},
         "max_level": 4,
         "min_cost": {"base": 10, "per_level_above_first": 10},
-        "primary_items": "#minecraft:enchantable/sword",
+        "primary_items": "#minecraft:enchantable/melee_weapon",
         "slots": ["mainhand"],
         "supported_items": "#minecraft:enchantable/sharp_weapon",
         "weight": 3,
