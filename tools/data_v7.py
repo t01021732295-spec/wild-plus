@@ -38,6 +38,7 @@ LANG_KO = {
     "commands.wildplus.warp_renamed": "워프 이름을 [%s] (으)로 바꿨어요",
     "commands.wildplus.warp_rename_fail": "내 워프 포인트 창을 연 뒤에 바꿀 수 있어요",
     "hud.wildplus.money": "소지금 %s동",
+    "structure.wildplus.town": "상점 마을",
 }
 for a in ("helmet", "chestplate", "leggings", "boots"):
     LANG_KO[f"tooltip.wildplus.mythril_{a}"] = SET_MYTH
@@ -99,7 +100,30 @@ def enchant():
         merge_tag(MC / f"tags/enchantment/{tag}.json", [i("armor_piercing")])
 
 
+TOWN_BIOMES = ["minecraft:plains", "minecraft:sunflower_plains", "minecraft:meadow", "minecraft:savanna",
+               "minecraft:snowy_plains", "minecraft:desert", "minecraft:cherry_grove"]
+
+
+def town():
+    import structures_v4
+    print("town", structures_v4.town())
+    write(DATA / "tags/worldgen/biome/has_structure/town.json", {"values": TOWN_BIOMES})
+    write(DATA / "worldgen/structure/town.json", {
+        "type": "minecraft:jigsaw", "biomes": "#wildplus:has_structure/town", "max_distance_from_center": 80,
+        "project_start_to_heightmap": "WORLD_SURFACE_WG", "size": 1, "spawn_overrides": {},
+        "start_height": {"absolute": 0}, "start_pool": i("town"), "step": "surface_structures",
+        "terrain_adaptation": "beard_box", "use_expansion_hack": False})
+    write(DATA / "worldgen/template_pool/town.json", {
+        "elements": [{"element": {"element_type": "minecraft:single_pool_element", "location": i("town"),
+                                  "processors": {"processors": []}, "projection": "rigid"}, "weight": 1}],
+        "fallback": "minecraft:empty"})
+    write(DATA / "worldgen/structure_set/towns.json", {
+        "placement": {"type": "minecraft:random_spread", "salt": 190341277, "separation": 20, "spacing": 48},
+        "structures": [{"structure": i("town"), "weight": 1}]})
+
+
 def build(lang_ko, lang_en):
     write(ASSETS / "lang/ko_kr.json", {**lang_ko, **LANG_KO})
     write(ASSETS / "lang/en_us.json", {**lang_en, **LANG_EN})
     enchant()
+    town()

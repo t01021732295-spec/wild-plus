@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 190341277,
+    "separation": 20,
+    "spacing": 48
+  },
+  "structures": [
+    {
+      "structure": "wildplus:town",
+      "weight": 1
+    }
+  ]
+}

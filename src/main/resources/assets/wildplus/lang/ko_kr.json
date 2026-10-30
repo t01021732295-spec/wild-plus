@@ -291,5 +291,6 @@
   "commands.wildplus.cookbook": "요리책을 받았어요",
   "commands.wildplus.warp_renamed": "워프 이름을 [%s] (으)로 바꿨어요",
   "commands.wildplus.warp_rename_fail": "내 워프 포인트 창을 연 뒤에 바꿀 수 있어요",
-  "hud.wildplus.money": "소지금 %s동"
+  "hud.wildplus.money": "소지금 %s동",
+  "structure.wildplus.town": "상점 마을"
 }

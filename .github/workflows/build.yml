@@ -227,6 +227,15 @@ jobs:
             done
             run "place template wildplus:trading_post 400 120 0"
             run "place template wildplus:bandit_camp 416 120 0"
+            # 상점 마을 (x 436~487)
+            for z0 in -12 14; do
+              run "fill 436 119 $z0 487 119 $((z0+25)) minecraft:grass_block"
+              run "fill 436 120 $z0 487 127 $((z0+25)) minecraft:air"
+              run "fill 436 128 $z0 487 135 $((z0+25)) minecraft:air"
+            done
+            run "place template wildplus:town 438 120 -10"
+            run "place structure wildplus:town 900 70 600"
+            echo "say TEST town"; sleep 1
             run "summon wildplus:merchant 380.5 120 5.5 {NoAI:1b,Rotation:[180f,0f]}"
             run "summon wildplus:blacksmith_merchant 378.5 120 6.5 {NoAI:1b,Rotation:[160f,0f]}"
             run "summon wildplus:bandit 386.5 120 7.5 {NoAI:1b,PersistenceRequired:1b,Rotation:[200f,0f]}"
@@ -522,6 +531,18 @@ jobs:
             xdotool key F1 || true
             sleep 2
             import -window root shot-bandit-camp.png || true
+            xdotool key F1 || true
+            cmd "/tp @s 462 168 14 0 90"
+            sleep 15
+            xdotool key F1 || true
+            sleep 2
+            import -window root shot-town.png || true
+            xdotool key F1 || true
+            cmd "/tp @s 462 124 -13 0 18"
+            sleep 6
+            xdotool key F1 || true
+            sleep 2
+            import -window root shot-town-street.png || true
             xdotool key F1 || true
             sleep 1
             xdotool key e || true
