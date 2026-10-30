@@ -60,6 +60,7 @@ public final class MerchantTrades {
             sell(o, com.snolred.wildplus.registry.ModItems4.LOTTERY_TICKET.get(), 1, 30, 16);
             sell(o, com.snolred.wildplus.registry.ModItems4.COPPER_BACKPACK.get(), 1, 60, 4);
             sell(o, com.snolred.wildplus.registry.ModItems4.SHIPPING_BIN.get(), 1, 20, 4);
+            sell(o, com.snolred.wildplus.registry.ModItems4.EXCHANGE.get(), 1, 50, 4);
             sellStack(o, com.snolred.wildplus.economy.Cookbook.create(), 5);
             sell(o, ModItems.LUCKY_CHARM.get(), 1, 500, 1);
         } else {

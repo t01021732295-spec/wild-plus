@@ -72,6 +72,7 @@ public final class ModItems4 {
     public static final DeferredItem<BlockItem> STOCK_TERMINAL = ITEMS.registerSimpleBlockItem("stock_terminal", ModBlocks.STOCK_TERMINAL);
     public static final DeferredItem<BlockItem> ATM = ITEMS.registerSimpleBlockItem("atm", ModBlocks.ATM);
     public static final DeferredItem<BlockItem> BOUNTY_BOARD = ITEMS.registerSimpleBlockItem("bounty_board", ModBlocks.BOUNTY_BOARD);
+    public static final DeferredItem<BlockItem> EXCHANGE = ITEMS.registerSimpleBlockItem("exchange", ModBlocks.EXCHANGE);
     public static final DeferredItem<BlockItem> SHIPPING_BIN = ITEMS.registerSimpleBlockItem("shipping_bin", ModBlocks.SHIPPING_BIN);
     public static final DeferredItem<BackpackItem> COPPER_BACKPACK = ITEMS.registerItem("copper_backpack",
             p -> new BackpackItem(p, 0), p -> p.stacksTo(1));

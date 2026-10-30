@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "III",
+    "CSG",
+    "III"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "C": "wildplus:copper_coin",
+    "S": "wildplus:silver_coin",
+    "G": "wildplus:gold_coin"
+  },
+  "result": {
+    "id": "wildplus:exchange",
+    "count": 1
+  }
+}

@@ -9,7 +9,7 @@ KO_TOOL = {"sword": "검", "pickaxe": "곡괭이", "axe": "도끼", "shovel": "�
            "helmet": "투구", "chestplate": "흉갑", "leggings": "레깅스", "boots": "부츠"}
 EN_TOOL = {k: k.capitalize() for k in KO_TOOL}
 SIMPLE_ITEMS = ["teleporter", "lottery_ticket", "copper_backpack", "silver_backpack", "gold_backpack"]
-BLOCKS = ["warp_point", "stock_terminal", "atm", "bounty_board", "shipping_bin"]
+BLOCKS = ["warp_point", "stock_terminal", "atm", "bounty_board", "shipping_bin", "exchange"]
 
 LANG_KO = {
     "block.wildplus.warp_point": "워프 포인트",
@@ -17,6 +17,10 @@ LANG_KO = {
     "block.wildplus.atm": "은행 ATM",
     "block.wildplus.bounty_board": "의뢰 게시판",
     "block.wildplus.shipping_bin": "출하 상자",
+    "block.wildplus.exchange": "환전소",
+    "tooltip.wildplus.exchange": "동화 ↔ 은화 ↔ 금화를 양쪽으로 바꿔 줌 (수수료 없음)",
+    "container.wildplus.exchange": "환전소",
+    "message.wildplus.exchange.not_enough": "바꿀 동전이 부족해요",
     "item.wildplus.teleporter": "소형 텔레포트기",
     "item.wildplus.lottery_ticket": "즉석 복권",
     "item.wildplus.copper_backpack": "동 배낭",
@@ -74,6 +78,10 @@ LANG_EN = {
     "block.wildplus.atm": "Bank ATM",
     "block.wildplus.bounty_board": "Bounty Board",
     "block.wildplus.shipping_bin": "Shipping Bin",
+    "block.wildplus.exchange": "Currency Exchange",
+    "tooltip.wildplus.exchange": "Swap copper ↔ silver ↔ gold coins both ways (no fee)",
+    "container.wildplus.exchange": "Currency Exchange",
+    "message.wildplus.exchange.not_enough": "Not enough coins to exchange",
     "item.wildplus.teleporter": "Pocket Teleporter",
     "item.wildplus.lottery_ticket": "Scratch Ticket",
     "item.wildplus.copper_backpack": "Copper Backpack",
@@ -159,6 +167,7 @@ def assets():
     write(ASSETS / "blockstates/warp_point.json", {"variants": {"": {"model": i("block/warp_point")}}})
     for name, side, top in (("stock_terminal", "minecraft:block/iron_block", "minecraft:block/iron_block"),
                             ("atm", "minecraft:block/iron_block", "minecraft:block/iron_block"),
+                            ("exchange", "minecraft:block/iron_block", "minecraft:block/iron_block"),
                             ("bounty_board", "minecraft:block/spruce_planks", "minecraft:block/spruce_planks")):
         write(ASSETS / f"models/block/{name}.json", {"parent": "minecraft:block/orientable", "textures": {
             "front": i(f"block/{name}_front"), "side": side, "top": top}})
@@ -192,6 +201,8 @@ def recipes():
                                                        "S": i("silver_coin"), "R": "minecraft:redstone"}, i("stock_terminal"), category="misc")
     r["atm"] = shaped(["III", "GSG", "IRI"], {"G": "minecraft:glass_pane", "I": "minecraft:iron_ingot",
                                             "S": i("gold_coin"), "R": "minecraft:redstone"}, i("atm"), category="misc")
+    r["exchange"] = shaped(["III", "CSG", "III"], {"I": "minecraft:iron_ingot", "C": i("copper_coin"),
+                                                 "S": i("silver_coin"), "G": i("gold_coin")}, i("exchange"), category="misc")
     r["bounty_board"] = shaped(["SPS", "PPP", "SPS"], {"S": "minecraft:stick", "P": "minecraft:paper"}, i("bounty_board"), category="misc")
     r["shipping_bin"] = shapeless(["minecraft:chest", i("copper_coin")], i("shipping_bin"))
     r["copper_backpack"] = shaped(["LSL", "LHL", "LCL"], {"L": "minecraft:leather", "S": "minecraft:string",
@@ -210,7 +221,7 @@ def loot():
 def tags():
     t = MC / "tags"
     write(DATA / "tags/item/jade_repair.json", {"values": [i("jade")]})
-    merge_tag(t / "block/mineable/pickaxe.json", [i(b) for b in ("warp_point", "stock_terminal", "atm")])
+    merge_tag(t / "block/mineable/pickaxe.json", [i(b) for b in ("warp_point", "stock_terminal", "atm", "exchange")])
     merge_tag(t / "block/mineable/axe.json", [i(b) for b in ("bounty_board", "shipping_bin")])
     merge_tag(t / "item/swords.json", [i("jade_sword")])
     merge_tag(t / "item/pickaxes.json", [i("jade_pickaxe")])

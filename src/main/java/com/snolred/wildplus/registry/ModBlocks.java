@@ -67,6 +67,9 @@ public final class ModBlocks {
     public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> BOUNTY_BOARD = BLOCKS.registerBlock("bounty_board",
             p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.menu.BountyMenu::open),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).strength(2.0F, 3.0F));
+    public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> EXCHANGE = BLOCKS.registerBlock("exchange",
+            p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.menu.ExchangeMenu::open),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 1200.0F));
     public static final DeferredBlock<com.snolred.wildplus.block.ShippingBinBlock> SHIPPING_BIN = BLOCKS.registerBlock("shipping_bin",
             com.snolred.wildplus.block.ShippingBinBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL));
 

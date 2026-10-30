@@ -35,6 +35,7 @@ public class WildPlusClient {
         event.register(com.snolred.wildplus.registry.ModMenus.STOCKS.get(), StockScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.BANK.get(), BankScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.BOUNTY.get(), BountyScreen::new);
+        event.register(com.snolred.wildplus.registry.ModMenus.EXCHANGE.get(), ExchangeScreen::new);
     }
 
     @SubscribeEvent

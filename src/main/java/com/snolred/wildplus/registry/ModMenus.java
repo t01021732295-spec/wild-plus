@@ -25,5 +25,8 @@ public final class ModMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.BountyMenu>> BOUNTY =
             MENUS.register("bounty", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.BountyMenu::new));
 
+    public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.ExchangeMenu>> EXCHANGE =
+            MENUS.register("exchange", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.ExchangeMenu::new));
+
     private ModMenus() {}
 }

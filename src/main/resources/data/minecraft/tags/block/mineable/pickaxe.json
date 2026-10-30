@@ -13,6 +13,7 @@
     "wildplus:grave",
     "wildplus:warp_point",
     "wildplus:stock_terminal",
-    "wildplus:atm"
+    "wildplus:atm",
+    "wildplus:exchange"
   ]
 }

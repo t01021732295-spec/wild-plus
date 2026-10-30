@@ -124,6 +124,23 @@ def fronts(iron_path: Path):
     rect(im, 9, 12, 13, 12, "#d8b030")
     im.save(OUT / "block/atm_front.png")
 
+    # 환전소: 위 초록 간판 + 창구 안 동화·은화·금화 더미 + 화살표
+    im = Image.open(iron_path).convert("RGBA")
+    rect(im, 1, 1, 14, 4, "#1e5a2e")
+    rect(im, 2, 2, 13, 3, "#2f8a46")
+    for x in (3, 4, 6, 7, 9, 10, 12):
+        px(im, x, 2 + (x % 2), "#e8f8e0")
+    rect(im, 1, 6, 14, 13, "#2a2a2e")
+    rect(im, 2, 7, 13, 12, "#4a3a2a")
+    for (x0, c1, c2, h) in ((3, "#e8955a", "#a0522d", 3), (7, "#f0f0f6", "#9a9aa8", 4), (11, "#fff070", "#c89a10", 5)):
+        for k in range(h):
+            y = 12 - k
+            px(im, x0, y, c2)
+            px(im, x0 + 1, y, c1 if k % 2 == 0 else c2)
+    px(im, 5, 9, "#ffffff"); px(im, 9, 9, "#ffffff")
+    rect(im, 2, 14, 13, 14, "#6a6a72")
+    im.save(OUT / "block/exchange_front.png")
+
 
 def build(vanilla: Path):
     T = vanilla / "minecraft/textures"
