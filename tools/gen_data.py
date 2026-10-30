@@ -329,6 +329,9 @@ def main():
     import data_v6
     data_v6.build({**LANG_KO, **data_v2.LANG_KO, **data_v3.LANG_KO, **data_v4.LANG_KO, **data_v5.LANG_KO},
                   {**LANG_EN, **data_v2.LANG_EN, **data_v3.LANG_EN, **data_v4.LANG_EN, **data_v5.LANG_EN})
+    import data_v7
+    data_v7.build({**LANG_KO, **data_v2.LANG_KO, **data_v3.LANG_KO, **data_v4.LANG_KO, **data_v5.LANG_KO, **data_v6.LANG_KO},
+                  {**LANG_EN, **data_v2.LANG_EN, **data_v3.LANG_EN, **data_v4.LANG_EN, **data_v5.LANG_EN, **data_v6.LANG_EN})
     n = sum(1 for _ in RES.rglob("*.json"))
     print("ok", n, "json files")
 

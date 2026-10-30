@@ -464,6 +464,19 @@ jobs:
             xdotool key 1; sleep 0.5; xdotool click 3; sleep 2
             import -window root shot-backpack.png || true
             xdotool key Escape; sleep 1
+            # 미스릴 삽 3×3 파기 (아래를 보고 한 번)
+            cmd "/gamemode survival"
+            cmd "/clear @s"
+            cmd "/effect give @s minecraft:haste 60 20 true"
+            cmd "/fill 376 119 -10 378 119 -8 minecraft:dirt"
+            cmd "/item replace entity @s weapon.mainhand with wildplus:mythril_shovel"
+            cmd "/tp @s 377.5 120 -8.5 0 90"
+            sleep 2; xdotool mousedown 1; sleep 1.2; xdotool mouseup 1; sleep 2
+            cmd "/execute if block 376 119 -10 minecraft:air if block 378 119 -8 minecraft:air run say SHOVEL_OK"
+            cmd "/item replace entity @s weapon.mainhand with minecraft:diamond_sword"
+            cmd "/enchant @s wildplus:armor_piercing 4"
+            sleep 1
+            cmd "/gamemode creative"
             # 강화대: 날카로움 V 검 → VI (200동)
             cmd "/clear @s"
             cmd "/give @s minecraft:diamond_sword[enchantments={sharpness:5}]"

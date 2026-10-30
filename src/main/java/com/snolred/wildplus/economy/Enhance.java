@@ -25,7 +25,8 @@ public final class Enhance {
             Map.entry("soul_speed", 5), Map.entry("loyalty", 5),
             Map.entry("protection", 6), Map.entry("fire_protection", 6), Map.entry("blast_protection", 6),
             Map.entry("projectile_protection", 6), Map.entry("feather_falling", 6), Map.entry("piercing", 6), Map.entry("breach", 6),
-            Map.entry("fire_aspect", 3), Map.entry("punch", 3), Map.entry("knockback", 3));
+            Map.entry("fire_aspect", 3), Map.entry("punch", 3), Map.entry("knockback", 3),
+            Map.entry("armor_piercing", 6));
 
     public static final long BASE_COST = 200;
 
@@ -34,7 +35,10 @@ public final class Enhance {
     private Enhance() {}
 
     public static String path(Holder<Enchantment> h) {
-        return h.unwrapKey().map(k -> k.identifier().getNamespace().equals("minecraft") ? k.identifier().getPath() : "").orElse("");
+        return h.unwrapKey().map(k -> {
+            String ns = k.identifier().getNamespace();
+            return ns.equals("minecraft") || ns.equals("wildplus") ? k.identifier().getPath() : "";
+        }).orElse("");
     }
 
     /** 이 아이템에서 돈으로 올릴 수 있는 인챈트 목록 (이름순, 서버·화면이 같은 순서) */

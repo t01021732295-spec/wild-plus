@@ -79,7 +79,12 @@ public class WildPlusClient {
             }
         }
         if (key != null) {
-            event.getToolTip().add(1, Component.translatable("tooltip.wildplus." + key).withStyle(ChatFormatting.GRAY));
+            // 설명이 길면 줄을 나눠서 읽기 쉽게 ("\n" 또는 " · " 기준)
+            String text = Component.translatable("tooltip.wildplus." + key).getString();
+            String[] lines = text.contains("\n") ? text.split("\n") : text.split(" · ");
+            for (int i = lines.length - 1; i >= 0; i--) {
+                event.getToolTip().add(1, Component.literal(lines[i].trim()).withStyle(i == 0 ? ChatFormatting.GRAY : ChatFormatting.DARK_GRAY));
+            }
         }
         int ship = com.snolred.wildplus.economy.ShipPrices.centi(stack);
         if (ship > 0) {

@@ -50,6 +50,13 @@ public class ShippingBinBlock extends BaseEntityBlock {
         }
     }
 
+    /** 비공개 상자는 주인만 부술 수 있음 */
+    @Override
+    protected float getDestroyProgress(BlockState state, Player player, net.minecraft.world.level.BlockGetter level, BlockPos pos) {
+        if (level.getBlockEntity(pos) instanceof ShippingBinBlockEntity be && !be.isOwner(player) && !be.isPublic()) return 0.0F;
+        return super.getDestroyProgress(state, player, level, pos);
+    }
+
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
                                           InteractionHand hand, BlockHitResult hit) {
@@ -59,9 +66,22 @@ public class ShippingBinBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) {
         if (!level.isClientSide() && level.getBlockEntity(pos) instanceof ShippingBinBlockEntity be) {
+            boolean owner = be.isOwner(player);
+            if (owner && player.isSecondaryUseActive()) {
+                be.togglePublic();
+                player.sendOverlayMessage(Component.translatable(be.isPublic() ? "message.wildplus.shipping.public" : "message.wildplus.shipping.private")
+                        .withStyle(net.minecraft.ChatFormatting.AQUA));
+                return InteractionResult.SUCCESS;
+            }
+            if (!owner && !be.isPublic()) {
+                player.sendOverlayMessage(Component.translatable("message.wildplus.shipping.locked").withStyle(net.minecraft.ChatFormatting.RED));
+                return InteractionResult.SUCCESS;
+            }
             long pending = be.pendingCenti();
             player.openMenu(new SimpleMenuProvider((id, inv, p) -> ChestMenu.threeRows(id, inv, be.items()),
-                    Component.translatable("container.wildplus.shipping_bin", ShipPrices.fmt((int) Math.min(Integer.MAX_VALUE, pending)))));
+                    Component.translatable("container.wildplus.shipping_bin",
+                            Component.translatable(be.isPublic() ? "gui.wildplus.public" : "gui.wildplus.private"),
+                            ShipPrices.fmt((int) Math.min(Integer.MAX_VALUE, pending)))));
         }
         return InteractionResult.SUCCESS;
     }

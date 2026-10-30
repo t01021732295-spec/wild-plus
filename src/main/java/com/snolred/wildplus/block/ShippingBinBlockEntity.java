@@ -38,6 +38,20 @@ public class ShippingBinBlockEntity extends BlockEntity {
     private @Nullable UUID owner;
     private long lastDay = -1;
     private long remainderCenti;
+    private boolean isPublic;
+
+    public boolean isOwner(Player p) {
+        return owner == null || owner.equals(p.getUUID());
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void togglePublic() {
+        isPublic = !isPublic;
+        setChanged();
+    }
 
     public ShippingBinBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.SHIPPING_BIN.get(), pos, state);
@@ -108,6 +122,7 @@ public class ShippingBinBlockEntity extends BlockEntity {
         if (owner != null) out.store("owner", UUIDUtil.CODEC, owner);
         out.putLong("last_day", lastDay);
         out.putLong("remainder", remainderCenti);
+        out.putBoolean("public", isPublic);
     }
 
     @Override
@@ -118,6 +133,7 @@ public class ShippingBinBlockEntity extends BlockEntity {
         owner = in.read("owner", UUIDUtil.CODEC).orElse(null);
         lastDay = in.getLongOr("last_day", -1L);
         remainderCenti = in.getLongOr("remainder", 0L);
+        isPublic = in.getBooleanOr("public", false);
     }
 
     @Override

@@ -56,9 +56,9 @@ public class StockScreen extends AbstractContainerScreen<StockMenu> {
         g.text(this.font, Component.literal((live ? "● 실시간 시세 " : "● 가상 시세 (인터넷 연결 안 됨) ") + menu.updated),
                 110, 6, live ? 0xFF1E7A2E : 0xFFA05A00, false);
         g.text(this.font, Component.literal("종목"), 8, 22, 0xFF8899AA, false);
-        g.text(this.font, Component.literal("현재가(동)"), 78, 22, 0xFF8899AA, false);
-        g.text(this.font, Component.literal("등락"), 132, 22, 0xFF8899AA, false);
-        g.text(this.font, Component.literal("보유"), 172, 22, 0xFF8899AA, false);
+        right(g, "현재가(동)", 124, 22, 0xFF8899AA);
+        right(g, "등락", 168, 22, 0xFF8899AA);
+        right(g, "보유", 200, 22, 0xFF8899AA);
         long value = 0, basis = 0;
         for (int i = 0; i < StockMenu.N; i++) {
             int y = TOP + i * ROW + 4;
@@ -67,10 +67,10 @@ public class StockScreen extends AbstractContainerScreen<StockMenu> {
             basis += menu.cost(i);
             int color = price > prev ? UP : price < prev ? DOWN : FLAT;
             g.text(this.font, Component.literal(StockMarket.STOCKS.get(i).name()), 8, y, 0xFFFFFFFF, false);
-            g.text(this.font, Component.literal(StockMarket.fmt(price)), 78, y, color, false);
+            right(g, StockMarket.fmt(price), 124, y, color);
             double pct = prev > 0 ? (price - prev) * 100.0 / prev : 0;
-            g.text(this.font, Component.literal(String.format("%s%.2f%%", pct > 0 ? "▲" : pct < 0 ? "▼" : "", Math.abs(pct))), 132, y, color, false);
-            g.text(this.font, Component.literal(shares > 0 ? String.format("%,d주", shares) : "-"), 172, y, 0xFFDDDDDD, false);
+            right(g, String.format("%s%.2f%%", pct > 0 ? "▲" : pct < 0 ? "▼" : "", Math.abs(pct)), 168, y, color);
+            right(g, shares > 0 ? String.format("%,d주", shares) : "-", 200, y, 0xFFDDDDDD);
         }
         long profit = value - basis;
         int fy = TOP + StockMenu.N * ROW + 4;
@@ -78,6 +78,11 @@ public class StockScreen extends AbstractContainerScreen<StockMenu> {
         g.text(this.font, Component.literal(String.format("평가액 %,d동", value)), 110, fy, 0xFFFFFFFF, false);
         g.text(this.font, Component.literal(String.format("손익 %s%,d동", profit >= 0 ? "+" : "", profit)), 210, fy,
                 profit > 0 ? UP : profit < 0 ? DOWN : FLAT, false);
+    }
+
+    /** 숫자는 오른쪽 맞춤 */
+    private void right(GuiGraphicsExtractor g, String s, int xEnd, int y, int color) {
+        g.text(this.font, Component.literal(s), xEnd - this.font.width(s), y, color, false);
     }
 
     @Override

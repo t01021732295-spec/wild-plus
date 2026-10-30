@@ -12,13 +12,16 @@ import net.minecraft.world.entity.player.Inventory;
 
 /** 목록에서 하나를 고르는 화면 (워프 목적지, 텔레포트 대상). 한 쪽에 7개씩 넘겨 본다. */
 public class PickScreen extends AbstractContainerScreen<PickMenu> {
-    private static final int W = 240, H = 204, ROWS = 7;
+    private static final int W = 240, ROWS = 7;
+    private final int H;
+    private net.minecraft.client.gui.components.EditBox nameBox;
     private int page;
     private final List<Button> rows = new ArrayList<>();
     private Button prev, next;
 
     public PickScreen(PickMenu menu, Inventory inv, Component title) {
-        super(menu, inv, title, W, H);
+        super(menu, inv, title, W, (menu.flags & PickMenu.FLAG_CAN_TOGGLE) != 0 ? 236 : 204);
+        this.H = this.imageHeight;
     }
 
     @Override
@@ -38,8 +41,29 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
             boolean pub = (menu.flags & PickMenu.FLAG_PUBLIC) != 0;
             addRenderableWidget(Button.builder(Component.translatable(pub ? "gui.wildplus.warp.make_private" : "gui.wildplus.warp.make_public"),
                     b -> click(PickMenu.BTN_TOGGLE)).bounds(leftPos + W - 108, topPos + H - 24, 100, 18).build());
+            // 이름 바꾸기 (주인만): 입력칸 + 버튼 → 서버 명령어 /warpname 으로 보낸다
+            nameBox = addRenderableWidget(new net.minecraft.client.gui.components.EditBox(this.font, leftPos + 8, topPos + H - 48, W - 100, 18,
+                    Component.translatable("gui.wildplus.warp.rename")));
+            nameBox.setMaxLength(32);
+            nameBox.setHint(Component.translatable("gui.wildplus.warp.rename_hint"));
+            addRenderableWidget(Button.builder(Component.translatable("gui.wildplus.warp.rename"), b -> {
+                String name = nameBox.getValue().trim();
+                if (!name.isEmpty() && this.minecraft != null && this.minecraft.player != null) {
+                    this.minecraft.player.connection.sendCommand("warpname " + name);
+                }
+            }).bounds(leftPos + W - 88, topPos + H - 48, 80, 18).build());
         }
         refresh();
+    }
+
+    @Override
+    public boolean keyPressed(net.minecraft.client.input.KeyEvent event) {
+        // 이름 입력 중에는 E 키 등으로 창이 닫히지 않게
+        if (nameBox != null && nameBox.isFocused() && !event.isEscape()) {
+            nameBox.keyPressed(event);
+            return true;
+        }
+        return super.keyPressed(event);
     }
 
     private int pages() {

@@ -60,6 +60,19 @@ public final class Warps {
         }
     }
 
+    /** 플레이어가 마지막으로 연 (자기) 워프 — /warpname 이 이 워프 이름을 바꾼다 */
+    public static final java.util.Map<UUID, UUID> LAST_OPENED = new java.util.HashMap<>();
+
+    public static boolean rename(ServerPlayer player, String name) {
+        UUID id = LAST_OPENED.get(player.getUUID());
+        WildData data = WildData.get(player.level().getServer());
+        WildData.Warp w = id == null ? null : data.warps.get(id);
+        if (w == null || !w.owner.equals(player.getUUID())) return false;
+        w.name = name.length() > 32 ? name.substring(0, 32) : name;
+        data.setDirty();
+        return true;
+    }
+
     /** 워프 포인트를 우클릭했을 때: 갈 수 있는 워프 목록 화면 */
     public static void openMenu(ServerPlayer player, WildData.Warp here) {
         WildData data = WildData.get(player.level().getServer());
@@ -76,6 +89,7 @@ public final class Warps {
                     who + " · " + dimName(w.dimension) + " " + w.pos.getX() + ", " + w.pos.getY() + ", " + w.pos.getZ()));
         }
         boolean owner = here.owner.equals(player.getUUID());
+        if (owner) LAST_OPENED.put(player.getUUID(), here.id);
         int flags = (owner ? PickMenu.FLAG_CAN_TOGGLE : 0) | (here.isPublic ? PickMenu.FLAG_PUBLIC : 0);
         BlockPos herePos = here.pos;
         PickMenu.open(player, Component.translatable("container.wildplus.warp", here.name),

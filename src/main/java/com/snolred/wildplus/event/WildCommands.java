@@ -11,6 +11,29 @@ public final class WildCommands {
 
     @SubscribeEvent
     public static void register(RegisterCommandsEvent event) {
+        // 누구나 쓰는 명령어: 안내서·요리책 받기, 워프 이름 바꾸기
+        event.getDispatcher().register(Commands.literal("guide").executes(ctx -> {
+            ctx.getSource().getPlayerOrException().getInventory().add(com.snolred.wildplus.economy.Guidebook.create());
+            ctx.getSource().sendSuccess(() -> Component.translatable("commands.wildplus.guide"), false);
+            return 1;
+        }));
+        event.getDispatcher().register(Commands.literal("cookbook").executes(ctx -> {
+            ctx.getSource().getPlayerOrException().getInventory().add(com.snolred.wildplus.economy.Cookbook.create());
+            ctx.getSource().sendSuccess(() -> Component.translatable("commands.wildplus.cookbook"), false);
+            return 1;
+        }));
+        event.getDispatcher().register(Commands.literal("warpname")
+                .then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.greedyString()).executes(ctx -> {
+                    String name = com.mojang.brigadier.arguments.StringArgumentType.getString(ctx, "name");
+                    net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
+                    if (com.snolred.wildplus.economy.Warps.rename(sp, name)) {
+                        sp.closeContainer();
+                        ctx.getSource().sendSuccess(() -> Component.translatable("commands.wildplus.warp_renamed", name), false);
+                        return 1;
+                    }
+                    ctx.getSource().sendFailure(Component.translatable("commands.wildplus.warp_rename_fail"));
+                    return 0;
+                })));
         event.getDispatcher().register(Commands.literal("wildplus")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.literal("bloodmoon")

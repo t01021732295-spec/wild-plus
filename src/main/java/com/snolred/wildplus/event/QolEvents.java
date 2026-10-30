@@ -53,15 +53,21 @@ public final class QolEvents {
         if (chaining || !(event.getPlayer() instanceof ServerPlayer player) || !(event.getLevel() instanceof ServerLevel level)) {
             return;
         }
+        BlockState state = event.getState();
+        ItemStack tool = player.getMainHandItem();
+        // 미스릴 삽: 3×3 파기 (웅크리면 한 칸)
+        if (tool.is(com.snolred.wildplus.registry.ModItems2.MYTHRIL_SHOVEL.get()) && !player.isShiftKeyDown()
+                && state.is(BlockTags.MINEABLE_WITH_SHOVEL)) {
+            digArea(player, level, event.getPos());
+            return;
+        }
         if (!player.isShiftKeyDown() || player.isCreative()) {
             return;
         }
-        BlockState state = event.getState();
-        ItemStack tool = player.getMainHandItem();
         int limit;
         boolean tree;
         if (WildConfig.TREE_FELLING.getAsBoolean() && state.is(BlockTags.LOGS) && tool.is(ItemTags.AXES)) {
-            limit = 128;
+            limit = tool.is(com.snolred.wildplus.registry.ModItems2.MYTHRIL_AXE.get()) ? 256 : 128;
             tree = true;
         } else if (WildConfig.VEIN_MINING.getAsBoolean() && state.is(Tags.Blocks.ORES) && tool.is(ItemTags.PICKAXES)
                 && tool.isCorrectToolForDrops(state)) {
@@ -81,6 +87,32 @@ public final class QolEvents {
                     break; // 도구가 부서지기 직전이면 멈춤
                 }
                 player.gameMode.destroyBlock(p);
+            }
+        } finally {
+            chaining = false;
+        }
+    }
+
+    /** 미스릴 삽: 바라보는 방향에 수직인 3×3 면을 함께 판다 */
+    private static void digArea(ServerPlayer player, ServerLevel level, BlockPos center) {
+        float pitch = player.getXRot();
+        Direction.Axis axis = Math.abs(pitch) > 45 ? Direction.Axis.Y : player.getDirection().getAxis();
+        chaining = true;
+        try {
+            for (int a = -1; a <= 1; a++) {
+                for (int b = -1; b <= 1; b++) {
+                    if (a == 0 && b == 0) continue;
+                    BlockPos p = switch (axis) {
+                        case Y -> center.offset(a, 0, b);
+                        case X -> center.offset(0, a, b);
+                        default -> center.offset(a, b, 0);
+                    };
+                    BlockState s = level.getBlockState(p);
+                    if (s.is(BlockTags.MINEABLE_WITH_SHOVEL) && s.getDestroySpeed(level, p) >= 0) {
+                        if (player.getMainHandItem().isEmpty() || player.getMainHandItem().nextDamageWillBreak()) break;
+                        player.gameMode.destroyBlock(p);
+                    }
+                }
             }
         } finally {
             chaining = false;
@@ -149,6 +181,15 @@ public final class QolEvents {
             }
             if (!drop.isEmpty()) {
                 Block.popResource(level, pos, drop);
+            }
+        }
+        // 비취 괭이를 들고 수확하면 작물 하나 더
+        if (player.getMainHandItem().is(com.snolred.wildplus.registry.ModItems4.JADE_HOE.get())) {
+            for (ItemStack drop : drops) {
+                if (!drop.isEmpty() && !drop.is(seed)) {
+                    Block.popResource(level, pos, drop.copyWithCount(1));
+                    break;
+                }
             }
         }
         level.setBlock(pos, crop.getStateForAge(0), Block.UPDATE_ALL);

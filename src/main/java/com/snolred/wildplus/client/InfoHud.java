@@ -47,11 +47,18 @@ public final class InfoHud {
                     Component.translatable("hud.wildplus.dir." + player.getDirection().getName()));
             w = Math.max(w, mc.font.width(line2));
         }
-        int h = line2 == null ? 12 : 22;
+        // 소지금 (가방 동전 + 동전 주머니)
+        Component line3 = Component.translatable("hud.wildplus.money", String.format("%,d", com.snolred.wildplus.economy.Coins.totalValue(player)));
+        w = Math.max(w, mc.font.width(line3));
+        int lines = 2 + (line2 == null ? 0 : 1);
+        int h = lines * 10 + 2;
         g.fill(x - 2, y - 2, x + w + 2, y + h - 2, 0x66000000);
         g.text(mc.font, line1, x, y, night ? 0xFF9FB4FF : 0xFFFFE08A, true);
+        int ly = y + 10;
         if (line2 != null) {
-            g.text(mc.font, line2, x, y + 10, 0xFFE0E0E0, true);
+            g.text(mc.font, line2, x, ly, 0xFFE0E0E0, true);
+            ly += 10;
         }
+        g.text(mc.font, line3, x, ly, 0xFFFFD84A, true);
     }
 }
