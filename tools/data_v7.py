@@ -32,7 +32,7 @@ LANG_KO = {
     "message.wildplus.shipping.public": "출하 상자를 공개로 바꿨어요 (누구나 넣고 꺼낼 수 있음)",
     "message.wildplus.shipping.private": "출하 상자를 비공개로 바꿨어요 (나만 열 수 있음)",
     "message.wildplus.shipping.locked": "다른 사람의 비공개 출하 상자예요",
-    "tooltip.wildplus.shipping_bin": "넣어 둔 물건이 매일 아침 팔리고 대금은 은행 통장으로\n웅크리고 우클릭: 공개 / 비공개 바꾸기 (기본 비공개)",
+    "tooltip.wildplus.shipping_bin": "넣어 둔 물건이 매일 아침 팔리고 대금은 은행 통장으로\n호퍼로 위·옆에서 자동으로 넣을 수 있음\n웅크리고 우클릭: 공개 / 비공개 바꾸기 (기본 비공개)",
     "commands.wildplus.guide": "제작 안내서를 받았어요",
     "commands.wildplus.cookbook": "요리책을 받았어요",
     "commands.wildplus.warp_renamed": "워프 이름을 [%s] (으)로 바꿨어요",

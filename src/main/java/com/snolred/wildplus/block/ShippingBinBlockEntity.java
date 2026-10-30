@@ -26,7 +26,7 @@ import org.jspecify.annotations.Nullable;
  * 출하 상자: 넣어 둔 물건이 매일 아침(오전 6시) 자동으로 팔리고, 대금은 설치한 사람의 은행 계좌로 들어간다.
  * 가격표에 없는 물건은 그대로 남는다.
  */
-public class ShippingBinBlockEntity extends BlockEntity {
+public class ShippingBinBlockEntity extends BlockEntity implements net.minecraft.world.WorldlyContainer {
     public static final int SIZE = 27;
     private final SimpleContainer items = new SimpleContainer(SIZE) {
         @Override
@@ -55,6 +55,65 @@ public class ShippingBinBlockEntity extends BlockEntity {
 
     public ShippingBinBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.SHIPPING_BIN.get(), pos, state);
+    }
+
+    // ───────── 호퍼 연동 ─────────
+    // 위·옆에서 호퍼/드로퍼로 넣으면 상자에 쌓이고 다음 날 아침 팔린다.
+    // 아래 호퍼로 빼 가는 것은 막는다 (비공개 상자 보호, 팔 물건 보존).
+    private static final int[] SLOTS = java.util.stream.IntStream.range(0, SIZE).toArray();
+
+    @Override
+    public int[] getSlotsForFace(net.minecraft.core.Direction side) {
+        return SLOTS;
+    }
+
+    @Override
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, net.minecraft.core.@Nullable Direction side) {
+        return true;
+    }
+
+    @Override
+    public boolean canTakeItemThroughFace(int slot, ItemStack stack, net.minecraft.core.Direction side) {
+        return false;
+    }
+
+    @Override
+    public int getContainerSize() {
+        return SIZE;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+
+    @Override
+    public ItemStack getItem(int slot) {
+        return items.getItem(slot);
+    }
+
+    @Override
+    public ItemStack removeItem(int slot, int amount) {
+        return items.removeItem(slot, amount);
+    }
+
+    @Override
+    public ItemStack removeItemNoUpdate(int slot) {
+        return items.removeItemNoUpdate(slot);
+    }
+
+    @Override
+    public void setItem(int slot, ItemStack stack) {
+        items.setItem(slot, stack);
+    }
+
+    @Override
+    public boolean stillValid(Player player) {
+        return false;
+    }
+
+    @Override
+    public void clearContent() {
     }
 
     public SimpleContainer items() {

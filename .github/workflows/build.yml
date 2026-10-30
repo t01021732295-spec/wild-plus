@@ -273,6 +273,12 @@ jobs:
             sleep 8
             echo "say TEST hopper"; sleep 1
             run "data get block 4 121 6"
+            # 출하 상자 호퍼 연동: 위 호퍼(밀 5) → 상자
+            run "setblock 8 121 6 wildplus:shipping_bin"
+            run "setblock 8 122 6 minecraft:hopper[facing=down]{Items:[{Slot:0b,id:\"minecraft:wheat\",count:5}]}"
+            sleep 6
+            echo "say TEST bin hopper"; sleep 1
+            run "data get block 8 121 6 items"
             # 편의 기능 시험장: 나무 기둥(x=395), 다 자란 밀(x=398)
             run "fill 395 120 3 395 125 3 minecraft:oak_log"
             run "fill 394 126 2 396 127 4 minecraft:oak_leaves[persistent=true]"
