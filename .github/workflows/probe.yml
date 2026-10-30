@@ -24,6 +24,7 @@ jobs:
         run: ./gradlew createMinecraftArtifacts --no-configuration-cache
 
       - name: Dump signatures
+        shell: bash {0}
         run: |
           JAR=""
           for j in $(find build ~/.gradle -name '*.jar' 2>/dev/null | grep -i -E 'moddev|neoforge|minecraft' | grep -v sources); do

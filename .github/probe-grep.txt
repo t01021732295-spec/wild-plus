@@ -1,2 +1,4 @@
-net/minecraft/world/level/block/DoorBlock.java	(updateShape|playerWillDestroy|getStateForPlacement|setPlacedBy|canSurvive)	14
-net/minecraft/world/level/block/DoublePlantBlock.java	preventDropFromBottomPart	14
+net/minecraft/world/level/saveddata/maps/MapIndex.java	(TYPE|SavedDataType|Codec|setDirty)	6
+net/minecraft/world/entity/raid/Raids.java	(SavedDataType|getDataStorage|computeIfAbsent)	6
+net/minecraft/server/commands/TeleportCommand.java	teleportTo	6
+net/minecraft/world/item/BundleItem.java	(CONTAINER|BUNDLE_CONTENTS)	3
