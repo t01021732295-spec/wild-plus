@@ -153,7 +153,6 @@ public final class QolEvents {
         }
         level.setBlock(pos, crop.getStateForAge(0), Block.UPDATE_ALL);
         level.playSound(null, pos, SoundEvents.CROP_PLANTED, SoundSource.BLOCKS, 1.0F, 1.0F);
-        player.swing(InteractionHand.MAIN_HAND, true);
     }
 
     // ───────── 무덤 ─────────

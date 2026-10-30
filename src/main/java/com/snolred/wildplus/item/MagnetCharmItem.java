@@ -69,7 +69,6 @@ public class MagnetCharmItem extends Item {
             double dist = dir.length();
             if (dist < 0.6) continue;
             e.setDeltaMovement(dir.normalize().scale(Math.min(0.45, 0.12 + dist * 0.05)));
-            e.hurtMarked = true;
         }
     }
 }

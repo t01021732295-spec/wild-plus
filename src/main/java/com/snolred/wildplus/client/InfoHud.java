@@ -26,7 +26,7 @@ public final class InfoHud {
     private static void render(GuiGraphicsExtractor g, DeltaTracker delta) {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
-        if (player == null || mc.level == null || mc.options.hideGui || !ClientConfig.SHOW_HUD.getAsBoolean()) {
+        if (player == null || mc.level == null || !ClientConfig.SHOW_HUD.getAsBoolean()) {
             return;
         }
         long time = mc.level.getOverworldClockTime();

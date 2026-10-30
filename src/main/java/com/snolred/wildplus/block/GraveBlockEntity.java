@@ -47,7 +47,7 @@ public class GraveBlockEntity extends BlockEntity {
     public void giveBack(Player player) {
         for (ItemStack s : items) {
             if (!player.getInventory().add(s) && !s.isEmpty()) {
-                player.drop(s, false);
+                Containers.dropItemStack(player.level(), player.getX(), player.getY() + 0.5, player.getZ(), s);
             }
         }
         items.clear();
