@@ -119,7 +119,7 @@ public class VendingMachineBlockEntity extends BlockEntity implements MenuProvid
     }
 
     @Override
-    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable net.minecraft.core.Direction side) {
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, net.minecraft.core.@Nullable Direction side) {
         if (infinite || stack.isEmpty() || slot < 0 || slot >= SLOTS) return false;
         ItemStack here = items.getItem(slot);
         if (!here.isEmpty()) {
