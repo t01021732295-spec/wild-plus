@@ -97,11 +97,21 @@ jobs:
           " 2>&1
             done < .github/probe-nbt.txt >> out/probe.txt
           fi
+          # 바닐라 텍스처 원본 복사 (재색칠용)
+          if [ -f .github/probe-assets.txt ]; then
+            mkdir -p out/assets
+            while read -r f; do
+              [ -z "$f" ] && continue
+              for j in $ALL; do
+                if unzip -l "$j" "$f" >/dev/null 2>&1; then mkdir -p "out/assets/$(dirname $f)"; unzip -p "$j" "$f" > "out/assets/$f"; break; fi
+              done
+            done < .github/probe-assets.txt
+          fi
           wc -c out/probe.txt
 
       - name: Publish probe
         run: |
-          mkdir -p /tmp/pub && cp out/probe.txt /tmp/pub/
+          mkdir -p /tmp/pub && cp out/probe.txt /tmp/pub/ && (cp -r out/assets /tmp/pub/ 2>/dev/null || true)
           cd /tmp/pub
           git init -q -b ci-probe
           git config user.name "ci"; git config user.email "ci@users.noreply.github.com"

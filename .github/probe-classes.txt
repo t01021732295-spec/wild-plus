@@ -1,8 +1,0 @@
-net.minecraft.world.level.saveddata.SavedData
-net.minecraft.world.level.saveddata.SavedDataType
-net.minecraft.world.level.storage.DimensionDataStorage
-net.neoforged.neoforge.common.extensions.IMenuTypeExtension
-net.neoforged.neoforge.network.IContainerFactory
-net.minecraft.world.item.component.ItemContainerContents
-net.minecraft.server.level.ServerPlayer
-net.minecraft.world.inventory.MenuType
