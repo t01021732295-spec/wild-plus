@@ -1,0 +1,186 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "wildplus:block/vending_machine_side_lower",
+    "front": "wildplus:block/vending_machine_front_lower",
+    "interior": "wildplus:block/vending_machine_interior_lower",
+    "glass": "wildplus:block/vending_machine_glass_lower",
+    "side": "wildplus:block/vending_machine_side_lower",
+    "top": "wildplus:block/vending_machine_top",
+    "inner": "wildplus:block/vending_machine_inner",
+    "shelf": "wildplus:block/vending_machine_shelf"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        3
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#interior"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "west": {
+          "texture": "#side"
+        },
+        "down": {
+          "texture": "#top"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        6,
+        3
+      ],
+      "faces": {
+        "north": {
+          "texture": "#front"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "west": {
+          "texture": "#side"
+        },
+        "down": {
+          "texture": "#top"
+        },
+        "up": {
+          "texture": "#shelf",
+          "uv": [
+            0,
+            1,
+            16,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        6,
+        0
+      ],
+      "to": [
+        4,
+        16,
+        3
+      ],
+      "faces": {
+        "north": {
+          "texture": "#front"
+        },
+        "west": {
+          "texture": "#side"
+        },
+        "east": {
+          "texture": "#inner"
+        }
+      }
+    },
+    {
+      "from": [
+        15,
+        6,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        3
+      ],
+      "faces": {
+        "north": {
+          "texture": "#front"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "west": {
+          "texture": "#inner"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        13.0,
+        0.6
+      ],
+      "to": [
+        15,
+        13.5,
+        3
+      ],
+      "faces": {
+        "north": {
+          "texture": "#shelf",
+          "uv": [
+            1,
+            0,
+            12,
+            1
+          ]
+        },
+        "up": {
+          "texture": "#shelf",
+          "uv": [
+            1,
+            1,
+            12,
+            4
+          ]
+        },
+        "down": {
+          "texture": "#shelf",
+          "uv": [
+            1,
+            1,
+            12,
+            4
+          ]
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        6,
+        0.5
+      ],
+      "to": [
+        15,
+        16,
+        0.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#glass"
+        },
+        "south": {
+          "texture": "#glass"
+        }
+      }
+    }
+  ]
+}

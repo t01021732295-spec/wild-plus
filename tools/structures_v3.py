@@ -92,7 +92,7 @@ def vending(products, facing):
         nbt[f"item{idx}"] = Compound({"id": String(item), "count": Int(count)})
         prices[idx] = price
     nbt["prices"] = nbtlib.IntArray([Int(p) for p in prices])
-    return ("wildplus:vending_machine", {"facing": facing}, nbt)
+    return ("wildplus:vending_machine", {"facing": facing, "half": "lower"}, nbt)
 
 
 FENCE = {"east": "false", "west": "false", "north": "false", "south": "false", "waterlogged": "false"}
@@ -140,9 +140,12 @@ def trading_post():
     goods = [("minecraft:torch", 32, 1), ("wildplus:fertilizer", 8, 3), ("wildplus:tomato_seeds", 8, 2),
              ("minecraft:oak_sapling", 4, 2), ("minecraft:arrow", 16, 2), ("wildplus:recall_scroll", 2, 40),
              ("minecraft:shears", 1, 15), ("minecraft:lead", 2, 10), ("wildplus:coin_pouch", 1, 15)]
+    # 자판기는 실물 크기(2칸 높이): 위 칸도 같이 놓는다
     t.set(12, 1, 4, *vending(food, "east"))
+    t.set(12, 2, 4, "wildplus:vending_machine", {"facing": "east", "half": "upper"})
     t.set(12, 1, 5, "wildplus:gacha_machine", {"facing": "east"})
     t.set(12, 1, 6, *vending(goods, "east"))
+    t.set(12, 2, 6, "wildplus:vending_machine", {"facing": "east", "half": "upper"})
     # 상인
     t.entity(4.5, 1.0, 5.5, mob("wildplus:merchant", 180.0))
     t.entity(8.5, 1.0, 5.5, mob("wildplus:blacksmith_merchant", 180.0))

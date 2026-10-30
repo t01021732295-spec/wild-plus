@@ -1,18 +1,33 @@
 {
   "variants": {
-    "facing=north": {
-      "model": "wildplus:block/vending_machine"
+    "facing=north,half=lower": {
+      "model": "wildplus:block/vending_machine_lower"
     },
-    "facing=east": {
-      "model": "wildplus:block/vending_machine",
+    "facing=north,half=upper": {
+      "model": "wildplus:block/vending_machine_upper"
+    },
+    "facing=east,half=lower": {
+      "model": "wildplus:block/vending_machine_lower",
       "y": 90
     },
-    "facing=south": {
-      "model": "wildplus:block/vending_machine",
+    "facing=east,half=upper": {
+      "model": "wildplus:block/vending_machine_upper",
+      "y": 90
+    },
+    "facing=south,half=lower": {
+      "model": "wildplus:block/vending_machine_lower",
       "y": 180
     },
-    "facing=west": {
-      "model": "wildplus:block/vending_machine",
+    "facing=south,half=upper": {
+      "model": "wildplus:block/vending_machine_upper",
+      "y": 180
+    },
+    "facing=west,half=lower": {
+      "model": "wildplus:block/vending_machine_lower",
+      "y": 270
+    },
+    "facing=west,half=upper": {
+      "model": "wildplus:block/vending_machine_upper",
       "y": 270
     }
   }

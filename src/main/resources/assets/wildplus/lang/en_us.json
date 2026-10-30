@@ -110,7 +110,7 @@
   "tooltip.wildplus.gold_coin": "Worth 100 · can be crafted into 10 silver",
   "tooltip.wildplus.coin_pouch": "Right-click: deposit coins · Sneak: withdraw (auto change)",
   "tooltip.wildplus.pouch_value": "Holds: %s",
-  "tooltip.wildplus.vending_machine": "Only the placer sets products and prices. Insert coins and press a product",
+  "tooltip.wildplus.vending_machine": "Life-size (2 blocks tall) · Only the placer sets products and prices. Insert coins and press a product",
   "message.wildplus.pouch.deposit": "Deposited %s → holding %s",
   "message.wildplus.pouch.withdraw": "Withdrew %s",
   "message.wildplus.bandit.stole": "A bandit stole %s worth of coins! Defeat it to get them back",

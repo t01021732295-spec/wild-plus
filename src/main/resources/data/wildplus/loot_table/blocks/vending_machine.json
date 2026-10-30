@@ -4,7 +4,11 @@
     {
       "rolls": 1,
       "condition": {
-        "type": "minecraft:survives_explosion"
+        "type": "minecraft:block_state_property",
+        "block": "wildplus:vending_machine",
+        "properties": {
+          "half": "lower"
+        }
       },
       "entries": [
         {

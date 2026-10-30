@@ -8,7 +8,7 @@ LANG_KO = {
     "item.wildplus.magnet_charm": "자석 부적",
     "item.wildplus.portable_crafting_table": "휴대용 제작대",
     "item.wildplus.portable_ender_chest": "휴대용 엔더 상자",
-    "tooltip.wildplus.vending_machine": "설치한 사람만 상품·가격을 정할 수 있어요. 동전을 넣고 상품 버튼을 누르면 나와요",
+    "tooltip.wildplus.vending_machine": "실물 크기(2칸 높이) · 설치한 사람만 상품·가격을 정할 수 있어요. 동전을 넣고 상품 버튼을 누르면 나와요",
     "tooltip.wildplus.gacha_machine": "우클릭 한 번에 동전 10동 · 캡슐 하나! 대박이 나오면 주변에 알려져요",
     "tooltip.wildplus.magnet_charm": "주변 8칸의 아이템·경험치를 끌어옴 · 우클릭: 켜기/끄기 · 웅크리면 잠시 멈춤",
     "tooltip.wildplus.portable_crafting_table": "우클릭하면 어디서나 제작대",
@@ -54,7 +54,7 @@ LANG_EN = {
     "item.wildplus.magnet_charm": "Magnet Charm",
     "item.wildplus.portable_crafting_table": "Portable Crafting Table",
     "item.wildplus.portable_ender_chest": "Portable Ender Chest",
-    "tooltip.wildplus.vending_machine": "Only the placer sets products and prices. Insert coins and press a product",
+    "tooltip.wildplus.vending_machine": "Life-size (2 blocks tall) · Only the placer sets products and prices. Insert coins and press a product",
     "tooltip.wildplus.gacha_machine": "10 coins per pull, one capsule! Jackpots are announced",
     "tooltip.wildplus.magnet_charm": "Pulls items and XP within 8 blocks · Right-click: toggle · Sneak to pause",
     "tooltip.wildplus.portable_crafting_table": "Right-click for a crafting table anywhere",
@@ -107,26 +107,51 @@ def faces(**kw):
 
 
 def assets():
-    # 자판기: 앞쪽이 움푹 들어간 진열창 구조 (상품은 블록 엔티티 렌더러가 그림)
-    write(ASSETS / "models/block/vending_machine.json", {
-        "parent": "minecraft:block/block",
-        "textures": {"particle": i("block/vending_machine_side"), "front": i("block/vending_machine_front"),
-                     "interior": i("block/vending_machine_interior"), "glass": i("block/vending_machine_glass"),
-                     "side": i("block/vending_machine_side"), "top": i("block/vending_machine_top"),
-                     "inner": i("block/vending_machine_inner")},
+    # 자판기: 실물 크기(2칸 높이). 진열창은 아래 칸 y6 ~ 위 칸 y13 까지 이어지고 선반이 3단
+    def tex(half):
+        return {"particle": i(f"block/vending_machine_side_{half}"), "front": i(f"block/vending_machine_front_{half}"),
+                "interior": i(f"block/vending_machine_interior_{half}"), "glass": i(f"block/vending_machine_glass_{half}"),
+                "side": i(f"block/vending_machine_side_{half}"), "top": i("block/vending_machine_top"),
+                "inner": i("block/vending_machine_inner"), "shelf": i("block/vending_machine_shelf")}
+
+    def shelf(y):
+        return {"from": [4, y - 0.5, 0.6], "to": [15, y, 3],
+                "faces": {"north": {"texture": "#shelf", "uv": [1, 0, 12, 1]},
+                          "up": {"texture": "#shelf", "uv": [1, 1, 12, 4]},
+                          "down": {"texture": "#shelf", "uv": [1, 1, 12, 4]}}}
+
+    write(ASSETS / "models/block/vending_machine_lower.json", {
+        "parent": "minecraft:block/block", "textures": tex("lower"),
         "elements": [
             {"from": [0, 0, 3], "to": [16, 16, 16], "faces": faces(north="#interior", south="#side", east="#side",
-                                                                  west="#side", up="#top", down="#top")},
-            {"from": [0, 15, 0], "to": [16, 16, 3], "faces": faces(north="#front", up="#top", east="#side",
-                                                                  west="#side", down="#inner")},
-            {"from": [0, 0, 0], "to": [16, 3, 3], "faces": faces(north="#front", down="#top", east="#side",
-                                                                west="#side", up="#inner")},
-            {"from": [0, 3, 0], "to": [5, 15, 3], "faces": faces(north="#front", west="#side", east="#inner")},
-            {"from": [15, 3, 0], "to": [16, 15, 3], "faces": faces(north="#front", east="#side", west="#inner")},
-            {"from": [5, 3, 0.5], "to": [15, 15, 0.5], "faces": faces(north="#glass")},
-        ],
-    })
-    write(ASSETS / "blockstates/vending_machine.json", facing_states(i("block/vending_machine")))
+                                                                  west="#side", down="#top")},
+            {"from": [0, 0, 0], "to": [16, 6, 3], "faces": {**faces(north="#front", east="#side", west="#side", down="#top"),
+                                                           "up": {"texture": "#shelf", "uv": [0, 1, 16, 4]}}},
+            {"from": [0, 6, 0], "to": [4, 16, 3], "faces": faces(north="#front", west="#side", east="#inner")},
+            {"from": [15, 6, 0], "to": [16, 16, 3], "faces": faces(north="#front", east="#side", west="#inner")},
+            shelf(13.5),
+            {"from": [4, 6, 0.5], "to": [15, 16, 0.5], "faces": faces(north="#glass", south="#glass")},
+        ]})
+    write(ASSETS / "models/block/vending_machine_upper.json", {
+        "parent": "minecraft:block/block", "textures": tex("upper"),
+        "elements": [
+            {"from": [0, 0, 3], "to": [16, 16, 16], "faces": faces(north="#interior", south="#side", east="#side",
+                                                                  west="#side", up="#top")},
+            {"from": [0, 13, 0], "to": [16, 16, 3], "faces": faces(north="#front", east="#side", west="#side",
+                                                                  up="#top", down="#inner")},
+            {"from": [0, 0, 0], "to": [4, 13, 3], "faces": faces(north="#front", west="#side", east="#inner")},
+            {"from": [15, 0, 0], "to": [16, 13, 3], "faces": faces(north="#front", east="#side", west="#inner")},
+            shelf(5),
+            {"from": [4, 0, 0.5], "to": [15, 13, 0.5], "faces": faces(north="#glass", south="#glass")},
+        ]})
+    write(ASSETS / "blockstates/vending_machine.json", {"variants": {
+        f"facing={d},half={h}": ({"model": i(f"block/vending_machine_{h}"), "y": r} if r
+                                 else {"model": i(f"block/vending_machine_{h}")})
+        for d, r in ROT.items() for h in ("lower", "upper")}})
+    write(ASSETS / "models/item/vending_machine.json",
+          {"parent": "minecraft:item/generated", "textures": {"layer0": i("item/vending_machine")}})
+    write(ASSETS / "items/vending_machine.json", {"model": {"type": "minecraft:model", "model": i("item/vending_machine")}})
+    (ASSETS / "models/block/vending_machine.json").unlink(missing_ok=True)
 
     write(ASSETS / "models/block/gacha_machine.json", {
         "parent": "minecraft:block/orientable",
@@ -172,6 +197,11 @@ def recipes():
 
 
 def loot():
+    write(DATA / "loot_table/blocks/vending_machine.json", {"type": "minecraft:block", "pools": [
+        {"rolls": 1, "condition": {"type": "minecraft:block_state_property", "block": i("vending_machine"),
+                                   "properties": {"half": "lower"}},
+         "entries": [{"type": "minecraft:item", "name": i("vending_machine")}]}],
+        "random_sequence": i("blocks/vending_machine")})
     write(DATA / "loot_table/blocks/gacha_machine.json", {"type": "minecraft:block", "pools": [
         {"rolls": 1, "condition": {"type": "minecraft:survives_explosion"},
          "entries": [{"type": "minecraft:item", "name": i("gacha_machine")}]}],

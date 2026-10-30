@@ -110,7 +110,7 @@
   "tooltip.wildplus.gold_coin": "100동 · 제작대에서 은화 10개로 바꿀 수 있음",
   "tooltip.wildplus.coin_pouch": "우클릭: 동전 넣기 · 웅크리고 우클릭: 꺼내기(자동 환전)",
   "tooltip.wildplus.pouch_value": "보관: %s",
-  "tooltip.wildplus.vending_machine": "설치한 사람만 상품·가격을 정할 수 있어요. 동전을 넣고 상품 버튼을 누르면 나와요",
+  "tooltip.wildplus.vending_machine": "실물 크기(2칸 높이) · 설치한 사람만 상품·가격을 정할 수 있어요. 동전을 넣고 상품 버튼을 누르면 나와요",
   "message.wildplus.pouch.deposit": "넣음 %s → 보관 %s",
   "message.wildplus.pouch.withdraw": "꺼냄 %s",
   "message.wildplus.bandit.stole": "도적이 동전 %s동어치를 훔쳤습니다! 처치하면 되찾을 수 있어요",

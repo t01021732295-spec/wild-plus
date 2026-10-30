@@ -25,6 +25,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -203,6 +204,15 @@ public class VendingMachineBlockEntity extends BlockEntity implements MenuProvid
 
     /** 예전 버전의 공중 진열 엔티티 정리 */
     public static void serverTick(Level level, BlockPos pos, BlockState state, VendingMachineBlockEntity be) {
+        // 1.3.0 이전(1칸짜리) 자판기나 명령어로 아래 칸만 놓인 경우 위 칸을 채워 준다
+        if (level.getGameTime() % 20 == (pos.asLong() & 15)) {
+            BlockPos up = pos.above();
+            BlockState above = level.getBlockState(up);
+            if (!above.is(state.getBlock()) && above.canBeReplaced() && up.getY() < level.getMaxY()) {
+                level.setBlock(up, state.setValue(VendingMachineBlock.HALF,
+                        net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER), Block.UPDATE_ALL);
+            }
+        }
         if (be.legacyDisplay != null && level instanceof ServerLevel server) {
             Entity e = server.getEntity(be.legacyDisplay);
             if (e != null) e.discard();
