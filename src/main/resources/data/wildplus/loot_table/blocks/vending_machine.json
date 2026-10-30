@@ -4,9 +4,9 @@
     {
       "rolls": 1,
       "condition": {
-        "type": "minecraft:block_state_property",
-        "block": "wildplus:vending_machine",
-        "properties": {
+        "type": "minecraft:match_block",
+        "blocks": "wildplus:vending_machine",
+        "state": {
           "half": "lower"
         }
       },

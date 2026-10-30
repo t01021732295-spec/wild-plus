@@ -198,8 +198,8 @@ def recipes():
 
 def loot():
     write(DATA / "loot_table/blocks/vending_machine.json", {"type": "minecraft:block", "pools": [
-        {"rolls": 1, "condition": {"type": "minecraft:block_state_property", "block": i("vending_machine"),
-                                   "properties": {"half": "lower"}},
+        {"rolls": 1, "condition": {"type": "minecraft:match_block", "blocks": i("vending_machine"),
+                                   "state": {"half": "lower"}},
          "entries": [{"type": "minecraft:item", "name": i("vending_machine")}]}],
         "random_sequence": i("blocks/vending_machine")})
     write(DATA / "loot_table/blocks/gacha_machine.json", {"type": "minecraft:block", "pools": [
