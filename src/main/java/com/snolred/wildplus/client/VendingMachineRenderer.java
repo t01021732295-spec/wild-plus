@@ -67,7 +67,7 @@ public class VendingMachineRenderer implements BlockEntityRenderer<VendingMachin
             float y = (12.9F - row * 4.0F) / 16.0F;
             poseStack.pushPose();
             poseStack.translate(x, y, 1.8F / 16.0F);
-            poseStack.scale(0.38F, 0.38F, 0.38F);
+            poseStack.scale(0.2F, 0.2F, 0.2F);
             item.submit(poseStack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }

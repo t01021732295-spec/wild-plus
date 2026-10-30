@@ -315,6 +315,12 @@ jobs:
             sleep 2
             xdotool click 3; sleep 2
             import -window root shot-gacha.png || true
+            cmd "/tp @s 383.5 120.4 3.1 0 8"
+            sleep 2
+            xdotool key F1 || true
+            sleep 1
+            import -window root shot-vending-front.png || true
+            xdotool key F1 || true
             cmd "/gamemode creative"
             cmd "/tp @s 383.5 121 -2.5 0 15"
             sleep 4
