@@ -38,6 +38,11 @@ public class WildPlus {
         ModEntities.ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
         modEventBus.addListener(ModEntities::onAttributes);
+        // 한 묶음 늘리기: 원래 64개씩 쌓이는 아이템을 99개까지 (마인크래프트가 허용하는 최대치)
+        modEventBus.addListener(net.neoforged.bus.api.EventPriority.LOWEST,
+                (net.neoforged.neoforge.event.ModifyDefaultComponentsEvent e) -> e.modifyMatching(
+                        (item, comps) -> comps.getOrDefault(net.minecraft.core.component.DataComponents.MAX_STACK_SIZE, 1) == 64,
+                        (comps, ctx, item) -> comps.set(net.minecraft.core.component.DataComponents.MAX_STACK_SIZE, 99)));
         modEventBus.addListener(ModEntities::onSpawnPlacements);
         ModItems.ITEMS.register(modEventBus);
         ModLoot.MODIFIERS.register(modEventBus);
