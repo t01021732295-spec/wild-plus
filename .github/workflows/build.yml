@@ -228,6 +228,7 @@ jobs:
             run "place template wildplus:trading_post 400 120 0"
             run "place template wildplus:bandit_camp 416 120 0"
             # 상점 마을 (x 436~487)
+            run "forceload add 436 -12 487 39"
             for z0 in -12 14; do
               run "fill 436 119 $z0 487 119 $((z0+25)) minecraft:grass_block"
               run "fill 436 120 $z0 487 127 $((z0+25)) minecraft:air"
@@ -445,7 +446,9 @@ jobs:
             cmd "/tp @s 380.5 120 -8.3 0 20"
             sleep 3; xdotool click 3; sleep 2
             import -window root shot-warp.png || true
-            xdotool mousemove 639 240; sleep 0.5; xdotool click 1; sleep 3
+            xdotool mousemove 639 240; sleep 1; xdotool click 1; sleep 3
+            import -window root shot-warp-after.png || true
+            cmd "/data get entity @s Pos"
             cmd "/execute if entity @s[x=382,y=120,z=-6,dx=1,dy=3,dz=1] run say WARP_OK"
             sleep 1
             cmd "/tp @s 384.5 120 -8.3 0 20"
