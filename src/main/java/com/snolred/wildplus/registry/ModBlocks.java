@@ -85,7 +85,7 @@ public final class ModBlocks {
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BLOCK));
     public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> WEATHER_STATION = BLOCKS.registerBlock("weather_station",
             p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.economy.Services::openWeather),
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.COPPER_BLOCK));
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
 
     private ModBlocks() {}
 }

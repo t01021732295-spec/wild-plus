@@ -164,10 +164,10 @@ public class VendingMenu extends AbstractContainerMenu {
                 if (!owner) return false;
                 long e = machine.takeEarnings();
                 if (e > 0 && p instanceof net.minecraft.server.level.ServerPlayer sp) {
-                    long net = com.snolred.wildplus.economy.Tax.collect(sp.level().getServer(), sp.getUUID(), e);
-                    Coins.refund(p, net);
+                    long got = com.snolred.wildplus.economy.Tax.collect(sp.level().getServer(), sp.getUUID(), e);
+                    Coins.refund(p, got);
                     sp.sendSystemMessage(net.minecraft.network.chat.Component.translatable("message.wildplus.tax.income",
-                            e, e - net, net).withStyle(net.minecraft.ChatFormatting.GOLD));
+                            e, e - got, got).withStyle(net.minecraft.ChatFormatting.GOLD));
                     playSound(SoundEvents.EXPERIENCE_ORB_PICKUP, 1.2F);
                 }
                 return true;

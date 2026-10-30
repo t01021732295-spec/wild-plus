@@ -59,7 +59,7 @@ public class WildPlusClient {
         c.append(Component.literal("■".repeat(10 - filled)).withStyle(ChatFormatting.DARK_GRAY));
         c.append(Component.literal(String.format(" %.0f/%.0f", Math.ceil(hp), max)).withStyle(ChatFormatting.WHITE));
         event.setContent(c);
-        event.setCanRender(net.neoforged.neoforge.common.util.TriState.TRUE);
+        event.setCanRender(net.minecraft.util.TriState.TRUE);
     }
 
     @SubscribeEvent
