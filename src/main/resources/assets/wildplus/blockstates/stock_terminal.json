@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/stock_terminal"
+    },
+    "facing=east": {
+      "model": "wildplus:block/stock_terminal",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/stock_terminal",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/stock_terminal",
+      "y": 270
+    }
+  }
+}

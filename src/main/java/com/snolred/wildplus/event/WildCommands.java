@@ -23,6 +23,21 @@ public final class WildCommands {
                             BloodMoon.stop(ctx.getSource().getServer().overworld(), false);
                             ctx.getSource().sendSuccess(() -> Component.translatable("commands.wildplus.blood_moon.stopped"), true);
                             return 1;
-                        }))));
+                        })))
+                .then(Commands.literal("stocks").then(Commands.literal("refresh").executes(ctx -> {
+                    com.snolred.wildplus.economy.StockMarket.refresh(ctx.getSource().getServer());
+                    ctx.getSource().sendSuccess(() -> Component.literal("주식 시세를 새로 받아오는 중…"), true);
+                    return 1;
+                })))
+                .then(Commands.literal("interest").executes(ctx -> {
+                    EconomyTick.payInterest(ctx.getSource().getServer(),
+                            com.snolred.wildplus.economy.WildData.get(ctx.getSource().getServer()));
+                    ctx.getSource().sendSuccess(() -> Component.literal("이자 지급 완료"), true);
+                    return 1;
+                }))
+                .then(Commands.literal("cookbook").executes(ctx -> {
+                    ctx.getSource().getPlayerOrException().getInventory().add(com.snolred.wildplus.economy.Cookbook.create());
+                    return 1;
+                })));
     }
 }

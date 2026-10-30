@@ -56,6 +56,11 @@ public final class MerchantTrades {
             sell(o, ModItems3.GACHA_MACHINE.get(), 1, 120);
             sell(o, ModItems3.MAGNET_CHARM.get(), 1, 150);
             sell(o, ModItems3.PORTABLE_CRAFTING_TABLE.get(), 1, 30);
+            sell(o, com.snolred.wildplus.registry.ModItems4.TELEPORTER.get(), 1, 40);
+            sell(o, com.snolred.wildplus.registry.ModItems4.LOTTERY_TICKET.get(), 1, 30, 16);
+            sell(o, com.snolred.wildplus.registry.ModItems4.COPPER_BACKPACK.get(), 1, 60, 4);
+            sell(o, com.snolred.wildplus.registry.ModItems4.SHIPPING_BIN.get(), 1, 20, 4);
+            sellStack(o, com.snolred.wildplus.economy.Cookbook.create(), 5);
             sell(o, ModItems.LUCKY_CHARM.get(), 1, 500, 1);
         } else {
             // ── 매입: 광물 ──
@@ -101,6 +106,11 @@ public final class MerchantTrades {
         ItemCost a = cost(coins.get(0));
         Optional<ItemCost> b = coins.size() > 1 ? Optional.of(cost(coins.get(1))) : Optional.empty();
         out.add(new MerchantOffer(a, b, new ItemStack(item, count), maxUses, 2, 0.0F));
+    }
+
+    private static void sellStack(List<MerchantOffer> out, ItemStack result, int price) {
+        List<ItemStack> coins = Coins.toCoins(price);
+        out.add(new MerchantOffer(cost(coins.get(0)), Optional.empty(), result, 4, 1, 0.0F));
     }
 
     private static ItemCost cost(ItemStack stack) {

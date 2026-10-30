@@ -30,6 +30,11 @@ public class WildPlusClient {
     @SubscribeEvent
     static void onMenuScreens(net.neoforged.neoforge.client.event.RegisterMenuScreensEvent event) {
         event.register(com.snolred.wildplus.registry.ModMenus.VENDING.get(), VendingScreen::new);
+        event.register(com.snolred.wildplus.registry.ModMenus.PICK.get(), PickScreen::new);
+        event.register(com.snolred.wildplus.registry.ModMenus.BACKPACK.get(), BackpackScreen::new);
+        event.register(com.snolred.wildplus.registry.ModMenus.STOCKS.get(), StockScreen::new);
+        event.register(com.snolred.wildplus.registry.ModMenus.BANK.get(), BankScreen::new);
+        event.register(com.snolred.wildplus.registry.ModMenus.BOUNTY.get(), BountyScreen::new);
     }
 
     @SubscribeEvent
@@ -50,6 +55,11 @@ public class WildPlusClient {
         }
         if (key != null) {
             event.getToolTip().add(1, Component.translatable("tooltip.wildplus." + key).withStyle(ChatFormatting.GRAY));
+        }
+        int ship = com.snolred.wildplus.economy.ShipPrices.centi(stack);
+        if (ship > 0) {
+            event.getToolTip().add(Component.translatable("tooltip.wildplus.ship_price", com.snolred.wildplus.economy.ShipPrices.fmt(ship))
+                    .withStyle(ChatFormatting.DARK_GREEN));
         }
         if (Coins.isPouch(stack)) {
             event.getToolTip().add(1, Component.translatable("tooltip.wildplus.pouch_value", Coins.describe(Coins.pouchValue(stack)))

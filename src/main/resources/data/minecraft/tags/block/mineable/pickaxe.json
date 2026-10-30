@@ -10,6 +10,9 @@
     "wildplus:sprinkler",
     "wildplus:vending_machine",
     "wildplus:gacha_machine",
-    "wildplus:grave"
+    "wildplus:grave",
+    "wildplus:warp_point",
+    "wildplus:stock_terminal",
+    "wildplus:atm"
   ]
 }

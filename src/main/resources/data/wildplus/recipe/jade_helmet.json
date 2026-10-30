@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "key": {
+    "X": "wildplus:jade"
+  },
+  "result": {
+    "id": "wildplus:jade_helmet",
+    "count": 1
+  }
+}

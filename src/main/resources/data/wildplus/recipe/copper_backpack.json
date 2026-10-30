@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "LSL",
+    "LHL",
+    "LCL"
+  ],
+  "key": {
+    "L": "minecraft:leather",
+    "S": "minecraft:string",
+    "H": "minecraft:chest",
+    "C": "wildplus:copper_coin"
+  },
+  "result": {
+    "id": "wildplus:copper_backpack",
+    "count": 1
+  }
+}

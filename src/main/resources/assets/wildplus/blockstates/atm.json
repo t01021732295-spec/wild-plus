@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/atm"
+    },
+    "facing=east": {
+      "model": "wildplus:block/atm",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/atm",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/atm",
+      "y": 270
+    }
+  }
+}

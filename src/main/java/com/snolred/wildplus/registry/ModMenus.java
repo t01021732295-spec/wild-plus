@@ -14,5 +14,16 @@ public final class ModMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<VendingMenu>> VENDING =
             MENUS.register("vending_machine", () -> new MenuType<>(VendingMenu::new, FeatureFlags.DEFAULT_FLAGS));
 
+    public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.PickMenu>> PICK =
+            MENUS.register("pick", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.PickMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.BackpackMenu>> BACKPACK =
+            MENUS.register("backpack", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.BackpackMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.StockMenu>> STOCKS =
+            MENUS.register("stocks", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.StockMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.BankMenu>> BANK =
+            MENUS.register("bank", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.BankMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.BountyMenu>> BOUNTY =
+            MENUS.register("bounty", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.BountyMenu::new));
+
     private ModMenus() {}
 }

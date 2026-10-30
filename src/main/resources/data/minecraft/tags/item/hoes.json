@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "wildplus:mythril_hoe"
+    "wildplus:mythril_hoe",
+    "wildplus:jade_hoe"
   ]
 }

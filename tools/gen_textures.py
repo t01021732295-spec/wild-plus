@@ -508,6 +508,16 @@ def main():
     textures_v3.build()
     import textures_v4
     textures_v4.build()
+    import textures_v6
+    textures_v6.build()
+    # 바닐라 그림 재색칠 (원본 폴더가 있을 때만; 결과물은 저장소에 들어 있음)
+    import os
+    import textures_v5
+    van = os.environ.get("WILDPLUS_VANILLA")
+    if van:
+        textures_v5.build(Path(van))
+    else:
+        print("WILDPLUS_VANILLA 가 없어서 재색칠은 건너뜀 (주의: 위에서 덮어쓴 장비 그림이 옛 그림으로 남음)")
     print("ok", len(ITEMS), "items,", len(CROP), "crop stages + v2")
 
 

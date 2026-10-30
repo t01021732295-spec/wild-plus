@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "EJE",
+    "OGO",
+    "OOO"
+  ],
+  "key": {
+    "E": "minecraft:ender_pearl",
+    "J": "wildplus:jade",
+    "O": "minecraft:obsidian",
+    "G": "wildplus:gold_coin"
+  },
+  "result": {
+    "id": "wildplus:warp_point",
+    "count": 1
+  }
+}

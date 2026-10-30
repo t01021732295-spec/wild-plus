@@ -19,5 +19,12 @@ public final class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<GraveBlockEntity>> GRAVE =
             BLOCK_ENTITIES.register("grave", () -> new BlockEntityType<>(GraveBlockEntity::new, ModBlocks.GRAVE.get()));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.WarpPointBlockEntity>> WARP_POINT =
+            BLOCK_ENTITIES.register("warp_point", () -> new BlockEntityType<>(com.snolred.wildplus.block.WarpPointBlockEntity::new,
+                    ModBlocks.WARP_POINT.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.ShippingBinBlockEntity>> SHIPPING_BIN =
+            BLOCK_ENTITIES.register("shipping_bin", () -> new BlockEntityType<>(com.snolred.wildplus.block.ShippingBinBlockEntity::new,
+                    ModBlocks.SHIPPING_BIN.get()));
+
     private ModBlockEntities() {}
 }

@@ -54,5 +54,21 @@ public final class ModBlocks {
     public static final DeferredBlock<GraveBlock> GRAVE = BLOCKS.registerBlock("grave",
             GraveBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS).strength(2.0F, 3600000.0F).noOcclusion().noLootTable());
 
+    // ───────── 5차: 이동 · 경제 ─────────
+    public static final DeferredBlock<com.snolred.wildplus.block.WarpPointBlock> WARP_POINT = BLOCKS.registerBlock("warp_point",
+            com.snolred.wildplus.block.WarpPointBlock::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).strength(5.0F, 1200.0F).lightLevel(s -> 10));
+    public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> STOCK_TERMINAL = BLOCKS.registerBlock("stock_terminal",
+            p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.menu.StockMenu::open),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 6.0F).lightLevel(s -> 5));
+    public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> ATM = BLOCKS.registerBlock("atm",
+            p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.menu.BankMenu::open),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 1200.0F).lightLevel(s -> 5));
+    public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> BOUNTY_BOARD = BLOCKS.registerBlock("bounty_board",
+            p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.menu.BountyMenu::open),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).strength(2.0F, 3.0F));
+    public static final DeferredBlock<com.snolred.wildplus.block.ShippingBinBlock> SHIPPING_BIN = BLOCKS.registerBlock("shipping_bin",
+            com.snolred.wildplus.block.ShippingBinBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL));
+
     private ModBlocks() {}
 }

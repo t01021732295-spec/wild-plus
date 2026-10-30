@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GGG",
+    "ISI",
+    "IRI"
+  ],
+  "key": {
+    "G": "minecraft:glass_pane",
+    "I": "minecraft:iron_ingot",
+    "S": "wildplus:silver_coin",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "wildplus:stock_terminal",
+    "count": 1
+  }
+}

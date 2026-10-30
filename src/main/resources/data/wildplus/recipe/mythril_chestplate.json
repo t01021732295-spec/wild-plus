@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "key": {
+    "X": "wildplus:mythril_ingot"
+  },
+  "result": {
+    "id": "wildplus:mythril_chestplate",
+    "count": 1
+  }
+}

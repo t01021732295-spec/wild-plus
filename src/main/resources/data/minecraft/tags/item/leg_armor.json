@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "wildplus:bloodsteel_leggings"
+    "wildplus:bloodsteel_leggings",
+    "wildplus:mythril_leggings",
+    "wildplus:jade_leggings"
   ]
 }

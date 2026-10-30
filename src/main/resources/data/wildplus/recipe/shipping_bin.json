@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:chest",
+    "wildplus:copper_coin"
+  ],
+  "result": {
+    "id": "wildplus:shipping_bin",
+    "count": 1
+  }
+}

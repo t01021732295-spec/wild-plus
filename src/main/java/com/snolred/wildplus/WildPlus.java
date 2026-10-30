@@ -33,6 +33,7 @@ public class WildPlus {
         ModBlocks.BLOCKS.register(modEventBus);
         ModItems2.init();
         ModItems3.init();
+        com.snolred.wildplus.registry.ModItems4.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
@@ -48,6 +49,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(WildCommands.class);
         NeoForge.EVENT_BUS.register(EconomyEvents.class);
         NeoForge.EVENT_BUS.register(QolEvents.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.EconomyTick.class);
 
         modContainer.registerConfig(ModConfig.Type.SYNCED, WildConfig.SPEC);
     }

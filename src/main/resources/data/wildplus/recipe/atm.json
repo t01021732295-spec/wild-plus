@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "III",
+    "GSG",
+    "IRI"
+  ],
+  "key": {
+    "G": "minecraft:glass_pane",
+    "I": "minecraft:iron_ingot",
+    "S": "wildplus:gold_coin",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "wildplus:atm",
+    "count": 1
+  }
+}

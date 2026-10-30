@@ -1,6 +1,8 @@
 {
   "replace": false,
   "values": [
-    "wildplus:bloodsteel_helmet"
+    "wildplus:bloodsteel_helmet",
+    "wildplus:mythril_helmet",
+    "wildplus:jade_helmet"
   ]
 }

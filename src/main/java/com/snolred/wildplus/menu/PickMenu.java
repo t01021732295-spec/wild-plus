@@ -1,0 +1,104 @@
+package com.snolred.wildplus.menu;
+
+import com.snolred.wildplus.registry.ModMenus;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.IntConsumer;
+import java.util.function.Predicate;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.SimpleMenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import org.jspecify.annotations.Nullable;
+
+/**
+ * 목록에서 하나를 고르는 화면 (워프 포인트 목적지, 소형 텔레포트기 대상 유저).
+ * 목록은 화면을 열 때 서버가 보내고, 고른 번호는 메뉴 버튼으로 돌아온다.
+ */
+public class PickMenu extends AbstractContainerMenu {
+    public static final int BTN_TOGGLE = 900;
+    public static final int FLAG_CAN_TOGGLE = 1, FLAG_PUBLIC = 2;
+
+    public record Entry(String title, String sub) {}
+
+    public final String header;
+    public final String empty;
+    public final List<Entry> entries;
+    public final int flags;
+
+    private final @Nullable IntConsumer onPick;
+    private final @Nullable Runnable onToggle;
+    private final @Nullable Predicate<Player> valid;
+
+    /** 클라이언트 */
+    public PickMenu(int id, Inventory inv, RegistryFriendlyByteBuf buf) {
+        super(ModMenus.PICK.get(), id);
+        this.header = buf.readUtf();
+        this.empty = buf.readUtf();
+        this.flags = buf.readVarInt();
+        int n = buf.readVarInt();
+        List<Entry> list = new ArrayList<>(n);
+        for (int i = 0; i < n; i++) {
+            list.add(new Entry(buf.readUtf(), buf.readUtf()));
+        }
+        this.entries = list;
+        this.onPick = null;
+        this.onToggle = null;
+        this.valid = null;
+    }
+
+    private PickMenu(int id, String header, String empty, List<Entry> entries, int flags,
+                     IntConsumer onPick, @Nullable Runnable onToggle, Predicate<Player> valid) {
+        super(ModMenus.PICK.get(), id);
+        this.header = header;
+        this.empty = empty;
+        this.entries = entries;
+        this.flags = flags;
+        this.onPick = onPick;
+        this.onToggle = onToggle;
+        this.valid = valid;
+    }
+
+    /** 서버에서 목록 화면을 연다 */
+    public static void open(ServerPlayer player, Component title, String header, String empty, List<Entry> entries, int flags,
+                            IntConsumer onPick, @Nullable Runnable onToggle, Predicate<Player> valid) {
+        player.openMenu(new SimpleMenuProvider((id, inv, p) ->
+                new PickMenu(id, header, empty, entries, flags, onPick, onToggle, valid), title), buf -> {
+            buf.writeUtf(header);
+            buf.writeUtf(empty);
+            buf.writeVarInt(flags);
+            buf.writeVarInt(entries.size());
+            for (Entry e : entries) {
+                buf.writeUtf(e.title());
+                buf.writeUtf(e.sub());
+            }
+        });
+    }
+
+    @Override
+    public boolean clickMenuButton(Player player, int id) {
+        if (id >= 0 && id < entries.size() && onPick != null) {
+            onPick.accept(id);
+            return true;
+        }
+        if (id == BTN_TOGGLE && onToggle != null) {
+            onToggle.run();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public ItemStack quickMoveStack(Player player, int index) {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean stillValid(Player player) {
+        return valid == null || valid.test(player);
+    }
+}
