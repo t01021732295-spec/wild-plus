@@ -225,7 +225,7 @@
   "message.wildplus.bounty.done": "Bounty done! %s x%s → %s",
   "message.wildplus.shipping.sold": "Shipping bin: %s items sold for %s (tax %s) → %s to your bank",
   "message.wildplus.lottery.lose": "No luck this time…",
-  "message.wildplus.lottery.win": "You won %s! (tax %s)",
+  "message.wildplus.lottery.win": "Winner! You got %s coins (tax-free)",
   "message.wildplus.lottery.jackpot": "%s won %s on a scratch ticket!",
   "item.wildplus.jade_sword": "Jade Sword",
   "item.wildplus.jade_pickaxe": "Jade Pickaxe",

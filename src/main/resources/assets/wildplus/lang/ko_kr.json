@@ -225,7 +225,7 @@
   "message.wildplus.bounty.done": "의뢰 완료! %s ×%s 납품 → %s동",
   "message.wildplus.shipping.sold": "출하 상자: %s개 팔림, %s동 (세금 %s동) → 통장에 %s동",
   "message.wildplus.lottery.lose": "꽝! 다음 기회에…",
-  "message.wildplus.lottery.win": "당첨! %s동 (세금 %s동)",
+  "message.wildplus.lottery.win": "당첨! %s동을 동전으로 받았어요 (세금 없음)",
   "message.wildplus.lottery.jackpot": "%s 님이 즉석 복권 %s동에 당첨됐어요!",
   "item.wildplus.jade_sword": "비취 검",
   "item.wildplus.jade_pickaxe": "비취 곡괭이",

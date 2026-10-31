@@ -46,6 +46,7 @@ POTIONS_EN = {"miners_focus": "Miner's Focus", "strong_miners_focus": "Strong Mi
 
 LANG_KO = {
     "gui.wildplus.vending.fixed": "진열된 묶음째로 팝니다 (개수 그대로)",
+    "message.wildplus.lottery.win": "당첨! %s동을 동전으로 받았어요 (세금 없음)",
     "gui.wildplus.vending.fixed_owned": "1개씩 팝니다 · 가격은 개당",
     "entity.wildplus.wanted": "현상수배범",
     "entity.wildplus.bandit_boss": "도적 두목",
@@ -63,6 +64,7 @@ LANG_KO = {
 }
 LANG_EN = {
     "gui.wildplus.vending.fixed": "Sold as the shown bundle",
+    "message.wildplus.lottery.win": "Winner! You got %s coins (tax-free)",
     "gui.wildplus.vending.fixed_owned": "Sold one at a time · price per item",
     "entity.wildplus.wanted": "Wanted Outlaw",
     "entity.wildplus.bandit_boss": "Bandit Chief",

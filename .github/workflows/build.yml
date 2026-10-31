@@ -324,7 +324,7 @@ jobs:
 
       - name: Client visual test
         id: client
-        if: steps.smoke.outcome == 'success'
+        if: steps.smoke.outcome == 'success' && !contains(github.event.head_commit.message, '[quick]')
         continue-on-error: true
         timeout-minutes: 30
         env:

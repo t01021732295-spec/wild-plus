@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 
 /**
  * 즉석 복권 (30동). 우클릭으로 긁는다.
- * 꽝 50% · 5동 30% · 20동 12% · 100동 6% · 500동 1.8% · 5,000동 0.2% (평균 약 29동)
+ * 꽝 50% · 5동 30% · 20동 12% · 100동 6% · 500동 1.8% · 5,000동 0.2% (평균 약 29동). 당첨금은 세금 없음.
  */
 public class LotteryTicketItem extends Item {
     private static final long[] PRIZES = {0, 5, 20, 100, 500, 5000};
@@ -41,9 +41,11 @@ public class LotteryTicketItem extends Item {
                 sp.sendOverlayMessage(Component.translatable("message.wildplus.lottery.lose").withStyle(ChatFormatting.GRAY));
                 level.playSound(null, sp.blockPosition(), SoundEvents.VILLAGER_NO, SoundSource.PLAYERS, 0.6F, 1.0F);
             } else {
-                long net = com.snolred.wildplus.economy.Tax.collect(sp.level().getServer(), sp.getUUID(), prize);
-                Coins.refund(sp, net);
-                sp.sendOverlayMessage(Component.translatable("message.wildplus.lottery.win", prize, prize - net).withStyle(ChatFormatting.GOLD));
+                // 복권 당첨금은 세금 없이, 동전으로 바로 가방에 (가방이 꽉 차면 발밑에)
+                Coins.give(sp, prize);
+                sp.inventoryMenu.broadcastChanges();
+                sp.sendOverlayMessage(Component.translatable("message.wildplus.lottery.win", String.format("%,d", prize)).withStyle(ChatFormatting.GOLD));
+                sp.sendSystemMessage(Component.translatable("message.wildplus.lottery.win", String.format("%,d", prize)).withStyle(ChatFormatting.GOLD));
                 level.playSound(null, sp.blockPosition(), prize >= 500 ? SoundEvents.UI_TOAST_CHALLENGE_COMPLETE : SoundEvents.PLAYER_LEVELUP,
                         SoundSource.PLAYERS, 0.8F, 1.2F);
                 if (prize >= 500) {

@@ -5,7 +5,7 @@
 ## 설치 (CurseForge)
 
 1. CurseForge에서 **Minecraft 26.3 + NeoForge** 프로필을 만든다 (Create Custom Profile → 버전 26.3, 모드 로더 NeoForge).
-2. 이 저장소의 **Releases → latest** 에서 `wildplus-1.9.0.jar` 를 받는다.
+2. 이 저장소의 **Releases → latest** 에서 `wildplus-1.9.1.jar` 를 받는다.
 3. 프로필의 `…` 메뉴 → **Open Folder** → `mods` 폴더에 jar를 넣고 실행.
 
 ## 기능
