@@ -106,14 +106,14 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
 
     @Override
     public ItemStack removeItem(int slot, int amount) {
-        ItemStack r = Containers.removeItem(items, slot, amount);
+        ItemStack r = net.minecraft.world.ContainerHelper.removeItem(items, slot, amount);
         if (!r.isEmpty()) setChanged();
         return r;
     }
 
     @Override
     public ItemStack removeItemNoUpdate(int slot) {
-        return Containers.takeItem(items, slot);
+        return net.minecraft.world.ContainerHelper.takeItem(items, slot);
     }
 
     @Override
