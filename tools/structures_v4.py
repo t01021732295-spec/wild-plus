@@ -90,13 +90,29 @@ GEAR = [("wildplus:mythril_ingot", 1, 40), ("wildplus:jade", 1, 20), ("wildplus:
         ("minecraft:anvil", 1, 40), ("minecraft:experience_bottle", 4, 30), ("wildplus:enhance_table", 1, 250)]
 
 
-def town():
-    t = Template(W, H, W)
+class Off:
+    """다른 템플릿 안의 (ox, oz) 위치에 그리는 대리자"""
+
+    def __init__(self, base, ox, oz):
+        self.base, self.ox, self.oz = base, ox, oz
+
+    def set(self, x, y, z, block, props=None, nbt=None):
+        self.base.set(x + self.ox, y, z + self.oz, block, props, nbt)
+
+    def fill(self, x1, y1, z1, x2, y2, z2, block, props=None):
+        self.base.fill(x1 + self.ox, y1, z1 + self.oz, x2 + self.ox, y2, z2 + self.oz, block, props)
+
+    def entity(self, x, y, z, nbt):
+        self.base.entity(x + self.ox, y, z + self.oz, nbt)
+
+
+def town(base=None, ox=0, oz=0, fence=True):
+    t = Template(W, H, W) if base is None else Off(base, ox, oz)
     # 땅: 잔디 + 가장자리 울타리(입구 4곳)
     t.fill(0, 0, 0, W - 1, 0, W - 1, "minecraft:grass_block", {"snowy": "false"})
     for i in range(W):
         for (x, z) in ((i, 0), (i, W - 1), (0, i), (W - 1, i)):
-            if not (21 <= i <= 26):
+            if fence and not (21 <= i <= 26):
                 t.set(x, 1, z, "minecraft:oak_fence", FENCE)
     # 십자 큰길 (가운데 돌길 + 양쪽 보도)
     for i in range(W):
@@ -190,7 +206,7 @@ def town():
             place(t, x0 + 4, back, "wildplus:bounty_board", face(f))
             place(t, x0 + 6, back, "wildplus:warp_point")
             place(t, x0 + 4, mid, "wildplus:hall_of_fame", face(f))
-    return t.save("town")
+    return t.save("town") if base is None else None
 
 
 if __name__ == "__main__":

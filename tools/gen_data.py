@@ -337,6 +337,10 @@ def main():
     data_v8.build(json.loads((_A / "lang/ko_kr.json").read_text()), json.loads((_A / "lang/en_us.json").read_text()))
     import data_v9
     data_v9.build(json.loads((_A / "lang/ko_kr.json").read_text()), json.loads((_A / "lang/en_us.json").read_text()))
+    import structures_v5
+    print("big town", structures_v5.big_town(), "hideout", structures_v5.hideout())
+    import data_v10
+    data_v10.build(json.loads((_A / "lang/ko_kr.json").read_text()), json.loads((_A / "lang/en_us.json").read_text()))
     n = sum(1 for _ in RES.rglob("*.json"))
     print("ok", n, "json files")
 

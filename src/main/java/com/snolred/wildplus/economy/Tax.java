@@ -35,6 +35,7 @@ public final class Tax {
     /** 소득을 신고하고 세금을 뗀 실수령액을 돌려준다 */
     public static long collect(MinecraftServer server, UUID player, long gross) {
         if (gross <= 0 || !WildConfig.TAX_ENABLED.getAsBoolean()) return Math.max(0, gross);
+        if (com.snolred.wildplus.event.RandomEvents.isActive(com.snolred.wildplus.event.RandomEvents.Type.TAX_HOLIDAY)) return gross;
         WildData data = WildData.get(server);
         long day = server.overworld().getOverworldClockTime() / 24000L;
         long[] rec = data.taxes.computeIfAbsent(player, k -> new long[3]);

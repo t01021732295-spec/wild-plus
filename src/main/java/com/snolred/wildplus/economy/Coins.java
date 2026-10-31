@@ -10,6 +10,8 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.ItemContainerContents;
+import net.minecraft.core.NonNullList;
 
 /**
  * 화폐 시스템.
@@ -44,8 +46,52 @@ public final class Coins {
         CustomData.update(DataComponents.CUSTOM_DATA, pouch, tag -> tag.putLong(POUCH_KEY, Math.max(0L, value)));
     }
 
-    /** 인벤토리의 동전 + 주머니 금액 합계 */
+    /** 배낭 안의 동전 + 주머니 금액 */
+    public static long backpackValue(ItemStack bag) {
+        if (!(bag.getItem() instanceof com.snolred.wildplus.item.BackpackItem)) return 0;
+        long total = 0;
+        for (ItemStack s : bag.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyItemsCopy()) {
+            total += (long) unitValue(s) * s.getCount();
+            if (isPouch(s)) total += pouchValue(s);
+        }
+        return total;
+    }
+
+    /** 배낭에서 동전을 모두 빼고 주머니를 비운다 (돌려준 금액만큼) */
+    private static long emptyBackpack(ItemStack bag) {
+        if (!(bag.getItem() instanceof com.snolred.wildplus.item.BackpackItem b)) return 0;
+        long taken = 0;
+        NonNullList<ItemStack> items = NonNullList.withSize(b.size(), ItemStack.EMPTY);
+        bag.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyInto(items);
+        for (int i = 0; i < items.size(); i++) {
+            ItemStack s = items.get(i);
+            if (unitValue(s) > 0) {
+                taken += (long) unitValue(s) * s.getCount();
+                items.set(i, ItemStack.EMPTY);
+            } else if (isPouch(s)) {
+                taken += pouchValue(s);
+                setPouchValue(s, 0);
+            }
+        }
+        if (taken > 0) bag.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(items));
+        return taken;
+    }
+
+    /** 인벤토리의 동전 + 주머니 금액 + 배낭 속 돈 합계 */
     public static long totalValue(Player player) {
+        Inventory inv = player.getInventory();
+        long total = 0;
+        for (int i = 0; i < inv.getContainerSize(); i++) {
+            ItemStack s = inv.getItem(i);
+            total += (long) unitValue(s) * s.getCount();
+            if (isPouch(s)) total += pouchValue(s);
+            total += backpackValue(s);
+        }
+        return total;
+    }
+
+    /** 배낭을 빼고 몸에 지닌 돈만 */
+    public static long carriedValue(Player player) {
         Inventory inv = player.getInventory();
         long total = 0;
         for (int i = 0; i < inv.getContainerSize(); i++) {
@@ -62,6 +108,7 @@ public final class Coins {
      */
     public static boolean pay(Player player, long price) {
         if (price <= 0) return true;
+        long carried = carriedValue(player);
         long total = totalValue(player);
         if (total < price) return false;
         Inventory inv = player.getInventory();
@@ -75,7 +122,12 @@ public final class Coins {
                 if (firstPouch.isEmpty()) firstPouch = s;
             }
         }
-        long change = total - price;
+        // 몸에 지닌 돈이 모자랄 때만 배낭 속 돈까지 꺼내 쓴다
+        long pool = carried;
+        if (carried < price) {
+            for (int i = 0; i < inv.getContainerSize() && pool < price; i++) pool += emptyBackpack(inv.getItem(i));
+        }
+        long change = pool - price;
         if (!firstPouch.isEmpty()) {
             setPouchValue(firstPouch, change);
         } else {

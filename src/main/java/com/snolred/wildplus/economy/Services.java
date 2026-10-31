@@ -32,7 +32,11 @@ public final class Services {
                 new Buff("힘 I (10분)", MobEffects.STRENGTH, 0, 600, 120),
                 new Buff("저항 I (10분)", MobEffects.RESISTANCE, 0, 600, 150),
                 new Buff("행운 I (10분)", MobEffects.LUCK, 0, 600, 150),
-                new Buff("재생 I (2분)", MobEffects.REGENERATION, 0, 120, 100));
+                new Buff("재생 I (2분)", MobEffects.REGENERATION, 0, 120, 100),
+                new Buff("광부의 집중 (10분)", com.snolred.wildplus.registry.ModEffects.MINERS_FOCUS, 0, 600, 100),
+                new Buff("강철 피부 (10분)", com.snolred.wildplus.registry.ModEffects.IRONSKIN, 0, 600, 140),
+                new Buff("탐욕 (10분)", com.snolred.wildplus.registry.ModEffects.GREED, 0, 600, 200),
+                new Buff("광전사 (3분)", com.snolred.wildplus.registry.ModEffects.BERSERK, 0, 180, 120));
     }
 
     private static boolean near(Player p, BlockPos pos) {

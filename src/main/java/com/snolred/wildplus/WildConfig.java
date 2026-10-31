@@ -77,6 +77,21 @@ public final class WildConfig {
 
     static {
         BUILDER.pop();
+        BUILDER.push("randomEvents");
+    }
+
+    public static final ModConfigSpec.BooleanValue EVENTS_ENABLED = BUILDER
+            .comment("랜덤 이벤트 (골드 러시 · 유성우 · 보급품 낙하 등 24종)")
+            .translation("wildplus.configuration.eventsEnabled")
+            .define("eventsEnabled", true);
+
+    public static final ModConfigSpec.IntValue EVENT_INTERVAL = BUILDER
+            .comment("이벤트 사이 평균 간격 (분, 실제 시간)")
+            .translation("wildplus.configuration.eventInterval")
+            .defineInRange("eventInterval", 15, 3, 240);
+
+    static {
+        BUILDER.pop();
     }
 
     public static final ModConfigSpec SPEC = BUILDER.build();

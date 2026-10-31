@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 448812301,
+    "separation": 30,
+    "spacing": 72
+  },
+  "structures": [
+    {
+      "structure": "wildplus:bandit_hideout",
+      "weight": 1
+    }
+  ]
+}

@@ -71,6 +71,8 @@ public final class WildCommands {
                     ctx.getSource().getPlayerOrException().getInventory().add(com.snolred.wildplus.economy.Cookbook.create());
                     return 1;
                 }))
+                // 랜덤 이벤트: /wildplus event <이름> · /wildplus event stop
+                .then(eventCommand())
                 // 시험용: 핏빛 군주 · 정예 몹 소환
                 .then(Commands.literal("bloodlord").executes(ctx -> {
                     var p = ctx.getSource().getPlayerOrException();
@@ -88,5 +90,21 @@ public final class WildCommands {
                     ctx.getSource().sendSuccess(() -> Component.literal("ELITE " + z.getPersistentData().getStringOr(EliteMobs.AFFIX_TAG, "")), false);
                     return 1;
                 })));
+    }
+
+    private static com.mojang.brigadier.builder.LiteralArgumentBuilder<net.minecraft.commands.CommandSourceStack> eventCommand() {
+        var root = Commands.literal("event");
+        root.then(Commands.literal("stop").executes(ctx -> {
+            RandomEvents.stop(ctx.getSource().getServer());
+            return 1;
+        }));
+        for (RandomEvents.Type t : RandomEvents.Type.values()) {
+            root.then(Commands.literal(t.name().toLowerCase(java.util.Locale.ROOT)).executes(ctx -> {
+                RandomEvents.start(ctx.getSource().getServer(), t);
+                ctx.getSource().sendSuccess(() -> Component.literal("EVENT " + t.name()), false);
+                return 1;
+            }));
+        }
+        return root;
     }
 }

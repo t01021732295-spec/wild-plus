@@ -228,13 +228,24 @@ jobs:
             run "place template wildplus:trading_post 400 120 0"
             run "place template wildplus:bandit_camp 416 120 0"
             # 상점 마을 (x 436~487)
-            run "forceload add 436 -12 487 39"
-            for z0 in -12 14; do
-              run "fill 436 119 $z0 487 119 $((z0+25)) minecraft:grass_block"
-              run "fill 436 120 $z0 487 127 $((z0+25)) minecraft:air"
-              run "fill 436 128 $z0 487 135 $((z0+25)) minecraft:air"
+            run "forceload add 436 -12 519 71"
+            for z0 in -12 8 28 48 68; do
+              z1=$((z0+19)); [ $z1 -gt 71 ] && z1=71
+              run "fill 436 119 $z0 519 119 $z1 minecraft:grass_block"
+              run "fill 436 120 $z0 519 127 $z1 minecraft:air"
+              run "fill 436 128 $z0 519 135 $z1 minecraft:air"
             done
             run "place template wildplus:town 438 120 -10"
+            # 도적 아지트 (x 530~585)
+            run "forceload add 528 -12 589 49"
+            for z0 in -12 8 28 48; do
+              z1=$((z0+19)); [ $z1 -gt 49 ] && z1=49
+              run "fill 528 119 $z0 589 119 $z1 minecraft:grass_block"
+              run "fill 528 120 $z0 589 127 $z1 minecraft:air"
+              run "fill 528 128 $z0 589 135 $z1 minecraft:air"
+            done
+            run "place template wildplus:bandit_hideout 530 120 -10"
+            run "place structure wildplus:bandit_hideout 1100 70 600"
             run "place structure wildplus:town 900 70 600"
             echo "say TEST town"; sleep 1
             run "summon wildplus:merchant 380.5 120 5.5 {NoAI:1b,Rotation:[180f,0f]}"
@@ -630,18 +641,50 @@ jobs:
             sleep 2
             import -window root shot-bandit-camp.png || true
             xdotool key F1 || true
-            cmd "/tp @s 462 168 14 0 90"
+            cmd "/tp @s 478 186 30 0 90"
             sleep 15
             xdotool key F1 || true
             sleep 2
             import -window root shot-town.png || true
             xdotool key F1 || true
-            cmd "/tp @s 462 124 -13 0 18"
+            cmd "/tp @s 477.5 124 -13 0 18"
             sleep 6
             xdotool key F1 || true
             sleep 2
             import -window root shot-town-street.png || true
             xdotool key F1 || true
+            cmd "/tp @s 452 123 16 315 12"
+            sleep 6
+            xdotool key F1 || true
+            sleep 2
+            import -window root shot-town-houses.png || true
+            xdotool key F1 || true
+            cmd "/tp @s 558 172 18 0 90"
+            sleep 12
+            xdotool key F1 || true
+            sleep 2
+            import -window root shot-hideout.png || true
+            xdotool key F1 || true
+            cmd "/tp @s 557.5 125 40 180 15"
+            sleep 6
+            xdotool key F1 || true
+            sleep 2
+            import -window root shot-hideout-inside.png || true
+            xdotool key F1 || true
+            # 랜덤 이벤트 · 새 효과
+            cmd "/gamemode creative"
+            cmd "/tp @s 478 121 30 0 10"
+            cmd "/wildplus event meteor_shower"
+            sleep 12
+            import -window root shot-event.png || true
+            cmd "/wildplus event supply_drop"
+            sleep 3
+            cmd "/wildplus event stop"
+            cmd "/effect give @s wildplus:glass_cannon 60"
+            cmd "/effect give @s wildplus:berserk 60"
+            cmd "/effect give @s wildplus:miners_focus 60"
+            cmd "/give @s minecraft:potion[potion_contents={potion:\"wildplus:ironskin\"}]"
+            cmd "/give @s minecraft:splash_potion[potion_contents={potion:\"wildplus:bleeding\"}]"
             sleep 1
             xdotool key e || true
             sleep 3
