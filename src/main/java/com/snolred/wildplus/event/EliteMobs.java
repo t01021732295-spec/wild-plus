@@ -143,7 +143,7 @@ public final class EliteMobs {
     public static void onDamage(net.neoforged.neoforge.event.entity.living.LivingDamageEvent.Post event) {
         LivingEntity target = event.getEntity();
         if (!(target.level() instanceof ServerLevel level)) return;
-        float dmg = event.getNewDamage();
+        float dmg = event.getHealthDamage();
         // 정예가 때렸을 때
         if (event.getSource().getEntity() instanceof LivingEntity attacker && isElite(attacker) && event.getSource().getDirectEntity() == attacker) {
             if (hasAffix(attacker, Affix.BURNING)) target.igniteForSeconds(4.0F);

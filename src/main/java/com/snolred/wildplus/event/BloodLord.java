@@ -209,7 +209,7 @@ public final class BloodLord {
     @SubscribeEvent
     public static void onDamage(LivingDamageEvent.Post event) {
         if (event.getSource().getEntity() instanceof LivingEntity src && isLord(src)) {
-            src.heal(event.getNewDamage() * 0.3F);
+            src.heal(event.getHealthDamage() * 0.3F);
             event.getEntity().addEffect(new MobEffectInstance(MobEffects.WITHER, 20 * 4, 0));
         }
     }
