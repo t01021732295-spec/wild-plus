@@ -1,0 +1,3 @@
+assets/minecraft/models/block/template_torch_wall.json
+assets/minecraft/models/block/cross.json
+assets/minecraft/models/block/lantern.json
