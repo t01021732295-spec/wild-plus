@@ -82,7 +82,7 @@ def raid_altar():
     T = {
         "bricks": "minecraft:block/polished_blackstone_bricks", "stone": "minecraft:block/polished_blackstone",
         "chisel": "minecraft:block/chiseled_polished_blackstone", "gilded": "minecraft:block/gilded_blackstone",
-        "gold": "minecraft:block/gold_block", "crying": "minecraft:block/crying_obsidian", "fire": "minecraft:block/soul_fire_0",
+        "gold": "minecraft:block/gold_block", "crying": "minecraft:block/crying_obsidian", "magma": "minecraft:block/magma",
         "runes": i("block/raid_altar_top"), "particle": "minecraft:block/polished_blackstone_bricks",
     }
     el = [
@@ -103,8 +103,7 @@ def raid_altar():
     for (cx, cz) in [(-14, -14), (26, -14), (-14, 26), (26, 26)]:
         el.append(box([cx, 4, cz], [cx + 4, 18, cz + 4], {"side": "#bricks", "up": "#stone", "down": "#stone"}))
         el.append(box([cx - 1, 18, cz - 1], [cx + 5, 20, cz + 5], {"side": "#gilded", "up": "#gold", "down": "#gold"}))
-        el.append(plane_x([cx - 1, 20, cz + 2], [cx + 5, 28, cz + 2], "#fire", 45))
-        el.append(plane_x([cx - 1, 20, cz + 2], [cx + 5, 28, cz + 2], "#fire", -45))
+        el.append(box([cx + 0.5, 20, cz + 0.5], [cx + 3.5, 23, cz + 3.5], "#magma"))
     write(ASSETS / "models/block/raid_altar.json", {"parent": "minecraft:block/block", "render_type": "minecraft:cutout",
                                                     "textures": T, "elements": el, "display": display(0.2)})
     write(ASSETS / "blockstates/raid_altar.json", rotated_states("raid_altar", i("block/raid_altar")))

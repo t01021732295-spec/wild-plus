@@ -8,7 +8,7 @@
     "gilded": "minecraft:block/gilded_blackstone",
     "gold": "minecraft:block/gold_block",
     "crying": "minecraft:block/crying_obsidian",
-    "fire": "minecraft:block/soul_fire_0",
+    "magma": "minecraft:block/magma",
     "runes": "wildplus:block/raid_altar_top",
     "particle": "minecraft:block/polished_blackstone_bricks"
   },
@@ -312,61 +312,33 @@
     },
     {
       "from": [
-        -15,
+        -13.5,
         20,
-        -12
+        -13.5
       ],
       "to": [
-        -9,
-        28,
-        -12
+        -10.5,
+        23,
+        -10.5
       ],
-      "rotation": {
-        "origin": [
-          -12.0,
-          20,
-          -12.0
-        ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": true
-      },
       "faces": {
         "north": {
-          "texture": "#fire"
+          "texture": "#magma"
         },
         "south": {
-          "texture": "#fire"
-        }
-      }
-    },
-    {
-      "from": [
-        -15,
-        20,
-        -12
-      ],
-      "to": [
-        -9,
-        28,
-        -12
-      ],
-      "rotation": {
-        "origin": [
-          -12.0,
-          20,
-          -12.0
-        ],
-        "axis": "y",
-        "angle": -45,
-        "rescale": true
-      },
-      "faces": {
-        "north": {
-          "texture": "#fire"
+          "texture": "#magma"
         },
-        "south": {
-          "texture": "#fire"
+        "east": {
+          "texture": "#magma"
+        },
+        "west": {
+          "texture": "#magma"
+        },
+        "up": {
+          "texture": "#magma"
+        },
+        "down": {
+          "texture": "#magma"
         }
       }
     },
@@ -436,61 +408,33 @@
     },
     {
       "from": [
-        25,
+        26.5,
         20,
-        -12
+        -13.5
       ],
       "to": [
-        31,
-        28,
-        -12
+        29.5,
+        23,
+        -10.5
       ],
-      "rotation": {
-        "origin": [
-          28.0,
-          20,
-          -12.0
-        ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": true
-      },
       "faces": {
         "north": {
-          "texture": "#fire"
+          "texture": "#magma"
         },
         "south": {
-          "texture": "#fire"
-        }
-      }
-    },
-    {
-      "from": [
-        25,
-        20,
-        -12
-      ],
-      "to": [
-        31,
-        28,
-        -12
-      ],
-      "rotation": {
-        "origin": [
-          28.0,
-          20,
-          -12.0
-        ],
-        "axis": "y",
-        "angle": -45,
-        "rescale": true
-      },
-      "faces": {
-        "north": {
-          "texture": "#fire"
+          "texture": "#magma"
         },
-        "south": {
-          "texture": "#fire"
+        "east": {
+          "texture": "#magma"
+        },
+        "west": {
+          "texture": "#magma"
+        },
+        "up": {
+          "texture": "#magma"
+        },
+        "down": {
+          "texture": "#magma"
         }
       }
     },
@@ -560,61 +504,33 @@
     },
     {
       "from": [
-        -15,
+        -13.5,
         20,
-        28
+        26.5
       ],
       "to": [
-        -9,
-        28,
-        28
+        -10.5,
+        23,
+        29.5
       ],
-      "rotation": {
-        "origin": [
-          -12.0,
-          20,
-          28.0
-        ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": true
-      },
       "faces": {
         "north": {
-          "texture": "#fire"
+          "texture": "#magma"
         },
         "south": {
-          "texture": "#fire"
-        }
-      }
-    },
-    {
-      "from": [
-        -15,
-        20,
-        28
-      ],
-      "to": [
-        -9,
-        28,
-        28
-      ],
-      "rotation": {
-        "origin": [
-          -12.0,
-          20,
-          28.0
-        ],
-        "axis": "y",
-        "angle": -45,
-        "rescale": true
-      },
-      "faces": {
-        "north": {
-          "texture": "#fire"
+          "texture": "#magma"
         },
-        "south": {
-          "texture": "#fire"
+        "east": {
+          "texture": "#magma"
+        },
+        "west": {
+          "texture": "#magma"
+        },
+        "up": {
+          "texture": "#magma"
+        },
+        "down": {
+          "texture": "#magma"
         }
       }
     },
@@ -684,61 +600,33 @@
     },
     {
       "from": [
-        25,
+        26.5,
         20,
-        28
+        26.5
       ],
       "to": [
-        31,
-        28,
-        28
+        29.5,
+        23,
+        29.5
       ],
-      "rotation": {
-        "origin": [
-          28.0,
-          20,
-          28.0
-        ],
-        "axis": "y",
-        "angle": 45,
-        "rescale": true
-      },
       "faces": {
         "north": {
-          "texture": "#fire"
+          "texture": "#magma"
         },
         "south": {
-          "texture": "#fire"
-        }
-      }
-    },
-    {
-      "from": [
-        25,
-        20,
-        28
-      ],
-      "to": [
-        31,
-        28,
-        28
-      ],
-      "rotation": {
-        "origin": [
-          28.0,
-          20,
-          28.0
-        ],
-        "axis": "y",
-        "angle": -45,
-        "rescale": true
-      },
-      "faces": {
-        "north": {
-          "texture": "#fire"
+          "texture": "#magma"
         },
-        "south": {
-          "texture": "#fire"
+        "east": {
+          "texture": "#magma"
+        },
+        "west": {
+          "texture": "#magma"
+        },
+        "up": {
+          "texture": "#magma"
+        },
+        "down": {
+          "texture": "#magma"
         }
       }
     }
