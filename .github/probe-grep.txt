@@ -1,2 +1,0 @@
-net/minecraft/client/gui/components/Button.java	class Button|protected void|public void|extract	6
-net/minecraft/client/gui/components/AbstractButton.java	protected|public	4
