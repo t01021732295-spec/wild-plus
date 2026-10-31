@@ -1,0 +1,7 @@
+data/minecraft/recipe/brewing/potion_awkward_sugar.json
+data/minecraft/recipe/brewing/splash_potion_awkward_sugar.json
+data/minecraft/recipe/brewing/lingering_potion_awkward_sugar.json
+data/minecraft/recipe/brewing/potion_swiftness_redstone.json
+data/minecraft/recipe/brewing/potion_swiftness_glowstone_dust.json
+data/minecraft/recipe/brewing/potion_swiftness_fermented_spider_eye.json
+data/minecraft/recipe/brewing/potion_water_nether_wart.json
