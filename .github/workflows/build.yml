@@ -296,7 +296,7 @@ jobs:
             run "setblock 58 120 38 wildplus:auto_fisher{timer:30,items:[{id:\"minecraft:fishing_rod\",count:1}]}"
             sleep 8
             echo "say TEST machines"; sleep 1
-            run "execute if block 52 120 32 minecraft:wheat[age=0] if block 56 120 36 minecraft:wheat[age=0] run say AUTOHARVEST_OK"
+            run "execute unless block 52 120 32 minecraft:wheat[age=7] if block 52 120 32 minecraft:wheat unless block 56 120 36 minecraft:wheat[age=7] run say AUTOHARVEST_OK"
             run "data get block 54 120 34 items"
             run "data get block 50 120 30 items"
             run "data get block 58 120 38 items"
@@ -563,11 +563,15 @@ jobs:
             cmd "/gamemode survival"
             cmd "/clear @s"
             cmd "/effect give @s minecraft:haste 60 20 true"
+            cmd "/fill 375 112 -15 379 118 -11 minecraft:stone"
             cmd "/fill 376 119 -14 378 119 -12 minecraft:stone"
             cmd "/item replace entity @s weapon.mainhand with wildplus:drill"
             cmd "/tp @s 377.5 120 -12.5 0 90"
             sleep 2; xdotool mousedown 1; sleep 1.2; xdotool mouseup 1; sleep 2
             cmd "/execute if block 376 119 -14 minecraft:air if block 378 119 -12 minecraft:air run say DRILL_OK"
+            cmd "/tp @s 377.5 121 -8.5"
+            cmd "/fill 376 119 -14 378 119 -12 minecraft:grass_block"
+            sleep 1
             cmd "/gamemode creative"
             # ── 10차: 명예의 전당 · 블록 겉모습 · 정예 · 핏빛 군주 ──
             cmd "/setblock 410 120 -6 wildplus:hall_of_fame[facing=north]"
