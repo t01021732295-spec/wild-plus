@@ -18,6 +18,9 @@ public final class ModItems6 {
             p -> new net.minecraft.world.item.SpawnEggItem(p.spawnEgg(ModEntities.FISHER_MERCHANT.get())));
     public static final DeferredItem<net.minecraft.world.item.SpawnEggItem> BANKER_MERCHANT_SPAWN_EGG = ITEMS.registerItem("banker_merchant_spawn_egg",
             p -> new net.minecraft.world.item.SpawnEggItem(p.spawnEgg(ModEntities.BANKER_MERCHANT.get())));
+    /** 망자의 두루마리: 마지막으로 죽은 곳으로 순간이동 */
+    public static final DeferredItem<com.snolred.wildplus.item.DeathScrollItem> DEATH_SCROLL = ITEMS.registerItem("death_scroll",
+            com.snolred.wildplus.item.DeathScrollItem::new, p -> p.stacksTo(16).rarity(Rarity.UNCOMMON));
     public static final DeferredItem<BlockItem> HALL_OF_FAME = ITEMS.registerSimpleBlockItem("hall_of_fame", ModBlocks.HALL_OF_FAME);
 
     public static void init() {}

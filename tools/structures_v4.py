@@ -74,13 +74,13 @@ SEEDS = [("minecraft:wheat_seeds", 16, 2), ("wildplus:tomato_seeds", 8, 2), ("wi
          ("wildplus:strawberry", 4, 3), ("minecraft:carrot", 8, 3), ("minecraft:potato", 8, 3),
          ("minecraft:bone_meal", 16, 4), ("wildplus:fertilizer", 8, 3), ("minecraft:oak_sapling", 4, 2)]
 TOOLS = [("minecraft:iron_pickaxe", 1, 40), ("minecraft:iron_axe", 1, 40), ("minecraft:iron_shovel", 1, 25),
-         ("minecraft:shears", 1, 15), ("minecraft:bucket", 1, 20), ("wildplus:copper_backpack", 1, 60),
+         ("wildplus:death_scroll", 1, 60), ("minecraft:bucket", 1, 20), ("wildplus:copper_backpack", 1, 60),
          ("wildplus:teleporter", 1, 40), ("wildplus:chunk_loader", 1, 100), ("wildplus:lottery_ticket", 1, 30)]
 BUILD = [("minecraft:torch", 32, 1), ("minecraft:oak_log", 16, 4), ("minecraft:stone_bricks", 32, 6),
          ("minecraft:glass", 16, 5), ("minecraft:oak_planks", 32, 3), ("minecraft:lantern", 4, 6),
          ("minecraft:white_bed", 1, 15), ("minecraft:chest", 2, 6), ("minecraft:crafting_table", 1, 3)]
 MEDICINE = [("minecraft:golden_apple", 1, 80), ("minecraft:honey_bottle", 2, 15), ("minecraft:milk_bucket", 1, 20),
-            ("minecraft:golden_carrot", 4, 20), ("wildplus:recall_scroll", 1, 40), ("minecraft:glistering_melon_slice", 2, 30),
+            ("minecraft:golden_carrot", 4, 20), ("wildplus:recall_scroll", 1, 40), ("wildplus:death_scroll", 1, 60),
             ("minecraft:ender_pearl", 2, 40), ("minecraft:experience_bottle", 4, 40), ("minecraft:totem_of_undying", 1, 3000)]
 LOTTO = [("wildplus:lottery_ticket", 1, 30), ("wildplus:lottery_ticket", 5, 150), ("wildplus:coin_pouch", 1, 15),
          ("minecraft:firework_rocket", 8, 8), ("minecraft:cookie", 8, 2), ("minecraft:cake", 1, 15),

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " B ",
+    "PEP",
+    " S "
+  ],
+  "key": {
+    "B": "minecraft:bone",
+    "P": "minecraft:paper",
+    "E": "minecraft:ender_pearl",
+    "S": "wildplus:silver_coin"
+  },
+  "result": {
+    "id": "wildplus:death_scroll",
+    "count": 1
+  }
+}

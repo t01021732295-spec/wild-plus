@@ -174,7 +174,7 @@
   "block.wildplus.bounty_board": "Bounty Board",
   "block.wildplus.shipping_bin": "Shipping Bin",
   "block.wildplus.exchange": "Currency Exchange",
-  "tooltip.wildplus.exchange": "Swap copper ↔ silver ↔ gold coins both ways (no fee)",
+  "tooltip.wildplus.exchange": "Swap copper ↔ silver ↔ gold\nRates change every morning (buying costs 1 more than selling)",
   "container.wildplus.exchange": "Currency Exchange",
   "message.wildplus.exchange.not_enough": "Not enough coins to exchange",
   "item.wildplus.teleporter": "Pocket Teleporter",
@@ -472,5 +472,13 @@
   "item.minecraft.potion.effect.wildplus_lifesteal": "Potion of Lifesteal",
   "item.minecraft.splash_potion.effect.wildplus_lifesteal": "Splash Potion of Lifesteal",
   "item.minecraft.lingering_potion.effect.wildplus_lifesteal": "Lingering Potion of Lifesteal",
-  "item.minecraft.tipped_arrow.effect.wildplus_lifesteal": "Arrow of Lifesteal"
+  "item.minecraft.tipped_arrow.effect.wildplus_lifesteal": "Arrow of Lifesteal",
+  "structure.wildplus.dungeon": "Ancient Catacomb",
+  "entity.wildplus.dungeon_guardian": "Ancient Guardian",
+  "message.wildplus.dungeon_guardian.call": "The Ancient Guardian summoned skeleton guards!",
+  "message.wildplus.dungeon_guardian.dead": "★ %s defeated the Ancient Guardian! The catacomb vault is open",
+  "item.wildplus.death_scroll": "Scroll of the Departed",
+  "tooltip.wildplus.death_scroll": "Read for 3 seconds to return to where you last died (any dimension)\nFire Resistance, Slow Falling and Resistance for 10s on arrival",
+  "message.wildplus.death_scroll.none": "You haven't died yet",
+  "message.wildplus.death_scroll.done": "Returned to where you last died (%s, %s, %s)"
 }

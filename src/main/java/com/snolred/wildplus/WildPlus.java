@@ -62,6 +62,8 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.BloodMoonReward.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.BloodLord.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.RandomEvents.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.VillageLife.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.DungeonGuardian.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.EffectEvents.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.Honor.class);
 

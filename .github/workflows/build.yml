@@ -246,6 +246,12 @@ jobs:
             done
             run "place template wildplus:bandit_hideout 530 120 -10"
             run "place structure wildplus:bandit_hideout 1100 70 600"
+            # 대형 던전 (x 600~663, 땅 y 120)
+            run "forceload add 598 -12 665 55"
+            run "place template wildplus:dungeon 600 98 -10"
+            run "place structure wildplus:dungeon 1300 70 600"
+            sleep 2
+            run "execute if block 619 109 9 minecraft:spawner if block 632 99 52 minecraft:air run say DUNGEON_OK"
             run "place structure wildplus:town 900 70 600"
             echo "say TEST town"; sleep 1
             run "summon wildplus:merchant 380.5 120 5.5 {NoAI:1b,Rotation:[180f,0f]}"
@@ -672,6 +678,23 @@ jobs:
             xdotool key F1 || true
             sleep 2
             import -window root shot-hideout-inside.png || true
+            xdotool key F1 || true
+            # 던전 내부 (야간 투시)
+            cmd "/effect give @s minecraft:night_vision 120 0 true"
+            cmd "/tp @s 632.5 111 16.5 180 10"
+            sleep 6
+            xdotool key F1 || true
+            sleep 1
+            import -window root shot-dungeon-hall.png || true
+            xdotool key F1 || true
+            cmd "/tp @s 632.5 102 33.5 0 20"
+            sleep 6
+            import -window root shot-dungeon-boss.png || true
+            cmd "/tp @s 619.5 111 4.5 0 25"
+            sleep 4
+            xdotool key F1 || true
+            sleep 1
+            import -window root shot-dungeon-room.png || true
             xdotool key F1 || true
             # 랜덤 이벤트 · 새 효과
             cmd "/gamemode creative"

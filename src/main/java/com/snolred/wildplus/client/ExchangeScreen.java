@@ -21,21 +21,38 @@ public class ExchangeScreen extends AbstractContainerScreen<ExchangeMenu> {
     @Override
     protected void init() {
         super.init();
-        String[] labels = {"동화 10 → 은화 1", "은화 10 → 금화 1", "금화 1 → 은화 10", "은화 1 → 동화 10"};
         int[] ids = {ExchangeMenu.C2S, ExchangeMenu.S2G, ExchangeMenu.G2S, ExchangeMenu.S2C};
+        rateButtons.clear();
         for (int r = 0; r < 4; r++) {
             int y = topPos + 96 + r * 19 + (r >= 2 ? 14 : 0);
             int id = ids[r];
             UiButton.Style st = r < 2 ? UiButton.GREEN : UiButton.BLUE;
-            btn(labels[r], id, leftPos + 10, y, 136, st);
+            rateButtons.add(btn("", id, leftPos + 10, y, 136, st));
             btn("전부", id + 1, leftPos + 150, y, 68, UiButton.WHITE);
         }
+        updateLabels();
         btn("가장 적은 개수로 정리", ExchangeMenu.TIDY, leftPos + 10, topPos + H - 26, 124, UiButton.GOLD);
         btn("전부 동화로", ExchangeMenu.ALL_COPPER, leftPos + 138, topPos + H - 26, 80, UiButton.WHITE);
     }
 
-    private void btn(String label, int id, int x, int y, int w, UiButton.Style style) {
-        addRenderableWidget(UiButton.of(x, y, w, 17, label, style, () -> {
+    private final java.util.List<UiButton> rateButtons = new java.util.ArrayList<>();
+
+    private void updateLabels() {
+        if (rateButtons.size() < 4) return;
+        rateButtons.get(0).setMessage(Component.literal("동화 " + menu.silverBuy() + " → 은화 1"));
+        rateButtons.get(1).setMessage(Component.literal("은화 " + menu.goldBuy() + " → 금화 1"));
+        rateButtons.get(2).setMessage(Component.literal("금화 1 → 은화 " + menu.goldSell()));
+        rateButtons.get(3).setMessage(Component.literal("은화 1 → 동화 " + menu.silverSell()));
+    }
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+        updateLabels();
+    }
+
+    private UiButton btn(String label, int id, int x, int y, int w, UiButton.Style style) {
+        return addRenderableWidget(UiButton.of(x, y, w, 17, label, style, () -> {
             if (this.minecraft != null && this.minecraft.gameMode != null) {
                 this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, id);
             }
@@ -73,12 +90,13 @@ public class ExchangeScreen extends AbstractContainerScreen<ExchangeMenu> {
     @Override
     protected void extractLabels(GuiGraphicsExtractor g, int mouseX, int mouseY) {
         UiKit.bold(g, "₩ 환전 창구", 10, 7, 0xFFFFFFFF);
-        UiKit.right(g, "수수료 없음", W - 10, 7, 0xFFB8F0D8);
-        // 고시판 (호박색 LED 글자)
-        UiKit.text(g, "환율 고시", 16, 28, 0xFFFF9F1A);
-        UiKit.right(g, "금화 1 = 은화 10 = 동화 100", W - 16, 28, 0xFFFFC34D);
-        UiKit.text(g, "● 영업 중", 16, 39, 0xFF56E39F);
-        UiKit.right(g, "올리기·내리기 같은 비율", W - 16, 39, 0xFFFF9F1A);
+        UiKit.right(g, menu.day() + "일차 환율", W - 10, 7, 0xFFB8F0D8);
+        // 고시판 (호박색 LED 글자): 살 때 / 팔 때, 어제보다 오르면 ▲(빨강) 내리면 ▼(파랑)
+        UiKit.text(g, "은화", 16, 28, 0xFFFF9F1A);
+        rate(g, 40, 28, menu.silverBuy(), menu.silverSell(), menu.silverBuyYesterday());
+        UiKit.text(g, "금화", 16, 39, 0xFFFF9F1A);
+        rate(g, 40, 39, menu.goldBuy(), menu.goldSell(), menu.goldBuyYesterday());
+        UiKit.right(g, "매일 아침 바뀜", W - 16, 39, 0xFF8A6A3A);
         // 동전 수
         long[] counts = {menu.copper(), menu.silver(), menu.gold()};
         String[] names = {"동화", "은화", "금화"};
@@ -92,6 +110,18 @@ public class ExchangeScreen extends AbstractContainerScreen<ExchangeMenu> {
         UiKit.text(g, "작은 동전을 큰 동전으로", 66, 86, UiKit.INK_SOFT);
         UiKit.bold(g, "▼ 내리기", 10, 138, 0xFF2563D9);
         UiKit.text(g, "잔돈 만들기", 66, 138, UiKit.INK_SOFT);
+    }
+
+    /** "살 때 11 · 팔 때 10 ▲" */
+    private void rate(GuiGraphicsExtractor g, int x, int y, int buy, int sell, int yesterday) {
+        String s = "살 때 " + buy + " · 팔 때 " + sell;
+        UiKit.text(g, s, x, y, 0xFFFFC34D);
+        int ax = x + UiKit.font().width(s) + 4;
+        if (yesterday > 0 && buy != yesterday) {
+            UiKit.text(g, buy > yesterday ? "▲" : "▼", ax, y, buy > yesterday ? UiKit.UP : UiKit.DOWN);
+        } else {
+            UiKit.text(g, "-", ax, y, 0xFF8A6A3A);
+        }
     }
 
     @Override

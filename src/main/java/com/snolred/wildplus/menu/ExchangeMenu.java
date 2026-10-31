@@ -21,13 +21,13 @@ import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
 /**
- * 환전소: 가방 속 동전을 바꿔 준다 (수수료 없음).
- * 올리기: 동화 10 → 은화 1, 은화 10 → 금화 1 / 내리기: 금화 1 → 은화 10, 은화 1 → 동화 10.
+ * 환전소: 가방 속 동전을 그날의 환율로 바꿔 준다 (ExchangeRate, 하루마다 바뀜).
+ * 올리기: 동화 N → 은화 1, 은화 N → 금화 1 / 내리기: 금화 1 → 은화 N-1, 은화 1 → 동화 N-1.
  * 버튼 = 종류 × 2 + (0: 한 번, 1: 전부). [정리] 은 가장 적은 개수로, [잔돈으로] 는 전부 동화로.
  */
 public class ExchangeMenu extends AbstractContainerMenu {
     public static final int C2S = 0, S2G = 2, G2S = 4, S2C = 6, TIDY = 10, ALL_COPPER = 11;
-    public static final int DATA = 3;
+    public static final int DATA = 10;
 
     private final ContainerData data;
     private final @Nullable BlockPos pos;
@@ -46,6 +46,17 @@ public class ExchangeMenu extends AbstractContainerMenu {
         this.data = new ContainerData() {
             @Override
             public int get(int index) {
+                long day = com.snolred.wildplus.economy.ExchangeRate.day(player.level().getServer());
+                switch (index) {
+                    case 3: return com.snolred.wildplus.economy.ExchangeRate.silverBuy(day);
+                    case 4: return com.snolred.wildplus.economy.ExchangeRate.silverSell(day);
+                    case 5: return com.snolred.wildplus.economy.ExchangeRate.goldBuy(day);
+                    case 6: return com.snolred.wildplus.economy.ExchangeRate.goldSell(day);
+                    case 7: return com.snolred.wildplus.economy.ExchangeRate.silverBuy(day - 1);
+                    case 8: return com.snolred.wildplus.economy.ExchangeRate.goldBuy(day - 1);
+                    case 9: return (int) (day + 1);
+                    default: break;
+                }
                 Item item = switch (index) {
                     case 0 -> ModItems3.COPPER_COIN.get();
                     case 1 -> ModItems3.SILVER_COIN.get();
@@ -73,6 +84,13 @@ public class ExchangeMenu extends AbstractContainerMenu {
     public int copper() { return data.get(0); }
     public int silver() { return data.get(1); }
     public int gold() { return data.get(2); }
+    public int silverBuy() { return Math.max(1, data.get(3)); }
+    public int silverSell() { return Math.max(1, data.get(4)); }
+    public int goldBuy() { return Math.max(1, data.get(5)); }
+    public int goldSell() { return Math.max(1, data.get(6)); }
+    public int silverBuyYesterday() { return data.get(7); }
+    public int goldBuyYesterday() { return data.get(8); }
+    public int day() { return data.get(9); }
 
     private static int count(Player p, Item item) {
         int n = 0;
@@ -112,24 +130,17 @@ public class ExchangeMenu extends AbstractContainerMenu {
         Item copper = ModItems3.COPPER_COIN.get(), silver = ModItems3.SILVER_COIN.get(), gold = ModItems3.GOLD_COIN.get();
         boolean all = id % 2 == 1 && id < TIDY;
         int kind = id < TIDY ? id - id % 2 : id;
+        long day = com.snolred.wildplus.economy.ExchangeRate.day(sp.level().getServer());
+        int sBuy = com.snolred.wildplus.economy.ExchangeRate.silverBuy(day), sSell = com.snolred.wildplus.economy.ExchangeRate.silverSell(day);
+        int gBuy = com.snolred.wildplus.economy.ExchangeRate.goldBuy(day), gSell = com.snolred.wildplus.economy.ExchangeRate.goldSell(day);
         boolean ok = switch (kind) {
-            case C2S -> convert(sp, copper, 10, silver, 1, all);
-            case S2G -> convert(sp, silver, 10, gold, 1, all);
-            case G2S -> convert(sp, gold, 1, silver, 10, all);
-            case S2C -> convert(sp, silver, 1, copper, 10, all);
-            case TIDY, ALL_COPPER -> {
-                long total = (long) count(sp, copper) + count(sp, silver) * 10L + count(sp, gold) * 100L;
-                if (total == 0) yield false;
-                take(sp, copper, Integer.MAX_VALUE);
-                take(sp, silver, Integer.MAX_VALUE);
-                take(sp, gold, Integer.MAX_VALUE);
-                if (kind == TIDY) {
-                    Coins.give(sp, total);
-                } else {
-                    giveItems(sp, copper, (int) Math.min(Integer.MAX_VALUE, total));
-                }
-                yield true;
-            }
+            case C2S -> convert(sp, copper, sBuy, silver, 1, all);
+            case S2G -> convert(sp, silver, gBuy, gold, 1, all);
+            case G2S -> convert(sp, gold, 1, silver, gSell, all);
+            case S2C -> convert(sp, silver, 1, copper, sSell, all);
+            // 정리: 가능한 만큼 큰 동전으로 / 잔돈: 전부 동화로 (모두 오늘 환율)
+            case TIDY -> convert(sp, copper, sBuy, silver, 1, true) | convert(sp, silver, gBuy, gold, 1, true);
+            case ALL_COPPER -> convert(sp, gold, 1, silver, gSell, true) | convert(sp, silver, 1, copper, sSell, true);
             default -> false;
         };
         if (ok) {

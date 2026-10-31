@@ -174,7 +174,7 @@
   "block.wildplus.bounty_board": "의뢰 게시판",
   "block.wildplus.shipping_bin": "출하 상자",
   "block.wildplus.exchange": "환전소",
-  "tooltip.wildplus.exchange": "동화 ↔ 은화 ↔ 금화를 양쪽으로 바꿔 줌 (수수료 없음)",
+  "tooltip.wildplus.exchange": "동화 ↔ 은화 ↔ 금화 바꾸기\n환율이 매일 아침 바뀜 (살 때가 팔 때보다 1개 비쌈)",
   "container.wildplus.exchange": "환전소",
   "message.wildplus.exchange.not_enough": "바꿀 동전이 부족해요",
   "item.wildplus.teleporter": "소형 텔레포트기",
@@ -473,5 +473,13 @@
   "item.minecraft.potion.effect.wildplus_lifesteal": "흡혈의 물약",
   "item.minecraft.splash_potion.effect.wildplus_lifesteal": "투척용 흡혈의 물약",
   "item.minecraft.lingering_potion.effect.wildplus_lifesteal": "잔류형 흡혈의 물약",
-  "item.minecraft.tipped_arrow.effect.wildplus_lifesteal": "흡혈의 화살"
+  "item.minecraft.tipped_arrow.effect.wildplus_lifesteal": "흡혈의 화살",
+  "structure.wildplus.dungeon": "고대 지하 묘지",
+  "entity.wildplus.dungeon_guardian": "고대 수호자",
+  "message.wildplus.dungeon_guardian.call": "고대 수호자가 해골 호위병을 불러냈다!",
+  "message.wildplus.dungeon_guardian.dead": "★ %s 님이 고대 수호자를 쓰러뜨렸다! 묘지의 보물 창고가 열렸다",
+  "item.wildplus.death_scroll": "망자의 두루마리",
+  "tooltip.wildplus.death_scroll": "3초 동안 읽으면 마지막으로 죽은 곳으로 순간이동 (다른 차원도)\n도착하면 10초간 화염 저항 · 느린 낙하 · 저항",
+  "message.wildplus.death_scroll.none": "아직 죽은 기록이 없어요",
+  "message.wildplus.death_scroll.done": "마지막으로 죽은 곳 (%s, %s, %s) 으로 왔어요"
 }

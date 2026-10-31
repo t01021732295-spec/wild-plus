@@ -51,6 +51,23 @@ def build():
                                    d.polygon([(9, 4), (13, 9), (9, 14), (5, 9)], fill=(200, 245, 255)),
                                    d.line([(7, 6), (10, 9), (8, 12)], fill=(60, 120, 150))),
     }
+    # 망자의 두루마리: 귀환의 두루마리를 청록·보라 빛으로
+    from PIL import Image as _I
+    import colorsys as _c
+    src = _I.open(OUT / "item/recall_scroll.png").convert("RGBA")
+    px = src.load()
+    for x in range(src.width):
+        for y in range(src.height):
+            r, g, b, a = px[x, y]
+            if a == 0:
+                continue
+            h, l, s_ = _c.rgb_to_hls(r / 255, g / 255, b / 255)
+            if s_ > 0.25:
+                rr, gg, bb = _c.hls_to_rgb(0.5, l, min(1.0, s_ + 0.1))
+                px[x, y] = (int(rr * 255), int(gg * 255), int(bb * 255), a)
+            else:
+                px[x, y] = (int(r * 0.8), int(g * 0.85), int(b * 0.95), a)
+    src.save(OUT / "item/death_scroll.png")
     (OUT / "mob_effect").mkdir(parents=True, exist_ok=True)
     for name, fn in icons.items():
         outline(icon(fn)).save(OUT / f"mob_effect/{name}.png")

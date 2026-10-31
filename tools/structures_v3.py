@@ -138,7 +138,7 @@ def trading_post():
             ("wildplus:tomato_soup", 1, 6), ("wildplus:traveler_ration", 4, 8), ("minecraft:cooked_beef", 8, 4),
             ("wildplus:strawberry_tart", 4, 5), ("minecraft:golden_carrot", 8, 6), ("minecraft:cake", 1, 15)]
     goods = [("minecraft:torch", 32, 1), ("wildplus:fertilizer", 8, 3), ("wildplus:tomato_seeds", 8, 2),
-             ("minecraft:oak_sapling", 4, 2), ("minecraft:arrow", 16, 2), ("wildplus:recall_scroll", 2, 40),
+             ("wildplus:death_scroll", 1, 60), ("minecraft:arrow", 16, 2), ("wildplus:recall_scroll", 2, 40),
              ("wildplus:teleporter", 1, 40), ("wildplus:lottery_ticket", 1, 30), ("wildplus:coin_pouch", 1, 15)]
     # 자판기는 실물 크기(2칸 높이): 위 칸도 같이 놓는다
     t.set(12, 1, 4, *vending(food, "east"))

@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 993817265,
+    "separation": 24,
+    "spacing": 56
+  },
+  "structures": [
+    {
+      "structure": "wildplus:dungeon",
+      "weight": 1
+    }
+  ]
+}

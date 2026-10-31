@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "#wildplus:has_structure/dungeon",
+  "max_distance_from_center": 80,
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "size": 1,
+  "spawn_overrides": {},
+  "start_height": {
+    "absolute": -22
+  },
+  "start_pool": "wildplus:dungeon",
+  "step": "underground_structures",
+  "terrain_adaptation": "none",
+  "use_expansion_hack": false
+}

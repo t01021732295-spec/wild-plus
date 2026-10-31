@@ -49,6 +49,7 @@ public final class MerchantTrades {
         sell(o, Items.TORCH, 16, 2);
         sell(o, ModItems.TRAVELER_RATION.get(), 2, 10);
         sell(o, ModItems.RECALL_SCROLL.get(), 1, 35);
+        sell(o, com.snolred.wildplus.registry.ModItems6.DEATH_SCROLL.get(), 1, 60, 8);
         sell(o, Items.NAME_TAG, 1, 40);
         sell(o, Items.SADDLE, 1, 50);
         sell(o, ModItems3.COIN_POUCH.get(), 1, 15);

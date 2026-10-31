@@ -29,6 +29,15 @@ public class BanditEntity extends Vindicator {
                 .add(Attributes.MOVEMENT_SPEED, 0.34);
     }
 
+    /** 바닐라 변명자의 "주민·철 골렘 공격" 습성을 지우고 플레이어만 노린다 (마을 주민이 사라지던 원인) */
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        this.targetSelector.removeAllGoals(g -> g instanceof net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<?>);
+        this.targetSelector.addGoal(2, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this,
+                net.minecraft.world.entity.player.Player.class, true));
+    }
+
     @Override
     protected void populateDefaultEquipmentSlots(RandomSource random, DifficultyInstance difficulty) {
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(random.nextBoolean() ? Items.IRON_SWORD : Items.STONE_SWORD));
