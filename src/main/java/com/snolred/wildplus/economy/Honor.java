@@ -42,6 +42,15 @@ public final class Honor {
     public static final long FLIGHT_COST = 500, BOSS_COST = 3_000, FESTIVAL_COST = 5_000;
     public static final long FLIGHT_TICKS = 20L * 60 * 30, FESTIVAL_TICKS = 20L * 60 * 60;
     public static final int BTN_RANK = 0, BTN_FLIGHT = 1, BTN_BOSS = 2, BTN_FESTIVAL = 3;
+    // 11차 특별 구매
+    public static final long HEAL_COST = 300, XP_COST = 800, MERCHANT_COST = 1_000, MAP_COST = 1_500, GUARD_COST = 2_000;
+    public static final int BTN_HEAL = 4, BTN_XP = 5, BTN_MERCHANT = 6, BTN_MAP = 7, BTN_GUARD = 8;
+    /** 등급마다 새로 생기는 혜택 (누적) */
+    public static final String[] PERK = {"", "1분마다 배고픔 회복", "낙하 피해 절반", "몬스터 처치 시 동전",
+            "상시 성급함 I", "상시 신속 I · 받는 피해 -10% · 비행 반값"};
+    public static final net.minecraft.tags.TagKey<net.minecraft.world.level.levelgen.structure.Structure> TREASURE_SITES =
+            net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.STRUCTURE, WildPlus.id("treasure_sites"));
+    public static final String LEAVE_AT = "wildplus_leave_at";
 
     private Honor() {}
 
@@ -142,8 +151,107 @@ public final class Honor {
                     o.level().playSound(null, o.blockPosition(), SoundEvents.FIREWORK_ROCKET_LARGE_BLAST, SoundSource.PLAYERS, 1.0F, 1.0F);
                 }
             }
+            case BTN_HEAL -> {
+                if (!pay(p, HEAL_COST)) {
+                    fail(p, HEAL_COST);
+                    return;
+                }
+                p.setHealth(p.getMaxHealth());
+                p.getFoodData().eat(20, 1.0F);
+                for (var inst : List.copyOf(p.getActiveEffects())) {
+                    if (inst.getEffect().value().getCategory() == net.minecraft.world.effect.MobEffectCategory.HARMFUL) p.removeEffect(inst.getEffect());
+                }
+                p.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 20 * 120, 1));
+                p.level().playSound(null, p.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.6F, 1.6F);
+                p.sendSystemMessage(Component.translatable("message.wildplus.honor.heal").withStyle(ChatFormatting.GREEN));
+            }
+            case BTN_XP -> {
+                if (!pay(p, XP_COST)) {
+                    fail(p, XP_COST);
+                    return;
+                }
+                p.giveExperienceLevels(5);
+                p.level().playSound(null, p.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.8F, 1.0F);
+            }
+            case BTN_MERCHANT -> {
+                if (p.level().dimension() != Level.OVERWORLD) {
+                    p.sendSystemMessage(Component.translatable("message.wildplus.honor.boss_overworld").withStyle(ChatFormatting.RED));
+                    return;
+                }
+                if (!pay(p, MERCHANT_COST)) {
+                    fail(p, MERCHANT_COST);
+                    return;
+                }
+                var kinds = List.of(com.snolred.wildplus.registry.ModEntities.MERCHANT.get(), com.snolred.wildplus.registry.ModEntities.BLACKSMITH_MERCHANT.get(),
+                        com.snolred.wildplus.registry.ModEntities.FARMER_MERCHANT.get(), com.snolred.wildplus.registry.ModEntities.FISHER_MERCHANT.get(),
+                        com.snolred.wildplus.registry.ModEntities.BANKER_MERCHANT.get());
+                var m = kinds.get(p.getRandom().nextInt(kinds.size())).create(p.level(), net.minecraft.world.entity.EntitySpawnReason.EVENT);
+                if (m != null) {
+                    var dir = p.getLookAngle();
+                    m.snapTo(p.getX() + dir.x * 2, p.getY(), p.getZ() + dir.z * 2, p.getYRot() + 180F, 0F);
+                    m.getPersistentData().putLong(LEAVE_AT, now(server) + 20L * 60 * 10);
+                    p.level().addFreshEntity(m);
+                    p.sendSystemMessage(Component.translatable("message.wildplus.honor.merchant", m.getName()).withStyle(ChatFormatting.YELLOW));
+                }
+            }
+            case BTN_MAP -> {
+                ServerLevel level = (ServerLevel) p.level();
+                if (level.dimension() != Level.OVERWORLD) {
+                    p.sendSystemMessage(Component.translatable("message.wildplus.honor.boss_overworld").withStyle(ChatFormatting.RED));
+                    return;
+                }
+                if (Coins.totalValue(p) + data.balance(p.getUUID()) < MAP_COST) {
+                    fail(p, MAP_COST);
+                    return;
+                }
+                net.minecraft.core.BlockPos found = level.findNearestMapStructure(TREASURE_SITES, p.blockPosition(), 64, false);
+                if (found == null) {
+                    p.sendSystemMessage(Component.translatable("message.wildplus.honor.map_none").withStyle(ChatFormatting.GRAY));
+                    return;
+                }
+                if (!pay(p, MAP_COST)) {
+                    fail(p, MAP_COST);
+                    return;
+                }
+                int dist = (int) Math.sqrt(found.distSqr(new net.minecraft.core.BlockPos(p.getBlockX(), found.getY(), p.getBlockZ())));
+                p.sendSystemMessage(Component.translatable("message.wildplus.honor.map", found.getX(), found.getZ(), dist).withStyle(ChatFormatting.GOLD));
+                p.level().playSound(null, p.blockPosition(), SoundEvents.BOOK_PAGE_TURN, SoundSource.PLAYERS, 1.0F, 1.0F);
+            }
+            case BTN_GUARD -> {
+                if (!pay(p, GUARD_COST)) {
+                    fail(p, GUARD_COST);
+                    return;
+                }
+                int t = 20 * 60 * 30;
+                p.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, t, 0));
+                p.addEffect(new MobEffectInstance(MobEffects.REGENERATION, t, 0));
+                p.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, t, 0));
+                p.level().playSound(null, p.blockPosition(), SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 1.0F, 1.2F);
+                p.sendSystemMessage(Component.translatable("message.wildplus.honor.guard").withStyle(ChatFormatting.AQUA));
+            }
             default -> {}
         }
+    }
+
+    // ───────── 등급 혜택 (피해 · 드롭) ─────────
+    @SubscribeEvent
+    public static void onHurt(net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer p)) return;
+        int rank = WildData.get(p.level().getServer()).honor(p.getUUID());
+        if (rank <= 0) return;
+        float amount = event.getAmount();
+        if (rank >= 2 && event.getSource().is(net.minecraft.tags.DamageTypeTags.IS_FALL)) amount *= 0.5F;
+        if (rank >= 5) amount *= 0.9F;
+        event.setAmount(amount);
+    }
+
+    @SubscribeEvent
+    public static void onKillDrops(net.neoforged.neoforge.event.entity.living.LivingDropsEvent event) {
+        if (!(event.getEntity() instanceof net.minecraft.world.entity.monster.Monster m) || !(event.getSource().getEntity() instanceof ServerPlayer p)) return;
+        if (WildData.get(p.level().getServer()).honor(p.getUUID()) < 3) return;
+        var it = new net.minecraft.world.entity.item.ItemEntity(m.level(), m.getX(), m.getY() + 0.5, m.getZ(),
+                new net.minecraft.world.item.ItemStack(com.snolred.wildplus.registry.ModItems3.COPPER_COIN.get(), 1 + p.getRandom().nextInt(3)));
+        event.getDrops().add(it);
     }
 
     public static MutableComponent title(int rank) {
@@ -169,7 +277,11 @@ public final class Honor {
         MinecraftServer server = p.level().getServer();
         WildData data = WildData.get(server);
         UUID id = p.getUUID();
+        int rank = data.honor(id);
+        if (rank >= 1 && p.tickCount % 1200 == 0 && p.getFoodData().getFoodLevel() < 20) p.getFoodData().eat(1, 0.3F);
         if (p.tickCount % 100 == 0) {
+            if (rank >= 4) p.addEffect(new MobEffectInstance(MobEffects.HASTE, 140, 0, true, false, true));
+            if (rank >= 5) p.addEffect(new MobEffectInstance(MobEffects.SPEED, 140, 0, true, false, true));
             applyHealth(p, data.honor(id));
             String name = p.getName().getString();
             if (!name.equals(data.names.get(id))) {

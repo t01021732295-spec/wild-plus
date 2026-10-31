@@ -45,6 +45,12 @@ public class MerchantEntity extends WanderingTrader {
     public void aiStep() {
         super.aiStep();
         if (this.level().isClientSide()) return;
+        // 명예의 전당 "상인 호출"로 온 상인은 10분 뒤 떠난다
+        long leave = this.getPersistentData().getLongOr(com.snolred.wildplus.economy.Honor.LEAVE_AT, 0L);
+        if (leave > 0 && this.level().getGameTime() > leave) {
+            this.discard();
+            return;
+        }
         if (!refreshed || this.level().getGameTime() % 24000L == 0L) {
             refreshed = true;
             this.offers = new MerchantOffers();
