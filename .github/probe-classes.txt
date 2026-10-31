@@ -1,0 +1,7 @@
+net.minecraft.client.gui.components.AbstractButton
+net.minecraft.client.gui.components.Button
+net.minecraft.client.gui.components.AbstractWidget
+net.minecraft.client.gui.GuiGraphicsExtractor
+net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
+net.minecraft.client.input.MouseButtonEvent
+net.minecraft.client.gui.components.events.GuiEventListener
