@@ -2,8 +2,8 @@
   "parent": "minecraft:block/block",
   "render_type": "minecraft:cutout",
   "textures": {
-    "pillar": "minecraft:block/quartz_pillar",
-    "ptop": "minecraft:block/quartz_pillar_top",
+    "pillar": "minecraft:block/quartz_block_side",
+    "ptop": "minecraft:block/quartz_block_top",
     "chisel": "minecraft:block/chiseled_quartz_block",
     "smooth": "minecraft:block/quartz_block_bottom",
     "bricks": "minecraft:block/quartz_bricks",

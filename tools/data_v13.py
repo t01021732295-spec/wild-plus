@@ -110,7 +110,7 @@ def raid_altar():
 
 
 def tower_gate():
-    T = {"pillar": "minecraft:block/quartz_pillar", "ptop": "minecraft:block/quartz_pillar_top", "chisel": "minecraft:block/chiseled_quartz_block",
+    T = {"pillar": "minecraft:block/quartz_block_side", "ptop": "minecraft:block/quartz_block_top", "chisel": "minecraft:block/chiseled_quartz_block",
          "smooth": "minecraft:block/quartz_block_bottom", "bricks": "minecraft:block/quartz_bricks", "portal": i("block/sky_portal"),
          "gold": "minecraft:block/gold_block", "ice": "minecraft:block/blue_ice", "diamond": "minecraft:block/diamond_block",
          "particle": "minecraft:block/quartz_bricks"}
