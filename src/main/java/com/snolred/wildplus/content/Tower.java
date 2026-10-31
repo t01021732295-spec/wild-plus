@@ -346,7 +346,7 @@ public final class Tower {
                 if (floor % 15 == 0) loot.add(EventBottleItem.of(null));
                 if (floor >= 30 && floor % 10 == 0) loot.add(new ItemStack(Items.NETHERITE_SCRAP));
             }
-            for (ItemStack s : loot) if (!p.getInventory().add(s)) p.drop(s, false);
+            for (ItemStack s : loot) if (!p.getInventory().add(s) && !s.isEmpty()) net.minecraft.world.Containers.dropItemStack(p.level(), p.getX(), p.getY(), p.getZ(), s);
             p.heal(p.getMaxHealth() * 0.3F);
             p.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 160, 1));
             p.connection.send(new ClientboundSetTitleTextPacket(Component.literal(floor + "층 돌파!").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD)));

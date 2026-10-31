@@ -454,7 +454,7 @@ public final class Raid {
                 p.sendSystemMessage(Component.literal("👑 MVP 보너스: 500동 + 루비").withStyle(ChatFormatting.GOLD));
             }
             Coins.give(p, coins);
-            for (ItemStack s : loot) if (!p.getInventory().add(s)) p.drop(s, false);
+            for (ItemStack s : loot) if (!p.getInventory().add(s) && !s.isEmpty()) net.minecraft.world.Containers.dropItemStack(p.level(), p.getX(), p.getY(), p.getZ(), s);
             p.sendSystemMessage(Component.literal(first ? String.format("이번 주 첫 클리어 보상: %,d동 · 루비 · 다이아몬드 · %s", coins, boss.trophy().getHoverName().getString())
                     : String.format("반복 클리어 보상: %,d동 (이번 주 첫 보상은 이미 받았어요)", coins)).withStyle(ChatFormatting.GREEN));
             p.connection.send(new ClientboundSetTitleTextPacket(Component.literal("레이드 클리어!").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD)));

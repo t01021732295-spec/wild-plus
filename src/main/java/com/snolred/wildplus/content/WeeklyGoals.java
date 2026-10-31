@@ -200,7 +200,7 @@ public final class WeeklyGoals {
         me.putInt("claimed", mask | (1 << tier));
         ContentData.get(server).dirty();
         for (ItemStack s : tierReward(tier)) {
-            if (!p.getInventory().add(s)) p.drop(s, false);
+            if (!p.getInventory().add(s) && !s.isEmpty()) net.minecraft.world.Containers.dropItemStack(p.level(), p.getX(), p.getY(), p.getZ(), s);
         }
         p.level().playSound(null, p.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.8F, 1.2F);
         return true;
