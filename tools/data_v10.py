@@ -101,7 +101,7 @@ for k, ko in POTIONS.items():
 def worldgen():
     # 큰 마을: 80×80
     write(DATA / "worldgen/structure/town.json", {
-        "type": "minecraft:jigsaw", "biomes": "#wildplus:has_structure/town", "max_distance_from_center": 128,
+        "type": "minecraft:jigsaw", "biomes": "#wildplus:has_structure/town", "max_distance_from_center": 100,
         "project_start_to_heightmap": "WORLD_SURFACE_WG", "size": 1, "spawn_overrides": {},
         "start_height": {"absolute": 0}, "start_pool": i("town"), "step": "surface_structures",
         "terrain_adaptation": "beard_box", "use_expansion_hack": False})
