@@ -47,7 +47,7 @@ public class MachineMenu extends AbstractContainerMenu {
 
     public static int playerY(MachineBlock.Kind kind) {
         return switch (kind) {
-            case HARVESTER -> 116;
+            case HARVESTER -> 124;
             case MINER -> 136;
             case FISHER -> 96;
         };

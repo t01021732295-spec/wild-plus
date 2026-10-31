@@ -64,15 +64,16 @@ public class MachineScreen extends AbstractContainerScreen<MachineMenu> {
         int ok = menu.status();
         switch (menu.kind) {
             case HARVESTER -> {
-                g.text(this.font, Component.literal("씨앗 칸"), 8, 40 - 0, 0xFF505050, false);
+                g.text(this.font, Component.literal("씨앗 칸"), 8, 40, 0xFF505050, false);
                 g.text(this.font, Component.literal("수확물 (호퍼로 빼기)"), 60, 40, 0xFF505050, false);
                 g.text(this.font, Component.literal(ok == 1 ? "● 스프링클러 연결됨" : "● 위에 스프링클러를 놓으세요"), 8, 97,
                         ok == 1 ? 0xFF1E7A2E : 0xFFA02020, false);
             }
             case FISHER -> {
                 g.text(this.font, Component.literal("낚싯대"), 8, 26, 0xFF505050, false);
-                g.text(this.font, Component.literal(ok == 1 ? "● 물 위" : "● 물 위에 놓으세요"), 8, 62,
+                g.text(this.font, Component.literal(ok == 1 ? "● 물 위" : "● 물 위에"), 8, 62,
                         ok == 1 ? 0xFF1E7A2E : 0xFFA02020, false);
+                if (ok != 1) g.text(this.font, Component.literal("  놓으세요"), 8, 72, 0xFFA02020, false);
                 if (ok == 1 && !menu.getSlot(0).getItem().isEmpty()) {
                     g.text(this.font, Component.literal("다음 " + menu.secondsLeft() + "초"), 8, 74, 0xFF505050, false);
                 }
