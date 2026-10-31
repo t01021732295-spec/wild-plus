@@ -1,12 +1,146 @@
 {
-  "parent": "minecraft:block/cube",
+  "parent": "minecraft:block/block",
   "textures": {
-    "particle": "minecraft:block/smithing_table_front",
-    "up": "minecraft:block/enchanting_table_top",
-    "down": "minecraft:block/smithing_table_bottom",
-    "north": "minecraft:block/smithing_table_front",
-    "south": "minecraft:block/smithing_table_front",
-    "east": "minecraft:block/smithing_table_side",
-    "west": "minecraft:block/smithing_table_side"
-  }
+    "particle": "wildplus:block/enhance_forge_side",
+    "front": "wildplus:block/enhance_forge_front",
+    "side": "wildplus:block/enhance_forge_side",
+    "anvil": "wildplus:block/enhance_anvil",
+    "atop": "minecraft:block/anvil_top"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        10,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#front",
+          "uv": [
+            0,
+            4,
+            16,
+            14
+          ]
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "west": {
+          "texture": "#side"
+        },
+        "up": {
+          "texture": "#side"
+        },
+        "down": {
+          "texture": "#side"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        10,
+        4
+      ],
+      "to": [
+        12,
+        11,
+        12
+      ],
+      "faces": {
+        "north": {
+          "texture": "#anvil"
+        },
+        "south": {
+          "texture": "#anvil"
+        },
+        "east": {
+          "texture": "#anvil"
+        },
+        "west": {
+          "texture": "#anvil"
+        },
+        "up": {
+          "texture": "#anvil"
+        },
+        "down": {
+          "texture": "#anvil"
+        }
+      }
+    },
+    {
+      "from": [
+        6,
+        11,
+        5
+      ],
+      "to": [
+        10,
+        13,
+        11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#anvil"
+        },
+        "south": {
+          "texture": "#anvil"
+        },
+        "east": {
+          "texture": "#anvil"
+        },
+        "west": {
+          "texture": "#anvil"
+        },
+        "up": {
+          "texture": "#anvil"
+        },
+        "down": {
+          "texture": "#anvil"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        13,
+        3
+      ],
+      "to": [
+        14,
+        16,
+        13
+      ],
+      "faces": {
+        "north": {
+          "texture": "#anvil"
+        },
+        "south": {
+          "texture": "#anvil"
+        },
+        "east": {
+          "texture": "#anvil"
+        },
+        "west": {
+          "texture": "#anvil"
+        },
+        "up": {
+          "texture": "#atop"
+        },
+        "down": {
+          "texture": "#anvil"
+        }
+      }
+    }
+  ]
 }

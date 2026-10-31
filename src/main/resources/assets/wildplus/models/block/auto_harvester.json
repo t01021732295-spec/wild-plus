@@ -2,7 +2,7 @@
   "parent": "minecraft:block/cube_bottom_top",
   "textures": {
     "side": "wildplus:block/auto_harvester_side",
-    "top": "minecraft:block/iron_block",
+    "top": "wildplus:block/auto_harvester_top",
     "bottom": "minecraft:block/iron_block"
   }
 }

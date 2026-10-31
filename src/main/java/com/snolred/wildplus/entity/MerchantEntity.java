@@ -4,7 +4,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.UseItemGoal;
 import net.minecraft.world.entity.npc.wanderingtrader.WanderingTrader;
-import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 
@@ -14,7 +13,7 @@ import net.minecraft.world.level.Level;
  * - 하루(24000틱)마다 거래 횟수가 초기화(재입고)
  */
 public class MerchantEntity extends WanderingTrader {
-    public enum Kind { GENERAL, BLACKSMITH }
+    public enum Kind { GENERAL, BLACKSMITH, FARMER, FISHERMAN, BANKER }
 
     private final Kind kind;
 
@@ -39,13 +38,17 @@ public class MerchantEntity extends WanderingTrader {
         this.offers.addAll(MerchantTrades.build(kind));
     }
 
+    /** 업데이트로 품목이 바뀌어도 예전 상인이 새 목록을 쓰도록, 불러온 뒤 한 번 · 매일 아침 목록을 새로 만든다 */
+    private boolean refreshed;
+
     @Override
     public void aiStep() {
         super.aiStep();
-        if (!this.level().isClientSide() && this.offers != null && this.level().getGameTime() % 24000L == 0L) {
-            for (MerchantOffer offer : this.offers) {
-                offer.resetUses();
-            }
+        if (this.level().isClientSide()) return;
+        if (!refreshed || this.level().getGameTime() % 24000L == 0L) {
+            refreshed = true;
+            this.offers = new MerchantOffers();
+            this.offers.addAll(MerchantTrades.build(kind));
         }
     }
 

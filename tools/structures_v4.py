@@ -130,6 +130,8 @@ def town():
     for (x, z) in [(8, 3), (24, 5), (38, 3), (9, 44), (24, 42), (38, 44)]:
         t.set(x, 1, z, "minecraft:poppy" if (x + z) % 2 else "minecraft:dandelion")
 
+    # 광장의 어부 (분수 옆)
+    t.entity(20.5, 1.0, 21.5, mob("wildplus:fisher_merchant", 135.0))
     shops = [
         # (x0, z0, 문 방향, 벽, 지붕, 장식, 내부를 채우는 함수)
         (WEST_X[0], NORTH_Z, "south", "minecraft:oak_planks", "minecraft:red_terracotta", "minecraft:red_wool", "grocery"),
@@ -161,6 +163,7 @@ def town():
             place(t, x0 + 4, back, "wildplus:exchange", face(f))
             place(t, x0 + 6, back, "wildplus:atm", face(f))
             t.fill(x0 + 2, 1, mid, x0 + 6, 1, mid, "minecraft:polished_andesite_slab", {"type": "top", "waterlogged": "false"})
+            t.entity(x0 + 4.5, 1.0, mid + 1.5, mob("wildplus:banker_merchant", 0.0 if door == "south" else 180.0))
         elif kind == "stocks":
             place(t, x0 + 2, back, "wildplus:stock_terminal", face(f))
             place(t, x0 + 4, back, "wildplus:stock_terminal", face(f))
@@ -175,6 +178,7 @@ def town():
             place_vending(t, x0 + 2, back, TOOLS, f)
             place_vending(t, x0 + 6, back, BUILD, f)
             place(t, x0 + 4, back, "minecraft:crafting_table")
+            t.entity(x0 + 4.5, 1.0, mid + 0.5, mob("wildplus:farmer_merchant", 0.0 if door == "south" else 180.0))
         elif kind == "arcade":
             for x in (x0 + 2, x0 + 4, x0 + 6):
                 place(t, x, back, "wildplus:gacha_machine", face(f))
@@ -185,6 +189,7 @@ def town():
             place(t, x0 + 2, back, "wildplus:weather_station", face(f))
             place(t, x0 + 4, back, "wildplus:bounty_board", face(f))
             place(t, x0 + 6, back, "wildplus:warp_point")
+            place(t, x0 + 4, mid, "wildplus:hall_of_fame", face(f))
     return t.save("town")
 
 

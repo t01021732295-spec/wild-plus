@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/hall_of_fame"
+    },
+    "facing=east": {
+      "model": "wildplus:block/hall_of_fame",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/hall_of_fame",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/hall_of_fame",
+      "y": 270
+    }
+  }
+}

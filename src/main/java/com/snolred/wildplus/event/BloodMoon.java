@@ -90,6 +90,7 @@ public final class BloodMoon {
         }
         active = true;
         BloodMoonReward.reset();
+        BloodLord.reset();
         long tod = TimeHelper.dayTime(level) % 24000L;
         sawNight = tod >= NIGHT_START && tod < NIGHT_END;
         lastRolledDay = TimeHelper.dayTime(level) / 24000L;

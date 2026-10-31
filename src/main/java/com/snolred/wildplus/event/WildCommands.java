@@ -70,6 +70,23 @@ public final class WildCommands {
                 .then(Commands.literal("cookbook").executes(ctx -> {
                     ctx.getSource().getPlayerOrException().getInventory().add(com.snolred.wildplus.economy.Cookbook.create());
                     return 1;
+                }))
+                // 시험용: 핏빛 군주 · 정예 몹 소환
+                .then(Commands.literal("bloodlord").executes(ctx -> {
+                    var p = ctx.getSource().getPlayerOrException();
+                    BloodLord.spawn((net.minecraft.server.level.ServerLevel) p.level(), p);
+                    return 1;
+                }))
+                .then(Commands.literal("elite").executes(ctx -> {
+                    var p = ctx.getSource().getPlayerOrException();
+                    var level = (net.minecraft.server.level.ServerLevel) p.level();
+                    var z = net.minecraft.world.entity.EntityTypes.ZOMBIE.create(level, net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+                    if (z == null) return 0;
+                    z.snapTo(p.getX() + 3, p.getY(), p.getZ(), 0F, 0F);
+                    EliteMobs.makeElite(z, 2);
+                    level.addFreshEntity(z);
+                    ctx.getSource().sendSuccess(() -> Component.literal("ELITE " + z.getPersistentData().getStringOr(EliteMobs.AFFIX_TAG, "")), false);
+                    return 1;
                 })));
     }
 }

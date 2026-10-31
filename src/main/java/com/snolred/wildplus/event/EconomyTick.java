@@ -42,7 +42,8 @@ public final class EconomyTick {
 
     public static void payInterest(MinecraftServer server, WildData data) {
         for (Map.Entry<UUID, Long> e : new ArrayList<>(data.bank.entrySet())) {
-            long gross = Math.min(INTEREST_CAP, e.getValue() / 100);
+            int rank = data.honor(e.getKey());
+            long gross = Math.min(INTEREST_CAP * (1 + rank), e.getValue() * (100 + 20L * rank) / 10000);
             if (gross <= 0) continue;
             long interest = com.snolred.wildplus.economy.Tax.collect(server, e.getKey(), gross);
             data.addBalance(e.getKey(), interest);

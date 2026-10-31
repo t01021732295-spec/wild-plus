@@ -48,6 +48,7 @@ public final class ShipPrices {
         put(m, Items.SPIDER_EYE, 15); put(m, Items.ENDER_PEARL, 150); put(m, Items.BLAZE_ROD, 200); put(m, Items.LEATHER, 30);
         put(m, Items.FEATHER, 5); put(m, Items.SLIME_BALL, 30); put(m, Items.PHANTOM_MEMBRANE, 100);
         // 8차
+        put(m, com.snolred.wildplus.registry.ModItems6.LORD_HEART.get(), 200000);
         put(m, com.snolred.wildplus.registry.ModItems5.CORN.get(), 40); put(m, com.snolred.wildplus.registry.ModItems5.CABBAGE.get(), 60);
         put(m, com.snolred.wildplus.registry.ModItems5.BLUEBERRY.get(), 40); put(m, com.snolred.wildplus.registry.ModItems5.GRILLED_CORN.get(), 100);
         put(m, com.snolred.wildplus.registry.ModItems5.SALAD.get(), 350); put(m, com.snolred.wildplus.registry.ModItems5.BLUEBERRY_MUFFIN.get(), 200);

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "wildplus:item/banker_merchant_spawn_egg"
+  }
+}

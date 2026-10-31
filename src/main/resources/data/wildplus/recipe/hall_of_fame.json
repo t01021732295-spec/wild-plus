@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GTG",
+    "QBQ",
+    "QQQ"
+  ],
+  "key": {
+    "G": "wildplus:gold_coin",
+    "T": "minecraft:gold_block",
+    "Q": "minecraft:quartz_block",
+    "B": "minecraft:diamond_block"
+  },
+  "result": {
+    "id": "wildplus:hall_of_fame",
+    "count": 1
+  }
+}

@@ -39,6 +39,7 @@ public class WildPlusClient {
         event.register(com.snolred.wildplus.registry.ModMenus.ENHANCE.get(), EnhanceScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.MACHINE.get(), MachineScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.CASINO.get(), CasinoScreen::new);
+        event.register(com.snolred.wildplus.registry.ModMenus.HALL.get(), HallScreen::new);
     }
 
     /** 몬스터(또는 다친 생물) 머리 위 이름표 자리에 체력바를 그린다 */

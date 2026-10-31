@@ -19,6 +19,7 @@
     "wildplus:pharmacy",
     "wildplus:weather_station",
     "wildplus:auto_harvester",
-    "wildplus:ore_miner"
+    "wildplus:ore_miner",
+    "wildplus:hall_of_fame"
   ]
 }

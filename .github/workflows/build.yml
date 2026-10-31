@@ -241,6 +241,9 @@ jobs:
             run "summon wildplus:blacksmith_merchant 378.5 120 6.5 {NoAI:1b,Rotation:[160f,0f]}"
             run "summon wildplus:bandit 386.5 120 7.5 {NoAI:1b,PersistenceRequired:1b,Rotation:[200f,0f]}"
             run "summon wildplus:golden_slime 388.5 120 6.5 {NoAI:1b,PersistenceRequired:1b,Size:2}"
+            run "summon wildplus:farmer_merchant 382.5 120 7.5 {NoAI:1b,Rotation:[180f,0f]}"
+            run "summon wildplus:fisher_merchant 384.5 120 7.5 {NoAI:1b,Rotation:[180f,0f]}"
+            run "summon wildplus:banker_merchant 376.5 120 6.5 {NoAI:1b,Rotation:[200f,0f]}"
             run "setblock 383 120 4 wildplus:vending_machine[facing=north]{item0:{id:\"minecraft:bread\",count:8},item1:{id:\"wildplus:pizza\",count:4},item2:{id:\"minecraft:cake\",count:1},item3:{id:\"minecraft:apple\",count:8},item4:{id:\"wildplus:tomato\",count:8},item5:{id:\"minecraft:cookie\",count:16},item6:{id:\"wildplus:strawberry\",count:8},item7:{id:\"minecraft:golden_carrot\",count:8},item8:{id:\"wildplus:honey_toast\",count:4},prices:[I;2,4,15,1,2,1,2,6,5],infinite:1b}"
             run "setblock 384 120 4 wildplus:vending_machine[facing=north]{item0:{id:\"minecraft:torch\",count:32},item1:{id:\"wildplus:recall_scroll\",count:2},item3:{id:\"minecraft:arrow\",count:16},item4:{id:\"wildplus:fertilizer\",count:8},item8:{id:\"minecraft:diamond\",count:1},prices:[I;1,40,10,2,3,10,10,10,99],infinite:1b}"
             run "setblock 385 120 4 wildplus:gacha_machine[facing=north]"
@@ -566,6 +569,38 @@ jobs:
             sleep 2; xdotool mousedown 1; sleep 1.2; xdotool mouseup 1; sleep 2
             cmd "/execute if block 376 119 -14 minecraft:air if block 378 119 -12 minecraft:air run say DRILL_OK"
             cmd "/gamemode creative"
+            # ── 10차: 명예의 전당 · 블록 겉모습 · 정예 · 핏빛 군주 ──
+            cmd "/setblock 410 120 -6 wildplus:hall_of_fame[facing=north]"
+            cmd "/clear @s"
+            cmd "/give @s wildplus:gold_coin 50"
+            cmd "/tp @s 410.5 120 -8.3 0 20"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-hall.png || true
+            xdotool key Escape; sleep 1
+            cmd "/time set noon"
+            for gx in 383 393 403; do
+              cmd "/tp @s $gx.5 121.4 -11.5 0 18"
+              sleep 4
+              xdotool key F1 || true
+              sleep 1
+              import -window root shot-gallery-$gx.png || true
+              xdotool key F1 || true
+            done
+            cmd "/tp @s 383.5 121 -2.5 0 15"
+            sleep 3
+            xdotool key F1 || true
+            sleep 1
+            import -window root shot-merchants.png || true
+            xdotool key F1 || true
+            cmd "/tp @s 420.5 120 -14.5 90 10"
+            cmd "/wildplus elite"
+            cmd "/wildplus bloodlord"
+            sleep 4
+            import -window root shot-boss.png || true
+            cmd "/kill @e[type=minecraft:wither_skeleton]"
+            cmd "/kill @e[type=minecraft:zombie]"
+            cmd "/kill @e[type=minecraft:skeleton]"
+            sleep 1
             cmd "/setblock 400 120 -6 minecraft:air"
             sleep 1
             cmd "/clear @s"

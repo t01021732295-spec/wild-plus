@@ -60,16 +60,16 @@ public final class ModBlocks {
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OBSIDIAN).strength(5.0F, 1200.0F).lightLevel(s -> 10));
     public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> STOCK_TERMINAL = BLOCKS.registerBlock("stock_terminal",
             p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.menu.StockMenu::open),
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 6.0F).lightLevel(s -> 5));
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 6.0F).lightLevel(s -> 5).noOcclusion());
     public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> ATM = BLOCKS.registerBlock("atm",
             p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.menu.BankMenu::open),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 1200.0F).lightLevel(s -> 5));
     public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> BOUNTY_BOARD = BLOCKS.registerBlock("bounty_board",
             p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.menu.BountyMenu::open),
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).strength(2.0F, 3.0F));
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).strength(2.0F, 3.0F).noOcclusion());
     public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> EXCHANGE = BLOCKS.registerBlock("exchange",
             p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.menu.ExchangeMenu::open),
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 1200.0F));
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 1200.0F).noOcclusion());
     public static final DeferredBlock<com.snolred.wildplus.block.ShippingBinBlock> SHIPPING_BIN = BLOCKS.registerBlock("shipping_bin",
             com.snolred.wildplus.block.ShippingBinBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL));
 
@@ -79,13 +79,13 @@ public final class ModBlocks {
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.LODESTONE).strength(3.5F, 1200.0F).lightLevel(s -> 7));
     public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> ENHANCE_TABLE = BLOCKS.registerBlock("enhance_table",
             p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.menu.EnhanceMenu::open),
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SMITHING_TABLE).lightLevel(s -> 4));
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SMITHING_TABLE).lightLevel(s -> 4).noOcclusion());
     public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> PHARMACY = BLOCKS.registerBlock("pharmacy",
             p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.economy.Services::openPharmacy),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.QUARTZ_BLOCK));
     public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> WEATHER_STATION = BLOCKS.registerBlock("weather_station",
             p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.economy.Services::openWeather),
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion());
 
     // ───────── 8차: 작물 · 기계 · 카지노 ─────────
     public static final DeferredBlock<SimpleCropBlock> CORN_CROP = BLOCKS.registerBlock("corn_crop",
@@ -99,13 +99,16 @@ public final class ModBlocks {
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 6.0F));
     public static final DeferredBlock<com.snolred.wildplus.block.MachineBlock> ORE_MINER = BLOCKS.registerBlock("ore_miner",
             p -> new com.snolred.wildplus.block.MachineBlock(p, com.snolred.wildplus.block.MachineBlock.Kind.MINER),
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(4.0F, 6.0F));
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(4.0F, 6.0F).noOcclusion());
     public static final DeferredBlock<com.snolred.wildplus.block.MachineBlock> AUTO_FISHER = BLOCKS.registerBlock("auto_fisher",
             p -> new com.snolred.wildplus.block.MachineBlock(p, com.snolred.wildplus.block.MachineBlock.Kind.FISHER),
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL));
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL).noOcclusion());
     public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> CASINO_TABLE = BLOCKS.registerBlock("casino_table",
             p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.menu.CasinoMenu::open),
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_PLANKS));
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_PLANKS).noOcclusion());
+    public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> HALL_OF_FAME = BLOCKS.registerBlock("hall_of_fame",
+            p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.menu.HallMenu::open),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_BLOCK).noOcclusion());
 
     private ModBlocks() {}
 }

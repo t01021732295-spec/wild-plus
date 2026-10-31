@@ -2,7 +2,7 @@
   "parent": "minecraft:block/orientable",
   "textures": {
     "front": "wildplus:block/atm_front",
-    "side": "minecraft:block/iron_block",
-    "top": "minecraft:block/iron_block"
+    "side": "wildplus:block/atm_side",
+    "top": "wildplus:block/atm_top"
   }
 }

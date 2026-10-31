@@ -25,6 +25,15 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<MerchantEntity>> BLACKSMITH_MERCHANT = ENTITIES.registerEntityType("blacksmith_merchant",
             (type, level) -> new MerchantEntity(type, level, MerchantEntity.Kind.BLACKSMITH), MobCategory.CREATURE,
             b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<MerchantEntity>> FARMER_MERCHANT = ENTITIES.registerEntityType("farmer_merchant",
+            (type, level) -> new MerchantEntity(type, level, MerchantEntity.Kind.FARMER), MobCategory.CREATURE,
+            b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<MerchantEntity>> FISHER_MERCHANT = ENTITIES.registerEntityType("fisher_merchant",
+            (type, level) -> new MerchantEntity(type, level, MerchantEntity.Kind.FISHERMAN), MobCategory.CREATURE,
+            b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<MerchantEntity>> BANKER_MERCHANT = ENTITIES.registerEntityType("banker_merchant",
+            (type, level) -> new MerchantEntity(type, level, MerchantEntity.Kind.BANKER), MobCategory.CREATURE,
+            b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
     public static final DeferredHolder<EntityType<?>, EntityType<BanditEntity>> BANDIT = ENTITIES.registerEntityType("bandit",
             BanditEntity::new, MobCategory.MONSTER, b -> b.sized(0.6F, 1.95F).clientTrackingRange(8));
     public static final DeferredHolder<EntityType<?>, EntityType<GoldenSlimeEntity>> GOLDEN_SLIME = ENTITIES.registerEntityType("golden_slime",
@@ -34,6 +43,9 @@ public final class ModEntities {
         var merchant = Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.5).add(Attributes.MAX_HEALTH, 30.0).build();
         event.put(MERCHANT.get(), merchant);
         event.put(BLACKSMITH_MERCHANT.get(), merchant);
+        event.put(FARMER_MERCHANT.get(), merchant);
+        event.put(FISHER_MERCHANT.get(), merchant);
+        event.put(BANKER_MERCHANT.get(), merchant);
         event.put(BANDIT.get(), BanditEntity.createAttributes().build());
         event.put(GOLDEN_SLIME.get(), Monster.createMonsterAttributes().build());
     }

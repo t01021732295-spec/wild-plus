@@ -31,6 +31,9 @@ public final class ModRenderers {
     static void register(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(ModEntities.MERCHANT.get(), ctx -> new MerchantRenderer(ctx, tex("merchant")));
         event.registerEntityRenderer(ModEntities.BLACKSMITH_MERCHANT.get(), ctx -> new MerchantRenderer(ctx, tex("blacksmith_merchant")));
+        event.registerEntityRenderer(ModEntities.FARMER_MERCHANT.get(), ctx -> new MerchantRenderer(ctx, tex("farmer_merchant")));
+        event.registerEntityRenderer(ModEntities.FISHER_MERCHANT.get(), ctx -> new MerchantRenderer(ctx, tex("fisher_merchant")));
+        event.registerEntityRenderer(ModEntities.BANKER_MERCHANT.get(), ctx -> new MerchantRenderer(ctx, tex("banker_merchant")));
         event.registerEntityRenderer(ModEntities.BANDIT.get(), BanditRenderer::new);
         event.registerEntityRenderer(ModEntities.GOLDEN_SLIME.get(), GoldenSlimeRenderer::new);
         event.registerBlockEntityRenderer(com.snolred.wildplus.registry.ModBlockEntities.VENDING_MACHINE.get(), VendingMachineRenderer::new);

@@ -28,7 +28,7 @@ import org.jspecify.annotations.Nullable;
  * 채굴기 버튼: 0~10 = 광물 고르기, 99 = 멈춤.
  */
 public class MachineMenu extends AbstractContainerMenu {
-    public static final int BTN_STOP = 99;
+    public static final int BTN_STOP = 99, BTN_AUTO_PLANT = 98;
 
     public final MachineBlock.Kind kind;
     public final int inputSlots;
@@ -69,9 +69,10 @@ public class MachineMenu extends AbstractContainerMenu {
             case FISHER -> 1;
         };
         this.playerY = playerY(kind);
-        this.data = be == null ? new SimpleContainerData(2) : new ContainerData() {
+        this.data = be == null ? new SimpleContainerData(3) : new ContainerData() {
             @Override
             public int get(int index) {
+                if (index == 2) return be instanceof AutoHarvesterBlockEntity h && h.autoPlant() ? 1 : 0;
                 if (index == 1) {
                     return be instanceof OreMinerBlockEntity m ? m.secondsLeft() : be instanceof AutoFisherBlockEntity f ? f.secondsLeft() : 0;
                 }
@@ -86,7 +87,7 @@ public class MachineMenu extends AbstractContainerMenu {
 
             @Override
             public int getCount() {
-                return 2;
+                return 3;
             }
         };
         switch (kind) {
@@ -119,9 +120,14 @@ public class MachineMenu extends AbstractContainerMenu {
 
     public int status() { return data.get(0); }
     public int secondsLeft() { return data.get(1); }
+    public boolean autoPlant() { return data.get(2) == 1; }
 
     @Override
     public boolean clickMenuButton(Player player, int id) {
+        if (machine instanceof AutoHarvesterBlockEntity h && id == BTN_AUTO_PLANT) {
+            h.toggleAutoPlant();
+            return true;
+        }
         if (machine instanceof OreMinerBlockEntity m) {
             m.select(id == BTN_STOP ? -1 : id);
             return true;

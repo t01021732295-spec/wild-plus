@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:hall_of_fame"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "wildplus:blocks/hall_of_fame"
+}

@@ -26,13 +26,14 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 
 /**
- * 자동 낚시 장치: 물 바로 위에 설치하고 낚싯대 칸(1칸)에 낚싯대를 넣으면 15~30초마다 낚시를 한다.
+ * 자동 낚시 장치: 반경 2칸 안에 물이 있는 곳에 설치하고 낚싯대 칸(1칸)에 낚싯대를 넣으면 15~30초마다 낚시를 한다.
  * 낚싯대의 미끼(대기 시간 감소)·바다의 행운(행운)·비취 낚싯대 효과가 그대로 적용되고, 한 번 낚을 때마다 내구도가 1 줄어든다.
  * 칸: 0 낚싯대 / 1~18 잡은 것. 호퍼로 낚싯대를 넣고 잡은 것을 뺄 수 있다.
  */
 public class AutoFisherBlockEntity extends MachineBlockEntity {
     public static final int OUTPUT = 18;
     private int timer = 400;
+    private @org.jspecify.annotations.Nullable BlockPos water;
 
     public AutoFisherBlockEntity(BlockPos pos, BlockState state) {
         super(ModBlockEntities.AUTO_FISHER.get(), pos, state, 1, OUTPUT);
@@ -48,8 +49,28 @@ public class AutoFisherBlockEntity extends MachineBlockEntity {
         return 64;
     }
 
+    public static final int WATER_RADIUS = 2;
+
+    /** 반경 2칸 안의 물 (가장 가까운 것), 없으면 null */
+    public @org.jspecify.annotations.Nullable BlockPos findWater() {
+        if (level == null) return null;
+        BlockPos best = null;
+        double bestD = Double.MAX_VALUE;
+        for (BlockPos p : BlockPos.betweenClosed(worldPosition.offset(-WATER_RADIUS, -WATER_RADIUS, -WATER_RADIUS),
+                worldPosition.offset(WATER_RADIUS, WATER_RADIUS, WATER_RADIUS))) {
+            if (level.getFluidState(p).is(FluidTags.WATER)) {
+                double d = p.distSqr(worldPosition);
+                if (d < bestD) {
+                    bestD = d;
+                    best = p.immutable();
+                }
+            }
+        }
+        return best;
+    }
+
     public boolean onWater() {
-        return level != null && level.getFluidState(worldPosition.below()).is(FluidTags.WATER);
+        return findWater() != null;
     }
 
     public int secondsLeft() {
@@ -64,7 +85,9 @@ public class AutoFisherBlockEntity extends MachineBlockEntity {
     public static void serverTick(Level level, BlockPos pos, BlockState state, AutoFisherBlockEntity be) {
         if (!(level instanceof ServerLevel server)) return;
         ItemStack rod = be.items.get(0);
-        if (rod.isEmpty() || !be.onWater() || be.outputFull()) return;
+        if (rod.isEmpty() || be.outputFull()) return;
+        if (level.getGameTime() % 20 == 0) be.water = be.findWater();
+        if (be.water == null) return;
         if (--be.timer > 0) {
             if (be.timer % 20 == 0) be.setChanged();
             return;
@@ -74,7 +97,7 @@ public class AutoFisherBlockEntity extends MachineBlockEntity {
         be.timer = Math.max(100, 300 + level.getRandom().nextInt(301) - lure * 100);
         LootTable table = server.getServer().reloadableRegistries().getLootTable(BuiltInLootTables.FISHING);
         LootParams params = new LootParams.Builder(server)
-                .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(pos.below()))
+                .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(be.water))
                 .withParameter(LootContextParams.TOOL, rod)
                 .withLuck(luck)
                 .create(LootContextParamSets.FISHING);

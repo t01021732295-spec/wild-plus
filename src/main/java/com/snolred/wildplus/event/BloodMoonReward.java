@@ -63,6 +63,7 @@ public final class BloodMoonReward {
         }
         if (EliteMobs.isElite(dead) && event.getSource().getEntity() instanceof ServerPlayer killer) {
             int n = KILLS.merge(killer.getUUID(), 1, Integer::sum);
+            BloodLord.onEliteKilled(level, killer);
             killer.sendOverlayMessage(Component.translatable("message.wildplus.blood_moon.progress", n, NEEDED)
                     .withStyle(n >= NEEDED ? ChatFormatting.GOLD : ChatFormatting.RED));
         }

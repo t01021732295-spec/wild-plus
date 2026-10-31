@@ -98,6 +98,20 @@ public class WildData extends SavedData {
     /** "차원|청크x|청크z" → 그 청크에 놓인 청크로더 수 */
     public final Map<String, Integer> chunkLoaders = new HashMap<>();
 
+    // ───────── 명예의 전당 ─────────
+    /** 명예 등급 (0 없음 ~ 5 레전드) */
+    public final Map<UUID, Integer> honor = new HashMap<>();
+    /** 비행 허가 만료 시각 (오버월드 게임 틱). 키가 있으면 이 모드가 비행을 준 것 */
+    public final Map<UUID, Long> flightUntil = new HashMap<>();
+    /** 마지막으로 본 이름 (순위표용) */
+    public final Map<UUID, String> names = new HashMap<>();
+    public long festivalUntil;
+    public String festivalBy = "";
+
+    public int honor(UUID player) {
+        return honor.getOrDefault(player, 0);
+    }
+
     // ───────── 저장 ─────────
     private CompoundTag encode() {
         CompoundTag root = new CompoundTag();
@@ -143,6 +157,17 @@ public class WildData extends SavedData {
         CompoundTag loaders = new CompoundTag();
         chunkLoaders.forEach((k, v) -> { if (v > 0) loaders.putInt(k, v); });
         root.put("chunk_loaders", loaders);
+        CompoundTag honorTag = new CompoundTag();
+        honor.forEach((k, v) -> honorTag.putInt(k.toString(), v));
+        root.put("honor", honorTag);
+        CompoundTag flightTag = new CompoundTag();
+        flightUntil.forEach((k, v) -> flightTag.putLong(k.toString(), v));
+        root.put("flight", flightTag);
+        CompoundTag nameTag = new CompoundTag();
+        names.forEach((k, v) -> nameTag.putString(k.toString(), v));
+        root.put("names", nameTag);
+        root.putLong("festival_until", festivalUntil);
+        root.putString("festival_by", festivalBy);
         return root;
     }
 
@@ -201,6 +226,14 @@ public class WildData extends SavedData {
         d.treasury = root.getLongOr("treasury", 0L);
         CompoundTag loaders = root.getCompoundOrEmpty("chunk_loaders");
         for (String k : loaders.keySet()) d.chunkLoaders.put(k, loaders.getIntOr(k, 0));
+        CompoundTag honorTag = root.getCompoundOrEmpty("honor");
+        for (String k : honorTag.keySet()) parse(k).ifPresent(u -> d.honor.put(u, honorTag.getIntOr(k, 0)));
+        CompoundTag flightTag = root.getCompoundOrEmpty("flight");
+        for (String k : flightTag.keySet()) parse(k).ifPresent(u -> d.flightUntil.put(u, flightTag.getLongOr(k, 0L)));
+        CompoundTag nameTag = root.getCompoundOrEmpty("names");
+        for (String k : nameTag.keySet()) parse(k).ifPresent(u -> d.names.put(u, nameTag.getStringOr(k, "?")));
+        d.festivalUntil = root.getLongOr("festival_until", 0L);
+        d.festivalBy = root.getStringOr("festival_by", "");
         return d;
     }
 

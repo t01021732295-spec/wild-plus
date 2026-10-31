@@ -17,6 +17,7 @@ import net.minecraft.world.inventory.Slot;
  */
 public class MachineScreen extends AbstractContainerScreen<MachineMenu> {
     private final List<UiButton> oreButtons = new ArrayList<>();
+    private UiButton plantButton;
     private static final int IN = 0xFF39C27A, OUT = 0xFFFF9A2E;
 
     public MachineScreen(MachineMenu menu, Inventory inv, Component title) {
@@ -28,6 +29,12 @@ public class MachineScreen extends AbstractContainerScreen<MachineMenu> {
         super.init();
         this.inventoryLabelY = menu.playerY - 11;
         oreButtons.clear();
+        plantButton = null;
+        if (menu.kind == MachineBlock.Kind.HARVESTER) {
+            plantButton = addRenderableWidget(UiButton.of(leftPos + 110, topPos + 95, 58, 13, "", UiButton.GREEN,
+                    () -> click(MachineMenu.BTN_AUTO_PLANT)));
+            updatePlant();
+        }
         if (menu.kind == MachineBlock.Kind.MINER) {
             List<OreMinerBlockEntity.Ore> ores = OreMinerBlockEntity.ORES;
             for (int i = 0; i < ores.size(); i++) {
@@ -47,9 +54,17 @@ public class MachineScreen extends AbstractContainerScreen<MachineMenu> {
         }
     }
 
+    private void updatePlant() {
+        if (plantButton == null) return;
+        boolean on = menu.autoPlant();
+        plantButton.setMessage(Component.literal(on ? "자동 심기 ON" : "자동 심기 OFF"));
+        plantButton.style(on ? UiButton.GREEN : UiButton.DARK);
+    }
+
     @Override
     protected void containerTick() {
         super.containerTick();
+        updatePlant();
         int sel = menu.status() - 1;
         for (int i = 0; i < oreButtons.size(); i++) {
             UiButton b = oreButtons.get(i);
@@ -98,7 +113,11 @@ public class MachineScreen extends AbstractContainerScreen<MachineMenu> {
             case FISHER -> 60;
             case MINER -> 72;
         };
-        int lw = menu.kind == MachineBlock.Kind.FISHER ? 48 : w - 16;
+        int lw = switch (menu.kind) {
+            case FISHER -> 48;
+            case HARVESTER -> 98;
+            case MINER -> w - 16;
+        };
         UiKit.screen(g, x + 8, y + ly, lw, menu.kind == MachineBlock.Kind.FISHER ? 22 : 11, 0xFF0E1A10, 0xFF081008);
     }
 
@@ -110,14 +129,14 @@ public class MachineScreen extends AbstractContainerScreen<MachineMenu> {
         int on = 0xFF6BFF8A, warn = 0xFFFF6A5A;
         switch (menu.kind) {
             case HARVESTER -> {
-                UiKit.text(g, "▼ 씨앗 넣는 칸", 8, 40, 0xFF0E4A28);
-                UiKit.right(g, "수확물 · 호퍼로 빼기 ▼", 168, 40, 0xFF6A3A00);
-                UiKit.text(g, ok == 1 ? "● 스프링클러 연결됨 · 작동 중" : "● 위에 스프링클러를 놓으세요", 11, 98, ok == 1 ? on : warn);
+                UiKit.text(g, "▲ 씨앗 칸", 8, 40, 0xFF0E4A28);
+                UiKit.right(g, "작물 칸 · 호퍼로 빼기 ▼", 168, 40, 0xFF6A3A00);
+                UiKit.text(g, ok == 1 ? "● 스프링클러 연결" : "● 스프링클러 필요", 11, 98, ok == 1 ? on : warn);
             }
             case FISHER -> {
                 UiKit.text(g, "낚싯대", 14, 26, 0xFF1A1D22);
-                UiKit.text(g, ok == 1 ? "● 물 위" : "● 물 위에", 11, 62, ok == 1 ? on : warn);
-                if (ok != 1) UiKit.text(g, "  놓으세요", 11, 72, warn);
+                UiKit.text(g, ok == 1 ? "● 물 근처" : "● 2칸 안에", 11, 62, ok == 1 ? on : warn);
+                if (ok != 1) UiKit.text(g, "  물 필요", 11, 72, warn);
                 else if (!menu.getSlot(0).getItem().isEmpty()) UiKit.text(g, "다음 " + menu.secondsLeft() + "초", 11, 72, on);
                 else UiKit.text(g, "낚싯대 없음", 11, 72, 0xFFFFC34D);
             }

@@ -44,6 +44,7 @@ public final class Tax {
             rec[2] = 0;
         }
         long tax = totalTax(rec[1] + gross) - totalTax(rec[1]);
+        tax = tax * (100 - Honor.taxCut(data.honor(player))) / 100; // 명예 등급 세금 감면
         rec[1] += gross;
         rec[2] += tax;
         data.treasury += tax;

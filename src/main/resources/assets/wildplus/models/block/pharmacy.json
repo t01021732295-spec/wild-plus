@@ -2,7 +2,7 @@
   "parent": "minecraft:block/orientable",
   "textures": {
     "front": "wildplus:block/pharmacy_front",
-    "side": "minecraft:block/quartz_block_side",
-    "top": "minecraft:block/quartz_block_top"
+    "side": "wildplus:block/pharmacy_side",
+    "top": "minecraft:block/white_concrete"
   }
 }
