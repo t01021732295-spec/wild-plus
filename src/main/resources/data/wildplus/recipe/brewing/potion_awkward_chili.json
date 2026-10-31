@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:brewing",
+  "input": {
+    "item": "minecraft:potion",
+    "potion_contents": {
+      "potions": "minecraft:awkward"
+    }
+  },
+  "output": {
+    "components": {
+      "minecraft:potion_contents": {
+        "potion": "wildplus:berserk"
+      }
+    },
+    "id": "minecraft:potion"
+  },
+  "reagent": {
+    "item": "wildplus:chili"
+  }
+}

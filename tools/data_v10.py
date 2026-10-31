@@ -149,7 +149,41 @@ def loot():
         "random_sequence": i("gameplay/treasure_hunt")})
 
 
+MIXES = [  # (재료 물약, 재료, 결과 물약)
+    ("minecraft:awkward", i("raw_mythril"), i("miners_focus")),
+    (i("miners_focus"), "minecraft:glowstone_dust", i("strong_miners_focus")),
+    ("minecraft:awkward", "minecraft:iron_ingot", i("ironskin")),
+    ("minecraft:awkward", i("gold_coin"), i("greed")),
+    ("minecraft:awkward", i("blood_shard"), i("lifesteal")),
+    (i("lifesteal"), "minecraft:fermented_spider_eye", i("bleeding")),
+    (i("ironskin"), "minecraft:fermented_spider_eye", i("frailty")),
+    ("minecraft:awkward", i("chili"), i("berserk")),
+    (i("berserk"), i("jade"), i("glass_cannon")),
+]
+OURS = ["miners_focus", "strong_miners_focus", "ironskin", "greed", "lifesteal", "bleeding", "frailty", "berserk", "glass_cannon"]
+
+
+def brew(container_in, potion_in, reagent, container_out, potion_out):
+    return {"type": "minecraft:brewing",
+            "input": {"item": container_in, "potion_contents": {"potions": potion_in}},
+            "output": {"components": {"minecraft:potion_contents": {"potion": potion_out}}, "id": container_out},
+            "reagent": {"item": reagent}}
+
+
+def brewing():
+    for (pin, reagent, pout) in MIXES:
+        for c in ("potion", "splash_potion", "lingering_potion"):
+            name = f"brewing/{c}_{pin.split(':')[1]}_{reagent.split(':')[1]}"
+            write(DATA / "recipe" / f"{name}.json", brew(f"minecraft:{c}", pin, reagent, f"minecraft:{c}", pout))
+    for p in OURS:
+        write(DATA / "recipe" / f"brewing/potion_{p}_gunpowder.json",
+              brew("minecraft:potion", i(p), "minecraft:gunpowder", "minecraft:splash_potion", i(p)))
+        write(DATA / "recipe" / f"brewing/splash_potion_{p}_dragon_breath.json",
+              brew("minecraft:splash_potion", i(p), "minecraft:dragon_breath", "minecraft:lingering_potion", i(p)))
+
+
 def build(lang_ko, lang_en):
+    brewing()
     write(ASSETS / "lang/ko_kr.json", {**lang_ko, **LANG_KO})
     write(ASSETS / "lang/en_us.json", {**lang_en, **LANG_EN})
     worldgen()

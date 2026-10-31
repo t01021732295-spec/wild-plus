@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:brewing",
+  "input": {
+    "item": "minecraft:potion",
+    "potion_contents": {
+      "potions": "wildplus:berserk"
+    }
+  },
+  "output": {
+    "components": {
+      "minecraft:potion_contents": {
+        "potion": "wildplus:glass_cannon"
+      }
+    },
+    "id": "minecraft:potion"
+  },
+  "reagent": {
+    "item": "wildplus:jade"
+  }
+}

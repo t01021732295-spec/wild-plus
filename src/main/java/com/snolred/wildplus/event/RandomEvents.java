@@ -136,7 +136,7 @@ public final class RandomEvents {
         RandomSource rnd = level.getRandom();
         List<ServerPlayer> players = survivalPlayers(server);
         switch (type) {
-            case STORM -> level.setWeatherParameters(0, type.duration, true, true);
+            case STORM -> command(server, "weather thunder " + type.duration / 20);
             case BANK_BONUS -> {
                 WildData data = WildData.get(server);
                 for (var e : new ArrayList<>(data.bank.entrySet())) {
@@ -197,7 +197,7 @@ public final class RandomEvents {
     public static void stop(MinecraftServer server) {
         if (active == null) return;
         ServerLevel level = server.overworld();
-        if (active == Type.STORM) level.setWeatherParameters(6000, 0, false, false);
+        if (active == Type.STORM) command(server, "weather clear");
         for (UUID id : SPAWNED) {
             Entity e = level.getEntity(id);
             if (e != null && e.getPersistentData().getBooleanOr(TAG, false)) e.discard();
@@ -402,6 +402,10 @@ public final class RandomEvents {
     }
 
     // ───────── 도우미 ─────────
+    private static void command(MinecraftServer server, String cmd) {
+        server.getCommands().performPrefixedCommand(server.createCommandSourceStack().withSuppressedOutput(), cmd);
+    }
+
     private static List<ServerPlayer> survivalPlayers(MinecraftServer server) {
         List<ServerPlayer> out = new ArrayList<>();
         for (ServerPlayer p : server.getPlayerList().getPlayers()) {

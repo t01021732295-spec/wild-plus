@@ -13,27 +13,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.Potions;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDropsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 
-/** 새 효과의 동작(취약·광전사·탐욕)과 양조 레시피 */
+/** 새 효과의 동작(취약·광전사·탐욕). 양조 레시피는 데이터(recipe/brewing_*.json) */
 public final class EffectEvents {
     private EffectEvents() {}
-
-    @SubscribeEvent
-    public static void onBrewing(RegisterBrewingRecipesEvent event) {
-        var b = event.getBuilder();
-        b.addMix(Potions.AWKWARD, ModItems2.RAW_MYTHRIL.get(), ModEffects.MINERS_FOCUS_POTION);
-        b.addMix(ModEffects.MINERS_FOCUS_POTION, Items.GLOWSTONE_DUST, ModEffects.STRONG_MINERS_FOCUS_POTION);
-        b.addMix(Potions.AWKWARD, Items.IRON_INGOT, ModEffects.IRONSKIN_POTION);
-        b.addMix(Potions.AWKWARD, ModItems3.GOLD_COIN.get(), ModEffects.GREED_POTION);
-        b.addMix(Potions.AWKWARD, ModItems.BLOOD_SHARD.get(), ModEffects.LIFESTEAL_POTION);
-        b.addMix(ModEffects.LIFESTEAL_POTION, Items.FERMENTED_SPIDER_EYE, ModEffects.BLEEDING_POTION);
-        b.addMix(ModEffects.IRONSKIN_POTION, Items.FERMENTED_SPIDER_EYE, ModEffects.FRAILTY_POTION);
-        b.addMix(Potions.AWKWARD, ModItems.CHILI.get(), ModEffects.BERSERK_POTION);
-        b.addMix(ModEffects.BERSERK_POTION, ModItems2.JADE.get(), ModEffects.GLASS_CANNON_POTION);
-    }
 
     /** 취약·광전사: 받는 피해 증가 */
     @SubscribeEvent

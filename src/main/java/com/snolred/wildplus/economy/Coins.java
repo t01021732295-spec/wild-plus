@@ -50,7 +50,9 @@ public final class Coins {
     public static long backpackValue(ItemStack bag) {
         if (!(bag.getItem() instanceof com.snolred.wildplus.item.BackpackItem)) return 0;
         long total = 0;
-        for (ItemStack s : bag.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).nonEmptyItemsCopy()) {
+        NonNullList<ItemStack> items = NonNullList.withSize(((com.snolred.wildplus.item.BackpackItem) bag.getItem()).size(), ItemStack.EMPTY);
+        bag.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyInto(items);
+        for (ItemStack s : items) {
             total += (long) unitValue(s) * s.getCount();
             if (isPouch(s)) total += pouchValue(s);
         }
