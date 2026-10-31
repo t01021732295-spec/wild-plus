@@ -118,7 +118,7 @@ public final class DungeonGuardian {
                     double dx = p.getX() - boss.getX(), dz = p.getZ() - boss.getZ();
                     double len = Math.max(0.1, Math.sqrt(dx * dx + dz * dz));
                     p.push(dx / len * 1.4, 0.5, dz / len * 1.4);
-                    p.hurtMarked = true;
+                    if (p instanceof ServerPlayer sp) sp.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(sp));
                     p.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 2));
                 }
             }
