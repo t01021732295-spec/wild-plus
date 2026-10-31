@@ -5,7 +5,6 @@ import com.snolred.wildplus.menu.VendingMenu;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,11 +15,13 @@ public class VendingScreen extends AbstractContainerScreen<VendingMenu> {
     private static final int BODY = 0xFFB8202A, BODY_DARK = 0xFF7A121A, GLASS = 0xFF1E3340, GLASS_LIGHT = 0xFF2E4A5A;
     private static final int PANEL = 0xFF2A2A2E, SLOT_DARK = 0xFF373737, SLOT_LIGHT = 0xFFFFFFFF, SLOT_FILL = 0xFF8B8B8B;
     private static final int INV_BG = 0xFFC6C6C6;
+    /** 진열장 가격표: 검은 바탕에 초록 LED 숫자 */
+    private static final UiButton.Style PRICE_TAG = new UiButton.Style(0xFF1C1F24, 0xFF0E1013, 0xFF000000, 0xFF6BFF8A, false, UiButton.Shape.FLAT);
 
-    private final List<Button> buyButtons = new ArrayList<>();
-    private final List<Button> priceButtons = new ArrayList<>();
-    private Button manageButton;
-    private Button collectButton;
+    private final List<UiButton> buyButtons = new ArrayList<>();
+    private final List<UiButton> priceButtons = new ArrayList<>();
+    private UiButton manageButton;
+    private UiButton collectButton;
 
     public VendingScreen(VendingMenu menu, Inventory inv, Component title) {
         super(menu, inv, title, 176, 222);
@@ -37,22 +38,22 @@ public class VendingScreen extends AbstractContainerScreen<VendingMenu> {
             int id = VendingMenu.BTN_BUY + i;
             int x = leftPos + 6 + (i % 3) * 34;
             int y = topPos + 39 + (i / 3) * 32;
-            buyButtons.add(addRenderableWidget(Button.builder(Component.empty(), b -> press(id)).bounds(x, y, 30, 11).build()));
+            buyButtons.add(addRenderableWidget(new UiButton(x, y, 30, 11, Component.empty(), PRICE_TAG, () -> press(id))));
         }
-        addRenderableWidget(Button.builder(Component.translatable("gui.wildplus.vending.insert"), b -> press(VendingMenu.BTN_INSERT_ALL))
-                .bounds(leftPos + 116, topPos + 62, 54, 12).build());
-        addRenderableWidget(Button.builder(Component.translatable("gui.wildplus.vending.refund"), b -> press(VendingMenu.BTN_REFUND))
-                .bounds(leftPos + 116, topPos + 76, 54, 12).build());
-        manageButton = addRenderableWidget(Button.builder(Component.translatable("gui.wildplus.vending.manage"), b -> press(VendingMenu.BTN_MANAGE))
-                .bounds(leftPos + 116, topPos + 4, 54, 12).build());
+        addRenderableWidget(new UiButton(leftPos + 116, topPos + 62, 54, 12, Component.translatable("gui.wildplus.vending.insert"),
+                UiButton.GREEN, () -> press(VendingMenu.BTN_INSERT_ALL)));
+        addRenderableWidget(new UiButton(leftPos + 116, topPos + 76, 54, 12, Component.translatable("gui.wildplus.vending.refund"),
+                UiButton.STEEL, () -> press(VendingMenu.BTN_REFUND)));
+        manageButton = addRenderableWidget(new UiButton(leftPos + 116, topPos + 3, 54, 12, Component.translatable("gui.wildplus.vending.manage"),
+                UiButton.DARK, () -> press(VendingMenu.BTN_MANAGE)));
         String[] labels = {"+1", "+10", "+100", "-1", "-10", "-100"};
         for (int i = 0; i < labels.length; i++) {
             int id = VendingMenu.BTN_PRICE + i;
-            priceButtons.add(addRenderableWidget(Button.builder(Component.literal(labels[i]), b -> press(id))
-                    .bounds(leftPos + 4 + i * 18, topPos + 115, 18, 11).build()));
+            priceButtons.add(addRenderableWidget(UiButton.of(leftPos + 4 + i * 18, topPos + 115, 18, 11, labels[i],
+                    i < 3 ? UiButton.GREEN : UiButton.RED, () -> press(id))));
         }
-        collectButton = addRenderableWidget(Button.builder(Component.translatable("gui.wildplus.vending.collect"), b -> press(VendingMenu.BTN_COLLECT))
-                .bounds(leftPos + 116, topPos + 114, 56, 12).build());
+        collectButton = addRenderableWidget(new UiButton(leftPos + 116, topPos + 114, 56, 12, Component.translatable("gui.wildplus.vending.collect"),
+                UiButton.GOLD, () -> press(VendingMenu.BTN_COLLECT)));
         updateButtons();
     }
 
@@ -72,7 +73,7 @@ public class VendingScreen extends AbstractContainerScreen<VendingMenu> {
         boolean owner = menu.isOwner();
         boolean managing = owner && menu.isManaging();
         for (int i = 0; i < buyButtons.size(); i++) {
-            Button b = buyButtons.get(i);
+            UiButton b = buyButtons.get(i);
             boolean empty = menu.productEmpty(i);
             b.visible = !empty || managing;
             if (managing) {
@@ -85,7 +86,7 @@ public class VendingScreen extends AbstractContainerScreen<VendingMenu> {
         }
         manageButton.visible = owner;
         manageButton.setMessage(Component.translatable(managing ? "gui.wildplus.vending.done" : "gui.wildplus.vending.manage"));
-        for (Button b : priceButtons) b.visible = managing;
+        for (UiButton b : priceButtons) b.visible = managing;
         collectButton.visible = owner;
         collectButton.setMessage(Component.translatable("gui.wildplus.vending.collect", String.format("%,d", menu.earnings())));
     }
@@ -94,16 +95,41 @@ public class VendingScreen extends AbstractContainerScreen<VendingMenu> {
     public void extractBackground(GuiGraphicsExtractor g, int mouseX, int mouseY, float partialTick) {
         super.extractBackground(g, mouseX, mouseY, partialTick);
         int x = leftPos, y = topPos;
-        // 마인크래프트 기본 창 + 움푹 들어간 유리 진열장 · 조작판
-        UiKit.panel(g, x, y, 176, 222);
-        UiKit.inset(g, x + 4, y + 16, 106, 98, GLASS);
+        // 빨간 자판기 몸체 (위는 광택)
+        UiKit.device(g, x, y, 176, 130, 0xFFD5313B, 0xFF8E1620);
+        g.fillGradient(x + 2, y + 2, x + 174, y + 14, 0x40FFFFFF, 0x00FFFFFF);
+        // 유리 진열장: 안쪽 어둡게 + 대각선 반사 + 선반 3단
+        UiKit.round(g, x + 3, y + 15, 108, 100, 2, 0xFF2A0A0E);
+        g.fillGradient(x + 4, y + 16, x + 110, y + 114, 0xFF223A48, 0xFF14232C);
         for (int row = 0; row < 3; row++) {
-            g.fill(x + 5, y + 51 + row * 32, x + 109, y + 52 + row * 32, 0xFF9AA4AE); // 선반
+            int sy = y + 51 + row * 32;
+            g.fill(x + 5, sy, x + 109, sy + 1, 0xFFB8C4CE);
+            g.fill(x + 5, sy + 1, x + 109, sy + 2, 0xFF5A6670);
+            // 나선 코일 느낌의 점
+            for (int c = 0; c < 3; c++) for (int k = 0; k < 5; k++) g.fill(x + 10 + c * 34 + k * 5, sy - 2, x + 11 + c * 34 + k * 5, sy, 0x88C8D0D8);
         }
-        UiKit.inset(g, x + 114, y + 16, 58, 100, PANEL);
+        for (int i = 0; i < 40; i++) g.fill(x + 60 + i, y + 16 + i * 2, x + 62 + i, y + 18 + i * 2, 0x0CFFFFFF);
+        // 조작판 (검은 금속)
+        UiKit.round(g, x + 113, y + 15, 60, 100, 2, 0xFF0A0B0D);
+        g.fillGradient(x + 114, y + 16, x + 172, y + 114, 0xFF33363C, 0xFF1C1E22);
+        // 금액 LCD
+        UiKit.screen(g, x + 117, y + 18, 52, 10, 0xFF0E2A12, 0xFF0A1E0D);
+        // 동전 투입구 · 꺼내는 곳 테두리
+        UiKit.round(g, x + 139, y + 39, 22, 22, 2, 0xFFB88A2A);
+        UiKit.groove(g, x + 162, y + 44, 3, 12);
+        UiKit.round(g, x + 117, y + 88, 52, 28, 2, 0xFF050506);
+        g.fill(x + 118, y + 89, x + 168, y + 91, 0xFF2A2D33);
+        // 내 가방: 밝은 금속 쟁반
+        UiKit.inventoryTray(g, x, y + 126, 176, 96);
         for (Slot slot : menu.slots) {
             if (slot.isActive()) {
-                drawSlot(g, x + slot.x, y + slot.y, slot.index == VendingMenu.SLOT_COIN || slot.index == VendingMenu.SLOT_TRAY);
+                boolean special = slot.index == VendingMenu.SLOT_COIN || slot.index == VendingMenu.SLOT_TRAY;
+                if (slot.index < 9) { // 진열 상품: 유리 안쪽에 옅은 테두리만
+                    UiKit.outline(g, x + slot.x - 1, y + slot.y - 1, 18, 18, 0x30FFFFFF);
+                    continue;
+                }
+                if (special) UiKit.slot(g, x + slot.x, y + slot.y, UiKit.SlotStyle.DARK);
+                else UiKit.slot(g, x + slot.x, y + slot.y, UiKit.SlotStyle.CLASSIC);
             }
         }
     }
@@ -114,21 +140,21 @@ public class VendingScreen extends AbstractContainerScreen<VendingMenu> {
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor g, int mouseX, int mouseY) {
-        g.text(this.font, this.title, this.titleLabelX, this.titleLabelY, UiKit.TEXT, false);
-        g.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xFF404040, false);
-        g.text(this.font, Component.translatable("gui.wildplus.vending.coin_slot"), 118, 32, 0xFFFFD84A, false);
+        g.text(this.font, this.title, this.titleLabelX, this.titleLabelY, 0xFFFFFFFF, true);
+        g.text(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY, 0xFF3A414B, false);
+        g.text(this.font, Component.translatable("gui.wildplus.vending.coin_slot"), 117, 32, 0xFFFFD84A, false);
         long credit = menu.credit();
-        g.text(this.font, Component.translatable("gui.wildplus.vending.credit"), 118, 20, 0xFFAAAAAA, false);
-        g.text(this.font, Component.literal(String.format("%,d동", credit)), 146, 20, 0xFF7CFC6A, false);
-        g.text(this.font, Component.translatable("gui.wildplus.vending.tray"), 118, 90, 0xFFFFD84A, false);
+        String cr = String.format("%,d동", credit);
+        g.text(this.font, Component.literal(cr), 167 - this.font.width(cr), 19, 0xFF6BFF8A, false);
+        g.text(this.font, Component.translatable("gui.wildplus.vending.tray"), 119, 90, 0xFFFFD84A, false);
         if (menu.isOwner()) {
             if (!menu.isManaging()) {
-                g.text(this.font, Component.translatable("gui.wildplus.vending.hint_owner"), 6, 118, 0xFF7A4A10, false);
+                g.text(this.font, Component.translatable("gui.wildplus.vending.hint_owner"), 6, 117, 0xFFFFE0A0, false);
             }
         } else if (menu.isInfinite()) {
-            g.text(this.font, Component.translatable("gui.wildplus.vending.fixed"), 6, 118, 0xFF7A4A10, false);
+            g.text(this.font, Component.translatable("gui.wildplus.vending.fixed"), 6, 117, 0xFFFFE0A0, false);
         } else {
-            g.text(this.font, Component.translatable("gui.wildplus.vending.fixed_owned"), 6, 118, 0xFF7A4A10, false);
+            g.text(this.font, Component.translatable("gui.wildplus.vending.fixed_owned"), 6, 117, 0xFFFFE0A0, false);
         }
     }
 

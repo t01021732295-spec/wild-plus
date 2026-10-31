@@ -51,14 +51,33 @@ public final class InfoHud {
         Component line3 = Component.translatable("hud.wildplus.money", String.format("%,d", com.snolred.wildplus.economy.Coins.totalValue(player)));
         w = Math.max(w, mc.font.width(line3));
         int lines = 2 + (line2 == null ? 0 : 1);
-        int h = lines * 10 + 2;
-        g.fill(x - 2, y - 2, x + w + 2, y + h - 2, 0x66000000);
-        g.text(mc.font, line1, x, y, night ? 0xFF9FB4FF : 0xFFFFE08A, true);
-        int ly = y + 10;
-        if (line2 != null) {
-            g.text(mc.font, line2, x, ly, 0xFFE0E0E0, true);
-            ly += 10;
+        int h = lines * 11 + 5;
+        int tx = x + 12;
+        // 반투명 카드 + 왼쪽 색 띠
+        UiKit.round(g, x - 2, y - 2, w + 18, h, 3, 0x9A0E1218);
+        UiKit.round(g, x - 2, y - 2, 2, h, 1, night ? 0xFF7A8CFF : 0xFFFFC34D);
+        g.fill(x + 1, y - 2, x + w + 13, y - 1, 0x22FFFFFF);
+        // 해 · 달
+        if (night) {
+            UiKit.circle(g, x + 2, y, 7, 0xFFDDE4FF);
+            UiKit.circle(g, x + 4, y - 1, 6, 0xFF20263A);
+        } else {
+            UiKit.circle(g, x + 1, y - 1, 9, 0x55FFC34D);
+            UiKit.circle(g, x + 2, y, 7, 0xFFFFC34D);
         }
-        g.text(mc.font, line3, x, ly, 0xFFFFD84A, true);
+        g.text(mc.font, line1, tx, y, night ? 0xFFB8C6FF : 0xFFFFE08A, true);
+        int ly = y + 11;
+        if (line2 != null) {
+            // 나침반
+            UiKit.circle(g, x + 2, ly, 7, 0xFF8A94A6);
+            g.fill(x + 5, ly + 1, x + 6, ly + 4, 0xFFFF5050);
+            g.fill(x + 5, ly + 4, x + 6, ly + 6, 0xFFFFFFFF);
+            g.text(mc.font, line2, tx, ly, 0xFFE6EBF2, true);
+            ly += 11;
+        }
+        // 동전
+        UiKit.circle(g, x + 2, ly, 7, 0xFF8A6410);
+        UiKit.circle(g, x + 3, ly + 1, 5, 0xFFF2CC5A);
+        g.text(mc.font, line3, tx, ly, 0xFFFFD84A, true);
     }
 }

@@ -160,7 +160,7 @@ public class MachineMenu extends AbstractContainerMenu {
         return container.stillValid(player);
     }
 
-    private class InputSlot extends Slot {
+    public class InputSlot extends Slot {
         InputSlot(Container c, int i, int x, int y) {
             super(c, i, x, y);
         }
