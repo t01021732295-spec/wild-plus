@@ -1,1 +1,1 @@
-textures/entity/(wandering_trader|villager|illager)
+[Bb]rewing
