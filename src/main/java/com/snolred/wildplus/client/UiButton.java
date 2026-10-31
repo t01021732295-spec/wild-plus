@@ -78,7 +78,7 @@ public class UiButton extends AbstractButton {
             top = UiKit.mix(top, 0xFF9AA0A8, 0.65F);
             bottom = UiKit.mix(bottom, 0xFF8A9098, 0.65F);
             border = UiKit.mix(border, 0xFF5A6068, 0.6F);
-            text = UiKit.mix(text, 0xFF6A7078, 0.5F);
+            text = 0xFF4A4F57;
         } else if (hover) {
             top = UiKit.lighter(top, 0.18F);
             bottom = UiKit.lighter(bottom, 0.12F);

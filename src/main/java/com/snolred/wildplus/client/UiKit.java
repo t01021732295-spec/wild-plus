@@ -287,10 +287,34 @@ public final class UiKit {
         g.text(font(), s, cx - font().width(s) / 2, y, c, false);
     }
 
-    /** 두껍게 (1픽셀 옆으로 한 번 더) */
+    /**
+     * 두껍게. 영문·숫자만 1픽셀 옆에 한 번 더 그린다.
+     * 한글은 획이 촘촘해서 겹쳐 그리면 뭉개지므로, 겹치지 않고 그 부분만 한 번 그린다.
+     */
     public static void bold(GuiGraphicsExtractor g, String s, int x, int y, int c) {
+        int cx = x;
+        StringBuilder run = new StringBuilder();
+        boolean runWide = false;
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            boolean wide = ch >= 0x1100;
+            if (run.length() > 0 && wide != runWide) {
+                cx = boldRun(g, run.toString(), cx, y, c, runWide);
+                run.setLength(0);
+            }
+            runWide = wide;
+            run.append(ch);
+        }
+        if (run.length() > 0) boldRun(g, run.toString(), cx, y, c, runWide);
+    }
+
+    private static int boldRun(GuiGraphicsExtractor g, String s, int x, int y, int c, boolean wide) {
         text(g, s, x, y, c);
-        text(g, s, x + 1, y, c);
+        if (!wide) {
+            text(g, s, x + 1, y, c);
+            return x + font().width(s) + 1;
+        }
+        return x + font().width(s);
     }
 
     /** 크게 (정수 배율) */
