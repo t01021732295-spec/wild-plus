@@ -63,7 +63,15 @@ public final class MerchantTrades {
         sellStack(o, com.snolred.wildplus.economy.Cookbook.create(), 5);
         sellStack(o, com.snolred.wildplus.economy.Guidebook.create(), 5);
         sell(o, ModItems.LUCKY_CHARM.get(), 1, 500, 1);
+        // 이벤트 투척병: 무작위 + 그날 고른 지정 이벤트 2종
+        sellStack(o, com.snolred.wildplus.item.EventBottleItem.of(null), 800, 4);
+        var shop = com.snolred.wildplus.event.RandomEvents.BOTTLE_SHOP;
+        int a = RND.nextInt(shop.length), b = (a + 1 + RND.nextInt(shop.length - 1)) % shop.length;
+        sellStack(o, com.snolred.wildplus.item.EventBottleItem.of(shop[a]), 1500, 2);
+        sellStack(o, com.snolred.wildplus.item.EventBottleItem.of(shop[b]), 1500, 2);
     }
+
+    private static final java.util.Random RND = new java.util.Random();
 
     /** 대장장이: 광물 매입, 금속·장비·채굴 도구 */
     private static void blacksmith(List<MerchantOffer> o) {
@@ -81,6 +89,8 @@ public final class MerchantTrades {
         sell(o, ModItems2.JADE.get(), 1, 20);
         sell(o, ModItems.BLOOD_SHARD.get(), 2, 30);
         sell(o, Items.DIAMOND, 1, 100);
+        buy(o, com.snolred.wildplus.registry.ModItems7.RUBY.get(), 1, 40);
+        sell(o, com.snolred.wildplus.registry.ModItems7.RUBY.get(), 1, 160, 6);
         sell(o, ModItems2.MYTHRIL_PICKAXE.get(), 1, 150);
         sell(o, ModItems2.MYTHRIL_SWORD.get(), 1, 120);
         sell(o, ModItems4.JADE_PICKAXE.get(), 1, 120);
@@ -170,6 +180,7 @@ public final class MerchantTrades {
         sell(o, ModItems4.SILVER_BACKPACK.get(), 1, 400, 2);
         sell(o, ModItems4.GOLD_BACKPACK.get(), 1, 1200, 1);
         sell(o, ModItems4.LOTTERY_TICKET.get(), 1, 30, 16);
+        sellStack(o, com.snolred.wildplus.item.EventBottleItem.of(null), 800, 4);
     }
 
     /** 상인이 물건을 사 준다: item n개 → payout동 (단일 동전 종류로 지급) */
@@ -193,6 +204,12 @@ public final class MerchantTrades {
     private static void sellStack(List<MerchantOffer> out, ItemStack result, int price) {
         List<ItemStack> coins = Coins.toCoins(price);
         out.add(new MerchantOffer(cost(coins.get(0)), Optional.empty(), result, 4, 1, 0.0F));
+    }
+
+    private static void sellStack(List<MerchantOffer> out, ItemStack result, int price, int maxUses) {
+        List<ItemStack> coins = Coins.toCoins(price);
+        Optional<ItemCost> b = coins.size() > 1 ? Optional.of(cost(coins.get(1))) : Optional.empty();
+        out.add(new MerchantOffer(cost(coins.get(0)), b, result, maxUses, 2, 0.0F));
     }
 
     private static ItemCost cost(ItemStack stack) {

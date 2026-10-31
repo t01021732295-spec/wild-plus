@@ -114,6 +114,19 @@
         },
         {
           "type": "minecraft:item",
+          "name": "wildplus:ruby",
+          "weight": 3,
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 1,
+              "max": 2
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
           "name": "minecraft:bone",
           "weight": 15,
           "modifier": {

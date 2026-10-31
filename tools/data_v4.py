@@ -208,7 +208,8 @@ def loot():
         "random_sequence": i("blocks/gacha_machine")})
     write(DATA / "loot_table/gameplay/gacha.json", {"type": "minecraft:chest", "pools": [
         {"rolls": 1, "entries": [
-            entry(i("copper_coin"), 30, 4, 12), entry(i("silver_coin"), 10, 1, 2),
+            entry(i("copper_coin"), 30, 4, 12), entry(i("silver_coin"), 10, 1, 2), entry("minecraft:redstone", 8, 8, 16),
+            entry("minecraft:redstone_block", 2, 1, 2),
             entry(i("tomato_seeds"), 6, 2, 4), entry(i("strawberry"), 6, 2, 4), entry(i("chili_seeds"), 6, 2, 4),
             entry(i("pizza"), 6, 2, 2), entry(i("strawberry_tart"), 5, 2, 2), entry(i("honey_toast"), 5),
             entry(i("fertilizer"), 6, 2, 4), entry("minecraft:emerald", 6, 1, 2), entry(i("jade"), 4, 1, 2),

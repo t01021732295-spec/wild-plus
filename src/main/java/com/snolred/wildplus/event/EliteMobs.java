@@ -75,7 +75,9 @@ public final class EliteMobs {
             mob.addEffect(new MobEffectInstance(MobEffects.SPEED, 20 * 60 * 10, 0));
         }
 
-        double chance = WildConfig.ELITE_CHANCE.get() * (bloodMoon ? 3.0 : 1.0);
+        // 13차: 전체 확률 절반으로, 하늘이 안 보이는 곳(동굴)에서는 그보다 더 낮게 (지상의 1/4)
+        double chance = WildConfig.ELITE_CHANCE.get() * 0.5 * (bloodMoon ? 3.0 : 1.0);
+        if (!level.canSeeSky(mob.blockPosition())) chance *= 0.25;
         if (natural && level.getRandom().nextDouble() < chance) {
             makeElite(mob, bloodMoon ? 2 : 1);
         }

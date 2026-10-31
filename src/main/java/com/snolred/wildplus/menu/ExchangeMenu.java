@@ -21,7 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import org.jspecify.annotations.Nullable;
 
 /**
- * 환전소: 가방 속 동전을 그날의 환율로 바꿔 준다 (ExchangeRate, 하루마다 바뀜).
+ * 환전소: 가방 속 동전을 10:1 고정 비율로 바꿔 준다 (ExchangeRate).
  * 올리기: 동화 N → 은화 1, 은화 N → 금화 1 / 내리기: 금화 1 → 은화 N-1, 은화 1 → 동화 N-1.
  * 버튼 = 종류 × 2 + (0: 한 번, 1: 전부). [정리] 은 가장 적은 개수로, [잔돈으로] 는 전부 동화로.
  */

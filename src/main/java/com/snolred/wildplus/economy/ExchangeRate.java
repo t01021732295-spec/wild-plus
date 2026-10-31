@@ -4,7 +4,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.RandomSource;
 
 /**
- * 환전소 환율 (게임 속 하루마다 바뀜, 날짜로 정해지므로 저장할 필요 없음).
+ * 환전소 환율: 13차부터 다시 10:1 고정 (환율 변동 삭제). 화면·메뉴 코드는 그대로 두고 값만 10.
  * 동전은 작업대에서 언제나 10:1 로 바꿀 수 있으므로, 환전소가 그보다 유리하면 무한 증식이 된다.
  * 그래서 환율은 "그날의 수수료"로만 움직인다:
  *  - 살 때(작은 동전 → 큰 동전 1개) 10~12개 (10보다 싸지지 않음)
@@ -28,21 +28,21 @@ public final class ExchangeRate {
 
     /** 은화 1개를 사는 데 드는 동화 (10 이상) */
     public static int silverBuy(long day) {
-        return Math.max(10, roll(day, 1, BUY));
+        return 10;
     }
 
     /** 은화 1개를 팔면 받는 동화 (10 이하) */
     public static int silverSell(long day) {
-        return Math.min(10, roll(day, 3, SELL));
+        return 10;
     }
 
     /** 금화 1개를 사는 데 드는 은화 (10 이상) */
     public static int goldBuy(long day) {
-        return Math.max(10, roll(day, 2, BUY));
+        return 10;
     }
 
     /** 금화 1개를 팔면 받는 은화 (10 이하) */
     public static int goldSell(long day) {
-        return Math.min(10, roll(day, 4, SELL));
+        return 10;
     }
 }

@@ -88,8 +88,12 @@ def vending(products, facing):
     """구조물 자판기: 정해진 상품·가격, 무한 재고. products = [(아이템, 진열 개수, 가격), ...] 최대 9개"""
     nbt = Compound({"id": String("wildplus:vending_machine"), "infinite": Byte(1)})
     prices = [10] * 9
-    for idx, (item, count, price) in enumerate(products[:9]):
-        nbt[f"item{idx}"] = Compound({"id": String(item), "count": Int(count)})
+    for idx, prod in enumerate(products[:9]):
+        item, count, price = prod[:3]
+        stack = Compound({"id": String(item), "count": Int(count)})
+        if len(prod) > 3:  # 이벤트 투척병처럼 아이템 데이터가 붙은 상품: (아이템, 개수, 가격, {"키": "값"})
+            stack["components"] = Compound({"minecraft:custom_data": Compound({k: String(v) for k, v in prod[3].items()})})
+        nbt[f"item{idx}"] = stack
         prices[idx] = price
     nbt["prices"] = nbtlib.IntArray([Int(p) for p in prices])
     return ("wildplus:vending_machine", {"facing": facing, "half": "lower"}, nbt)
@@ -139,7 +143,7 @@ def trading_post():
             ("wildplus:strawberry_tart", 4, 5), ("minecraft:golden_carrot", 8, 6), ("minecraft:cake", 1, 15)]
     goods = [("minecraft:torch", 32, 1), ("wildplus:fertilizer", 8, 3), ("wildplus:tomato_seeds", 8, 2),
              ("wildplus:death_scroll", 1, 60), ("minecraft:arrow", 16, 2), ("wildplus:recall_scroll", 2, 40),
-             ("wildplus:teleporter", 1, 40), ("wildplus:lottery_ticket", 1, 30), ("wildplus:coin_pouch", 1, 15)]
+             ("wildplus:teleporter", 1, 40), ("wildplus:lottery_ticket", 1, 30), ("wildplus:event_bottle", 1, 800)]
     # 자판기는 실물 크기(2칸 높이): 위 칸도 같이 놓는다
     t.set(12, 1, 4, *vending(food, "east"))
     t.set(12, 2, 4, "wildplus:vending_machine", {"facing": "east", "half": "upper"})

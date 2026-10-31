@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:ruby_block"
+  ],
+  "result": {
+    "id": "wildplus:ruby",
+    "count": 9
+  }
+}

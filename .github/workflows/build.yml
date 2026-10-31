@@ -262,7 +262,7 @@ jobs:
             run "summon wildplus:fisher_merchant 384.5 120 7.5 {NoAI:1b,Rotation:[180f,0f]}"
             run "summon wildplus:banker_merchant 376.5 120 6.5 {NoAI:1b,Rotation:[200f,0f]}"
             run "setblock 383 120 4 wildplus:vending_machine[facing=north]{item0:{id:\"minecraft:bread\",count:8},item1:{id:\"wildplus:pizza\",count:4},item2:{id:\"minecraft:cake\",count:1},item3:{id:\"minecraft:apple\",count:8},item4:{id:\"wildplus:tomato\",count:8},item5:{id:\"minecraft:cookie\",count:16},item6:{id:\"wildplus:strawberry\",count:8},item7:{id:\"minecraft:golden_carrot\",count:8},item8:{id:\"wildplus:honey_toast\",count:4},prices:[I;2,4,15,1,2,1,2,6,5],infinite:1b}"
-            run "setblock 384 120 4 wildplus:vending_machine[facing=north]{item0:{id:\"minecraft:torch\",count:32},item1:{id:\"wildplus:recall_scroll\",count:2},item3:{id:\"minecraft:arrow\",count:16},item4:{id:\"wildplus:fertilizer\",count:8},item8:{id:\"minecraft:diamond\",count:1},prices:[I;1,40,10,2,3,10,10,10,99],infinite:1b}"
+            run "setblock 384 120 4 wildplus:vending_machine[facing=north]{item0:{id:\"minecraft:torch\",count:32},item1:{id:\"wildplus:recall_scroll\",count:2},item2:{id:\"wildplus:event_bottle\",count:1,components:{\"minecraft:custom_data\":{wildplus_event:\"GOLD_RUSH\"}}},item3:{id:\"minecraft:arrow\",count:16},item4:{id:\"wildplus:fertilizer\",count:8},item8:{id:\"minecraft:diamond\",count:1},prices:[I;1,40,10,2,3,10,10,10,99],infinite:1b}"
             run "setblock 385 120 4 wildplus:gacha_machine[facing=north]"
             run "setblock 381 120 4 wildplus:grave[facing=north]{items:[{id:\"minecraft:diamond\",count:3}],owner_name:\"Tester\"}"
             # 5차 전시장 (z=-6 줄, 앞면이 북쪽)
@@ -277,6 +277,11 @@ jobs:
             run "setblock 396 120 -6 wildplus:pharmacy[facing=north]"
             run "setblock 398 120 -6 wildplus:weather_station[facing=north]"
             run "setblock 400 120 -6 wildplus:chunk_loader"
+            # 13차 전시: 루비 광석·블록, 루비 갑옷 거치대
+            run "setblock 402 120 -6 wildplus:ruby_ore"
+            run "setblock 403 120 -6 wildplus:deepslate_ruby_ore"
+            run "setblock 404 120 -6 wildplus:ruby_block"
+            run "summon minecraft:armor_stand 406.5 120 -5.5 {Rotation:[180f,0f],ShowArms:1b,equipment:{head:{id:\"wildplus:ruby_helmet\",count:1},chest:{id:\"wildplus:ruby_chestplate\",count:1},legs:{id:\"wildplus:ruby_leggings\",count:1},feet:{id:\"wildplus:ruby_boots\",count:1},mainhand:{id:\"wildplus:ruby_sword\",count:1}}}"
             # 5차 서버 시험: 주식 시세, 출하 상자 아침 판매
             run "wildplus stocks refresh"
             sleep 15
@@ -322,6 +327,12 @@ jobs:
             run "fill 394 126 2 396 127 4 minecraft:oak_leaves[persistent=true]"
             run "setblock 398 119 3 minecraft:farmland[moisture=7]"
             run "setblock 398 120 3 minecraft:wheat[age=7]"
+            # 13차: 이벤트 투척병(영웅의 시간)이 땅에 깨지면 이벤트 시작 · 루비 광맥 생성
+            run "fill 60 119 60 62 119 62 minecraft:stone"
+            run "summon minecraft:snowball 61.5 124 61.5 {Item:{id:\"wildplus:event_bottle\",count:1,components:{\"minecraft:custom_data\":{wildplus_event:\"HERO_TIME\"}}},Motion:[0.0,-1.0,0.0]}"
+            sleep 4
+            run "place feature wildplus:ore_ruby 0 -40 0"
+            run "wildplus event stop"
             run "gamerule immediate_respawn true"
             run "gamerule doImmediateRespawn true"
             sleep 10; echo "stop"

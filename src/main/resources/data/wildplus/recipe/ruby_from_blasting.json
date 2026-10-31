@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "ingredient": [
+    "wildplus:ruby_ore",
+    "wildplus:deepslate_ruby_ore"
+  ],
+  "result": {
+    "id": "wildplus:ruby"
+  },
+  "experience": 1.0,
+  "cookingtime": 100
+}

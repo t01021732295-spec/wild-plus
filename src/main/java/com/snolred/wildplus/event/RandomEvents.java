@@ -58,7 +58,7 @@ import net.neoforged.neoforge.event.server.ServerStoppedEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 /**
- * 랜덤 이벤트 24종. 평균 15분(설정)마다 하나가 일어나 몇 분 동안 이어진다. 보스바에 이름과 남은 시간.
+ * 랜덤 이벤트 32종. 평균 15분(설정)마다 하나가 일어나 몇 분 동안 이어진다. 보스바에 이름과 남은 시간.
  * 좋은 이벤트가 대부분이고, 습격·역병 같은 위험한 이벤트도 섞여 있다.
  */
 public final class RandomEvents {
@@ -86,7 +86,16 @@ public final class RandomEvents {
         COIN_RAIN(2400, BossEvent.BossBarColor.YELLOW),
         ANIMAL_MIGRATION(3600, BossEvent.BossBarColor.GREEN),
         ORE_BLESSING(6000, BossEvent.BossBarColor.PURPLE),
-        WANTED(6000, BossEvent.BossBarColor.RED);
+        WANTED(6000, BossEvent.BossBarColor.RED),
+        // 13차 추가
+        TREASURE_GOBLIN(3600, BossEvent.BossBarColor.YELLOW),
+        ORE_RAIN(2400, BossEvent.BossBarColor.PURPLE),
+        BLOOM(4800, BossEvent.BossBarColor.PINK),
+        FROST_WIND(3600, BossEvent.BossBarColor.WHITE),
+        HERO_TIME(4800, BossEvent.BossBarColor.RED),
+        DOUBLE_DROPS(6000, BossEvent.BossBarColor.GREEN),
+        FULL_MOON(6000, BossEvent.BossBarColor.PURPLE),
+        VAMPIRE_NIGHT(4800, BossEvent.BossBarColor.RED);
 
         public final int duration;
         public final BossEvent.BossBarColor color;
@@ -101,7 +110,18 @@ public final class RandomEvents {
         }
     }
 
-    private static final String TAG = "wildplus_event_mob", WANTED_TAG = "wildplus_wanted";
+    private static final String TAG = "wildplus_event_mob", WANTED_TAG = "wildplus_wanted", GOBLIN_TAG = "wildplus_treasure_rabbit";
+
+    /** 이벤트 투척병 상점에서 이름을 골라 살 수 있는 이벤트 (돈이 바로 생기는 이벤트·위험한 이벤트 일부는 제외) */
+    public static final Type[] BOTTLE_SHOP = {Type.GOLD_RUSH, Type.HARVEST_FESTIVAL, Type.FISH_FRENZY, Type.LUCKY_DAY, Type.XP_FESTIVAL,
+            Type.MINING_FEVER, Type.ORE_BLESSING, Type.BLESSING, Type.LOW_GRAVITY, Type.SWIFT_WIND, Type.METEOR_SHOWER, Type.MONSTER_RAID,
+            Type.ELITE_INVASION, Type.STORM, Type.SLIME_RAIN, Type.TREASURE_GOBLIN, Type.ORE_RAIN, Type.BLOOM, Type.HERO_TIME,
+            Type.DOUBLE_DROPS, Type.FULL_MOON, Type.VAMPIRE_NIGHT, Type.ANIMAL_MIGRATION, Type.MERCHANT_CARAVAN};
+
+    public static Type random(RandomSource rnd) {
+        Type[] all = Type.values();
+        return all[rnd.nextInt(all.length)];
+    }
     private static Type active;
     private static long endsAt, nextAt = -1;
     private static ServerBossEvent bar;
@@ -170,6 +190,18 @@ public final class RandomEvents {
                 List<EntityType<? extends Mob>> kinds = List.of(ModEntities.MERCHANT.get(), ModEntities.BLACKSMITH_MERCHANT.get(),
                         ModEntities.FARMER_MERCHANT.get(), ModEntities.FISHER_MERCHANT.get(), ModEntities.BANKER_MERCHANT.get());
                 for (ServerPlayer p : players) spawnNear(level, p, kinds.get(rnd.nextInt(kinds.size())), 4, 8, false);
+            }
+            case TREASURE_GOBLIN -> {
+                for (ServerPlayer p : players) {
+                    for (int i = 0; i < 2; i++) {
+                        Mob m = spawnNear(level, p, EntityTypes.RABBIT, 8, 20, false);
+                        if (m == null) continue;
+                        m.getPersistentData().putBoolean(GOBLIN_TAG, true);
+                        m.addEffect(new MobEffectInstance(MobEffects.GLOWING, type.duration, 0, false, false));
+                        m.addEffect(new MobEffectInstance(MobEffects.SPEED, type.duration, 2, false, false));
+                        m.setCustomName(Component.translatable("entity.wildplus.treasure_rabbit").withStyle(ChatFormatting.GOLD));
+                    }
+                }
             }
             case ANIMAL_MIGRATION -> {
                 List<EntityType<? extends Mob>> kinds = List.of(EntityTypes.COW, EntityTypes.SHEEP, EntityTypes.PIG, EntityTypes.CHICKEN,
@@ -342,6 +374,68 @@ public final class RandomEvents {
                     }
                 }
             }
+            case HERO_TIME -> {
+                effects(players, now, MobEffects.STRENGTH, 1);
+                effects(players, now, MobEffects.SPEED, 0);
+            }
+            case FROST_WIND -> {
+                if (now % 40 != 0) break;
+                for (ServerPlayer p : players) {
+                    if (!p.hasEffect(MobEffects.FIRE_RESISTANCE)) p.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 0, true, false, true));
+                    level.sendParticles(ParticleTypes.SNOWFLAKE, p.getX(), p.getY() + 1.5, p.getZ(), 12, 3, 1, 3, 0.02);
+                    for (int i = 0; i < 12; i++) {
+                        BlockPos top = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING,
+                                p.blockPosition().offset(rnd.nextInt(25) - 12, 0, rnd.nextInt(25) - 12)).below();
+                        if (level.getBlockState(top).is(Blocks.WATER) && level.getFluidState(top).isSource()) {
+                            level.setBlock(top, Blocks.ICE.defaultBlockState(), 3);
+                        }
+                    }
+                }
+            }
+            case BLOOM -> {
+                if (now % 40 == 0) {
+                    BlockState[] flowers = {Blocks.POPPY.defaultBlockState(), Blocks.DANDELION.defaultBlockState(), Blocks.CORNFLOWER.defaultBlockState(),
+                            Blocks.OXEYE_DAISY.defaultBlockState(), Blocks.ALLIUM.defaultBlockState(), Blocks.AZURE_BLUET.defaultBlockState(),
+                            Blocks.PINK_TULIP.defaultBlockState(), Blocks.LILY_OF_THE_VALLEY.defaultBlockState()};
+                    for (ServerPlayer p : players) {
+                        for (int i = 0; i < 6; i++) {
+                            BlockPos top = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                                    p.blockPosition().offset(rnd.nextInt(25) - 12, 0, rnd.nextInt(25) - 12));
+                            if (level.getBlockState(top).isAir() && level.getBlockState(top.below()).is(Blocks.GRASS_BLOCK)) {
+                                level.setBlock(top, flowers[rnd.nextInt(flowers.length)], 3);
+                                level.sendParticles(ParticleTypes.CHERRY_LEAVES, top.getX() + 0.5, top.getY() + 0.8, top.getZ() + 0.5, 4, 0.3, 0.3, 0.3, 0);
+                            }
+                        }
+                    }
+                }
+                if (now % 600 == 0) {
+                    for (ServerPlayer p : players) {
+                        for (net.minecraft.world.entity.animal.Animal a : level.getEntitiesOfClass(net.minecraft.world.entity.animal.Animal.class,
+                                p.getBoundingBox().inflate(16))) {
+                            if (a.canFallInLove() && a.getAge() == 0) a.setInLove(p);
+                        }
+                    }
+                }
+            }
+            case ORE_RAIN -> {
+                if (now % 60 != 0) break;
+                for (ServerPlayer p : players) {
+                    for (int i = 0; i < 3; i++) {
+                        float f = rnd.nextFloat();
+                        ItemStack ore = f < 0.002F ? new ItemStack(com.snolred.wildplus.registry.ModItems7.RUBY.get())
+                                : f < 0.02F ? new ItemStack(Items.DIAMOND)
+                                : f < 0.06F ? new ItemStack(Items.EMERALD)
+                                : f < 0.16F ? new ItemStack(Items.RAW_GOLD, 1 + rnd.nextInt(2))
+                                : f < 0.32F ? new ItemStack(Items.RAW_IRON, 1 + rnd.nextInt(2))
+                                : f < 0.48F ? new ItemStack(Items.REDSTONE, 2 + rnd.nextInt(4))
+                                : f < 0.62F ? new ItemStack(Items.LAPIS_LAZULI, 2 + rnd.nextInt(3))
+                                : f < 0.80F ? new ItemStack(Items.RAW_COPPER, 2 + rnd.nextInt(3))
+                                : new ItemStack(Items.COAL, 2 + rnd.nextInt(3));
+                        BlockPos pos = p.blockPosition().offset(rnd.nextInt(13) - 6, 12, rnd.nextInt(13) - 6);
+                        drop(level, pos, ore);
+                    }
+                }
+            }
             case SUPPLY_DROP -> {
                 if (target != null && now % 20 == 0) {
                     level.sendParticles(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, target.getX() + 0.5, target.getY() + 1.2, target.getZ() + 0.5, 2, 0.1, 0.5, 0.1, 0.01);
@@ -359,7 +453,27 @@ public final class RandomEvents {
     // ───────── 게임 규칙에 끼어드는 이벤트 ─────────
     @SubscribeEvent
     public static void onDrops(LivingDropsEvent event) {
-        if (!(event.getEntity() instanceof Monster m) || !(event.getSource().getEntity() instanceof Player p)) return;
+        LivingEntity dead = event.getEntity();
+        if (!(event.getSource().getEntity() instanceof Player killer) || dead instanceof Player) return;
+        if (dead.getPersistentData().getBooleanOr(GOBLIN_TAG, false)) {
+            RandomSource r = killer.getRandom();
+            ItemStack[] loot = {new ItemStack(ModItems3.GOLD_COIN.get(), 1 + r.nextInt(2)), new ItemStack(Items.DIAMOND, 1 + r.nextInt(3)),
+                    new ItemStack(Items.EMERALD, 2 + r.nextInt(4)), new ItemStack(ModItems3.SILVER_COIN.get(), 3 + r.nextInt(6))};
+            for (ItemStack s : loot) event.getDrops().add(new ItemEntity(dead.level(), dead.getX(), dead.getY() + 0.5, dead.getZ(), s));
+            if (dead.level() instanceof ServerLevel sl) {
+                sl.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, dead.getX(), dead.getY() + 0.5, dead.getZ(), 30, 0.4, 0.4, 0.4, 0.3);
+            }
+        }
+        if (active == Type.DOUBLE_DROPS && !dead.getPersistentData().getBooleanOr(TAG, false)) {
+            List<ItemEntity> extra = new ArrayList<>();
+            for (ItemEntity it : event.getDrops()) extra.add(new ItemEntity(dead.level(), it.getX(), it.getY(), it.getZ(), it.getItem().copy()));
+            event.getDrops().addAll(extra);
+        }
+        if (!(dead instanceof Monster m)) return;
+        Player p = killer;
+        if (active == Type.FULL_MOON && p.getRandom().nextFloat() < 0.25F) {
+            event.getDrops().add(new ItemEntity(m.level(), m.getX(), m.getY() + 0.5, m.getZ(), new ItemStack(ModItems3.SILVER_COIN.get())));
+        }
         if (active == Type.GOLD_RUSH) {
             ItemEntity it = new ItemEntity(m.level(), m.getX(), m.getY() + 0.5, m.getZ(),
                     new ItemStack(ModItems3.COPPER_COIN.get(), 3 + p.getRandom().nextInt(8)));
@@ -370,6 +484,7 @@ public final class RandomEvents {
     @SubscribeEvent
     public static void onXp(LivingExperienceDropEvent event) {
         if (active == Type.XP_FESTIVAL) event.setDroppedExperience(event.getDroppedExperience() * 2);
+        if (active == Type.FULL_MOON && event.getEntity() instanceof Monster) event.setDroppedExperience(event.getDroppedExperience() * 3);
     }
 
     @SubscribeEvent
@@ -390,6 +505,44 @@ public final class RandomEvents {
                     killer.getName()).withStyle(ChatFormatting.GOLD), false);
             if (active == Type.WANTED) stop(killer.level().getServer());
         }
+    }
+
+    /** 흡혈의 밤: 플레이어가 준 근접 피해의 25% 회복 */
+    @SubscribeEvent
+    public static void onDamage(net.neoforged.neoforge.event.entity.living.LivingDamageEvent.Post event) {
+        if (active != Type.VAMPIRE_NIGHT || !(event.getSource().getEntity() instanceof Player p) || event.getSource().getDirectEntity() != p
+                || p.level().isClientSide()) {
+            return;
+        }
+        float heal = Math.min(event.getHealthDamage() * 0.25F, 4.0F);
+        if (heal > 0 && p.getHealth() < p.getMaxHealth()) {
+            p.heal(heal);
+            if (p.level() instanceof ServerLevel sl) {
+                sl.sendParticles(ParticleTypes.DAMAGE_INDICATOR, event.getEntity().getX(), event.getEntity().getY() + 1, event.getEntity().getZ(), 3, 0.2, 0.2, 0.2, 0);
+            }
+        }
+    }
+
+    /** 이벤트 투척병이 깨지면 이벤트 시작 */
+    @SubscribeEvent
+    public static void onImpact(net.neoforged.neoforge.event.entity.ProjectileImpactEvent event) {
+        if (!(event.getProjectile() instanceof net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile proj)
+                || !proj.getItem().is(com.snolred.wildplus.registry.ModItems7.EVENT_BOTTLE.get())
+                || !(proj.level() instanceof ServerLevel level) || proj.isRemoved()) {
+            return;
+        }
+        Type type = com.snolred.wildplus.item.EventBottleItem.typeOf(proj.getItem());
+        if (type == null) type = random(level.getRandom());
+        level.sendParticles(ParticleTypes.END_ROD, proj.getX(), proj.getY(), proj.getZ(), 40, 0.6, 0.6, 0.6, 0.15);
+        level.sendParticles(ParticleTypes.FIREWORK, proj.getX(), proj.getY(), proj.getZ(), 30, 0.4, 0.4, 0.4, 0.2);
+        level.playSound(null, proj.blockPosition(), SoundEvents.SPLASH_POTION_BREAK, SoundSource.PLAYERS, 1.0F, 1.0F);
+        Component who = proj.getOwner() != null ? proj.getOwner().getName() : Component.literal("누군가");
+        MinecraftServer server = level.getServer();
+        server.getPlayerList().broadcastSystemMessage(Component.translatable("message.wildplus.event_bottle.used", who)
+                .withStyle(ChatFormatting.LIGHT_PURPLE), false);
+        start(server, type);
+        nextAt = server.overworld().getGameTime() + type.duration + interval(level.getRandom());
+        proj.discard();
     }
 
     @SubscribeEvent

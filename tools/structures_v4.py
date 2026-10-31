@@ -78,13 +78,16 @@ TOOLS = [("minecraft:iron_pickaxe", 1, 40), ("minecraft:iron_axe", 1, 40), ("min
          ("wildplus:teleporter", 1, 40), ("wildplus:chunk_loader", 1, 100), ("wildplus:lottery_ticket", 1, 30)]
 BUILD = [("minecraft:torch", 32, 1), ("minecraft:oak_log", 16, 4), ("minecraft:stone_bricks", 32, 6),
          ("minecraft:glass", 16, 5), ("minecraft:oak_planks", 32, 3), ("minecraft:lantern", 4, 6),
-         ("minecraft:white_bed", 1, 15), ("minecraft:chest", 2, 6), ("minecraft:crafting_table", 1, 3)]
+         ("minecraft:white_bed", 1, 15), ("minecraft:chest", 2, 6), ("minecraft:redstone", 16, 6)]
 MEDICINE = [("minecraft:golden_apple", 1, 80), ("minecraft:honey_bottle", 2, 15), ("minecraft:milk_bucket", 1, 20),
             ("minecraft:golden_carrot", 4, 20), ("wildplus:recall_scroll", 1, 40), ("wildplus:death_scroll", 1, 60),
             ("minecraft:ender_pearl", 2, 40), ("minecraft:experience_bottle", 4, 40), ("minecraft:totem_of_undying", 1, 3000)]
 LOTTO = [("wildplus:lottery_ticket", 1, 30), ("wildplus:lottery_ticket", 5, 150), ("wildplus:coin_pouch", 1, 15),
          ("minecraft:firework_rocket", 8, 8), ("minecraft:cookie", 8, 2), ("minecraft:cake", 1, 15),
          ("minecraft:name_tag", 1, 40), ("minecraft:jukebox", 1, 30), ("minecraft:music_disc_cat", 1, 80)]
+# 이벤트 투척병 자판기 (오락실): 무작위 1개 + 지정 이벤트 8개
+EVENTS = [("wildplus:event_bottle", 1, 800)] + [("wildplus:event_bottle", 1, 1500, {"wildplus_event": e}) for e in
+          ("GOLD_RUSH", "XP_FESTIVAL", "MINING_FEVER", "HARVEST_FESTIVAL", "DOUBLE_DROPS", "HERO_TIME", "ORE_RAIN", "TREASURE_GOBLIN")]
 GEAR = [("wildplus:mythril_ingot", 1, 40), ("wildplus:jade", 1, 20), ("wildplus:blood_shard", 2, 30),
         ("minecraft:iron_ingot", 4, 10), ("minecraft:diamond", 1, 100), ("minecraft:lapis_lazuli", 8, 6),
         ("minecraft:anvil", 1, 40), ("minecraft:experience_bottle", 4, 30), ("wildplus:enhance_table", 1, 250)]
@@ -199,6 +202,7 @@ def town(base=None, ox=0, oz=0, fence=True):
             for x in (x0 + 2, x0 + 4, x0 + 6):
                 place(t, x, back, "wildplus:gacha_machine", face(f))
             place_vending(t, x0 + 1, mid, LOTTO, "east")
+            place_vending(t, x0 + 7, mid, EVENTS, "west")
             place(t, x0 + 4, mid + (1 if door == "north" else -1), "wildplus:casino_table", face(f))
             place(t, x0 + 6, mid + (1 if door == "north" else -1), "wildplus:casino_table", face(f))
         elif kind == "hall":

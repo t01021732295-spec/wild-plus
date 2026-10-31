@@ -90,13 +90,11 @@ public class ExchangeScreen extends AbstractContainerScreen<ExchangeMenu> {
     @Override
     protected void extractLabels(GuiGraphicsExtractor g, int mouseX, int mouseY) {
         UiKit.bold(g, "₩ 환전 창구", 10, 7, 0xFFFFFFFF);
-        UiKit.right(g, menu.day() + "일차 환율", W - 10, 7, 0xFFB8F0D8);
-        // 고시판 (호박색 LED 글자): 살 때 / 팔 때, 어제보다 오르면 ▲(빨강) 내리면 ▼(파랑)
-        UiKit.text(g, "은화", 16, 28, 0xFFFF9F1A);
-        rate(g, 40, 28, menu.silverBuy(), menu.silverSell(), menu.silverBuyYesterday());
-        UiKit.text(g, "금화", 16, 39, 0xFFFF9F1A);
-        rate(g, 40, 39, menu.goldBuy(), menu.goldSell(), menu.goldBuyYesterday());
-        UiKit.right(g, "매일 아침 바뀜", W - 16, 39, 0xFF8A6A3A);
+        UiKit.right(g, "고정 환율", W - 10, 7, 0xFFB8F0D8);
+        // 고시판: 고정 환율 안내 (호박색 LED 글자)
+        UiKit.text(g, "동화 10 = 은화 1", 16, 28, 0xFFFFC34D);
+        UiKit.text(g, "은화 10 = 금화 1", 16, 39, 0xFFFFC34D);
+        UiKit.right(g, "수수료 없음", W - 16, 39, 0xFF8A6A3A);
         // 동전 수
         long[] counts = {menu.copper(), menu.silver(), menu.gold()};
         String[] names = {"동화", "은화", "금화"};
@@ -110,18 +108,6 @@ public class ExchangeScreen extends AbstractContainerScreen<ExchangeMenu> {
         UiKit.text(g, "작은 동전을 큰 동전으로", 66, 86, UiKit.INK_SOFT);
         UiKit.bold(g, "▼ 내리기", 10, 138, 0xFF2563D9);
         UiKit.text(g, "잔돈 만들기", 66, 138, UiKit.INK_SOFT);
-    }
-
-    /** "살 때 11 · 팔 때 10 ▲" */
-    private void rate(GuiGraphicsExtractor g, int x, int y, int buy, int sell, int yesterday) {
-        String s = "살 때 " + buy + " · 팔 때 " + sell;
-        UiKit.text(g, s, x, y, 0xFFFFC34D);
-        int ax = x + UiKit.font().width(s) + 4;
-        if (yesterday > 0 && buy != yesterday) {
-            UiKit.text(g, buy > yesterday ? "▲" : "▼", ax, y, buy > yesterday ? UiKit.UP : UiKit.DOWN);
-        } else {
-            UiKit.text(g, "-", ax, y, 0xFF8A6A3A);
-        }
     }
 
     @Override

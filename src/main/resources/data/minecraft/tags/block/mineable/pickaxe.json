@@ -20,6 +20,9 @@
     "wildplus:weather_station",
     "wildplus:auto_harvester",
     "wildplus:ore_miner",
-    "wildplus:hall_of_fame"
+    "wildplus:hall_of_fame",
+    "wildplus:ruby_ore",
+    "wildplus:deepslate_ruby_ore",
+    "wildplus:ruby_block"
   ]
 }

@@ -6,6 +6,9 @@
     "wildplus:jade_ore",
     "wildplus:deepslate_jade_ore",
     "wildplus:mythril_block",
-    "wildplus:jade_block"
+    "wildplus:jade_block",
+    "wildplus:ruby_ore",
+    "wildplus:deepslate_ruby_ore",
+    "wildplus:ruby_block"
   ]
 }

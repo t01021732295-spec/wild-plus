@@ -20,7 +20,7 @@ LANG_KO = {
     "tooltip.wildplus.death_scroll": "3초 동안 읽으면 마지막으로 죽은 곳으로 순간이동 (다른 차원도)\n도착하면 10초간 화염 저항 · 느린 낙하 · 저항",
     "message.wildplus.death_scroll.none": "아직 죽은 기록이 없어요",
     "message.wildplus.death_scroll.done": "마지막으로 죽은 곳 (%s, %s, %s) 으로 왔어요",
-    "tooltip.wildplus.exchange": "동화 ↔ 은화 ↔ 금화 바꾸기\n수수료(환율)가 매일 아침 바뀜 · 살 때 10~12개, 팔 때 8~10개",
+    "tooltip.wildplus.exchange": "동화 ↔ 은화 ↔ 금화 바꾸기\n10개 = 1개 고정, 수수료 없음",
 }
 LANG_EN = {
     "message.wildplus.honor.heal": "Full restore! Health and food filled, bad effects cleared, Absorption II for 2 min",
@@ -36,7 +36,7 @@ LANG_EN = {
     "tooltip.wildplus.death_scroll": "Read for 3 seconds to return to where you last died (any dimension)\nFire Resistance, Slow Falling and Resistance for 10s on arrival",
     "message.wildplus.death_scroll.none": "You haven't died yet",
     "message.wildplus.death_scroll.done": "Returned to where you last died (%s, %s, %s)",
-    "tooltip.wildplus.exchange": "Swap copper ↔ silver ↔ gold\nDaily fee: buy 10-12, sell 8-10",
+    "tooltip.wildplus.exchange": "Swap copper ↔ silver ↔ gold\nFixed 10:1, no fee",
 }
 
 
@@ -66,13 +66,13 @@ def build(lang_ko, lang_en):
         {"rolls": {"type": "minecraft:uniform", "min": 4, "max": 8}, "entries": [
             entry(i("silver_coin"), 20, 4, 12), entry(i("gold_coin"), 10, 1, 4), entry("minecraft:iron_ingot", 15, 3, 8),
             entry("minecraft:gold_ingot", 12, 2, 6), entry("minecraft:diamond", 6, 1, 2), entry("minecraft:emerald", 8, 2, 5),
-            entry(i("raw_mythril"), 8, 2, 4), entry(i("jade"), 6, 1, 3), entry("minecraft:bone", 15, 4, 10),
+            entry(i("raw_mythril"), 8, 2, 4), entry(i("jade"), 6, 1, 3), entry(i("ruby"), 3, 1, 2), entry("minecraft:bone", 15, 4, 10),
             entry("minecraft:golden_apple", 4), entry(i("recall_scroll"), 4), entry(i("death_scroll"), 3),
             entry("minecraft:name_tag", 3), entry("minecraft:saddle", 3), book()]}],
         "random_sequence": i("chests/dungeon")})
     write(DATA / "loot_table/chests/dungeon_vault.json", {"type": "minecraft:chest", "pools": [
         {"rolls": {"type": "minecraft:uniform", "min": 7, "max": 11}, "entries": [
-            entry(i("gold_coin"), 18, 3, 9), entry("minecraft:diamond", 14, 2, 5), entry("minecraft:emerald", 10, 4, 10),
+            entry(i("gold_coin"), 18, 3, 9), entry("minecraft:diamond", 14, 2, 5), entry(i("ruby"), 8, 1, 3), entry("minecraft:emerald", 10, 4, 10),
             entry(i("mythril_ingot"), 10, 2, 5), entry(i("jade"), 8, 3, 6), entry("minecraft:netherite_scrap", 5, 1, 2),
             entry("minecraft:golden_apple", 8, 1, 3), entry("minecraft:enchanted_golden_apple", 2), entry(i("lucky_charm"), 4),
             entry("minecraft:totem_of_undying", 2), entry("minecraft:diamond_block", 2), entry(i("lottery_ticket"), 6, 2, 5),

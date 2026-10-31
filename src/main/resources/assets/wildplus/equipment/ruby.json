@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "wildplus:ruby"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "wildplus:ruby"
+      }
+    ]
+  }
+}

@@ -36,6 +36,7 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModItems4.init();
         com.snolred.wildplus.registry.ModItems5.init();
         com.snolred.wildplus.registry.ModItems6.init();
+        com.snolred.wildplus.registry.ModItems7.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
@@ -66,6 +67,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.DungeonGuardian.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.EffectEvents.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.Honor.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.RubyGear.class);
 
         modContainer.registerConfig(ModConfig.Type.SYNCED, WildConfig.SPEC);
     }

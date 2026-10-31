@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "XX",
+    "X#",
+    " #"
+  ],
+  "key": {
+    "X": "wildplus:ruby",
+    "#": "minecraft:stick"
+  },
+  "result": {
+    "id": "wildplus:ruby_axe",
+    "count": 1
+  }
+}
