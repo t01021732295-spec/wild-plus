@@ -1,0 +1,4 @@
+ItemFishedEvent\.class$
+TradeWithVillagerEvent\.class$
+neoforge/event/level/block/[A-Za-z]*Event\.class$
+LivingDeathEvent\.class$
