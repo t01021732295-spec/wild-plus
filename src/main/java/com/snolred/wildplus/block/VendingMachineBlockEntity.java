@@ -96,7 +96,8 @@ public class VendingMachineBlockEntity extends BlockEntity implements MenuProvid
         if (stock.isEmpty()) {
             return ItemStack.EMPTY;
         }
-        ItemStack out = stock.copyWithCount(1);
+        // 무한 재고(마을·교역소) 자판기는 진열된 묶음 전체가 한 번에 나온다 (예: 황금 당근 8개 = 6동)
+        ItemStack out = infinite ? stock.copy() : stock.copyWithCount(1);
         if (!infinite) {
             stock.shrink(1);
             earnings += prices[slot];

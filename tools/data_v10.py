@@ -45,6 +45,8 @@ POTIONS_EN = {"miners_focus": "Miner's Focus", "strong_miners_focus": "Strong Mi
               "lifesteal": "Lifesteal"}
 
 LANG_KO = {
+    "gui.wildplus.vending.fixed": "진열된 묶음째로 팝니다 (개수 그대로)",
+    "gui.wildplus.vending.fixed_owned": "1개씩 팝니다 · 가격은 개당",
     "entity.wildplus.wanted": "현상수배범",
     "entity.wildplus.bandit_boss": "도적 두목",
     "structure.wildplus.bandit_hideout": "도적 아지트",
@@ -60,6 +62,8 @@ LANG_KO = {
     "wildplus.configuration.randomEvents": "랜덤 이벤트",
 }
 LANG_EN = {
+    "gui.wildplus.vending.fixed": "Sold as the shown bundle",
+    "gui.wildplus.vending.fixed_owned": "Sold one at a time · price per item",
     "entity.wildplus.wanted": "Wanted Outlaw",
     "entity.wildplus.bandit_boss": "Bandit Chief",
     "structure.wildplus.bandit_hideout": "Bandit Hideout",

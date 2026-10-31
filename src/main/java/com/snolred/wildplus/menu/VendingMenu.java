@@ -201,8 +201,11 @@ public class VendingMenu extends AbstractContainerMenu {
         if (inTray.isEmpty()) {
             tray.setItem(0, product);
         } else if (ItemStack.isSameItemSameComponents(inTray, product) && inTray.getCount() < inTray.getMaxStackSize()) {
-            inTray.grow(1);
+            int move = Math.min(product.getCount(), inTray.getMaxStackSize() - inTray.getCount());
+            inTray.grow(move);
+            product.shrink(move);
             tray.setChanged();
+            if (!product.isEmpty()) dispenseInFront(product);
         } else {
             dispenseInFront(product);
         }

@@ -405,6 +405,8 @@ jobs:
             xdotool mousemove 600 380; sleep 1
             import -window root shot-vending.png || true
             xdotool key Escape; sleep 2
+            cmd "/clear @s minecraft:bread 0"
+            sleep 1
             # 뽑기 기계
             cmd "/tp @s 385.5 120 2.6 0 35"
             sleep 2
