@@ -134,7 +134,13 @@ public class ContentMenu extends AbstractContainerMenu {
                 CompoundTag s = WeeklyGoals.season(server, p.getUUID());
                 t.putInt("points", s.getIntOr("points", 0));
                 t.putInt("tierClaimed", s.getIntOr("claimed", 0));
-                t.putLong("season", ContentData.season() + 1);
+                // 시즌 번호는 이 월드에서 처음 연 시즌을 1로
+                CompoundTag meta = d.section("meta");
+                if (meta.getLongOr("season0", Long.MIN_VALUE) == Long.MIN_VALUE) {
+                    meta.putLong("season0", ContentData.season());
+                    d.dirty();
+                }
+                t.putLong("season", ContentData.season() - meta.getLongOr("season0", ContentData.season()) + 1);
                 t.putInt("weeksLeft", ContentData.weeksLeftInSeason());
             }
         }

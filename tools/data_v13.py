@@ -57,7 +57,7 @@ def box(frm, to, tex, faces=None, rot=None, uv=None, tint=None):
 
 def plane_x(frm, to, tex, angle):
     """십자 모양 평면 (불꽃 등)"""
-    return {"from": frm, "to": to, "shade": False,
+    return {"from": frm, "to": to,
             "rotation": {"origin": [(frm[0] + to[0]) / 2, frm[1], (frm[2] + to[2]) / 2], "axis": "y", "angle": angle, "rescale": True},
             "faces": {"north": {"texture": tex}, "south": {"texture": tex}}}
 
@@ -127,10 +127,10 @@ def tower_gate():
         box([-16, 14, 0], [-4, 16, 16], "#gold"),
         box([20, 14, 0], [32, 16, 16], "#gold"),
         # 하늘빛 차원문 (반투명, 앞뒤만)
-        {"from": [-5, 1, 7.5], "to": [21, 32, 8.5], "shade": False,
+        {"from": [-5, 1, 7.5], "to": [21, 32, 8.5],
          "faces": {"north": {"texture": "#portal"}, "south": {"texture": "#portal"}}},
     ]
-    write(ASSETS / "models/block/tower_gate.json", {"parent": "minecraft:block/block", "render_type": "minecraft:translucent",
+    write(ASSETS / "models/block/tower_gate.json", {"parent": "minecraft:block/block", "render_type": "minecraft:cutout",
                                                     "textures": T, "elements": el, "display": display(0.22)})
     top = [
         # 상인방 + 금테 + 지붕 계단 + 다이아 꼭지
@@ -144,7 +144,7 @@ def tower_gate():
         box([4, 16, 5], [12, 18, 11], "#ice"),
         box([6, 18, 6], [10, 26, 10], "#diamond", rot={"origin": [8, 22, 8], "axis": "y", "angle": 45}),
     ]
-    write(ASSETS / "models/block/tower_gate_top.json", {"parent": "minecraft:block/block", "render_type": "minecraft:translucent",
+    write(ASSETS / "models/block/tower_gate_top.json", {"parent": "minecraft:block/block", "render_type": "minecraft:cutout",
                                                         "textures": T, "elements": top})
     write(ASSETS / "blockstates/tower_gate.json", rotated_states("tower_gate", i("block/tower_gate")))
     write(ASSETS / "models/item/tower_gate.json", {"parent": i("block/tower_gate"), "display": display(0.22)})

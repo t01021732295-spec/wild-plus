@@ -263,7 +263,6 @@ public class ContentScreen extends AbstractContainerScreen<ContentMenu> {
         for (int i = 0; i < 16; i++) g.fill(tx + 4 + i * 2, topY - i, tx + tw - 4 - i * 2, topY - i + 1, 0xFF2B5FA8);
         g.fill(tx + tw / 2 - 1, topY - 26, tx + tw / 2 + 1, topY - 15, 0xFF8A6A3A);
         g.fill(tx + tw / 2 + 1, topY - 26, tx + tw / 2 + 9, topY - 21, 0xFFE5484D);
-        UiKit.center(g, best > 0 ? "최고 " + best + "층" : "아직 기록 없음", tx + tw / 2, base - 4 - lit * 12 - 10 < topY ? topY + 2 : base - 4 - lit * 12 - 10, 0xFF1E3A5F);
 
         // 오른쪽 정보
         int rx = x + 128, rw = W - 138;

@@ -100,7 +100,7 @@ def sky_portal(frames=16):
                 v = (math.sin(a * 3 + d * 0.9 - ph) + 1) / 2
                 v2 = (math.sin(x * 0.7 + y * 0.4 + ph * 2) + 1) / 2
                 c = lerp((40, 110, 220), (200, 240, 255), v * 0.7 + v2 * 0.3)
-                alpha = 200 + int(40 * v)
+                alpha = 255
                 px[x, y + f * 16] = c + (alpha,)
     return im
 

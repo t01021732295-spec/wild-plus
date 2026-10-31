@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/block",
-  "render_type": "minecraft:translucent",
+  "render_type": "minecraft:cutout",
   "textures": {
     "pillar": "minecraft:block/quartz_pillar",
     "ptop": "minecraft:block/quartz_pillar_top",
@@ -249,7 +249,6 @@
         32,
         8.5
       ],
-      "shade": false,
       "faces": {
         "north": {
           "texture": "#portal"
