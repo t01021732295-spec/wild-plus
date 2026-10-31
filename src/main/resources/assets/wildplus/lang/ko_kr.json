@@ -174,7 +174,7 @@
   "block.wildplus.bounty_board": "의뢰 게시판",
   "block.wildplus.shipping_bin": "출하 상자",
   "block.wildplus.exchange": "환전소",
-  "tooltip.wildplus.exchange": "동화 ↔ 은화 ↔ 금화 바꾸기\n환율이 매일 아침 바뀜 (살 때가 팔 때보다 1개 비쌈)",
+  "tooltip.wildplus.exchange": "동화 ↔ 은화 ↔ 금화 바꾸기\n수수료(환율)가 매일 아침 바뀜 · 살 때 10~12개, 팔 때 8~10개",
   "container.wildplus.exchange": "환전소",
   "message.wildplus.exchange.not_enough": "바꿀 동전이 부족해요",
   "item.wildplus.teleporter": "소형 텔레포트기",

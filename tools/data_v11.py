@@ -15,7 +15,7 @@ LANG_KO = {
     "tooltip.wildplus.death_scroll": "3초 동안 읽으면 마지막으로 죽은 곳으로 순간이동 (다른 차원도)\n도착하면 10초간 화염 저항 · 느린 낙하 · 저항",
     "message.wildplus.death_scroll.none": "아직 죽은 기록이 없어요",
     "message.wildplus.death_scroll.done": "마지막으로 죽은 곳 (%s, %s, %s) 으로 왔어요",
-    "tooltip.wildplus.exchange": "동화 ↔ 은화 ↔ 금화 바꾸기\n환율이 매일 아침 바뀜 (살 때가 팔 때보다 1개 비쌈)",
+    "tooltip.wildplus.exchange": "동화 ↔ 은화 ↔ 금화 바꾸기\n수수료(환율)가 매일 아침 바뀜 · 살 때 10~12개, 팔 때 8~10개",
 }
 LANG_EN = {
     "structure.wildplus.dungeon": "Ancient Catacomb",
@@ -26,7 +26,7 @@ LANG_EN = {
     "tooltip.wildplus.death_scroll": "Read for 3 seconds to return to where you last died (any dimension)\nFire Resistance, Slow Falling and Resistance for 10s on arrival",
     "message.wildplus.death_scroll.none": "You haven't died yet",
     "message.wildplus.death_scroll.done": "Returned to where you last died (%s, %s, %s)",
-    "tooltip.wildplus.exchange": "Swap copper ↔ silver ↔ gold\nRates change every morning (buying costs 1 more than selling)",
+    "tooltip.wildplus.exchange": "Swap copper ↔ silver ↔ gold\nDaily fee: buy 10-12, sell 8-10",
 }
 
 

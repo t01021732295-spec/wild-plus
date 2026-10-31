@@ -174,7 +174,7 @@
   "block.wildplus.bounty_board": "Bounty Board",
   "block.wildplus.shipping_bin": "Shipping Bin",
   "block.wildplus.exchange": "Currency Exchange",
-  "tooltip.wildplus.exchange": "Swap copper ↔ silver ↔ gold\nRates change every morning (buying costs 1 more than selling)",
+  "tooltip.wildplus.exchange": "Swap copper ↔ silver ↔ gold\nDaily fee: buy 10-12, sell 8-10",
   "container.wildplus.exchange": "Currency Exchange",
   "message.wildplus.exchange.not_enough": "Not enough coins to exchange",
   "item.wildplus.teleporter": "Pocket Teleporter",
