@@ -1,1 +1,0 @@
-npc/.*Villager[A-Za-z]*\.class

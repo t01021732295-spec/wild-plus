@@ -1,0 +1,4 @@
+/SnowballItem\.class$
+/Snowball\.class$
+/ThrowableItemProjectile\.class$
+ProjectileImpactEvent\.class$
