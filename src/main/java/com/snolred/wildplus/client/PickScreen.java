@@ -22,7 +22,7 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
     private UiButton prev, next;
 
     public PickScreen(PickMenu menu, Inventory inv, Component title) {
-        super(menu, inv, title, W, (menu.flags & PickMenu.FLAG_CAN_TOGGLE) != 0 ? 236 : 204);
+        super(menu, inv, title, W, (menu.flags & PickMenu.FLAG_CAN_TOGGLE) != 0 ? 222 : 200);
         this.H = this.imageHeight;
     }
 
@@ -32,7 +32,7 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
         rows.clear();
         for (int r = 0; r < ROWS; r++) {
             final int row = r;
-            rows.add(addRenderableWidget(new UiButton(leftPos + 10, topPos + 32 + r * 22, W - 20, 20, Component.empty(), ROW_STYLE,
+            rows.add(addRenderableWidget(new UiButton(leftPos + 10, topPos + 32 + r * 20, W - 20, 18, Component.empty(), ROW_STYLE,
                     () -> pick(row)).left()));
         }
         prev = addRenderableWidget(UiButton.of(leftPos + 10, topPos + H - 24, 20, 17, "◀", UiButton.STEEL, () -> { page--; refresh(); }));

@@ -102,7 +102,7 @@ public class BountyScreen extends AbstractContainerScreen<BountyMenu> {
                 g.pose().popMatrix();
             }
         }
-        UiKit.text(g, "의뢰는 매일 아침 바뀌어요", 10, H - 14 + 2, 0xFF5A3618);
+        UiKit.text(g, "의뢰는 매일 아침 바뀌어요", 10, H - 18, 0xFF5A3618);
     }
 
     @Override

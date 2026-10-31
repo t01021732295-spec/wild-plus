@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
  * 한국식 색 - 오르면 빨강, 내리면 파랑. 매수 버튼은 빨강, 매도 버튼은 파랑.
  */
 public class StockScreen extends AbstractContainerScreen<StockMenu> {
-    private static final int W = 316, H = 250, ROW = 18, TOP = 34;
+    private static final int W = 316, H = 230, ROW = 16, TOP = 33;
     private static final int BG = 0xFF0E131A, BAR = 0xFF161E29, ROW_ALT = 0xFF131A23, MUTED = 0xFF7D8A9C, FLAT = 0xFFB8C2CF;
     private static final UiButton.Style BUY = new UiButton.Style(0xFFFF5A5F, 0xFFD9363C, 0xFF6E1418, 0xFFFFFFFF, true, UiButton.Shape.SOFT);
     private static final UiButton.Style SELL = new UiButton.Style(0xFF4F95FF, 0xFF2B6FE0, 0xFF103C88, 0xFFFFFFFF, true, UiButton.Shape.SOFT);
@@ -29,7 +29,7 @@ public class StockScreen extends AbstractContainerScreen<StockMenu> {
         for (int i = 0; i < StockMenu.N; i++) {
             for (int a = 0; a < 4; a++) {
                 int id = i * 10 + a;
-                addRenderableWidget(UiButton.of(leftPos + xs[a], topPos + TOP + i * ROW + 1, ws[a], 15, labels[a], a < 2 ? BUY : SELL,
+                addRenderableWidget(UiButton.of(leftPos + xs[a], topPos + TOP + i * ROW + 1, ws[a], 13, labels[a], a < 2 ? BUY : SELL,
                         () -> click(id)));
             }
         }
@@ -67,9 +67,9 @@ public class StockScreen extends AbstractContainerScreen<StockMenu> {
             int c = price > prev ? UiKit.UP : price < prev ? UiKit.DOWN : 0xFF4A5566;
             g.fill(x + 3, ry + 2, x + 5, ry + ROW - 2, c);
             // 등락률 배지 배경
-            UiKit.pill(g, x + 130, ry + 3, 40, 12, price > prev ? 0x33FF4D4F : price < prev ? 0x333D8BFF : 0x22FFFFFF);
+            UiKit.pill(g, x + 130, ry + 2, 40, 12, price > prev ? 0x33FF4D4F : price < prev ? 0x333D8BFF : 0x22FFFFFF);
             // 보유 주식 있으면 점
-            if (menu.shares(i) > 0) UiKit.circle(g, x + 202, ry + 7, 3, 0xFFF2C14E);
+            if (menu.shares(i) > 0) UiKit.circle(g, x + 202, ry + 6, 3, 0xFFF2C14E);
         }
         // 아래 요약 카드 3개
         int fy = y + TOP + StockMenu.N * ROW + 4;
@@ -93,7 +93,7 @@ public class StockScreen extends AbstractContainerScreen<StockMenu> {
         UiKit.text(g, "매도", 262, 21, 0xFF6FA8FF);
         long value = 0, basis = 0;
         for (int i = 0; i < StockMenu.N; i++) {
-            int y = TOP + i * ROW + 4;
+            int y = TOP + i * ROW + 3;
             long price = menu.price(i), prev = menu.prev(i), shares = menu.shares(i);
             value += price * shares / 100;
             basis += menu.cost(i);
@@ -105,14 +105,14 @@ public class StockScreen extends AbstractContainerScreen<StockMenu> {
             UiKit.right(g, shares > 0 ? String.format("%,d", shares) : "-", 200, y, shares > 0 ? 0xFFF2C14E : 0xFF56616F);
         }
         long profit = value - basis;
-        int fy = TOP + StockMenu.N * ROW + 7;
+        int fy = TOP + StockMenu.N * ROW + 6;
         UiKit.text(g, "예수금 (현금)", 12, fy, MUTED);
-        UiKit.bold(g, String.format("%,d동", menu.cash()), 12, fy + 11, 0xFFFFFFFF);
+        UiKit.bold(g, String.format("%,d동", menu.cash()), 12, fy + 10, 0xFFFFFFFF);
         UiKit.text(g, "평가 금액", 114, fy, MUTED);
-        UiKit.bold(g, String.format("%,d동", value), 114, fy + 11, 0xFFFFFFFF);
+        UiKit.bold(g, String.format("%,d동", value), 114, fy + 10, 0xFFFFFFFF);
         UiKit.text(g, "평가 손익", 216, fy, MUTED);
         double rate = basis > 0 ? profit * 100.0 / basis : 0;
-        UiKit.bold(g, String.format("%s%,d", profit >= 0 ? "+" : "", profit), 216, fy + 11,
+        UiKit.bold(g, String.format("%s%,d", profit >= 0 ? "+" : "", profit), 216, fy + 10,
                 profit > 0 ? UiKit.UP : profit < 0 ? UiKit.DOWN : FLAT);
         UiKit.right(g, String.format("%+.1f%%", rate), 306, fy, profit > 0 ? UiKit.UP : profit < 0 ? UiKit.DOWN : FLAT);
     }

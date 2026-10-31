@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Inventory;
  * 판돈은 칩 버튼으로, 동전·주사위는 그림으로, 슬롯머신은 릴 3개 창으로 보여준다.
  */
 public class CasinoScreen extends AbstractContainerScreen<CasinoMenu> {
-    private static final int W = 252, H = 232;
+    private static final int W = 252, H = 220;
     private static final int FELT_TOP = 0xFF1E7A45, FELT_BOTTOM = 0xFF105A30, GOLD_LINE = 0xFFC9A54A, PRINT = 0xFFE9DCA8;
     private static final int[] SYMBOL_COLORS = {0xFFE0252B, 0xFFE8C21A, 0xFFD9A22E, 0xFFD0101A, 0xFF1AA8D9};
 
@@ -91,10 +91,10 @@ public class CasinoScreen extends AbstractContainerScreen<CasinoMenu> {
         g.fill(x + 183, y + 140, x + 185, y + 162, 0xFF9AA2AD);
         UiKit.circle(g, x + 181, y + 135, 6, 0xFFE0252B);
         // 결과 화면 (전광판)
-        UiKit.screen(g, x + 16, y + 186, W - 32, 32, 0xFF0D0D10, 0xFF1A1A20);
+        UiKit.screen(g, x + 16, y + 186, W - 32, 22, 0xFF0D0D10, 0xFF1A1A20);
         int o = menu.outcome();
         if (game != 0 && o == 1) {
-            for (int i = 0; i < W - 32; i += 6) UiKit.led(g, x + 18 + i, y + 212, (i / 6) % 2 == 0 ? 0xFFFFD84A : 0xFFFF5A5A);
+            for (int i = 0; i < W - 32; i += 6) UiKit.led(g, x + 18 + i, y + 203, (i / 6) % 2 == 0 ? 0xFFFFD84A : 0xFFFF5A5A);
         }
     }
 
@@ -138,7 +138,7 @@ public class CasinoScreen extends AbstractContainerScreen<CasinoMenu> {
         UiKit.bold(g, "DICE", 16, 98, PRINT);
         UiKit.text(g, "소·대 ×1.9", 16, 108, 0xFFB8D8C0);
         UiKit.bold(g, "SLOTS", 16, 126, PRINT);
-        UiKit.text(g, "3개: 체리5 레몬8 종20 7=50 ◆100 · 2개: 절반", 16, 174, 0xFFB8D8C0);
+        UiKit.text(g, "3개: 체리5 레몬8 종20 7=50 ◆100 · 2개: 절반", 16, 173, 0xFFB8D8C0);
         // 동전 앞뒤 글자
         if (menu.game() == CasinoMenu.GAME_COIN) UiKit.center(g, menu.r1() == 0 ? "앞" : "뒤", 113, 79, 0xFF6B4A0A);
         else UiKit.center(g, "₩", 113, 79, 0xFF6B4A0A);
@@ -157,7 +157,7 @@ public class CasinoScreen extends AbstractContainerScreen<CasinoMenu> {
                     + CasinoMenu.SYMBOLS[menu.r3()];
             default -> "칩으로 판돈을 정하고 게임을 고르세요";
         };
-        UiKit.text(g, result, 22, 189, 0xFFDDDDDD);
+        UiKit.text(g, result, 22, 187, 0xFFDDDDDD);
         int o = menu.outcome();
         if (menu.game() != 0) {
             String line = switch (o) {
@@ -165,7 +165,7 @@ public class CasinoScreen extends AbstractContainerScreen<CasinoMenu> {
                 case 3 -> String.format("PUSH · %,d동 돌려받음", menu.win());
                 default -> "LOSE…  다음엔 될 거예요";
             };
-            UiKit.bold(g, line, 22, 200, o == 1 ? 0xFF7CFC6A : o == 3 ? 0xFFFFD84A : 0xFFFF6A6A);
+            UiKit.bold(g, line, 130, 187, o == 1 ? 0xFF7CFC6A : o == 3 ? 0xFFFFD84A : 0xFFFF6A6A);
         }
     }
 
