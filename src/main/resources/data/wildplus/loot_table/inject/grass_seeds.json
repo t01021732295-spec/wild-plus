@@ -8,7 +8,7 @@
         "terms": [
           {
             "type": "minecraft:random_chance",
-            "chance": 0.14
+            "chance": 0.16
           },
           {
             "type": "minecraft:inverted",
@@ -30,6 +30,21 @@
         {
           "type": "minecraft:item",
           "name": "wildplus:strawberry",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:corn_seeds",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:cabbage_seeds",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:blueberry",
           "weight": 2
         }
       ]

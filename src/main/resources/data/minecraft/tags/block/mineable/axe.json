@@ -3,6 +3,8 @@
   "values": [
     "wildplus:bounty_board",
     "wildplus:shipping_bin",
-    "wildplus:enhance_table"
+    "wildplus:enhance_table",
+    "wildplus:auto_fisher",
+    "wildplus:casino_table"
   ]
 }

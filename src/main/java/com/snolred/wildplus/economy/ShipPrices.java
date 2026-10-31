@@ -47,6 +47,13 @@ public final class ShipPrices {
         put(m, Items.ROTTEN_FLESH, 2); put(m, Items.BONE, 10); put(m, Items.STRING, 10); put(m, Items.GUNPOWDER, 25);
         put(m, Items.SPIDER_EYE, 15); put(m, Items.ENDER_PEARL, 150); put(m, Items.BLAZE_ROD, 200); put(m, Items.LEATHER, 30);
         put(m, Items.FEATHER, 5); put(m, Items.SLIME_BALL, 30); put(m, Items.PHANTOM_MEMBRANE, 100);
+        // 8차
+        put(m, com.snolred.wildplus.registry.ModItems5.CORN.get(), 40); put(m, com.snolred.wildplus.registry.ModItems5.CABBAGE.get(), 60);
+        put(m, com.snolred.wildplus.registry.ModItems5.BLUEBERRY.get(), 40); put(m, com.snolred.wildplus.registry.ModItems5.GRILLED_CORN.get(), 100);
+        put(m, com.snolred.wildplus.registry.ModItems5.SALAD.get(), 350); put(m, com.snolred.wildplus.registry.ModItems5.BLUEBERRY_MUFFIN.get(), 200);
+        put(m, com.snolred.wildplus.registry.ModItems5.CATFISH.get(), 200); put(m, com.snolred.wildplus.registry.ModItems5.TUNA.get(), 300);
+        put(m, com.snolred.wildplus.registry.ModItems5.SWEETFISH.get(), 200); put(m, com.snolred.wildplus.registry.ModItems5.DRAGON_KING_FISH.get(), 20000);
+        put(m, com.snolred.wildplus.registry.ModItems5.TUNA_STEAK.get(), 450);
         table = m;
         return m;
     }

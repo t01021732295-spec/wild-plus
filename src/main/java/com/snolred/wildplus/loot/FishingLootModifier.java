@@ -70,7 +70,8 @@ public class FishingLootModifier extends LootModifier {
             return loot; // 쓰레기·보물은 그대로
         }
         if (random.nextFloat() < (jade ? 0.5F : 0.25F)) {
-            Item fish = pickFish(level, BlockPos.containing(origin), random);
+            Item fish = random.nextFloat() < (jade ? 0.02F : 0.01F) ? com.snolred.wildplus.registry.ModItems5.DRAGON_KING_FISH.get()
+                    : pickFish(level, BlockPos.containing(origin), random);
             if (fish != null) {
                 loot.set(fishIndex, new ItemStack(fish));
             }
@@ -107,6 +108,18 @@ public class FishingLootModifier extends LootModifier {
         }
         if (biome.is(Tags.Biomes.IS_COLD)) {
             add(pool, weights, ModItems2.ICE_SMELT.get(), 10);
+        }
+        // 8차 어종
+        if (biome.is(Tags.Biomes.IS_SWAMP)) {
+            add(pool, weights, com.snolred.wildplus.registry.ModItems5.CATFISH.get(), 14);
+        } else if (biome.is(Tags.Biomes.IS_RIVER) && night) {
+            add(pool, weights, com.snolred.wildplus.registry.ModItems5.CATFISH.get(), 8);
+        }
+        if (biome.is(Tags.Biomes.IS_OCEAN) && !night) {
+            add(pool, weights, com.snolred.wildplus.registry.ModItems5.TUNA.get(), biome.is(Tags.Biomes.IS_DEEP_OCEAN) ? 14 : 8);
+        }
+        if (biome.is(Tags.Biomes.IS_RIVER) && !night) {
+            add(pool, weights, com.snolred.wildplus.registry.ModItems5.SWEETFISH.get(), 9);
         }
 
         int total = 0;

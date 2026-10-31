@@ -16,17 +16,17 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
  * 비용 = 200동 × 3^(바닐라 최대를 넘은 단계) → 200, 600, 1,800 …
  */
 public final class Enhance {
-    /** 인챈트별 모드 최대 레벨 (마인크래프트 기본 인챈트) */
+    /** 인챈트별 강화 최대 레벨: 레벨이 있는 인챈트는 모두 IX 까지 */
     public static final Map<String, Integer> CAP = Map.ofEntries(
-            Map.entry("sharpness", 7), Map.entry("smite", 7), Map.entry("bane_of_arthropods", 7), Map.entry("efficiency", 7),
-            Map.entry("power", 7), Map.entry("impaling", 7), Map.entry("density", 7),
-            Map.entry("unbreaking", 5), Map.entry("fortune", 5), Map.entry("looting", 5), Map.entry("luck_of_the_sea", 5),
-            Map.entry("respiration", 5), Map.entry("sweeping_edge", 5), Map.entry("thorns", 5), Map.entry("swift_sneak", 5),
-            Map.entry("soul_speed", 5), Map.entry("loyalty", 5),
-            Map.entry("protection", 6), Map.entry("fire_protection", 6), Map.entry("blast_protection", 6),
-            Map.entry("projectile_protection", 6), Map.entry("feather_falling", 6), Map.entry("piercing", 6), Map.entry("breach", 6),
-            Map.entry("fire_aspect", 3), Map.entry("punch", 3), Map.entry("knockback", 3),
-            Map.entry("armor_piercing", 6));
+            Map.entry("sharpness", 9), Map.entry("smite", 9), Map.entry("bane_of_arthropods", 9), Map.entry("efficiency", 9),
+            Map.entry("power", 9), Map.entry("impaling", 9), Map.entry("density", 9),
+            Map.entry("unbreaking", 9), Map.entry("fortune", 9), Map.entry("looting", 9), Map.entry("luck_of_the_sea", 9),
+            Map.entry("respiration", 9), Map.entry("sweeping_edge", 9), Map.entry("thorns", 9), Map.entry("swift_sneak", 9),
+            Map.entry("soul_speed", 9), Map.entry("loyalty", 9),
+            Map.entry("protection", 9), Map.entry("fire_protection", 9), Map.entry("blast_protection", 9),
+            Map.entry("projectile_protection", 9), Map.entry("feather_falling", 9), Map.entry("piercing", 9), Map.entry("breach", 9),
+            Map.entry("fire_aspect", 9), Map.entry("punch", 9), Map.entry("knockback", 9),
+            Map.entry("armor_piercing", 9));
 
     public static final long BASE_COST = 200;
 

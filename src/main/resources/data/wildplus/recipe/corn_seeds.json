@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:corn"
+  ],
+  "result": {
+    "id": "wildplus:corn_seeds",
+    "count": 2
+  }
+}

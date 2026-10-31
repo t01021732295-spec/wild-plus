@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "category": "food",
+  "ingredient": "wildplus:tuna",
+  "result": {
+    "id": "wildplus:tuna_steak"
+  },
+  "experience": 0.35,
+  "cookingtime": 600
+}

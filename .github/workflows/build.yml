@@ -280,6 +280,23 @@ jobs:
             sleep 6
             echo "say TEST bin hopper"; sleep 1
             run "data get block 8 121 6 items"
+            # 8차: 자동 수확기(스프링클러 밑) · 광석 채굴기(2분 전부터 다이아) · 자동 낚시 장치(물 위 + 낚싯대)
+            run "fill 50 119 30 58 119 38 minecraft:grass_block"
+            run "fill 50 120 30 58 125 38 minecraft:air"
+            run "fill 52 119 32 56 119 36 minecraft:farmland[moisture=7]"
+            run "fill 52 120 32 56 120 36 minecraft:wheat[age=7]"
+            run "setblock 54 120 34 wildplus:auto_harvester"
+            run "setblock 54 121 34 wildplus:sprinkler"
+            T=$(( $(date +%s%3N) - 120000 ))
+            run "setblock 50 120 30 wildplus:ore_miner{selected:9,last:${T}L,progress:0L,next:45000L}"
+            run "setblock 58 119 38 minecraft:water"
+            run "setblock 58 120 38 wildplus:auto_fisher{timer:30,items:[{id:\"minecraft:fishing_rod\",count:1}]}"
+            sleep 8
+            echo "say TEST machines"; sleep 1
+            run "execute if block 52 120 32 minecraft:wheat[age=0] if block 56 120 36 minecraft:wheat[age=0] run say AUTOHARVEST_OK"
+            run "data get block 54 120 34 items"
+            run "data get block 50 120 30 items"
+            run "data get block 58 120 38 items"
             # 편의 기능 시험장: 나무 기둥(x=395), 다 자란 밀(x=398)
             run "fill 395 120 3 395 125 3 minecraft:oak_log"
             run "fill 394 126 2 396 127 4 minecraft:oak_leaves[persistent=true]"
@@ -516,10 +533,43 @@ jobs:
             sleep 2; xdotool click 3; sleep 2
             import -window root shot-weather.png || true
             xdotool key Escape; sleep 1
+            # ── 8차: 카지노 · 광석 채굴기 · 자동 수확기 · 드릴 ──
+            cmd "/give @s wildplus:gold_coin 5"
+            cmd "/setblock 402 120 -6 wildplus:casino_table[facing=north]"
+            cmd "/setblock 404 120 -6 wildplus:ore_miner"
+            cmd "/setblock 406 120 -6 wildplus:auto_harvester"
+            cmd "/setblock 408 120 -6 wildplus:auto_fisher"
+            cmd "/tp @s 402.5 120 -8.3 0 20"
+            sleep 2; xdotool click 3; sleep 2
+            xdotool mousemove 639 240; sleep 0.5; xdotool click 1; sleep 1
+            xdotool mousemove 600 470; sleep 1
+            import -window root shot-casino.png || true
+            xdotool key Escape; sleep 1
+            cmd "/tp @s 404.5 120 -8.3 0 20"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-ore-miner.png || true
+            xdotool key Escape; sleep 1
+            cmd "/tp @s 406.5 120 -8.3 0 20"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-harvester.png || true
+            xdotool key Escape; sleep 1
+            cmd "/tp @s 408.5 120 -8.3 0 20"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-fisher.png || true
+            xdotool key Escape; sleep 1
+            cmd "/gamemode survival"
+            cmd "/clear @s"
+            cmd "/effect give @s minecraft:haste 60 20 true"
+            cmd "/fill 376 119 -14 378 119 -12 minecraft:stone"
+            cmd "/item replace entity @s weapon.mainhand with wildplus:drill"
+            cmd "/tp @s 377.5 120 -12.5 0 90"
+            sleep 2; xdotool mousedown 1; sleep 1.2; xdotool mouseup 1; sleep 2
+            cmd "/execute if block 376 119 -14 minecraft:air if block 378 119 -12 minecraft:air run say DRILL_OK"
+            cmd "/gamemode creative"
             cmd "/setblock 400 120 -6 minecraft:air"
             sleep 1
             cmd "/clear @s"
-            for it in jade_sword jade_pickaxe jade_axe jade_shovel jade_hoe jade_helmet jade_chestplate jade_leggings jade_boots mythril_helmet mythril_chestplate mythril_leggings mythril_boots mythril_sword warp_point teleporter lottery_ticket copper_backpack silver_backpack gold_backpack stock_terminal atm bounty_board exchange shipping_bin chunk_loader enhance_table pharmacy weather_station; do
+            for it in jade_sword jade_pickaxe jade_axe jade_shovel jade_hoe jade_helmet jade_chestplate jade_leggings jade_boots mythril_helmet mythril_chestplate mythril_leggings mythril_boots mythril_sword warp_point teleporter corn_seeds corn grilled_corn cabbage_seeds cabbage salad blueberry blueberry_muffin catfish cooked_catfish tuna tuna_steak sweetfish grilled_sweetfish dragon_king_fish drill auto_harvester ore_miner auto_fisher casino_table enhance_table; do
               cmd "/give @s wildplus:$it"
             done
             cmd "/tp @s 386.5 121 -11 0 10"

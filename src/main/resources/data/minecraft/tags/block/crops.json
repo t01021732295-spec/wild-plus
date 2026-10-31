@@ -3,6 +3,9 @@
   "values": [
     "wildplus:chili_crop",
     "wildplus:tomato_crop",
-    "wildplus:strawberry_crop"
+    "wildplus:strawberry_crop",
+    "wildplus:corn_crop",
+    "wildplus:cabbage_crop",
+    "wildplus:blueberry_crop"
   ]
 }

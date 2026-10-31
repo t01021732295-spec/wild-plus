@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:cabbage"
+  ],
+  "result": {
+    "id": "wildplus:cabbage_seeds",
+    "count": 2
+  }
+}

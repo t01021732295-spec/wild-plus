@@ -87,5 +87,25 @@ public final class ModBlocks {
             p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.economy.Services::openWeather),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK));
 
+    // ───────── 8차: 작물 · 기계 · 카지노 ─────────
+    public static final DeferredBlock<SimpleCropBlock> CORN_CROP = BLOCKS.registerBlock("corn_crop",
+            p -> new SimpleCropBlock(p, () -> ModItems5.CORN_SEEDS.get()), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT));
+    public static final DeferredBlock<SimpleCropBlock> CABBAGE_CROP = BLOCKS.registerBlock("cabbage_crop",
+            p -> new SimpleCropBlock(p, () -> ModItems5.CABBAGE_SEEDS.get()), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT));
+    public static final DeferredBlock<SimpleCropBlock> BLUEBERRY_CROP = BLOCKS.registerBlock("blueberry_crop",
+            p -> new SimpleCropBlock(p, () -> ModItems5.BLUEBERRY.get()), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.WHEAT));
+    public static final DeferredBlock<com.snolred.wildplus.block.MachineBlock> AUTO_HARVESTER = BLOCKS.registerBlock("auto_harvester",
+            p -> new com.snolred.wildplus.block.MachineBlock(p, com.snolred.wildplus.block.MachineBlock.Kind.HARVESTER),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 6.0F));
+    public static final DeferredBlock<com.snolred.wildplus.block.MachineBlock> ORE_MINER = BLOCKS.registerBlock("ore_miner",
+            p -> new com.snolred.wildplus.block.MachineBlock(p, com.snolred.wildplus.block.MachineBlock.Kind.MINER),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(4.0F, 6.0F));
+    public static final DeferredBlock<com.snolred.wildplus.block.MachineBlock> AUTO_FISHER = BLOCKS.registerBlock("auto_fisher",
+            p -> new com.snolred.wildplus.block.MachineBlock(p, com.snolred.wildplus.block.MachineBlock.Kind.FISHER),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL));
+    public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> CASINO_TABLE = BLOCKS.registerBlock("casino_table",
+            p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.menu.CasinoMenu::open),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DARK_OAK_PLANKS));
+
     private ModBlocks() {}
 }

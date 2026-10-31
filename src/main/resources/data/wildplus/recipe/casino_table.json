@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "EEE",
+    "PGP",
+    "P P"
+  ],
+  "key": {
+    "E": "minecraft:emerald",
+    "P": "minecraft:dark_oak_planks",
+    "G": "wildplus:gold_coin"
+  },
+  "result": {
+    "id": "wildplus:casino_table",
+    "count": 1
+  }
+}

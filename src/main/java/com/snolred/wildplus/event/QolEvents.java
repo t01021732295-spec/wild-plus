@@ -58,7 +58,14 @@ public final class QolEvents {
         // 미스릴 삽: 3×3 파기 (웅크리면 한 칸)
         if (tool.is(com.snolred.wildplus.registry.ModItems2.MYTHRIL_SHOVEL.get()) && !player.isShiftKeyDown()
                 && state.is(BlockTags.MINEABLE_WITH_SHOVEL)) {
-            digArea(player, level, event.getPos());
+            digArea(player, level, event.getPos(), s -> s.is(BlockTags.MINEABLE_WITH_SHOVEL));
+            return;
+        }
+        // 드릴: 곡괭이·삽으로 캐는 블록을 3×3 (웅크리면 한 칸)
+        if (tool.is(com.snolred.wildplus.registry.ModItems5.DRILL.get()) && !player.isShiftKeyDown()
+                && (state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_SHOVEL))) {
+            digArea(player, level, event.getPos(), s -> (s.is(BlockTags.MINEABLE_WITH_PICKAXE) && tool.isCorrectToolForDrops(s))
+                    || s.is(BlockTags.MINEABLE_WITH_SHOVEL));
             return;
         }
         if (!player.isShiftKeyDown() || player.isCreative()) {
@@ -94,7 +101,7 @@ public final class QolEvents {
     }
 
     /** 미스릴 삽: 바라보는 방향에 수직인 3×3 면을 함께 판다 */
-    private static void digArea(ServerPlayer player, ServerLevel level, BlockPos center) {
+    private static void digArea(ServerPlayer player, ServerLevel level, BlockPos center, java.util.function.Predicate<BlockState> ok) {
         float pitch = player.getXRot();
         Direction.Axis axis = Math.abs(pitch) > 45 ? Direction.Axis.Y : player.getDirection().getAxis();
         chaining = true;
@@ -108,7 +115,7 @@ public final class QolEvents {
                         default -> center.offset(a, b, 0);
                     };
                     BlockState s = level.getBlockState(p);
-                    if (s.is(BlockTags.MINEABLE_WITH_SHOVEL) && s.getDestroySpeed(level, p) >= 0) {
+                    if (ok.test(s) && s.getDestroySpeed(level, p) >= 0) {
                         if (player.getMainHandItem().isEmpty() || player.getMainHandItem().nextDamageWillBreak()) break;
                         player.gameMode.destroyBlock(p);
                     }

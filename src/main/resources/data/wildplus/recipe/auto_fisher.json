@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PFP",
+    "PCP",
+    "PRP"
+  ],
+  "key": {
+    "P": "#minecraft:planks",
+    "F": "minecraft:fishing_rod",
+    "C": "minecraft:chest",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "wildplus:auto_fisher",
+    "count": 1
+  }
+}

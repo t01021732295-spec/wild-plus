@@ -130,6 +130,10 @@ public final class GearEffects {
     @SubscribeEvent
     public static void onBreakSpeed(PlayerEvent.BreakSpeed event) {
         ItemStack tool = event.getEntity().getMainHandItem();
+        // 드릴은 삽으로 캐는 블록도 빠르게
+        if (tool.is(com.snolred.wildplus.registry.ModItems5.DRILL.get()) && event.getState().is(BlockTags.MINEABLE_WITH_SHOVEL)) {
+            event.setNewSpeed(Math.max(event.getNewSpeed(), com.snolred.wildplus.registry.ModItems5.DRILL_MATERIAL.speed()));
+        }
         if ((tool.is(ModItems.BLOODSTEEL_PICKAXE.get()) || tool.is(ModItems.BLOODSTEEL_AXE.get()) || tool.is(ModItems.BLOODSTEEL_SHOVEL.get()))
                 && event.getEntity().level().isDarkOutside()) {
             event.setNewSpeed(event.getNewSpeed() * 1.5F);

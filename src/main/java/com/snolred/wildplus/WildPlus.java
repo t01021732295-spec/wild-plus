@@ -34,9 +34,11 @@ public class WildPlus {
         ModItems2.init();
         ModItems3.init();
         com.snolred.wildplus.registry.ModItems4.init();
+        com.snolred.wildplus.registry.ModItems5.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
+        com.snolred.wildplus.registry.ModEffects.EFFECTS.register(modEventBus);
         modEventBus.addListener(ModEntities::onAttributes);
         // 한 묶음 늘리기: 원래 64개씩 쌓이는 아이템을 99개까지 (마인크래프트가 허용하는 최대치)
         modEventBus.addListener(net.neoforged.bus.api.EventPriority.LOWEST,
@@ -55,6 +57,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(EconomyEvents.class);
         NeoForge.EVENT_BUS.register(QolEvents.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.EconomyTick.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.BloodMoonReward.class);
 
         modContainer.registerConfig(ModConfig.Type.SYNCED, WildConfig.SPEC);
     }

@@ -31,5 +31,10 @@ public final class ModMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.EnhanceMenu>> ENHANCE =
             MENUS.register("enhance", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.EnhanceMenu::new));
 
+    public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.MachineMenu>> MACHINE =
+            MENUS.register("machine", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.MachineMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.CasinoMenu>> CASINO =
+            MENUS.register("casino", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.CasinoMenu::new));
+
     private ModMenus() {}
 }

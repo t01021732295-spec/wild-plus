@@ -7,6 +7,13 @@
     "wildplus:moonlight_fish",
     "wildplus:storm_eel",
     "wildplus:anglerfish",
-    "wildplus:ice_smelt"
+    "wildplus:ice_smelt",
+    "wildplus:catfish",
+    "wildplus:cooked_catfish",
+    "wildplus:tuna",
+    "wildplus:tuna_steak",
+    "wildplus:sweetfish",
+    "wildplus:grilled_sweetfish",
+    "wildplus:dragon_king_fish"
   ]
 }

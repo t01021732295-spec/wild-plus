@@ -31,7 +31,10 @@ public final class Bounties {
                 new Kind(Items.GOLD_INGOT, 2, 8), new Kind(ModItems2.JADE.get(), 1, 4), new Kind(ModItems2.MYTHRIL_INGOT.get(), 1, 4),
                 new Kind(Items.BONE, 8, 24), new Kind(Items.STRING, 8, 24), new Kind(Items.GUNPOWDER, 4, 16),
                 new Kind(Items.ROTTEN_FLESH, 16, 48), new Kind(Items.LEATHER, 4, 12), new Kind(Items.ENDER_PEARL, 2, 6),
-                new Kind(ModItems.BLOOD_SHARD.get(), 2, 6));
+                new Kind(ModItems.BLOOD_SHARD.get(), 2, 6),
+                new Kind(com.snolred.wildplus.registry.ModItems5.CORN.get(), 8, 24), new Kind(com.snolred.wildplus.registry.ModItems5.CABBAGE.get(), 4, 16),
+                new Kind(com.snolred.wildplus.registry.ModItems5.BLUEBERRY.get(), 8, 24), new Kind(com.snolred.wildplus.registry.ModItems5.CATFISH.get(), 2, 6),
+                new Kind(com.snolred.wildplus.registry.ModItems5.TUNA.get(), 2, 6));
     }
 
     /** 그날 그 플레이어의 의뢰 (날짜와 플레이어로 정해지므로 저장할 필요가 없다) */

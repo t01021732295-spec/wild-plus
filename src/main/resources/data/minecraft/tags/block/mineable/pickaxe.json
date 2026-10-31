@@ -17,6 +17,8 @@
     "wildplus:exchange",
     "wildplus:chunk_loader",
     "wildplus:pharmacy",
-    "wildplus:weather_station"
+    "wildplus:weather_station",
+    "wildplus:auto_harvester",
+    "wildplus:ore_miner"
   ]
 }

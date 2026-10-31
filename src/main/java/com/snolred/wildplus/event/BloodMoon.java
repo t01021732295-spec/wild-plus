@@ -89,6 +89,7 @@ public final class BloodMoon {
             return;
         }
         active = true;
+        BloodMoonReward.reset();
         long tod = TimeHelper.dayTime(level) % 24000L;
         sawNight = tod >= NIGHT_START && tod < NIGHT_END;
         lastRolledDay = TimeHelper.dayTime(level) / 24000L;
@@ -122,6 +123,7 @@ public final class BloodMoon {
                 player.sendSystemMessage(Component.translatable("message.wildplus.blood_moon.end")
                         .withStyle(ChatFormatting.GOLD));
             }
+            BloodMoonReward.reward(level);
         }
         WildPlus.LOGGER.info("Blood Moon ended");
     }

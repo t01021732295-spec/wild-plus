@@ -30,5 +30,15 @@ public final class ModBlockEntities {
             BLOCK_ENTITIES.register("chunk_loader", () -> new BlockEntityType<>(com.snolred.wildplus.block.ChunkLoaderBlockEntity::new,
                     ModBlocks.CHUNK_LOADER.get()));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.AutoHarvesterBlockEntity>> AUTO_HARVESTER =
+            BLOCK_ENTITIES.register("auto_harvester", () -> new BlockEntityType<>(com.snolred.wildplus.block.AutoHarvesterBlockEntity::new,
+                    ModBlocks.AUTO_HARVESTER.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.OreMinerBlockEntity>> ORE_MINER =
+            BLOCK_ENTITIES.register("ore_miner", () -> new BlockEntityType<>(com.snolred.wildplus.block.OreMinerBlockEntity::new,
+                    ModBlocks.ORE_MINER.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.AutoFisherBlockEntity>> AUTO_FISHER =
+            BLOCK_ENTITIES.register("auto_fisher", () -> new BlockEntityType<>(com.snolred.wildplus.block.AutoFisherBlockEntity::new,
+                    ModBlocks.AUTO_FISHER.get()));
+
     private ModBlockEntities() {}
 }

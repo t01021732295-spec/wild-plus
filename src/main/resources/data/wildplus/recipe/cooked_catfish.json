@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "ingredient": "wildplus:catfish",
+  "result": {
+    "id": "wildplus:cooked_catfish"
+  },
+  "experience": 0.35,
+  "cookingtime": 200
+}

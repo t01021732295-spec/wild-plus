@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:ore_miner"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "wildplus:blocks/ore_miner"
+}

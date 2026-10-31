@@ -179,6 +179,8 @@ def town():
             for x in (x0 + 2, x0 + 4, x0 + 6):
                 place(t, x, back, "wildplus:gacha_machine", face(f))
             place_vending(t, x0 + 1, mid, LOTTO, "east")
+            place(t, x0 + 4, mid + (1 if door == "north" else -1), "wildplus:casino_table", face(f))
+            place(t, x0 + 6, mid + (1 if door == "north" else -1), "wildplus:casino_table", face(f))
         elif kind == "hall":
             place(t, x0 + 2, back, "wildplus:weather_station", face(f))
             place(t, x0 + 4, back, "wildplus:bounty_board", face(f))

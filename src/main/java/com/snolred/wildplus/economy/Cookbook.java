@@ -29,12 +29,17 @@ public final class Cookbook {
             new Dish("매운탕", "그릇 + 생선 + 고추\n+ 토마토", "배고픔 12\n힘 · 재생"),
             new Dish("무지개송어 구이", "무지개송어를\n화로·훈연기·모닥불에\n굽기", "배고픔 7"),
             new Dish("장어구이", "폭풍 장어를\n화로·훈연기·모닥불에\n굽기", "신속 2분"),
+            new Dish("군옥수수", "옥수수를 화로·훈연기·\n모닥불에 굽기", "배고픔 7"),
+            new Dish("샐러드", "그릇 + 양배추 2\n+ 토마토 + 당근", "배고픔 9"),
+            new Dish("블루베리 머핀", "밀 + 블루베리 2\n+ 설탕 + 달걀 → 2개", "야간 투시 1분"),
+            new Dish("새 물고기 요리", "메기 → 메기 구이\n참치 → 참치 스테이크\n은어 → 은어 소금구이\n(화로·훈연기·모닥불)", "은어 소금구이:\n신속 1분"),
+            new Dish("전설의 용왕어", "낚시로 1% 확률\n(비취 낚싯대 2%)\n날로 먹음", "힘 II · 저항 II 2분\n재생 II 30초"),
             new Dish("날로 먹는 재료", "고추: 화염 저항 20초\n달빛 물고기: 야간 투시\n심해 아귀: 수중 호흡\n얼음 빙어: 화염 저항\n황금 잉어: 흡수 II\n+ 재생 II", ""));
 
     public static ItemStack create() {
         List<Filterable<Component>> pages = new ArrayList<>();
         pages.add(Filterable.passThrough(Component.literal("야생 플러스\n요리책\n\n").withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD)
-                .append(Component.literal("모드 요리의 재료와\n만드는 법, 효과를\n정리했어요.\n\n고추·토마토·딸기 씨앗은\n잔디를 부수면 나와요.\n\n레시피 책(제작대 왼쪽\n초록 책)에서도\n볼 수 있어요.")
+                .append(Component.literal("모드 요리의 재료와\n만드는 법, 효과를\n정리했어요.\n\n고추·토마토·딸기·옥수수·\n양배추·블루베리 씨앗은\n잔디를 부수면 나와요.\n\n레시피 책(제작대 왼쪽\n초록 책)에서도\n볼 수 있어요.")
                         .withStyle(ChatFormatting.RESET, ChatFormatting.BLACK))));
         for (Dish d : DISHES) {
             MutableComponent page = Component.literal(d.name() + "\n\n").withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD);
