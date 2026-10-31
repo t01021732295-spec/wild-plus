@@ -1,0 +1,4 @@
+net.minecraft.world.entity.npc.villager.VillagerData
+net.minecraft.world.entity.npc.villager.Villager
+net.minecraft.world.entity.npc.VillagerData
+net.minecraft.world.entity.npc.Villager

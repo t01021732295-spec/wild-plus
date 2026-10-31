@@ -73,6 +73,14 @@ jobs:
               done
             done | awk '!seen[$0]++ || !/^########/' >> out/probe.txt
           fi
+          # javap -c (문자열 상수 확인용)
+          if [ -f .github/probe-javapc.txt ]; then
+            while read -r c; do
+              [ -z "$c" ] && continue
+              echo "######## javap -c $c"
+              javap -cp "$JAR" -p -c "$c" 2>&1 | grep -E "ldc|String |Method .*(save|read|load|CODEC)" | head -120 || true
+            done < .github/probe-javapc.txt >> out/probe.txt
+          fi
           # 구조물 NBT 요약
           if [ -f .github/probe-nbt.txt ]; then
             pip install -q nbtlib
