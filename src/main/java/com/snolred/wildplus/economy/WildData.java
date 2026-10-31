@@ -208,7 +208,7 @@ public class WildData extends SavedData {
         CompoundTag priceTag = root.getCompoundOrEmpty("prices");
         for (String code : priceTag.keySet()) {
             priceTag.getLongArray(code).ifPresent(arr -> {
-                if (arr.length >= 2) d.lastPrices.put(code, new long[]{arr[0], arr[1]});
+                if (arr.length >= 2) d.lastPrices.put(code, arr.clone());
             });
         }
         CompoundTag bountyTag = root.getCompoundOrEmpty("bounties");

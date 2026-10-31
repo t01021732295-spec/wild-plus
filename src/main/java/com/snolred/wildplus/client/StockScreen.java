@@ -84,7 +84,7 @@ public class StockScreen extends AbstractContainerScreen<StockMenu> {
     protected void extractLabels(GuiGraphicsExtractor g, int mouseX, int mouseY) {
         UiKit.bold(g, "WILD 증권", 20, 6, 0xFFFFFFFF);
         boolean live = menu.live();
-        UiKit.text(g, (live ? "실시간 시세 · " : "가상 시세 (오프라인) · ") + menu.updated, 120, 6, live ? 0xFF7FE0A3 : 0xFFFFC266);
+        UiKit.text(g, (live ? "장중 · " : "장 마감 · ") + menu.updated, 120, 6, live ? 0xFF7FE0A3 : 0xFFFFC266);
         UiKit.text(g, "종목", 10, 21, MUTED);
         UiKit.right(g, "현재가", 124, 21, MUTED);
         UiKit.right(g, "등락률", 168, 21, MUTED);

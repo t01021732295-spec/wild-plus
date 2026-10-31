@@ -524,6 +524,8 @@ def main():
         textures_v10.build()
         import textures_v11
         textures_v11.build(Path(van))
+        import textures_v12
+        textures_v12.build()
     else:
         print("WILDPLUS_VANILLA 가 없어서 재색칠은 건너뜀 (주의: 위에서 덮어쓴 장비 그림이 옛 그림으로 남음)")
     print("ok", len(ITEMS), "items,", len(CROP), "crop stages + v2")

@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "facing=north,part=hidden": {
+      "model": "wildplus:block/big_part_hidden"
+    },
+    "facing=north,part=gate_top": {
+      "model": "wildplus:block/tower_gate_top"
+    },
+    "facing=east,part=hidden": {
+      "model": "wildplus:block/big_part_hidden"
+    },
+    "facing=east,part=gate_top": {
+      "model": "wildplus:block/tower_gate_top",
+      "y": 90
+    },
+    "facing=south,part=hidden": {
+      "model": "wildplus:block/big_part_hidden"
+    },
+    "facing=south,part=gate_top": {
+      "model": "wildplus:block/tower_gate_top",
+      "y": 180
+    },
+    "facing=west,part=hidden": {
+      "model": "wildplus:block/big_part_hidden"
+    },
+    "facing=west,part=gate_top": {
+      "model": "wildplus:block/tower_gate_top",
+      "y": 270
+    }
+  }
+}

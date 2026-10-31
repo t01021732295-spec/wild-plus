@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "QDQ",
+    "QEQ",
+    "Q Q"
+  ],
+  "key": {
+    "Q": "minecraft:quartz_block",
+    "D": "minecraft:diamond",
+    "E": "minecraft:ender_pearl"
+  },
+  "result": {
+    "id": "wildplus:tower_gate",
+    "count": 1
+  }
+}

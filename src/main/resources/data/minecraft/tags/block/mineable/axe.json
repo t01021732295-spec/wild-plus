@@ -5,6 +5,7 @@
     "wildplus:shipping_bin",
     "wildplus:enhance_table",
     "wildplus:auto_fisher",
-    "wildplus:casino_table"
+    "wildplus:casino_table",
+    "wildplus:goal_board"
   ]
 }

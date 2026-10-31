@@ -343,7 +343,7 @@ jobs:
         id: client
         if: steps.smoke.outcome == 'success' && !contains(github.event.head_commit.message, '[quick]')
         continue-on-error: true
-        timeout-minutes: 30
+        timeout-minutes: 40
         env:
           LIBGL_ALWAYS_SOFTWARE: '1'
           MC_QUICKPLAY: wildtest
@@ -707,6 +707,56 @@ jobs:
             sleep 1
             import -window root shot-dungeon-room.png || true
             xdotool key F1 || true
+            # ── 15차: 주말 콘텐츠 (레이드 제단 · 탑 입구 · 목표 게시판) ──
+            cmd "/gamemode creative"
+            cmd "/time set noon"
+            cmd "/fill 438 119 -32 472 119 -8 minecraft:grass_block"
+            cmd "/fill 438 120 -32 472 132 -8 minecraft:air"
+            cmd "/setblock 445 120 -20 wildplus:raid_altar[facing=south]"
+            cmd "/setblock 455 120 -20 wildplus:tower_gate[facing=south]"
+            cmd "/setblock 465 120 -20 wildplus:goal_board[facing=south]"
+            cmd "/tp @s 455.5 123 -9.5 180 12"
+            sleep 5
+            xdotool key F1 || true
+            sleep 1
+            import -window root shot-weekend-blocks.png || true
+            xdotool key F1 || true
+            for k in kill_monster kill_elite mine_ore harvest chop_log fish trade tower_floor raid_clear; do cmd "/wildplus weekend goal $k 9"; done
+            cmd "/wildplus weekend goal kill_monster 400"
+            cmd "/wildplus weekend goal mine_ore 400"
+            cmd "/wildplus weekend goal chop_log 400"
+            cmd "/wildplus weekend points 260"
+            cmd "/tp @s 465.5 120 -17.5 180 8"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-goals.png || true
+            xdotool key Escape; sleep 1
+            cmd "/tp @s 445.5 120 -16.5 180 30"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-raid.png || true
+            xdotool key Escape; sleep 1
+            cmd "/tp @s 455.5 120 -17.5 180 0"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-tower.png || true
+            xdotool key Escape; sleep 1
+            # 레이드 전투 → 처치
+            cmd "/effect give @s minecraft:resistance 300 4 true"
+            cmd "/tp @s 445.5 120 -14.5 180 10"
+            cmd "/wildplus weekend raid"
+            sleep 9
+            import -window root shot-raid-fight.png || true
+            cmd "/kill @e[type=!minecraft:player,distance=..48]"
+            sleep 3
+            import -window root shot-raid-clear.png || true
+            # 하늘의 탑 1층
+            cmd "/tp @s 455.5 120 -17.5 180 0"
+            cmd "/wildplus weekend tower"
+            sleep 7
+            import -window root shot-tower-floor.png || true
+            cmd "/kill @e[type=!minecraft:player,distance=..40]"
+            sleep 3
+            import -window root shot-tower-clear.png || true
+            cmd "/wildplus weekend leave"
+            sleep 2
             # 랜덤 이벤트 · 새 효과
             cmd "/gamemode creative"
             cmd "/tp @s 478 121 30 0 10"

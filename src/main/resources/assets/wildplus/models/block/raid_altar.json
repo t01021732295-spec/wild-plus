@@ -1,0 +1,858 @@
+{
+  "parent": "minecraft:block/block",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "bricks": "minecraft:block/polished_blackstone_bricks",
+    "stone": "minecraft:block/polished_blackstone",
+    "chisel": "minecraft:block/chiseled_polished_blackstone",
+    "gilded": "minecraft:block/gilded_blackstone",
+    "gold": "minecraft:block/gold_block",
+    "crying": "minecraft:block/crying_obsidian",
+    "fire": "minecraft:block/soul_fire_0",
+    "runes": "wildplus:block/raid_altar_top",
+    "particle": "minecraft:block/polished_blackstone_bricks"
+  },
+  "elements": [
+    {
+      "from": [
+        -16,
+        0,
+        -16
+      ],
+      "to": [
+        32,
+        4,
+        32
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bricks"
+        },
+        "south": {
+          "texture": "#bricks"
+        },
+        "east": {
+          "texture": "#bricks"
+        },
+        "west": {
+          "texture": "#bricks"
+        },
+        "up": {
+          "texture": "#stone"
+        },
+        "down": {
+          "texture": "#stone"
+        }
+      }
+    },
+    {
+      "from": [
+        -11,
+        4,
+        -11
+      ],
+      "to": [
+        27,
+        7,
+        27
+      ],
+      "faces": {
+        "north": {
+          "texture": "#chisel"
+        },
+        "south": {
+          "texture": "#chisel"
+        },
+        "east": {
+          "texture": "#chisel"
+        },
+        "west": {
+          "texture": "#chisel"
+        },
+        "up": {
+          "texture": "#stone"
+        },
+        "down": {
+          "texture": "#stone"
+        }
+      }
+    },
+    {
+      "from": [
+        -3,
+        4,
+        -14
+      ],
+      "to": [
+        19,
+        5,
+        -11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bricks"
+        },
+        "south": {
+          "texture": "#bricks"
+        },
+        "east": {
+          "texture": "#bricks"
+        },
+        "west": {
+          "texture": "#bricks"
+        },
+        "up": {
+          "texture": "#stone"
+        },
+        "down": {
+          "texture": "#stone"
+        }
+      }
+    },
+    {
+      "from": [
+        -3,
+        5,
+        -12
+      ],
+      "to": [
+        19,
+        6,
+        -11
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bricks"
+        },
+        "south": {
+          "texture": "#bricks"
+        },
+        "east": {
+          "texture": "#bricks"
+        },
+        "west": {
+          "texture": "#bricks"
+        },
+        "up": {
+          "texture": "#stone"
+        },
+        "down": {
+          "texture": "#stone"
+        }
+      }
+    },
+    {
+      "from": [
+        2,
+        7,
+        2
+      ],
+      "to": [
+        14,
+        13,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#chisel"
+        },
+        "south": {
+          "texture": "#chisel"
+        },
+        "east": {
+          "texture": "#chisel"
+        },
+        "west": {
+          "texture": "#chisel"
+        },
+        "up": {
+          "texture": "#stone"
+        },
+        "down": {
+          "texture": "#stone"
+        }
+      }
+    },
+    {
+      "from": [
+        1,
+        13,
+        1
+      ],
+      "to": [
+        15,
+        15,
+        15
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gold"
+        },
+        "south": {
+          "texture": "#gold"
+        },
+        "east": {
+          "texture": "#gold"
+        },
+        "west": {
+          "texture": "#gold"
+        },
+        "up": {
+          "texture": "#runes"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "from": [
+        5.5,
+        17,
+        5.5
+      ],
+      "to": [
+        10.5,
+        29,
+        10.5
+      ],
+      "faces": {
+        "north": {
+          "texture": "#crying"
+        },
+        "south": {
+          "texture": "#crying"
+        },
+        "east": {
+          "texture": "#crying"
+        },
+        "west": {
+          "texture": "#crying"
+        },
+        "up": {
+          "texture": "#crying"
+        },
+        "down": {
+          "texture": "#crying"
+        }
+      },
+      "rotation": {
+        "origin": [
+          8,
+          23,
+          8
+        ],
+        "axis": "y",
+        "angle": 45
+      }
+    },
+    {
+      "from": [
+        -14,
+        4,
+        -14
+      ],
+      "to": [
+        -10,
+        18,
+        -10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bricks"
+        },
+        "south": {
+          "texture": "#bricks"
+        },
+        "east": {
+          "texture": "#bricks"
+        },
+        "west": {
+          "texture": "#bricks"
+        },
+        "up": {
+          "texture": "#stone"
+        },
+        "down": {
+          "texture": "#stone"
+        }
+      }
+    },
+    {
+      "from": [
+        -15,
+        18,
+        -15
+      ],
+      "to": [
+        -9,
+        20,
+        -9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gilded"
+        },
+        "south": {
+          "texture": "#gilded"
+        },
+        "east": {
+          "texture": "#gilded"
+        },
+        "west": {
+          "texture": "#gilded"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "from": [
+        -15,
+        20,
+        -12
+      ],
+      "to": [
+        -9,
+        28,
+        -12
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          -12.0,
+          20,
+          -12.0
+        ],
+        "axis": "y",
+        "angle": 45,
+        "rescale": true
+      },
+      "faces": {
+        "north": {
+          "texture": "#fire"
+        },
+        "south": {
+          "texture": "#fire"
+        }
+      }
+    },
+    {
+      "from": [
+        -15,
+        20,
+        -12
+      ],
+      "to": [
+        -9,
+        28,
+        -12
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          -12.0,
+          20,
+          -12.0
+        ],
+        "axis": "y",
+        "angle": -45,
+        "rescale": true
+      },
+      "faces": {
+        "north": {
+          "texture": "#fire"
+        },
+        "south": {
+          "texture": "#fire"
+        }
+      }
+    },
+    {
+      "from": [
+        26,
+        4,
+        -14
+      ],
+      "to": [
+        30,
+        18,
+        -10
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bricks"
+        },
+        "south": {
+          "texture": "#bricks"
+        },
+        "east": {
+          "texture": "#bricks"
+        },
+        "west": {
+          "texture": "#bricks"
+        },
+        "up": {
+          "texture": "#stone"
+        },
+        "down": {
+          "texture": "#stone"
+        }
+      }
+    },
+    {
+      "from": [
+        25,
+        18,
+        -15
+      ],
+      "to": [
+        31,
+        20,
+        -9
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gilded"
+        },
+        "south": {
+          "texture": "#gilded"
+        },
+        "east": {
+          "texture": "#gilded"
+        },
+        "west": {
+          "texture": "#gilded"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "from": [
+        25,
+        20,
+        -12
+      ],
+      "to": [
+        31,
+        28,
+        -12
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          28.0,
+          20,
+          -12.0
+        ],
+        "axis": "y",
+        "angle": 45,
+        "rescale": true
+      },
+      "faces": {
+        "north": {
+          "texture": "#fire"
+        },
+        "south": {
+          "texture": "#fire"
+        }
+      }
+    },
+    {
+      "from": [
+        25,
+        20,
+        -12
+      ],
+      "to": [
+        31,
+        28,
+        -12
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          28.0,
+          20,
+          -12.0
+        ],
+        "axis": "y",
+        "angle": -45,
+        "rescale": true
+      },
+      "faces": {
+        "north": {
+          "texture": "#fire"
+        },
+        "south": {
+          "texture": "#fire"
+        }
+      }
+    },
+    {
+      "from": [
+        -14,
+        4,
+        26
+      ],
+      "to": [
+        -10,
+        18,
+        30
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bricks"
+        },
+        "south": {
+          "texture": "#bricks"
+        },
+        "east": {
+          "texture": "#bricks"
+        },
+        "west": {
+          "texture": "#bricks"
+        },
+        "up": {
+          "texture": "#stone"
+        },
+        "down": {
+          "texture": "#stone"
+        }
+      }
+    },
+    {
+      "from": [
+        -15,
+        18,
+        25
+      ],
+      "to": [
+        -9,
+        20,
+        31
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gilded"
+        },
+        "south": {
+          "texture": "#gilded"
+        },
+        "east": {
+          "texture": "#gilded"
+        },
+        "west": {
+          "texture": "#gilded"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "from": [
+        -15,
+        20,
+        28
+      ],
+      "to": [
+        -9,
+        28,
+        28
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          -12.0,
+          20,
+          28.0
+        ],
+        "axis": "y",
+        "angle": 45,
+        "rescale": true
+      },
+      "faces": {
+        "north": {
+          "texture": "#fire"
+        },
+        "south": {
+          "texture": "#fire"
+        }
+      }
+    },
+    {
+      "from": [
+        -15,
+        20,
+        28
+      ],
+      "to": [
+        -9,
+        28,
+        28
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          -12.0,
+          20,
+          28.0
+        ],
+        "axis": "y",
+        "angle": -45,
+        "rescale": true
+      },
+      "faces": {
+        "north": {
+          "texture": "#fire"
+        },
+        "south": {
+          "texture": "#fire"
+        }
+      }
+    },
+    {
+      "from": [
+        26,
+        4,
+        26
+      ],
+      "to": [
+        30,
+        18,
+        30
+      ],
+      "faces": {
+        "north": {
+          "texture": "#bricks"
+        },
+        "south": {
+          "texture": "#bricks"
+        },
+        "east": {
+          "texture": "#bricks"
+        },
+        "west": {
+          "texture": "#bricks"
+        },
+        "up": {
+          "texture": "#stone"
+        },
+        "down": {
+          "texture": "#stone"
+        }
+      }
+    },
+    {
+      "from": [
+        25,
+        18,
+        25
+      ],
+      "to": [
+        31,
+        20,
+        31
+      ],
+      "faces": {
+        "north": {
+          "texture": "#gilded"
+        },
+        "south": {
+          "texture": "#gilded"
+        },
+        "east": {
+          "texture": "#gilded"
+        },
+        "west": {
+          "texture": "#gilded"
+        },
+        "up": {
+          "texture": "#gold"
+        },
+        "down": {
+          "texture": "#gold"
+        }
+      }
+    },
+    {
+      "from": [
+        25,
+        20,
+        28
+      ],
+      "to": [
+        31,
+        28,
+        28
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          28.0,
+          20,
+          28.0
+        ],
+        "axis": "y",
+        "angle": 45,
+        "rescale": true
+      },
+      "faces": {
+        "north": {
+          "texture": "#fire"
+        },
+        "south": {
+          "texture": "#fire"
+        }
+      }
+    },
+    {
+      "from": [
+        25,
+        20,
+        28
+      ],
+      "to": [
+        31,
+        28,
+        28
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          28.0,
+          20,
+          28.0
+        ],
+        "axis": "y",
+        "angle": -45,
+        "rescale": true
+      },
+      "faces": {
+        "north": {
+          "texture": "#fire"
+        },
+        "south": {
+          "texture": "#fire"
+        }
+      }
+    }
+  ],
+  "display": {
+    "gui": {
+      "rotation": [
+        30,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        -1,
+        0
+      ],
+      "scale": [
+        0.2,
+        0.2,
+        0.2
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        3,
+        0
+      ],
+      "scale": [
+        0.16000000000000003,
+        0.16000000000000003,
+        0.16000000000000003
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.24,
+        0.24,
+        0.24
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        75,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        2.5,
+        0
+      ],
+      "scale": [
+        0.13999999999999999,
+        0.13999999999999999,
+        0.13999999999999999
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.2,
+        0.2,
+        0.2
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        225,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.2,
+        0.2,
+        0.2
+      ]
+    }
+  }
+}

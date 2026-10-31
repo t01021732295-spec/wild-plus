@@ -181,6 +181,13 @@ public final class MerchantTrades {
         sell(o, ModItems4.GOLD_BACKPACK.get(), 1, 1200, 1);
         sell(o, ModItems4.LOTTERY_TICKET.get(), 1, 30, 16);
         sellStack(o, com.snolred.wildplus.item.EventBottleItem.of(null), 800, 4);
+        // 주말 콘텐츠
+        sell(o, com.snolred.wildplus.registry.ModItems8.GOAL_BOARD.get(), 1, 300, 2);
+        sell(o, com.snolred.wildplus.registry.ModItems8.TOWER_GATE.get(), 1, 2000, 1);
+        sell(o, com.snolred.wildplus.registry.ModItems8.RAID_ALTAR.get(), 1, 3000, 1);
+        buy(o, com.snolred.wildplus.registry.ModItems8.TITAN_CORE.get(), 1, 1000);
+        buy(o, com.snolred.wildplus.registry.ModItems8.LICH_ORB.get(), 1, 1000);
+        buy(o, com.snolred.wildplus.registry.ModItems8.FROST_CROWN.get(), 1, 1000);
     }
 
     /** 상인이 물건을 사 준다: item n개 → payout동 (단일 동전 종류로 지급) */

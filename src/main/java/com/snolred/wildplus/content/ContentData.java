@@ -1,0 +1,78 @@
+package com.snolred.wildplus.content;
+
+import com.mojang.serialization.Codec;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.UUID;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
+import net.minecraft.resources.Identifier;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
+
+/**
+ * 주말 콘텐츠 저장소 (world/data/wildplus_content.dat): 레이드 · 하늘의 탑 · 주간 목표 · 시즌 패스.
+ * 형식이 자주 바뀌어도 안전하도록 CompoundTag 하나를 그대로 들고 다닌다.
+ */
+public class ContentData extends SavedData {
+    public static final Codec<ContentData> CODEC = ExtraCodecs.converter(NbtOps.INSTANCE)
+            .xmap(t -> new ContentData(t instanceof CompoundTag c ? c.copy() : new CompoundTag()), d -> d.root.copy());
+    public static final SavedDataType<ContentData> TYPE =
+            new SavedDataType<>(Identifier.fromNamespaceAndPath("wildplus", "wildplus_content"), ContentData::new, CODEC);
+
+    public final CompoundTag root;
+
+    public ContentData() {
+        this(new CompoundTag());
+    }
+
+    private ContentData(CompoundTag root) {
+        this.root = root;
+    }
+
+    public static ContentData get(MinecraftServer server) {
+        return server.overworld().getDataStorage().computeIfAbsent(TYPE);
+    }
+
+    public CompoundTag section(String name) {
+        if (!(root.get(name) instanceof CompoundTag c)) {
+            CompoundTag c2 = new CompoundTag();
+            root.put(name, c2);
+            return c2;
+        }
+        return c;
+    }
+
+    public CompoundTag player(String section, UUID id) {
+        CompoundTag s = section(section);
+        String k = id.toString();
+        if (!(s.get(k) instanceof CompoundTag c)) {
+            CompoundTag c2 = new CompoundTag();
+            s.put(k, c2);
+            return c2;
+        }
+        return c;
+    }
+
+    public void dirty() {
+        setDirty();
+    }
+
+    /** 현실 시간 기준 "주" 번호: 금요일마다 바뀐다 (한국 시간). 1970-01-01 은 목요일. */
+    public static long week() {
+        long day = LocalDate.now(ZoneId.of("Asia/Seoul")).toEpochDay();
+        return Math.floorDiv(day - 1, 7);
+    }
+
+    /** 시즌 = 8주 */
+    public static long season() {
+        return Math.floorDiv(week(), 8);
+    }
+
+    public static int weeksLeftInSeason() {
+        return (int) (8 - Math.floorMod(week(), 8));
+    }
+}

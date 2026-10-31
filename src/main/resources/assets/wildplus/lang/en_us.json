@@ -531,5 +531,21 @@
   "event.wildplus.full_moon": "Hunter's Moon",
   "event.wildplus.full_moon.desc": "Monsters give triple XP and sometimes silver",
   "event.wildplus.vampire_night": "Vampire Night",
-  "event.wildplus.vampire_night.desc": "Heal 25% of the melee damage you deal"
+  "event.wildplus.vampire_night.desc": "Heal 25% of the melee damage you deal",
+  "block.wildplus.raid_altar": "Raid Altar",
+  "block.wildplus.tower_gate": "Sky Tower Gate",
+  "block.wildplus.goal_board": "Weekly Goal Board",
+  "block.wildplus.big_part": "Large Block Part",
+  "container.wildplus.raid_altar": "Weekend Raid",
+  "container.wildplus.tower_gate": "Sky Tower",
+  "container.wildplus.goal_board": "Weekly Goals · Season Pass",
+  "item.wildplus.titan_core": "Titan Core",
+  "item.wildplus.lich_orb": "Wraith Lord's Orb",
+  "item.wildplus.frost_crown": "Frost Crown Shard",
+  "tooltip.wildplus.raid_altar": "3×3 · Fight this week's raid boss with friends\nThe boss changes every Friday and grows stronger with each clear",
+  "tooltip.wildplus.tower_gate": "3 wide · 3 tall · Climb the Sky Tower with nearby friends\nRewards every floor, keep your items if you fall",
+  "tooltip.wildplus.goal_board": "3 wide · 2 tall · Weekly shared goals and season pass rewards",
+  "tooltip.wildplus.titan_core": "Titan raid trophy · the banker buys it for 1,000",
+  "tooltip.wildplus.lich_orb": "Wraith Lord raid trophy · the banker buys it for 1,000",
+  "tooltip.wildplus.frost_crown": "Frost Queen raid trophy · the banker buys it for 1,000"
 }

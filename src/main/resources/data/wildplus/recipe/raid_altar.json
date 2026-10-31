@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GRG",
+    "OEO",
+    "OOO"
+  ],
+  "key": {
+    "G": "minecraft:gold_block",
+    "R": "wildplus:ruby",
+    "E": "minecraft:ender_eye",
+    "O": "minecraft:obsidian"
+  },
+  "result": {
+    "id": "wildplus:raid_altar",
+    "count": 1
+  }
+}

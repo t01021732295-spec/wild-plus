@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/goal_board"
+    },
+    "facing=east": {
+      "model": "wildplus:block/goal_board",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/goal_board",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/goal_board",
+      "y": 270
+    }
+  }
+}

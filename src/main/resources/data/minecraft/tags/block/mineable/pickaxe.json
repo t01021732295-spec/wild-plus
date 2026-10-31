@@ -23,6 +23,9 @@
     "wildplus:hall_of_fame",
     "wildplus:ruby_ore",
     "wildplus:deepslate_ruby_ore",
-    "wildplus:ruby_block"
+    "wildplus:ruby_block",
+    "wildplus:raid_altar",
+    "wildplus:tower_gate",
+    "wildplus:big_part"
   ]
 }

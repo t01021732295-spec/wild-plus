@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PPP",
+    "PBP",
+    "L L"
+  ],
+  "key": {
+    "P": "minecraft:spruce_planks",
+    "B": "minecraft:book",
+    "L": "minecraft:stripped_spruce_log"
+  },
+  "result": {
+    "id": "wildplus:goal_board",
+    "count": 1
+  }
+}

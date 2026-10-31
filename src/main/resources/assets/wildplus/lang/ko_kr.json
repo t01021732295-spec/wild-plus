@@ -532,5 +532,21 @@
   "event.wildplus.full_moon": "사냥꾼의 달",
   "event.wildplus.full_moon.desc": "몬스터 경험치 3배 · 25% 확률로 은화",
   "event.wildplus.vampire_night": "흡혈의 밤",
-  "event.wildplus.vampire_night.desc": "때린 피해의 25%만큼 체력 회복"
+  "event.wildplus.vampire_night.desc": "때린 피해의 25%만큼 체력 회복",
+  "block.wildplus.raid_altar": "레이드 제단",
+  "block.wildplus.tower_gate": "하늘의 탑 입구",
+  "block.wildplus.goal_board": "주간 목표 게시판",
+  "block.wildplus.big_part": "큰 블록 부속",
+  "container.wildplus.raid_altar": "주말 레이드",
+  "container.wildplus.tower_gate": "하늘의 탑",
+  "container.wildplus.goal_board": "주간 목표 · 시즌 패스",
+  "item.wildplus.titan_core": "거신의 핵",
+  "item.wildplus.lich_orb": "망령 군주의 구슬",
+  "item.wildplus.frost_crown": "서리 왕관 조각",
+  "tooltip.wildplus.raid_altar": "3×3 크기 · 친구들과 함께 이번 주 레이드 보스에 도전\n보스는 금요일마다 바뀌고, 깰 때마다 강해짐",
+  "tooltip.wildplus.tower_gate": "폭 3 · 높이 3 · 근처 친구들과 하늘의 탑에 오름\n층마다 보상, 쓰러져도 아이템 유지",
+  "tooltip.wildplus.goal_board": "폭 3 · 높이 2 · 이번 주 공동 목표와 시즌 패스 보상",
+  "tooltip.wildplus.titan_core": "대지의 거신 레이드 전리품 · 은행 상인이 1,000동에 사 줌",
+  "tooltip.wildplus.lich_orb": "망령 군주 레이드 전리품 · 은행 상인이 1,000동에 사 줌",
+  "tooltip.wildplus.frost_crown": "서리 여왕 레이드 전리품 · 은행 상인이 1,000동에 사 줌"
 }

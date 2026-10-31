@@ -73,6 +73,7 @@ public final class WildCommands {
                 }))
                 // 랜덤 이벤트: /wildplus event <이름> · /wildplus event stop
                 .then(eventCommand())
+                .then(weekendCommand())
                 // 시험용: 핏빛 군주 · 정예 몹 소환
                 .then(Commands.literal("bloodlord").executes(ctx -> {
                     var p = ctx.getSource().getPlayerOrException();
@@ -90,6 +91,44 @@ public final class WildCommands {
                     ctx.getSource().sendSuccess(() -> Component.literal("ELITE " + z.getPersistentData().getStringOr(EliteMobs.AFFIX_TAG, "")), false);
                     return 1;
                 })));
+    }
+
+    /** 주말 콘텐츠 시험용: /wildplus weekend raid|tower|leave|goal <종류> <수>|points <수> */
+    private static com.mojang.brigadier.builder.LiteralArgumentBuilder<net.minecraft.commands.CommandSourceStack> weekendCommand() {
+        var root = Commands.literal("weekend");
+        root.then(Commands.literal("raid").executes(ctx -> {
+            var sp = ctx.getSource().getPlayerOrException();
+            com.snolred.wildplus.content.Raid.start(sp, sp.blockPosition());
+            return 1;
+        }));
+        root.then(Commands.literal("tower").executes(ctx -> {
+            var sp = ctx.getSource().getPlayerOrException();
+            com.snolred.wildplus.content.Tower.start(sp, sp.blockPosition());
+            return 1;
+        }));
+        root.then(Commands.literal("leave").executes(ctx -> {
+            var sp = ctx.getSource().getPlayerOrException();
+            com.snolred.wildplus.content.Tower.eliminate(ctx.getSource().getServer(), sp.getUUID(), sp, "명령어");
+            return 1;
+        }));
+        root.then(Commands.literal("points").then(Commands.argument("n", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1))
+                .executes(ctx -> {
+                    com.snolred.wildplus.content.WeeklyGoals.addPoints(ctx.getSource().getPlayerOrException(),
+                            com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "n"));
+                    return 1;
+                })));
+        var goal = Commands.literal("goal");
+        for (var k : com.snolred.wildplus.content.WeeklyGoals.Kind.values()) {
+            goal.then(Commands.literal(k.name().toLowerCase(java.util.Locale.ROOT))
+                    .then(Commands.argument("n", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1)).executes(ctx -> {
+                        com.snolred.wildplus.content.WeeklyGoals.add(ctx.getSource().getServer(), k,
+                                com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "n"));
+                        ctx.getSource().sendSuccess(() -> Component.literal("GOAL " + k.name()), false);
+                        return 1;
+                    })));
+        }
+        root.then(goal);
+        return root;
     }
 
     private static com.mojang.brigadier.builder.LiteralArgumentBuilder<net.minecraft.commands.CommandSourceStack> eventCommand() {
