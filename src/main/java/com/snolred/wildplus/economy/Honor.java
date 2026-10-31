@@ -237,7 +237,7 @@ public final class Honor {
         List<Entry> out = new ArrayList<>();
         for (var e : list) {
             if (out.size() >= limit) break;
-            String name = data.names.getOrDefault(e.getKey(), "?");
+            String name = data.names.getOrDefault(e.getKey(), "(알 수 없음)");
             ServerPlayer online = server.getPlayerList().getPlayer(e.getKey());
             if (online != null) name = online.getName().getString();
             out.add(new Entry(name, e.getValue(), data.honor(e.getKey())));

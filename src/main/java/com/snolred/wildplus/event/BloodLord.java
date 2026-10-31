@@ -220,7 +220,7 @@ public final class BloodLord {
         if (!isLord(e) || !(e.level() instanceof ServerLevel level)) return;
         ServerBossEvent bar = BARS.remove(e.getUUID());
         if (bar != null) bar.removeAllPlayers();
-        Component who = event.getSource().getEntity() instanceof Player p ? p.getName() : Component.literal("?");
+        Component who = event.getSource().getEntity() instanceof Player p ? p.getName() : Component.literal("누군가");
         level.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("message.wildplus.blood_lord.dead", who)
                 .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD), false);
         level.playSound(null, e.blockPosition(), SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.PLAYERS, 1.0F, 1.0F);

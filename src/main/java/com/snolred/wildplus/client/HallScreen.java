@@ -108,7 +108,7 @@ public class HallScreen extends AbstractContainerScreen<HallMenu> {
         UiKit.text(g, r == 0 ? "혜택 없음" : String.format("하트 +%d · 세금 -%d%% · 이자 +%.1f%%", 2 * r, Honor.taxCut(r), 0.2 * r), 50, 66,
                 0xFF1E7A2E);
         if (r >= 5) UiKit.text(g, "레전드: 비행 허가증 반값", 50, 75, 0xFFB03CC0);
-        UiKit.text(g, "다음 등급마다 하트 +2 · 세금 -10% · 이자 +0.2%", 12, 94, SOFT);
+        UiKit.text(g, "등급마다 하트+2 · 세금-10% · 이자+0.2%p", 12, 94, SOFT);
         UiKit.bold(g, "특별 구매", 12, 131, INK);
         String status = (menu.flying() ? "비행 " + menu.flightMinutes() + "분 남음" : "")
                 + (menu.festivalMinutes() > 0 ? (menu.flying() ? " · " : "") + "축제 " + menu.festivalMinutes() + "분" : "");
