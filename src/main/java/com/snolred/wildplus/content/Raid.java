@@ -437,15 +437,9 @@ public final class Raid {
         }
         CompoundTag st = state(server);
         long week = ContentData.week();
-        StringBuilder board = new StringBuilder();
-        List<Map.Entry<UUID, Float>> sorted = new ArrayList<>(DAMAGE.entrySet());
-        sorted.sort((a, b) -> Float.compare(b.getValue(), a.getValue()));
-        for (var en : sorted) {
-            board.append(String.format("\n  %s%s  %,.0f", en.getKey().equals(mvp) ? "👑 " : "· ", NAMES.getOrDefault(en.getKey(), "?"), en.getValue()));
-        }
         server.getPlayerList().broadcastSystemMessage(Component.literal(String.format("★ 레이드 클리어! %s %d단계 · %d분 %02d초", boss.title, tier,
-                time / 1200, time / 20 % 60)).withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD)
-                .append(Component.literal(board.toString()).withStyle(ChatFormatting.YELLOW)), false);
+                time / 1200, time / 20 % 60)).withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD), false);
+        server.getPlayerList().broadcastSystemMessage(DamageBoard.of("보스에게 준 피해 순위", DAMAGE, NAMES), false);
         for (UUID id : DAMAGE.keySet()) {
             ServerPlayer p = server.getPlayerList().getPlayer(id);
             if (p == null) continue;
@@ -591,6 +585,7 @@ public final class Raid {
     private static void fail(String why) {
         if (level != null) {
             level.getServer().getPlayerList().broadcastSystemMessage(Component.literal("✖ 레이드 실패: " + why).withStyle(ChatFormatting.RED), false);
+            if (!DAMAGE.isEmpty()) level.getServer().getPlayerList().broadcastSystemMessage(DamageBoard.of("보스에게 준 피해 순위", DAMAGE, NAMES), false);
         }
         cleanup(true);
     }

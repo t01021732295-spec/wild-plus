@@ -75,6 +75,8 @@ public final class Tower {
     private static BlockPos gate;
     private static final Set<UUID> ACTIVE = new LinkedHashSet<>();
     private static final Map<UUID, String> NAMES = new LinkedHashMap<>();
+    /** 이번 도전에서 각자 몬스터에게 준 피해 합계 */
+    private static final Map<UUID, Float> DMG = new LinkedHashMap<>();
     private static final Map<UUID, Integer> BEST_FLOOR = new LinkedHashMap<>();
     private static final List<UUID> MOBS = new ArrayList<>();
     private static ServerBossEvent bar;
@@ -127,6 +129,7 @@ public final class Tower {
         floor = 1;
         ACTIVE.clear();
         NAMES.clear();
+        DMG.clear();
         BEST_FLOOR.clear();
         MOBS.clear();
         CompoundTag st = state(lv.getServer());
@@ -426,6 +429,7 @@ public final class Tower {
             server.getPlayerList().broadcastSystemMessage(Component.literal("🗼 하늘의 탑 도전 끝: " + team + "층 (" + names + ")")
                     .withStyle(ChatFormatting.AQUA), false);
         }
+        server.getPlayerList().broadcastSystemMessage(DamageBoard.of("하늘의 탑 피해 순위 (" + team + "층까지)", DMG, NAMES), false);
         // 최근 기록 5개
         ListTag runs = st.getListOrEmpty("runs");
         CompoundTag run = new CompoundTag();
@@ -447,6 +451,15 @@ public final class Tower {
             for (int cz = (CENTER.getZ() - R - 2) >> 4; cz <= (CENTER.getZ() + R + 2) >> 4; cz++) lv.setChunkForced(cx, cz, false);
         }
         running = false;
+    }
+
+    /** 탑 투기장 안 몬스터에게 준 피해 기록 (화살 등 원거리 포함) */
+    @SubscribeEvent
+    public static void onDamageDealt(net.neoforged.neoforge.event.entity.living.LivingDamageEvent.Post event) {
+        if (!running || event.getEntity() instanceof Player) return;
+        if (event.getSource().getEntity() instanceof ServerPlayer p && ACTIVE.contains(p.getUUID()) && inArena(p)) {
+            DMG.merge(p.getUUID(), event.getHealthDamage(), Float::sum);
+        }
     }
 
     /** 탑에서 쓰러지면 죽지 않고 탈락 (아이템 유지) */
