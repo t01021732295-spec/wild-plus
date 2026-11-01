@@ -819,6 +819,15 @@ jobs:
             xdotool key Escape; sleep 1
             cmd "/sethome"
             cmd "/party list"
+            # ── 18차: 광물 사과 · 활 · 화살 ──
+            cmd "/clear @s"
+            i=0; for t in copper_apple iron_apple diamond_apple ruby_apple star_ruby_apple mythril_bow ruby_bow star_ruby_bow explosive_arrow; do cmd "/item replace entity @s hotbar.$i with wildplus:$t"; i=$((i+1)); done
+            i=9; for t in redstone_apple lapis_apple emerald_apple jade_apple mythril_apple netherite_apple homing_arrow lightning_arrow frost_arrow; do cmd "/item replace entity @s inventory.$((i-9)) with wildplus:$t"; i=$((i+1)); done
+            sleep 1
+            xdotool key e || true
+            sleep 3
+            import -window root shot-apples-bows.png || true
+            xdotool key Escape; sleep 1
             # 랜덤 이벤트 · 새 효과
             cmd "/gamemode creative"
             cmd "/tp @s 478 121 30 0 10"

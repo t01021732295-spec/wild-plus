@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "MMM",
+    "MAM",
+    "MMM"
+  ],
+  "key": {
+    "M": "wildplus:mythril_ingot",
+    "A": "minecraft:apple"
+  },
+  "result": {
+    "id": "wildplus:mythril_apple",
+    "count": 1
+  }
+}

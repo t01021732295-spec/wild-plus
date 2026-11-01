@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RRR",
+    "RAR",
+    "RSR"
+  ],
+  "key": {
+    "R": "wildplus:ruby_block",
+    "A": "wildplus:ruby_apple",
+    "S": "minecraft:nether_star"
+  },
+  "result": {
+    "id": "wildplus:star_ruby_apple",
+    "count": 1
+  }
+}

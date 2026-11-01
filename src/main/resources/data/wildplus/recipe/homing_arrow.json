@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:arrow",
+    "minecraft:arrow",
+    "minecraft:arrow",
+    "minecraft:arrow",
+    "minecraft:ender_eye"
+  ],
+  "result": {
+    "id": "wildplus:homing_arrow",
+    "count": 4
+  }
+}

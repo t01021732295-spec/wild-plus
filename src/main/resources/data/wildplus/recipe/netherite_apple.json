@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GNG",
+    "NAN",
+    "GNG"
+  ],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "N": "minecraft:netherite_ingot",
+    "A": "minecraft:apple"
+  },
+  "result": {
+    "id": "wildplus:netherite_apple",
+    "count": 1
+  }
+}

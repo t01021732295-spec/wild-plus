@@ -1,6 +1,9 @@
 {
   "replace": false,
   "values": [
-    "wildplus:jade_fishing_rod"
+    "wildplus:jade_fishing_rod",
+    "wildplus:mythril_bow",
+    "wildplus:ruby_bow",
+    "wildplus:star_ruby_bow"
   ]
 }

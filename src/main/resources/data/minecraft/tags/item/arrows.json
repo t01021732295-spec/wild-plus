@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "wildplus:explosive_arrow",
+    "wildplus:homing_arrow",
+    "wildplus:lightning_arrow",
+    "wildplus:frost_arrow"
+  ]
+}

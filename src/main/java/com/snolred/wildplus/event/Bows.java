@@ -1,0 +1,159 @@
+package com.snolred.wildplus.event;
+
+import com.snolred.wildplus.item.WildBowItem;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.entity.LightningBolt;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
+import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import net.neoforged.neoforge.event.entity.player.ArrowLooseEvent;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
+
+/**
+ * 활 · 화살.
+ * 활: 미스릴(당김 1.5배 · 피해 1.2배) · 루비(불화살 · 피해 1.35배, 불에 안 탐) ·
+ *     스타 루비(당김 2배 · 피해 1.6배 · 화살 3발 · 맞으면 고정 피해 3 · 내구도 무한)
+ * 화살: 폭발(맞은 곳 폭발, 블록은 안 부숨) · 유도(가까운 몬스터를 따라감) · 번개(맞은 곳에 번개) · 서리(구속 III · 얼림)
+ */
+public final class Bows {
+    public static final String BOW_TAG = "wildplus_bow", ARROW_TAG = "wildplus_arrow", EXTRA = "wildplus_extra_arrow";
+    private static final List<UUID> HOMING = new ArrayList<>();
+    private static final List<ServerLevel> HOMING_LEVEL = new ArrayList<>();
+
+    private Bows() {}
+
+    @SubscribeEvent
+    public static void onLoose(ArrowLooseEvent event) {
+        if (event.getBow().getItem() instanceof WildBowItem bow && bow.drawSpeed != 1.0F) {
+            event.setCharge(Math.round(event.getCharge() * bow.drawSpeed));
+        }
+    }
+
+    @SubscribeEvent
+    public static void onJoin(EntityJoinLevelEvent event) {
+        if (!(event.getLevel() instanceof ServerLevel level) || !(event.getEntity() instanceof AbstractArrow arrow)) return;
+        var data = arrow.getPersistentData();
+        String bow = data.getStringOr(BOW_TAG, "");
+        if (bow.equals("ruby") || bow.equals("star_ruby")) arrow.igniteForSeconds(100);
+        if (data.getStringOr(ARROW_TAG, "").equals("homing") && !HOMING.contains(arrow.getUUID())) {
+            HOMING.add(arrow.getUUID());
+            HOMING_LEVEL.add(level);
+        }
+        // 스타 루비 활: 양옆으로 화살 2발 더 (주울 수 없음)
+        if (bow.equals("star_ruby") && !data.getBooleanOr(EXTRA, false) && arrow.getOwner() instanceof LivingEntity owner) {
+            Vec3 v = arrow.getDeltaMovement();
+            for (int side : new int[]{-1, 1}) {
+                AbstractArrow extra = EntityTypes.ARROW.create(level, EntitySpawnReason.TRIGGERED);
+                if (extra == null) continue;
+                double ang = Math.toRadians(8 * side), cos = Math.cos(ang), sin = Math.sin(ang);
+                extra.setOwner(owner);
+                extra.snapTo(arrow.getX(), arrow.getY(), arrow.getZ(), arrow.getYRot(), arrow.getXRot());
+                extra.setDeltaMovement(v.x * cos - v.z * sin, v.y, v.x * sin + v.z * cos);
+                extra.setBaseDamage(2.0 * 1.6);
+                extra.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+                extra.setCritArrow(arrow.isCritArrow());
+                extra.getPersistentData().putString(BOW_TAG, "star_ruby");
+                extra.getPersistentData().putBoolean(EXTRA, true);
+                level.addFreshEntity(extra);
+            }
+        }
+    }
+
+    /** 유도 화살: 16칸 안의 가장 가까운 몬스터 쪽으로 방향을 조금씩 튼다 */
+    @SubscribeEvent
+    public static void onTick(ServerTickEvent.Post event) {
+        for (int i = HOMING.size() - 1; i >= 0; i--) {
+            ServerLevel level = HOMING_LEVEL.get(i);
+            Entity e = level.getEntity(HOMING.get(i));
+            if (!(e instanceof AbstractArrow a) || a.isRemoved() || a.tickCount > 200 || a.getDeltaMovement().lengthSqr() < 0.04) {
+                HOMING.remove(i);
+                HOMING_LEVEL.remove(i);
+                continue;
+            }
+            if (a.tickCount < 3) continue;
+            LivingEntity best = null;
+            double bd = 16 * 16;
+            for (LivingEntity t : level.getEntitiesOfClass(LivingEntity.class, a.getBoundingBox().inflate(16))) {
+                if (!(t instanceof Enemy) || !t.isAlive() || t == a.getOwner()) continue;
+                double d = t.distanceToSqr(a);
+                if (d < bd) {
+                    bd = d;
+                    best = t;
+                }
+            }
+            if (best == null) continue;
+            Vec3 v = a.getDeltaMovement();
+            Vec3 to = best.position().add(0, best.getBbHeight() * 0.6, 0).subtract(a.position()).normalize().scale(v.length());
+            a.setDeltaMovement(v.scale(0.75).add(to.scale(0.25)));
+            if (a.tickCount % 2 == 0) level.sendParticles(ParticleTypes.WITCH, a.getX(), a.getY(), a.getZ(), 1, 0, 0, 0, 0);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onImpact(ProjectileImpactEvent event) {
+        if (!(event.getProjectile() instanceof AbstractArrow a) || !(a.level() instanceof ServerLevel level)) return;
+        String kind = a.getPersistentData().getStringOr(ARROW_TAG, "");
+        if (kind.isEmpty() || a.getPersistentData().getBooleanOr("wildplus_used", false)) return;
+        Vec3 at = event.getRayTraceResult().getLocation();
+        switch (kind) {
+            case "explosive" -> {
+                a.getPersistentData().putBoolean("wildplus_used", true);
+                level.explode(a, at.x, at.y, at.z, 2.2F, Level.ExplosionInteraction.NONE);
+                a.discard();
+                event.setCanceled(true);
+            }
+            case "lightning" -> {
+                a.getPersistentData().putBoolean("wildplus_used", true);
+                LightningBolt bolt = EntityTypes.LIGHTNING_BOLT.create(level, EntitySpawnReason.TRIGGERED);
+                if (bolt != null) {
+                    bolt.snapTo(at.x, at.y, at.z, 0F, 0F);
+                    level.addFreshEntity(bolt);
+                }
+            }
+            case "frost" -> {
+                a.getPersistentData().putBoolean("wildplus_used", true);
+                if (event.getRayTraceResult() instanceof EntityHitResult eh && eh.getEntity() instanceof LivingEntity t) {
+                    t.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 100, 2));
+                    t.setTicksFrozen(t.getTicksRequiredToFreeze() + 100);
+                }
+                level.sendParticles(ParticleTypes.SNOWFLAKE, at.x, at.y, at.z, 30, 0.5, 0.5, 0.5, 0.05);
+                level.playSound(null, a.blockPosition(), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 0.6F, 1.6F);
+            }
+            default -> {}
+        }
+    }
+
+    /** 스타 루비 활 화살: 맞으면 방어 무시 고정 피해 3 */
+    @SubscribeEvent
+    public static void onHit(LivingDamageEvent.Post event) {
+        if (!(event.getSource().getDirectEntity() instanceof AbstractArrow a) || !"star_ruby".equals(a.getPersistentData().getStringOr(BOW_TAG, ""))) return;
+        LivingEntity t = event.getEntity();
+        if (!t.isAlive() || !(t.level() instanceof ServerLevel level)) return;
+        float left = t.getHealth() - 3.0F;
+        if (left > 0) {
+            t.setHealth(left);
+        } else {
+            t.setHealth(0.0F);
+            t.die(event.getSource());
+        }
+        level.sendParticles(ParticleTypes.CRIT, t.getX(), t.getY() + t.getBbHeight() * 0.7, t.getZ(), 5, 0.2, 0.2, 0.2, 0.2);
+    }
+}

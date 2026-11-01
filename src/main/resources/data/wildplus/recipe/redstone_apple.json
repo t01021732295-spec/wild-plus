@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "MMM",
+    "MAM",
+    "MMM"
+  ],
+  "key": {
+    "M": "minecraft:redstone",
+    "A": "minecraft:apple"
+  },
+  "result": {
+    "id": "wildplus:redstone_apple",
+    "count": 1
+  }
+}

@@ -87,7 +87,7 @@ public final class ModItems9 {
                 ModItems7.RUBY_AXE.get(), STAR_RUBY_AXE.get(), ModItems7.RUBY_SHOVEL.get(), STAR_RUBY_SHOVEL.get(),
                 ModItems7.RUBY_HOE.get(), STAR_RUBY_HOE.get(), ModItems7.RUBY_HELMET.get(), STAR_RUBY_HELMET.get(),
                 ModItems7.RUBY_CHESTPLATE.get(), STAR_RUBY_CHESTPLATE.get(), ModItems7.RUBY_LEGGINGS.get(), STAR_RUBY_LEGGINGS.get(),
-                ModItems7.RUBY_BOOTS.get(), STAR_RUBY_BOOTS.get());
+                ModItems7.RUBY_BOOTS.get(), STAR_RUBY_BOOTS.get(), ModItems10.RUBY_BOW.get(), ModItems10.STAR_RUBY_BOW.get());
     }
 
     public static void init() {}

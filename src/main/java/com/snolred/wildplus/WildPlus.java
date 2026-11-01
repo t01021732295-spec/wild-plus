@@ -39,6 +39,7 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModItems7.init();
         com.snolred.wildplus.registry.ModItems8.init();
         com.snolred.wildplus.registry.ModItems9.init();
+        com.snolred.wildplus.registry.ModItems10.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
@@ -75,6 +76,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Tower.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Social.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Mail.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.Bows.class);
 
         modContainer.registerConfig(ModConfig.Type.SYNCED, WildConfig.SPEC);
     }
