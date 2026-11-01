@@ -557,6 +557,10 @@ public final class Tower {
         bar = null;
     }
 
+    public static boolean isIn(UUID id) {
+        return running && ACTIVE.contains(id);
+    }
+
     public static String status() {
         return running ? String.format("진행 중: %d층 · %s · %d명", floor, String.join(", ", activeNames()), ACTIVE.size()) : "";
     }

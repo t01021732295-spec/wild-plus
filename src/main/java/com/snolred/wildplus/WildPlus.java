@@ -78,6 +78,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.EmeraldGear.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.BossSkills.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Land.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Arena.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.WealthTax.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.net.BankSync.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.Luxury.class);

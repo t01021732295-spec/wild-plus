@@ -11,6 +11,8 @@ TIP = {
     "hoe": ("풍작: 다 자란 작물 30% 확률로 수확량 두 배", "내구도 무한 · 풍작 50%"),
 }
 LANG_KO = {
+    "block.wildplus.arena_desk": "투기장 접수처",
+    "tooltip.wildplus.arena_desk": "투기장 경기 만들기 · 참가 · 관전 · 랭킹 · 메달 상점\n/arena 로도 열 수 있음",
     "item.wildplus.life_crystal": "생명의 결정",
     "tooltip.wildplus.life_crystal": "불사의 토템 + 바다의 심장 + 에메랄드 블록 2 → 2개\n강화대에서 에메랄드 장비를 로열 에메랄드로 승급",
     "equipment.wildplus.emerald": "에메랄드",
@@ -22,7 +24,7 @@ LANG_KO = {
     "item.wildplus.royal_emerald_apple": "로열 에메랄드 사과",
     "tooltip.wildplus.royal_emerald_apple": "재생 II (1분) · 흡수 IV (3분)\n행운 II · 마을의 영웅 III · 체력 증가 II (5분)",
 }
-LANG_EN = {"item.wildplus.life_crystal": "Life Crystal", "item.wildplus.emerald_bow": "Emerald Bow",
+LANG_EN = {"block.wildplus.arena_desk": "Arena Desk", "item.wildplus.life_crystal": "Life Crystal", "item.wildplus.emerald_bow": "Emerald Bow",
            "item.wildplus.royal_emerald_bow": "Royal Emerald Bow", "item.wildplus.royal_emerald_apple": "Royal Emerald Apple",
            "equipment.wildplus.emerald": "Emerald", "equipment.wildplus.royal_emerald": "Royal Emerald"}
 for t in TOOLS + ARMOR:
@@ -40,6 +42,10 @@ for a in ARMOR:
 
 
 def assets():
+    write(ASSETS / "models/block/arena_desk.json", {"parent": "minecraft:block/cube_bottom_top", "textures": {
+        "side": i("block/arena_desk_side"), "top": "minecraft:block/polished_blackstone_bricks", "bottom": "minecraft:block/polished_blackstone_bricks"}})
+    write(ASSETS / "blockstates/arena_desk.json", {"variants": {"": {"model": i("block/arena_desk")}}})
+    write(ASSETS / "items/arena_desk.json", {"model": {"type": "minecraft:model", "model": i("block/arena_desk")}})
     simple("life_crystal")
     simple("royal_emerald_apple")
     for p in ["emerald", "royal_emerald"]:
@@ -65,6 +71,8 @@ def data():
         "emerald_leggings": shaped(["XXX", "X X", "X X"], {"X": E}, i("emerald_leggings")),
         "emerald_boots": shaped(["X X", "X X"], {"X": E}, i("emerald_boots")),
         "emerald_bow": shaped([" MS", "M S", " MS"], {"M": E, "S": "minecraft:string"}, i("emerald_bow")),
+        "arena_desk": shaped(["SIS", "BGB", "BBB"], {"S": "minecraft:iron_sword", "I": "minecraft:iron_ingot", "G": "minecraft:gold_block",
+                                                     "B": "minecraft:polished_blackstone_bricks"}, i("arena_desk"), category="misc"),
         "life_crystal": shapeless(["minecraft:totem_of_undying", "minecraft:heart_of_the_sea", "minecraft:emerald_block",
                                    "minecraft:emerald_block"], i("life_crystal"), 2),
         "royal_emerald_apple": shaped(["BBB", "BAB", "BCB"], {"B": "minecraft:emerald_block", "A": i("emerald_apple"), "C": i("life_crystal")},
@@ -73,6 +81,9 @@ def data():
     for name, obj in rec.items():
         write(DATA / "recipe" / f"{name}.json", obj)
     write(DATA / "tags/item/emerald_repair.json", {"values": [E]})
+    from data_v2 import self_loot
+    write(DATA / "loot_table/blocks/arena_desk.json", self_loot("arena_desk"))
+    merge_tag(MC / "tags/block/mineable/pickaxe.json", [i("arena_desk")])
     t = MC / "tags"
     for p in ["emerald", "royal_emerald"]:
         for t_ in TOOLS:

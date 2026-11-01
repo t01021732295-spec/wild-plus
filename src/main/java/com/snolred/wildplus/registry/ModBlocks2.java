@@ -72,6 +72,11 @@ public final class ModBlocks2 {
             p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.content.Land::open),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).strength(2.5F, 1200.0F));
 
+    // ───────── 2.12: 투기장 접수처 ─────────
+    public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> ARENA_DESK = BLOCKS.registerBlock("arena_desk",
+            p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.content.Arena::open),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_BLACKSTONE_BRICKS).strength(3.0F, 1200.0F).lightLevel(s -> 6));
+
     // ───────── 2.8 ─────────
     public static final DeferredBlock<com.snolred.wildplus.block.TrashCanBlock> TRASH_CAN = BLOCKS.registerBlock("trash_can",
             com.snolred.wildplus.block.TrashCanBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().strength(2.0F));

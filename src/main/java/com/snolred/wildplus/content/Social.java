@@ -190,7 +190,8 @@ public final class Social {
     @SubscribeEvent
     public static void onIncoming(LivingIncomingDamageEvent event) {
         if (event.getEntity() instanceof ServerPlayer target && event.getSource().getEntity() instanceof ServerPlayer attacker
-                && target != attacker && sameParty(target.level().getServer(), target.getUUID(), attacker.getUUID())) {
+                && target != attacker && sameParty(target.level().getServer(), target.getUUID(), attacker.getUUID())
+                && !Arena.opponents(target.getUUID(), attacker.getUUID())) {
             event.setCanceled(true);
         }
     }

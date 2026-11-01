@@ -1,2 +1,11 @@
-net/neoforged/neoforge/event/level/block/[A-Za-z$]+\.class$
-net/neoforged/neoforge/event/level/ExplosionEvent.*\.class$
+client/renderer/entity/(player/)?(Avatar|Player)Renderer\.class$
+client/renderer/entity/state/(Avatar|Player|Humanoid|LivingEntity|Entity)RenderState\.class$
+neoforge/client/event/EntityRenderersEvent\$(AddLayers|RegisterLayerDefinitions)\.class$
+neoforge/client/event/RegisterRenderStateModifiersEvent\.class$
+neoforge/client/renderstate/.*\.class$
+client/renderer/entity/layers/(RenderLayer|WingsLayer)\.class$
+client/model/(HumanoidModel|Model|EntityModel)\.class$
+client/model/geom/builders/(LayerDefinition|CubeListBuilder|PartDefinition|MeshDefinition|CubeDeformation)\.class$
+client/model/object/.*Elytra.*\.class$
+client/model/.*ElytraModel\.class$
+world/item/component/.*Equippable\.class$

@@ -127,6 +127,8 @@ public final class ModItems12 {
         return m;
     }
 
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> ARENA_DESK = ITEMS.registerSimpleBlockItem("arena_desk", ModBlocks2.ARENA_DESK);
+
     public static void init() {}
 
     private ModItems12() {}

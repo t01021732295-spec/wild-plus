@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SIS",
+    "BGB",
+    "BBB"
+  ],
+  "key": {
+    "S": "minecraft:iron_sword",
+    "I": "minecraft:iron_ingot",
+    "G": "minecraft:gold_block",
+    "B": "minecraft:polished_blackstone_bricks"
+  },
+  "result": {
+    "id": "wildplus:arena_desk",
+    "count": 1
+  }
+}

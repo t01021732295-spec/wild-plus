@@ -34,9 +34,25 @@ public final class Luxury {
     private record Good(String name, String sub, long price, Consumer<ServerPlayer> give) {}
 
     public static final String[] AURA = {"불꽃", "눈꽃", "하트", "별빛"};
-    public static final String[] TITLE = {"부자", "재벌", "황제"};
-    private static final long[] TITLE_PRICE = {1_000_000, 5_000_000, 20_000_000};
-    private static final ChatFormatting[] TITLE_COLOR = {ChatFormatting.GREEN, ChatFormatting.AQUA, ChatFormatting.GOLD};
+    /** 앞 3개는 명품관에서 돈으로, 뒤 2개는 투기장 메달 상점에서 */
+    public static final String[] TITLE = {"부자", "재벌", "황제", "검투사", "챔피언"};
+    public static final int SHOP_TITLES = 3;
+    private static final long[] TITLE_PRICE = {1_000_000, 5_000_000, 20_000_000, 0, 0};
+    private static final ChatFormatting[] TITLE_COLOR = {ChatFormatting.GREEN, ChatFormatting.AQUA, ChatFormatting.GOLD,
+            ChatFormatting.RED, ChatFormatting.LIGHT_PURPLE};
+
+    /** 칭호 i(0부터)를 얻고 바로 단다 */
+    public static void grantTitle(ServerPlayer p, int i) {
+        CompoundTag dd = data(p.level().getServer(), p);
+        dd.putInt("titles", dd.getIntOr("titles", 0) | (1 << i));
+        dd.putInt("title", i + 1);
+        ContentData.get(p.level().getServer()).dirty();
+        applyTitle(p);
+    }
+
+    public static boolean hasTitle(ServerPlayer p, int i) {
+        return (data(p.level().getServer(), p).getIntOr("titles", 0) & (1 << i)) != 0;
+    }
     private static final long AURA_PRICE = 500_000, AURA_TICKS = 24000L * 7;
 
     private static CompoundTag data(MinecraftServer s, ServerPlayer p) {
@@ -72,13 +88,9 @@ public final class Luxury {
         for (int i = 0; i < TITLE.length; i++) {
             int k = i;
             boolean have = (owned & (1 << i)) != 0;
-            g.add(new Good("👑 칭호 [" + TITLE[i] + "]" + (have ? " (보유 · 누르면 달기)" : ""), "이름 앞에 영구 표시", have ? 0 : TITLE_PRICE[i], pl -> {
-                CompoundTag dd = data(pl.level().getServer(), pl);
-                dd.putInt("titles", dd.getIntOr("titles", 0) | (1 << k));
-                dd.putInt("title", k + 1);
-                ContentData.get(pl.level().getServer()).dirty();
-                applyTitle(pl);
-            }));
+            if (i >= SHOP_TITLES && !have) continue; // 투기장 칭호는 가진 경우에만 달기 메뉴로
+            g.add(new Good("👑 칭호 [" + TITLE[i] + "]" + (have ? " (보유 · 누르면 달기)" : ""), "이름 앞에 영구 표시", have ? 0 : TITLE_PRICE[i],
+                    pl -> grantTitle(pl, k)));
         }
         g.add(new Good("칭호 떼기", "", 0, pl -> {
             data(pl.level().getServer(), pl).putInt("title", 0);

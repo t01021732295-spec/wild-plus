@@ -192,6 +192,29 @@ def realty_side():
     return im
 
 
+def arena_side():
+    im = _img()
+    px = im.load()
+    r = random.Random(41)
+    for y in range(16):
+        for x in range(16):
+            n = r.randint(-5, 5)
+            px[x, y] = (44 + n, 40 + n, 48 + n, 255)
+            if y % 5 == 4 or (x + (3 if (y // 5) % 2 else 0)) % 8 == 7:
+                px[x, y] = (28, 26, 32, 255)
+    # 교차한 검 두 자루 (은빛 날 + 금 손잡이) + 붉은 방패
+    for t in range(3, 13):
+        px[t, t] = (210, 216, 226, 255)
+        px[15 - t, t] = (210, 216, 226, 255)
+    for (x, y) in [(3, 13), (12, 13), (2, 12), (13, 12), (4, 12), (11, 12)]:
+        px[x, y] = (232, 182, 64, 255)
+    for y in range(6, 11):
+        for x in range(6, 10):
+            px[x, y] = (190, 40, 40, 255)
+    px[7, 8] = px[8, 8] = (240, 200, 80, 255)
+    return im
+
+
 def build():
     b = OUT / "block"
     trash_side().save(b / "trash_can_side.png")
@@ -204,6 +227,7 @@ def build():
     luxury_top().save(b / "luxury_shop_top.png")
     realty_side().save(b / "realty_side.png")
     frame(plank(32)).save(b / "realty_top.png")
+    arena_side().save(b / "arena_desk_side.png")
     return 6
 
 
