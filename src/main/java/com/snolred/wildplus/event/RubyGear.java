@@ -150,10 +150,14 @@ public final class RubyGear {
         if (p.isShiftKeyDown() && is(p.getMainHandItem(), ModItems7.RUBY_PICKAXE, com.snolred.wildplus.registry.ModItems9.STAR_RUBY_PICKAXE) && p instanceof ServerPlayer sp) {
             BlockPos c = p.blockPosition();
             int shown = 0;
-            for (BlockPos pos : BlockPos.betweenClosed(c.offset(-8, -8, -8), c.offset(8, 8, 8))) {
+            // 스타 루비 곡괭이: 16칸 · 48개까지
+            boolean starPick = p.getMainHandItem().is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_PICKAXE.get());
+            int r = starPick ? 16 : 8, max = starPick ? 48 : 24;
+            for (BlockPos pos : BlockPos.betweenClosed(c.offset(-r, -r, -r), c.offset(r, r, r))) {
                 if (!level.getBlockState(pos).is(Tags.Blocks.ORES)) continue;
-                level.sendParticles(sp, ParticleTypes.FLAME, true, true, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 6, 0.3, 0.3, 0.3, 0.0);
-                if (++shown >= 24) break;
+                level.sendParticles(sp, starPick ? ParticleTypes.SOUL_FIRE_FLAME : ParticleTypes.FLAME, true, true,
+                        pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 6, 0.3, 0.3, 0.3, 0.0);
+                if (++shown >= max) break;
             }
             if (shown > 0) level.playSound(null, p.blockPosition(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.5F, 1.4F);
         }
@@ -165,10 +169,15 @@ public final class RubyGear {
         // 도끼: 불타는 적에게 1.5배
         if (event.getSource().getEntity() instanceof Player p && event.getSource().getDirectEntity() == p
                 && is(p.getMainHandItem(), ModItems7.RUBY_AXE, com.snolred.wildplus.registry.ModItems9.STAR_RUBY_AXE) && target.isOnFire()) {
-            event.setAmount(event.getAmount() * 1.5F);
+            event.setAmount(event.getAmount() * (p.getMainHandItem().is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_AXE.get()) ? 2.0F : 1.5F));
             if (target.level() instanceof ServerLevel level) {
                 level.sendParticles(ParticleTypes.LAVA, target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), 4, 0.2, 0.2, 0.2, 0.0);
             }
+        }
+        // 스타 루비 도끼: 때린 적에게 불 (처형과 바로 이어짐)
+        if (event.getSource().getEntity() instanceof Player p2 && event.getSource().getDirectEntity() == p2
+                && p2.getMainHandItem().is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_AXE.get())) {
+            target.igniteForSeconds(4.0F);
         }
         // 각인: 대지 = 낙하 피해 없음 · 서리 = 나를 때린 적 구속
         if (target instanceof Player p && hasEngraving(p, "TITAN") && event.getSource().is(net.minecraft.tags.DamageTypeTags.IS_FALL)) {
@@ -250,12 +259,63 @@ public final class RubyGear {
         }
     }
 
+    private static boolean areaBreaking;
+
+    /** 스타 루비 삽: 3×3 파기 / 스타 루비 괭이: 주변 3×3의 다 자란 작물도 함께 수확 (웅크리면 한 칸) */
+    @SubscribeEvent
+    public static void onBreakArea(net.neoforged.neoforge.event.level.block.BreakBlockEvent event) {
+        if (areaBreaking || !(event.getPlayer() instanceof ServerPlayer player) || !(event.getLevel() instanceof ServerLevel level)
+                || player.isShiftKeyDown()) return;
+        ItemStack tool = player.getMainHandItem();
+        BlockState state = event.getState();
+        BlockPos c = event.getPos();
+        boolean shovel = tool.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SHOVEL.get()) && state.is(net.minecraft.tags.BlockTags.MINEABLE_WITH_SHOVEL);
+        boolean hoe = tool.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_HOE.get()) && state.getBlock() instanceof CropBlock cb && cb.isMaxAge(state);
+        if (!shovel && !hoe) return;
+        net.minecraft.core.Direction.Axis axis = hoe || Math.abs(player.getXRot()) > 45 ? net.minecraft.core.Direction.Axis.Y : player.getDirection().getAxis();
+        areaBreaking = true;
+        try {
+            for (int a = -1; a <= 1; a++) {
+                for (int b = -1; b <= 1; b++) {
+                    if (a == 0 && b == 0) continue;
+                    BlockPos p = switch (axis) {
+                        case Y -> c.offset(a, 0, b);
+                        case X -> c.offset(0, a, b);
+                        default -> c.offset(a, b, 0);
+                    };
+                    BlockState s = level.getBlockState(p);
+                    boolean ok = shovel ? s.is(net.minecraft.tags.BlockTags.MINEABLE_WITH_SHOVEL) && s.getDestroySpeed(level, p) >= 0
+                            : s.getBlock() instanceof CropBlock cr && cr.isMaxAge(s);
+                    if (ok) player.gameMode.destroyBlock(p);
+                }
+            }
+        } finally {
+            areaBreaking = false;
+        }
+    }
+
     // ───────── 삽 · 괭이 ─────────
     @SubscribeEvent
     public static void onBlockDrops(BlockDropsEvent event) {
         ItemStack tool = event.getTool();
         if (tool.isEmpty() || !(event.getBreaker() instanceof Player)) return;
         BlockState state = event.getState();
+        // 스타 루비 곡괭이: 광석을 캐면 25% 확률로 전리품 두 배 (광석 블록 그대로 나올 땐 제외)
+        if (tool.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_PICKAXE.get()) && state.is(Tags.Blocks.ORES)
+                && event.getLevel().getRandom().nextFloat() < 0.25F) {
+            boolean selfDrop = false;
+            for (ItemEntity e : event.getDrops()) if (e.getItem().is(state.getBlock().asItem())) selfDrop = true;
+            if (!selfDrop) {
+                for (ItemEntity e : event.getDrops()) e.getItem().grow(e.getItem().getCount());
+                BlockPos pos = event.getPos();
+                event.getLevel().sendParticles(ParticleTypes.SOUL_FIRE_FLAME, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 10, 0.3, 0.3, 0.3, 0.02);
+            }
+        }
+        // 스타 루비 괭이: 다 자란 작물 50% 확률로 수확량 두 배
+        if (tool.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_HOE.get()) && state.getBlock() instanceof CropBlock c0 && c0.isMaxAge(state)
+                && event.getLevel().getRandom().nextBoolean()) {
+            for (ItemEntity e : event.getDrops()) if (!e.getItem().is(c0.asItem())) e.getItem().grow(e.getItem().getCount());
+        }
         if (is(tool, ModItems7.RUBY_SHOVEL, com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SHOVEL)) {
             boolean smelted = false;
             for (ItemEntity e : event.getDrops()) {
