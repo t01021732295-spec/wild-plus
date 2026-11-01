@@ -49,6 +49,10 @@ LANG_KO = {
     "entity.wildplus.abyss_boss": "심해 수호자",
     "entity.wildplus.void_boss": "공허의 기사",
     "entity.wildplus.gold_boss": "황금 왕",
+    "block.wildplus.luxury_shop": "명품관",
+    "tooltip.wildplus.luxury_shop": "큰돈으로 귀한 물건 · 행운 상자 · 오라 · 칭호 구매\n쓴 돈은 국고로 사라져 물가를 잡아요",
+    "block.wildplus.realty": "부동산 중개소",
+    "tooltip.wildplus.realty": "청크(16×16) 땅 사고팔기 · 출입·블록·사용 권한 설정 · 땅 친구 관리\n/land 명령어로도 열 수 있음",
     "item.wildplus.diamond_coin": "다이아화",
     "tooltip.wildplus.diamond_coin": "1,000동 · 제작대에서 금화 10개로 쪼갤 수 있음\n금화 10 → 다이아화는 환전소에서",
     "wildplus.coins.amount": "%s동 (다이아화 %s · 금화 %s · 은화 %s · 동화 %s)",
@@ -82,6 +86,8 @@ LANG_EN = {
     "entity.wildplus.abyss_boss": "Abyss Warden",
     "entity.wildplus.void_boss": "Void Knight",
     "entity.wildplus.gold_boss": "Golden King",
+    "block.wildplus.luxury_shop": "Luxury Shop",
+    "block.wildplus.realty": "Realty Office",
     "item.wildplus.diamond_coin": "Diamond Coin",
     "tooltip.wildplus.diamond_coin": "Worth 1,000 · can be crafted into 10 gold",
     "wildplus.coins.amount": "%s c (%s diamond · %s gold · %s silver · %s copper)",
@@ -147,6 +153,11 @@ def assets():
     simple("sapphire_apple")
     simple("repair_kit")
     simple("diamond_coin")
+    for b in ["luxury_shop", "realty"]:
+        write(ASSETS / f"models/block/{b}.json", {"parent": "minecraft:block/cube_bottom_top", "textures": {
+            "side": i(f"block/{b}_side"), "top": i(f"block/{b}_top"), "bottom": i(f"block/{b}_top")}})
+        write(ASSETS / f"blockstates/{b}.json", {"variants": {"": {"model": i(f"block/{b}")}}})
+        write(ASSETS / f"items/{b}.json", {"model": {"type": "minecraft:model", "model": i(f"block/{b}")}})
     simple("sky_sapphire_apple")
     for p in ["sapphire", "sky_sapphire"]:
         for t in TOOLS:
@@ -166,6 +177,8 @@ def data():
     for b in ["sapphire_ore", "deepslate_sapphire_ore"]:
         write(DATA / f"loot_table/blocks/{b}.json", ore_loot(b, i("sapphire")))
     write(DATA / "loot_table/blocks/sapphire_block.json", self_loot("sapphire_block"))
+    for b in ["luxury_shop", "realty"]:
+        write(DATA / f"loot_table/blocks/{b}.json", self_loot(b))
     S, ST = i("sapphire"), "minecraft:stick"
     rec = {
         "sapphire_block": shaped(["###", "###", "###"], {"#": S}, i("sapphire_block"), category="building"),
@@ -183,6 +196,10 @@ def data():
         "sapphire_boots": shaped(["X X", "X X"], {"X": S}, i("sapphire_boots")),
         "sapphire_bow": shaped([" MS", "M S", " MS"], {"M": S, "S": "minecraft:string"}, i("sapphire_bow")),
         "gold_coin_from_diamond": shapeless([i("diamond_coin")], i("gold_coin"), 10),
+        "luxury_shop": shaped(["GDG", "DED", "GDG"], {"G": "minecraft:gold_ingot", "D": "minecraft:diamond", "E": "minecraft:emerald_block"},
+                              i("luxury_shop"), category="misc"),
+        "realty": shaped(["PSP", "PBP", "PPP"], {"P": "#minecraft:planks", "S": "minecraft:oak_sign", "B": "minecraft:writable_book"},
+                         i("realty"), category="misc"),
         "repair_kit": shaped([" D ", "ILI", "III"], {"D": "minecraft:diamond", "I": "minecraft:iron_ingot", "L": "minecraft:leather"},
                              i("repair_kit"), category="misc"),
         "sapphire_apple": shaped(["MMM", "MAM", "MMM"], {"M": S, "A": "minecraft:apple"}, i("sapphire_apple"), category="misc"),
@@ -195,7 +212,8 @@ def data():
     write(DATA / "tags/item/sapphire_repair.json", {"values": [S]})
     t = MC / "tags"
     blocks = [i(b) for b in ["sapphire_ore", "deepslate_sapphire_ore", "sapphire_block"]]
-    merge_tag(t / "block/mineable/pickaxe.json", blocks)
+    merge_tag(t / "block/mineable/pickaxe.json", blocks + [i("luxury_shop")])
+    merge_tag(t / "block/mineable/axe.json", [i("realty")])
     merge_tag(t / "block/needs_iron_tool.json", blocks)
     merge_tag(t / "block/beacon_base_blocks.json", [i("sapphire_block")])
     merge_tag(t / "item/beacon_payment_items.json", [S])

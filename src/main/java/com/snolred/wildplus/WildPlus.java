@@ -74,6 +74,9 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.RubyGear.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.SapphireGear.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.BossSkills.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Land.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.WealthTax.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.Luxury.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.ContentEvents.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Raid.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Tower.class);

@@ -106,6 +106,9 @@ public final class ModItems11 {
     public static final DeferredItem<com.snolred.wildplus.item.WildBowItem> SKY_SAPPHIRE_BOW = ITEMS.registerItem("sky_sapphire_bow",
             p -> new com.snolred.wildplus.item.WildBowItem(sky(p.durability(4000).enchantable(1)), "sky_sapphire", 1.75F, 1.5F));
 
+    public static final DeferredItem<BlockItem> LUXURY_SHOP = ITEMS.registerSimpleBlockItem("luxury_shop", ModBlocks2.LUXURY_SHOP);
+    public static final DeferredItem<BlockItem> REALTY = ITEMS.registerSimpleBlockItem("realty", ModBlocks2.REALTY);
+
     /** 휴대용 수리 키트 (10회) */
     public static final DeferredItem<com.snolred.wildplus.item.RepairKitItem> REPAIR_KIT = ITEMS.registerItem("repair_kit",
             p -> new com.snolred.wildplus.item.RepairKitItem(p.durability(10).rarity(Rarity.UNCOMMON)));

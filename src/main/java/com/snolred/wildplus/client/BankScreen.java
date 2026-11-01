@@ -27,10 +27,12 @@ public class BankScreen extends AbstractContainerScreen<BankMenu> {
         btn("전부 입금", BankMenu.DEP_ALL, x, y + 78, 66, UiButton.GREEN);
         btn("+10", BankMenu.DEP_10, x + 70, y + 78, 40, UiButton.WHITE);
         btn("+100", BankMenu.DEP_100, x + 114, y + 78, 40, UiButton.WHITE);
-        btn("10", BankMenu.WD_10, x, y + 111, 40, UiButton.WHITE);
-        btn("100", BankMenu.WD_100, x + 44, y + 111, 40, UiButton.WHITE);
-        btn("1,000", BankMenu.WD_1000, x + 88, y + 111, 44, UiButton.WHITE);
-        btn("전부 출금", BankMenu.WD_ALL, x + 136, y + 111, 64, UiButton.ORANGE);
+        btn("10", BankMenu.WD_10, x, y + 111, 24, UiButton.WHITE);
+        btn("100", BankMenu.WD_100, x + 28, y + 111, 28, UiButton.WHITE);
+        btn("1천", BankMenu.WD_1000, x + 60, y + 111, 28, UiButton.WHITE);
+        btn("1만", BankMenu.WD_10K, x + 92, y + 111, 28, UiButton.WHITE);
+        btn("10만", BankMenu.WD_100K, x + 124, y + 111, 32, UiButton.WHITE);
+        btn("전부", BankMenu.WD_ALL, x + 160, y + 111, 40, UiButton.ORANGE);
         btn("◀", BankMenu.PREV, x, y + 144, 16, UiButton.WHITE);
         btn("▶", BankMenu.NEXT, x + 112, y + 144, 16, UiButton.WHITE);
         btn("+10", BankMenu.AMT_10, x, y + 164, 32, UiButton.WHITE);

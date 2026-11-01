@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GDG",
+    "DED",
+    "GDG"
+  ],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "D": "minecraft:diamond",
+    "E": "minecraft:emerald_block"
+  },
+  "result": {
+    "id": "wildplus:luxury_shop",
+    "count": 1
+  }
+}

@@ -898,6 +898,17 @@ jobs:
             import -window root shot-bosses.png || true
             xdotool key F1 || true
             cmd "/kill @e[type=!player,x=470,y=115,z=-32,dx=30,dy=12,dz=14]"
+            # ── 2.11: 명품관 · 부동산 ──
+            cmd "/setblock 476 120 -12 wildplus:luxury_shop"
+            cmd "/setblock 478 120 -12 wildplus:realty"
+            cmd "/tp @s 476.5 120 -9.8 180 35"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-luxury.png || true
+            xdotool key Escape; sleep 1
+            cmd "/land"
+            sleep 2
+            import -window root shot-land.png || true
+            xdotool key Escape; sleep 1
             # 랜덤 이벤트 · 새 효과
             cmd "/gamemode creative"
             cmd "/tp @s 478 121 30 0 10"

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PSP",
+    "PBP",
+    "PPP"
+  ],
+  "key": {
+    "P": "#minecraft:planks",
+    "S": "minecraft:oak_sign",
+    "B": "minecraft:writable_book"
+  },
+  "result": {
+    "id": "wildplus:realty",
+    "count": 1
+  }
+}

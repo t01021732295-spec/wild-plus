@@ -64,6 +64,14 @@ public final class ModBlocks2 {
     public static final DeferredBlock<Block> SAPPHIRE_BLOCK = BLOCKS.registerBlock("sapphire_block",
             Block::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_BLOCK));
 
+    // ───────── 2.11: 명품관 · 부동산 중개소 ─────────
+    public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> LUXURY_SHOP = BLOCKS.registerBlock("luxury_shop",
+            p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.economy.Luxury::open),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_BLOCK).strength(3.0F, 1200.0F).lightLevel(s -> 8));
+    public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> REALTY = BLOCKS.registerBlock("realty",
+            p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.content.Land::open),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).strength(2.5F, 1200.0F));
+
     // ───────── 2.8 ─────────
     public static final DeferredBlock<com.snolred.wildplus.block.TrashCanBlock> TRASH_CAN = BLOCKS.registerBlock("trash_can",
             com.snolred.wildplus.block.TrashCanBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().strength(2.0F));

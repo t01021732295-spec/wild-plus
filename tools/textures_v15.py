@@ -133,6 +133,65 @@ def crafter_bottom():
     return im
 
 
+def velvet(seed):
+    im = _img()
+    px = im.load()
+    r = random.Random(seed)
+    for y in range(16):
+        for x in range(16):
+            n = r.randint(-6, 6)
+            px[x, y] = (70 + n, 18 + n // 2, 90 + n, 255)
+    for i in range(16):
+        for (x, y) in [(i, 0), (i, 15), (0, i), (15, i)]:
+            px[x, y] = (232, 182, 64, 255)
+        for (x, y) in [(i, 1), (1, i), (i, 14), (14, i)]:
+            if 0 < i < 15:
+                px[x, y] = (150, 104, 30, 255)
+    return im
+
+
+def luxury_side():
+    im = velvet(21)
+    px = im.load()
+    # 다이아몬드 문양
+    for y in range(4, 12):
+        w = 4 - abs(y - 7.5) + 0.5
+        for x in range(16):
+            if abs(x - 7.5) <= w:
+                px[x, y] = (120, 240, 240, 255) if (x + y) % 3 else (230, 255, 255, 255)
+    for (x, y) in [(7, 4), (8, 4), (7, 11), (8, 11)]:
+        px[x, y] = (40, 160, 170, 255)
+    return im
+
+
+def luxury_top():
+    im = velvet(22)
+    px = im.load()
+    for x in range(4, 12):
+        px[x, 7] = (232, 182, 64, 255)
+        px[x, 8] = (232, 182, 64, 255)
+    for (x, y) in [(4, 5), (7, 4), (8, 4), (11, 5), (4, 6), (11, 6), (7, 5), (8, 5)]:
+        px[x, y] = (232, 182, 64, 255)
+    px[7, 6] = px[8, 6] = (220, 40, 60, 255)
+    return im
+
+
+def realty_side():
+    im = frame(plank(31))
+    px = im.load()
+    # 집 그림 (빨간 지붕 + 흰 벽 + 문)
+    for y in range(4, 8):
+        for x in range(8 - (y - 3), 8 + (y - 3)):
+            px[x, y] = (196, 52, 46, 255)
+    for y in range(8, 13):
+        for x in range(4, 12):
+            px[x, y] = (240, 232, 214, 255)
+    for y in range(10, 13):
+        px[7, y] = px[8, y] = (110, 70, 40, 255)
+    px[5, 9] = px[10, 9] = (110, 180, 230, 255)
+    return im
+
+
 def build():
     b = OUT / "block"
     trash_side().save(b / "trash_can_side.png")
@@ -141,6 +200,10 @@ def build():
     crafter_top().save(b / "auto_crafter_top.png")
     crafter_side().save(b / "auto_crafter_side.png")
     crafter_bottom().save(b / "auto_crafter_bottom.png")
+    luxury_side().save(b / "luxury_shop_side.png")
+    luxury_top().save(b / "luxury_shop_top.png")
+    realty_side().save(b / "realty_side.png")
+    frame(plank(32)).save(b / "realty_top.png")
     return 6
 
 

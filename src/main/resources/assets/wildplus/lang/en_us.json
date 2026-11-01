@@ -618,6 +618,8 @@
   "entity.wildplus.abyss_boss": "Abyss Warden",
   "entity.wildplus.void_boss": "Void Knight",
   "entity.wildplus.gold_boss": "Golden King",
+  "block.wildplus.luxury_shop": "Luxury Shop",
+  "block.wildplus.realty": "Realty Office",
   "item.wildplus.diamond_coin": "Diamond Coin",
   "tooltip.wildplus.diamond_coin": "Worth 1,000 · can be crafted into 10 gold",
   "item.wildplus.repair_kit": "Repair Kit",

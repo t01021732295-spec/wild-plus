@@ -28,7 +28,7 @@ import org.jspecify.annotations.Nullable;
  */
 public class BankMenu extends AbstractContainerMenu {
     public static final int DEP_ALL = 0, DEP_100 = 1, DEP_10 = 2;
-    public static final int WD_10 = 10, WD_100 = 11, WD_1000 = 12, WD_ALL = 13;
+    public static final int WD_10 = 10, WD_100 = 11, WD_1000 = 12, WD_ALL = 13, WD_10K = 14, WD_100K = 15;
     public static final int AMT_10 = 20, AMT_100 = 21, AMT_1000 = 22, AMT_RESET = 23, PREV = 24, NEXT = 25, SEND = 26;
     public static final int D_BAL = 0, D_CASH = 2, D_AMT = 4, D_TARGET = 6, D_INCOME = 7, D_TAX = 9, D_TREASURY = 11, DATA = 13;
 
@@ -131,9 +131,16 @@ public class BankMenu extends AbstractContainerMenu {
                     sp.sendOverlayMessage(Component.translatable("message.wildplus.bank.no_cash").withStyle(ChatFormatting.RED));
                 }
             }
-            case WD_10, WD_100, WD_1000, WD_ALL -> {
+            case WD_10, WD_100, WD_1000, WD_ALL, WD_10K, WD_100K -> {
                 long bal = wd.balance(me);
-                long want = id == WD_ALL ? bal : id == WD_10 ? 10 : id == WD_100 ? 100 : 1000;
+                long want = switch (id) {
+                    case WD_ALL -> bal;
+                    case WD_10 -> 10;
+                    case WD_100 -> 100;
+                    case WD_10K -> 10_000;
+                    case WD_100K -> 100_000;
+                    default -> 1000;
+                };
                 if (want > 0 && bal >= want) {
                     wd.addBalance(me, -want);
                     Coins.refund(sp, want);
