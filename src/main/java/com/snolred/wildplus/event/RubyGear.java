@@ -137,8 +137,14 @@ public final class RubyGear {
         if (player.getMainHandItem().is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SWORD.get()) && target.isAlive()) {
             bursting = true;
             try {
-                target.invulnerableTime = 0;
-                target.hurtServer(level, level.damageSources().indirectMagic(player, player), trueDamage(player.getMainHandItem()));
+                // 무적 시간 때문에 두 번째 피해가 무시되지 않도록 체력을 직접 깎는다
+                float left = target.getHealth() - trueDamage(player.getMainHandItem());
+                if (left > 0) {
+                    target.setHealth(left);
+                } else {
+                    target.setHealth(0.0F);
+                    target.die(level.damageSources().playerAttack(player));
+                }
                 level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY() + target.getBbHeight() * 0.7, target.getZ(), 6, 0.2, 0.2, 0.2, 0.2);
             } finally {
                 bursting = false;

@@ -63,7 +63,7 @@ public final class ShipPrices {
         put(m, ModItems.BLOODSTEEL_INGOT.get(), 1500);
         put(m, Items.RAW_IRON, 100); put(m, Items.RAW_GOLD, 250); put(m, Items.RAW_COPPER, 25);
         put(m, Items.RAW_IRON_BLOCK, 900); put(m, Items.RAW_GOLD_BLOCK, 2250); put(m, Items.RAW_COPPER_BLOCK, 225);
-        put(m, Items.COAL_BLOCK, 180); put(m, Items.IRON_BLOCK, 1125); put(m, Items.GOLD_BLOCK, 2700); put(m, Items.COPPER_BLOCK, 270);
+        put(m, Items.COAL_BLOCK, 180); put(m, Items.IRON_BLOCK, 1125); put(m, Items.GOLD_BLOCK, 2700);
         put(m, Items.REDSTONE_BLOCK, 180); put(m, Items.LAPIS_BLOCK, 450); put(m, Items.DIAMOND_BLOCK, 27000); put(m, Items.EMERALD_BLOCK, 9000);
         put(m, Items.QUARTZ_BLOCK, 160); put(m, Items.AMETHYST_BLOCK, 160);
         put(m, Items.NETHERITE_SCRAP, 4000); put(m, Items.NETHERITE_INGOT, 18000); put(m, Items.NETHERITE_BLOCK, 162000);
