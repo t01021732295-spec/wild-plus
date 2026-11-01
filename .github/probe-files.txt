@@ -1,0 +1,3 @@
+assets/minecraft/items/bow.json
+assets/minecraft/models/item/bow.json
+assets/minecraft/models/item/bow_pulling_0.json
