@@ -69,7 +69,7 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
                 }
                 b.setMessage(Component.literal(String.format("%,d동", star ? EnhanceMenu.STAR_COST : engrave ? EnhanceMenu.ENGRAVE_COST : EnhanceMenu.TRUE_DMG_COST)));
                 b.style(star ? UiButton.RED : engrave ? UiButton.TEAL : UiButton.ORANGE);
-                b.active = star ? menu.material().is(net.minecraft.world.item.Items.NETHER_STAR)
+                b.active = star ? menu.material().is(com.snolred.wildplus.registry.ModItems9.upgradeMaterial(menu.item().getItem()))
                         : !engrave || !EnhanceMenu.engraveKind(menu.material()).isEmpty();
             } else {
                 b.setMessage(Component.literal(String.format("%,d동", opts.get(i - sp.size()).cost())));
@@ -130,8 +130,10 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
         for (int i = 0; i < shift; i++) {
             int ry = 22 + i * 18;
             if (sp.get(i) == EnhanceMenu.BTN_STAR) {
-                UiKit.bold(g, "✦ 스타 루비 승급", 68, ry, 0xFFB0103A);
-                UiKit.text(g, menu.material().is(net.minecraft.world.item.Items.NETHER_STAR) ? "별 ✔" : "별 필요", 162, ry, 0xFF7A5A30);
+                boolean sapph = com.snolred.wildplus.registry.ModItems11.upgrades().containsKey(item.getItem());
+                UiKit.bold(g, sapph ? "✦ 스카이 사파이어" : "✦ 스타 루비 승급", 68, ry, sapph ? 0xFF1D4ED8 : 0xFFB0103A);
+                boolean has = menu.material().is(com.snolred.wildplus.registry.ModItems9.upgradeMaterial(item.getItem()));
+                UiKit.text(g, has ? (sapph ? "깃털 ✔" : "별 ✔") : (sapph ? "깃털 필요" : "별 필요"), 158, ry, 0xFF7A5A30);
             } else if (sp.get(i) == EnhanceMenu.BTN_LIFESTEAL) {
                 int lv = com.snolred.wildplus.event.RubyGear.lifesteal(item);
                 UiKit.text(g, String.format("♥ 흡혈 %d%%", lv), 68, ry, ink);

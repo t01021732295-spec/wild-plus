@@ -30,6 +30,9 @@
     "wildplus:filter_hopper",
     "wildplus:mailbox",
     "wildplus:trash_can",
-    "wildplus:auto_crafter"
+    "wildplus:auto_crafter",
+    "wildplus:sapphire_ore",
+    "wildplus:deepslate_sapphire_ore",
+    "wildplus:sapphire_block"
   ]
 }

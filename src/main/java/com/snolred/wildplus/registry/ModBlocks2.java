@@ -56,6 +56,14 @@ public final class ModBlocks2 {
     public static final DeferredBlock<com.snolred.wildplus.block.MailboxBlock> MAILBOX = BLOCKS.registerBlock("mailbox",
             com.snolred.wildplus.block.MailboxBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().strength(2.0F));
 
+    // ───────── 2.9: 사파이어 (높은 산에서 나는 푸른 보석) ─────────
+    public static final DeferredBlock<DropExperienceBlock> SAPPHIRE_ORE = BLOCKS.registerBlock("sapphire_ore",
+            p -> new DropExperienceBlock(UniformInt.of(3, 7), p), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.EMERALD_ORE));
+    public static final DeferredBlock<DropExperienceBlock> DEEPSLATE_SAPPHIRE_ORE = BLOCKS.registerBlock("deepslate_sapphire_ore",
+            p -> new DropExperienceBlock(UniformInt.of(3, 7), p), () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE_EMERALD_ORE));
+    public static final DeferredBlock<Block> SAPPHIRE_BLOCK = BLOCKS.registerBlock("sapphire_block",
+            Block::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.DIAMOND_BLOCK));
+
     // ───────── 2.8 ─────────
     public static final DeferredBlock<com.snolred.wildplus.block.TrashCanBlock> TRASH_CAN = BLOCKS.registerBlock("trash_can",
             com.snolred.wildplus.block.TrashCanBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().strength(2.0F));

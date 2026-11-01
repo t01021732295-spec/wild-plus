@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "XXX",
+    " # ",
+    " # "
+  ],
+  "key": {
+    "X": "wildplus:sapphire",
+    "#": "minecraft:stick"
+  },
+  "result": {
+    "id": "wildplus:sapphire_pickaxe",
+    "count": 1
+  }
+}

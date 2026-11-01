@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "wildplus:ruby"
+    "wildplus:ruby",
+    "wildplus:sapphire"
   ]
 }

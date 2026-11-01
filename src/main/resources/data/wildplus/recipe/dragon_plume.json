@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:elytra",
+    "minecraft:dragon_breath",
+    "minecraft:dragon_breath"
+  ],
+  "result": {
+    "id": "wildplus:dragon_plume",
+    "count": 2
+  }
+}

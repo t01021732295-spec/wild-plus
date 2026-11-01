@@ -86,12 +86,19 @@ public final class ModItems9 {
 
     /** 루비 → 스타 루비 짝 */
     public static Map<Item, Item> upgrades() {
-        return Map.of(
+        Map<Item, Item> m = new java.util.LinkedHashMap<>(Map.of(
                 ModItems7.RUBY_SWORD.get(), STAR_RUBY_SWORD.get(), ModItems7.RUBY_PICKAXE.get(), STAR_RUBY_PICKAXE.get(),
                 ModItems7.RUBY_AXE.get(), STAR_RUBY_AXE.get(), ModItems7.RUBY_SHOVEL.get(), STAR_RUBY_SHOVEL.get(),
                 ModItems7.RUBY_HOE.get(), STAR_RUBY_HOE.get(), ModItems7.RUBY_HELMET.get(), STAR_RUBY_HELMET.get(),
                 ModItems7.RUBY_CHESTPLATE.get(), STAR_RUBY_CHESTPLATE.get(), ModItems7.RUBY_LEGGINGS.get(), STAR_RUBY_LEGGINGS.get(),
-                ModItems7.RUBY_BOOTS.get(), STAR_RUBY_BOOTS.get(), ModItems10.RUBY_BOW.get(), ModItems10.STAR_RUBY_BOW.get());
+                ModItems7.RUBY_BOOTS.get(), STAR_RUBY_BOOTS.get(), ModItems10.RUBY_BOW.get(), ModItems10.STAR_RUBY_BOW.get()));
+        m.putAll(ModItems11.upgrades());
+        return m;
+    }
+
+    /** 승급에 필요한 재료: 루비 → 네더의 별, 사파이어 → 용의 깃털 */
+    public static Item upgradeMaterial(Item from) {
+        return ModItems11.upgrades().containsKey(from) ? ModItems11.DRAGON_PLUME.get() : net.minecraft.world.item.Items.NETHER_STAR;
     }
 
     public static void init() {}

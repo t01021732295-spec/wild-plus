@@ -112,8 +112,9 @@ public class EnhanceMenu extends AbstractContainerMenu {
         if (id == BTN_STAR) {
             net.minecraft.world.item.Item to = com.snolred.wildplus.registry.ModItems9.upgrades().get(stack.getItem());
             if (to == null) return true;
-            if (!input.getItem(1).is(net.minecraft.world.item.Items.NETHER_STAR)) {
-                sp.sendOverlayMessage(Component.literal("아래 재료 칸에 네더의 별을 넣으세요").withStyle(ChatFormatting.RED));
+            net.minecraft.world.item.Item need = com.snolred.wildplus.registry.ModItems9.upgradeMaterial(stack.getItem());
+            if (!input.getItem(1).is(need)) {
+                sp.sendOverlayMessage(Component.literal("아래 재료 칸에 " + need.getName().getString() + "을(를) 넣으세요").withStyle(ChatFormatting.RED));
                 return true;
             }
             if (!Coins.pay(sp, STAR_COST)) {
@@ -127,7 +128,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
             input.setChanged();
             sp.level().playSound(null, sp.blockPosition(), SoundEvents.BEACON_POWER_SELECT, SoundSource.BLOCKS, 1.0F, 1.2F);
             sp.level().playSound(null, sp.blockPosition(), SoundEvents.SMITHING_TABLE_USE, SoundSource.BLOCKS, 1.0F, 0.8F);
-            sp.sendSystemMessage(Component.literal("✦ 스타 루비로 승급했어요! ").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD)
+            sp.sendSystemMessage(Component.literal(need == net.minecraft.world.item.Items.NETHER_STAR ? "✦ 스타 루비로 승급했어요! " : "✦ 스카이 사파이어로 승급했어요! ").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD)
                     .append(star.getHoverName().copy().withStyle(ChatFormatting.GOLD)));
             return true;
         }
@@ -219,7 +220,8 @@ public class EnhanceMenu extends AbstractContainerMenu {
         ItemStack copy = s.copy();
         if (index <= 1) {
             if (!moveItemStackTo(s, 2, this.slots.size(), true)) return ItemStack.EMPTY;
-        } else if (s.is(net.minecraft.world.item.Items.NETHER_STAR) || !engraveKind(s).isEmpty()) {
+        } else if (s.is(net.minecraft.world.item.Items.NETHER_STAR) || s.is(com.snolred.wildplus.registry.ModItems11.DRAGON_PLUME.get())
+                || s.is(com.snolred.wildplus.registry.ModItems.BLOODSTEEL_INGOT.get()) || !engraveKind(s).isEmpty()) {
             if (!moveItemStackTo(s, 1, 2, false)) return ItemStack.EMPTY;
         } else {
             if (!moveItemStackTo(s, 0, 1, false)) return ItemStack.EMPTY;

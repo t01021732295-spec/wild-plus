@@ -860,6 +860,31 @@ jobs:
             sleep 2; xdotool click 3; sleep 2
             import -window root shot-auto-crafter.png || true
             xdotool key Escape; sleep 1
+            # ── 2.9: 사파이어 ──
+            cmd "/clear @s"
+            i=0; for t in sword pickaxe axe shovel hoe bow; do cmd "/item replace entity @s hotbar.$i with wildplus:sapphire_$t"; i=$((i+1)); done
+            cmd "/item replace entity @s hotbar.6 with wildplus:sapphire"
+            cmd "/item replace entity @s hotbar.7 with wildplus:dragon_plume"
+            cmd "/item replace entity @s hotbar.8 with wildplus:sky_sapphire_sword"
+            i=0; for t in sword pickaxe axe shovel hoe bow helmet chestplate leggings; do cmd "/item replace entity @s inventory.$i with wildplus:sky_sapphire_$t"; i=$((i+1)); done
+            i=9; for t in helmet chestplate leggings boots; do cmd "/item replace entity @s inventory.$i with wildplus:sapphire_$t"; i=$((i+1)); done
+            cmd "/item replace entity @s armor.head with wildplus:sky_sapphire_helmet"
+            cmd "/item replace entity @s armor.chest with wildplus:sky_sapphire_chestplate"
+            cmd "/item replace entity @s armor.legs with wildplus:sky_sapphire_leggings"
+            cmd "/item replace entity @s armor.feet with wildplus:sky_sapphire_boots"
+            cmd "/setblock 470 120 -12 wildplus:sapphire_ore"
+            cmd "/setblock 471 120 -12 wildplus:deepslate_sapphire_ore"
+            cmd "/setblock 472 120 -12 wildplus:sapphire_block"
+            sleep 1
+            xdotool key e || true
+            sleep 3
+            import -window root shot-sapphire-inv.png || true
+            xdotool key Escape; sleep 1
+            cmd "/tp @s 471.5 121 -8.5 180 20"
+            xdotool key F5 || true; sleep 1; xdotool key F5 || true
+            sleep 3
+            import -window root shot-sapphire-wear.png || true
+            xdotool key F5 || true
             # 랜덤 이벤트 · 새 효과
             cmd "/gamemode creative"
             cmd "/tp @s 478 121 30 0 10"

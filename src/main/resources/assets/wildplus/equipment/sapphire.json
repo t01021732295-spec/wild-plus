@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "wildplus:sapphire"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "wildplus:sapphire"
+      }
+    ]
+  }
+}

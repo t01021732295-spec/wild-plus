@@ -36,13 +36,25 @@ public class SunkenChestItem extends Item {
                     .withParameter(LootContextParams.THIS_ENTITY, player)
                     .withLuck(player.getLuck())
                     .create(LootContextParamSets.CHEST);
+            net.minecraft.network.chat.MutableComponent msg = net.minecraft.network.chat.Component.literal("✦ 보물상자에서 나온 것: ")
+                    .withStyle(net.minecraft.ChatFormatting.GOLD);
+            boolean first = true;
             for (ItemStack loot : table.getRandomItems(params)) {
+                if (loot.isEmpty()) continue;
+                if (!first) msg.append(net.minecraft.network.chat.Component.literal(", ").withStyle(net.minecraft.ChatFormatting.GRAY));
+                first = false;
+                msg.append(loot.getHoverName().copy().withStyle(loot.getRarity().color()));
+                if (loot.getCount() > 1) {
+                    msg.append(net.minecraft.network.chat.Component.literal(" ×" + loot.getCount()).withStyle(net.minecraft.ChatFormatting.WHITE));
+                }
                 if (!player.getInventory().add(loot)) {
                     ItemEntity drop = new ItemEntity(server, player.getX(), player.getY() + 0.5, player.getZ(), loot);
                     drop.setNoPickUpDelay();
                     server.addFreshEntity(drop);
                 }
             }
+            if (first) msg.append(net.minecraft.network.chat.Component.literal("(텅 비어 있었어요)").withStyle(net.minecraft.ChatFormatting.GRAY));
+            player.sendSystemMessage(msg);
             server.playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.CHEST_OPEN, SoundSource.PLAYERS, 1.0F, 0.9F);
             server.playSound(null, player.getX(), player.getY(), player.getZ(),

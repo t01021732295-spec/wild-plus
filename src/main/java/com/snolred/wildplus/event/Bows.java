@@ -53,6 +53,11 @@ public final class Bows {
         var data = arrow.getPersistentData();
         String bow = data.getStringOr(BOW_TAG, "");
         if (bow.equals("ruby") || bow.equals("star_ruby")) arrow.igniteForSeconds(100);
+        // 스카이 사파이어 활: 화살이 더 빠르고 곧게 날아감
+        if (bow.equals("sky_sapphire") && !data.getBooleanOr("wildplus_fast", false)) {
+            data.putBoolean("wildplus_fast", true);
+            arrow.setDeltaMovement(arrow.getDeltaMovement().scale(1.35));
+        }
         if (data.getStringOr(ARROW_TAG, "").equals("homing") && !HOMING.contains(arrow.getUUID())) {
             HOMING.add(arrow.getUUID());
             HOMING_LEVEL.add(level);
@@ -138,6 +143,25 @@ public final class Bows {
                 level.playSound(null, a.blockPosition(), SoundEvents.GLASS_BREAK, SoundSource.PLAYERS, 0.6F, 1.6F);
             }
             default -> {}
+        }
+    }
+
+    /** 사파이어 활 화살: 구속 II · 얼림 / 스카이 사파이어: 구속 III · 얼림 + 주변 2칸 서리 */
+    @SubscribeEvent
+    public static void onSapphireHit(LivingDamageEvent.Post event) {
+        if (!(event.getSource().getDirectEntity() instanceof AbstractArrow a)) return;
+        String bow = a.getPersistentData().getStringOr(BOW_TAG, "");
+        if (!bow.equals("sapphire") && !bow.equals("sky_sapphire")) return;
+        LivingEntity t = event.getEntity();
+        if (!(t.level() instanceof ServerLevel level)) return;
+        boolean sky = bow.equals("sky_sapphire");
+        t.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, sky ? 100 : 60, sky ? 2 : 1));
+        t.setTicksFrozen(Math.max(t.getTicksFrozen(), t.getTicksRequiredToFreeze() + (sky ? 80 : 40)));
+        level.sendParticles(ParticleTypes.SNOWFLAKE, t.getX(), t.getY() + t.getBbHeight() * 0.6, t.getZ(), sky ? 24 : 10, 0.4, 0.4, 0.4, 0.03);
+        if (sky) {
+            for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, t.getBoundingBox().inflate(2.0))) {
+                if (e != t && e instanceof Enemy) e.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 1));
+            }
         }
     }
 

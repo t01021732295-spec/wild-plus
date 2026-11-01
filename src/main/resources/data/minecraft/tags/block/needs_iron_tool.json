@@ -9,6 +9,9 @@
     "wildplus:jade_block",
     "wildplus:ruby_ore",
     "wildplus:deepslate_ruby_ore",
-    "wildplus:ruby_block"
+    "wildplus:ruby_block",
+    "wildplus:sapphire_ore",
+    "wildplus:deepslate_sapphire_ore",
+    "wildplus:sapphire_block"
   ]
 }

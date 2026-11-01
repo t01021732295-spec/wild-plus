@@ -39,3 +39,4 @@ run/
 repo/
 !**/src/**/repo/
 rel/
+__pycache__/

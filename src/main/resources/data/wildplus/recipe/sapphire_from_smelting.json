@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": [
+    "wildplus:sapphire_ore",
+    "wildplus:deepslate_sapphire_ore"
+  ],
+  "result": {
+    "id": "wildplus:sapphire"
+  },
+  "experience": 1.0,
+  "cookingtime": 200
+}

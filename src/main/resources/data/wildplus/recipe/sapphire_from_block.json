@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:sapphire_block"
+  ],
+  "result": {
+    "id": "wildplus:sapphire",
+    "count": 9
+  }
+}
