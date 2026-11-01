@@ -30,7 +30,7 @@ public class RepairKitItem extends Item {
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         ItemStack kit = player.getItemInHand(hand);
         if (!(player instanceof ServerPlayer sp)) return InteractionResult.SUCCESS;
-        EquipmentSlot kitSlot = LivingEntity.getSlotForHand(hand);
+        EquipmentSlot kitSlot = hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND;
         int fixed = 0;
         for (EquipmentSlot slot : SLOTS) {
             if (slot == kitSlot || kit.isEmpty()) continue;
