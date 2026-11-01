@@ -1,2 +1,2 @@
-client/renderer/entity/(Ravager|Evoker|Stray|Skeleton|WitherSkeleton|Husk|Drowned|Piglin|Illager|AbstractSkeleton|Zombie|AbstractZombie|Vindicator)Renderer\.class$
-world/entity/monster/.*/?(Ravager|Evoker|Stray|WitherSkeleton|Husk|Drowned|PiglinBrute)\.class$
+net/neoforged/neoforge/event/level/block/[A-Za-z$]+\.class$
+net/neoforged/neoforge/event/level/ExplosionEvent.*\.class$

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:diamond_coin"
+  ],
+  "result": {
+    "id": "wildplus:gold_coin",
+    "count": 10
+  }
+}

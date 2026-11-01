@@ -16,6 +16,8 @@ public final class ModItems3 {
     public static final DeferredItem<Item> COPPER_COIN = ITEMS.registerSimpleItem("copper_coin");
     public static final DeferredItem<Item> SILVER_COIN = ITEMS.registerSimpleItem("silver_coin", p -> p.rarity(Rarity.UNCOMMON));
     public static final DeferredItem<Item> GOLD_COIN = ITEMS.registerSimpleItem("gold_coin", p -> p.rarity(Rarity.RARE));
+    /** 다이아화 = 1,000동 */
+    public static final DeferredItem<Item> DIAMOND_COIN = ITEMS.registerSimpleItem("diamond_coin", p -> p.rarity(Rarity.EPIC));
     public static final DeferredItem<CoinPouchItem> COIN_POUCH = ITEMS.registerItem("coin_pouch", CoinPouchItem::new, p -> p.stacksTo(1));
     public static final DeferredItem<BlockItem> VENDING_MACHINE = ITEMS.registerSimpleBlockItem("vending_machine", ModBlocks.VENDING_MACHINE);
 

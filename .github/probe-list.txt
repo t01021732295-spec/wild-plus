@@ -1,1 +1,0 @@
-textures/entity/(illager|skeleton|zombie|piglin|ravager|evoker|stray|husk|drowned|wither|vex)

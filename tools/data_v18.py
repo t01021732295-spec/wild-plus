@@ -49,6 +49,9 @@ LANG_KO = {
     "entity.wildplus.abyss_boss": "심해 수호자",
     "entity.wildplus.void_boss": "공허의 기사",
     "entity.wildplus.gold_boss": "황금 왕",
+    "item.wildplus.diamond_coin": "다이아화",
+    "tooltip.wildplus.diamond_coin": "1,000동 · 제작대에서 금화 10개로 쪼갤 수 있음\n금화 10 → 다이아화는 환전소에서",
+    "wildplus.coins.amount": "%s동 (다이아화 %s · 금화 %s · 은화 %s · 동화 %s)",
     "item.wildplus.repair_kit": "휴대용 수리 키트",
     "tooltip.wildplus.repair_kit": "우클릭: 손에 든 것 · 입은 갑옷 중 닳은 장비를 각 25%씩 수리\n고친 장비 하나마다 1회 소모 (10회)",
     "item.wildplus.sapphire_apple": "사파이어 사과",
@@ -79,6 +82,9 @@ LANG_EN = {
     "entity.wildplus.abyss_boss": "Abyss Warden",
     "entity.wildplus.void_boss": "Void Knight",
     "entity.wildplus.gold_boss": "Golden King",
+    "item.wildplus.diamond_coin": "Diamond Coin",
+    "tooltip.wildplus.diamond_coin": "Worth 1,000 · can be crafted into 10 gold",
+    "wildplus.coins.amount": "%s c (%s diamond · %s gold · %s silver · %s copper)",
     "item.wildplus.repair_kit": "Repair Kit",
     "tooltip.wildplus.repair_kit": "Right-click: repairs held items and worn armor by 25% each (10 uses)",
     "item.wildplus.sapphire_apple": "Sapphire Apple",
@@ -140,6 +146,7 @@ def assets():
     simple("dragon_plume")
     simple("sapphire_apple")
     simple("repair_kit")
+    simple("diamond_coin")
     simple("sky_sapphire_apple")
     for p in ["sapphire", "sky_sapphire"]:
         for t in TOOLS:
@@ -175,6 +182,7 @@ def data():
         "sapphire_leggings": shaped(["XXX", "X X", "X X"], {"X": S}, i("sapphire_leggings")),
         "sapphire_boots": shaped(["X X", "X X"], {"X": S}, i("sapphire_boots")),
         "sapphire_bow": shaped([" MS", "M S", " MS"], {"M": S, "S": "minecraft:string"}, i("sapphire_bow")),
+        "gold_coin_from_diamond": shapeless([i("diamond_coin")], i("gold_coin"), 10),
         "repair_kit": shaped([" D ", "ILI", "III"], {"D": "minecraft:diamond", "I": "minecraft:iron_ingot", "L": "minecraft:leather"},
                              i("repair_kit"), category="misc"),
         "sapphire_apple": shaped(["MMM", "MAM", "MMM"], {"M": S, "A": "minecraft:apple"}, i("sapphire_apple"), category="misc"),

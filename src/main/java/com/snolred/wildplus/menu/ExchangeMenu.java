@@ -22,12 +22,12 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * 환전소: 가방 속 동전을 10:1 고정 비율로 바꿔 준다 (ExchangeRate).
- * 올리기: 동화 N → 은화 1, 은화 N → 금화 1 / 내리기: 금화 1 → 은화 N-1, 은화 1 → 동화 N-1.
+ * 올리기: 동화 N → 은화 1, 은화 N → 금화 1, 금화 10 → 다이아화 1 / 내리기: 반대.
  * 버튼 = 종류 × 2 + (0: 한 번, 1: 전부). [정리] 은 가장 적은 개수로, [잔돈으로] 는 전부 동화로.
  */
 public class ExchangeMenu extends AbstractContainerMenu {
-    public static final int C2S = 0, S2G = 2, G2S = 4, S2C = 6, TIDY = 10, ALL_COPPER = 11;
-    public static final int DATA = 10;
+    public static final int C2S = 0, S2G = 2, G2S = 4, S2C = 6, TIDY = 10, ALL_COPPER = 11, G2D = 12, D2G = 14;
+    public static final int DATA = 11;
 
     private final ContainerData data;
     private final @Nullable BlockPos pos;
@@ -60,6 +60,7 @@ public class ExchangeMenu extends AbstractContainerMenu {
                 Item item = switch (index) {
                     case 0 -> ModItems3.COPPER_COIN.get();
                     case 1 -> ModItems3.SILVER_COIN.get();
+                    case 10 -> ModItems3.DIAMOND_COIN.get();
                     default -> ModItems3.GOLD_COIN.get();
                 };
                 return Math.min(32767, count(player, item));
@@ -91,6 +92,7 @@ public class ExchangeMenu extends AbstractContainerMenu {
     public int silverBuyYesterday() { return data.get(7); }
     public int goldBuyYesterday() { return data.get(8); }
     public int day() { return data.get(9); }
+    public int diamond() { return data.get(10); }
 
     private static int count(Player p, Item item) {
         int n = 0;
@@ -128,8 +130,10 @@ public class ExchangeMenu extends AbstractContainerMenu {
     public boolean clickMenuButton(Player who, int id) {
         if (!(who instanceof ServerPlayer sp)) return false;
         Item copper = ModItems3.COPPER_COIN.get(), silver = ModItems3.SILVER_COIN.get(), gold = ModItems3.GOLD_COIN.get();
-        boolean all = id % 2 == 1 && id < TIDY;
-        int kind = id < TIDY ? id - id % 2 : id;
+        Item diamond = ModItems3.DIAMOND_COIN.get();
+        boolean special = id == TIDY || id == ALL_COPPER;
+        boolean all = !special && id % 2 == 1;
+        int kind = special ? id : id - id % 2;
         long day = com.snolred.wildplus.economy.ExchangeRate.day(sp.level().getServer());
         int sBuy = com.snolred.wildplus.economy.ExchangeRate.silverBuy(day), sSell = com.snolred.wildplus.economy.ExchangeRate.silverSell(day);
         int gBuy = com.snolred.wildplus.economy.ExchangeRate.goldBuy(day), gSell = com.snolred.wildplus.economy.ExchangeRate.goldSell(day);
@@ -138,9 +142,11 @@ public class ExchangeMenu extends AbstractContainerMenu {
             case S2G -> convert(sp, silver, gBuy, gold, 1, all);
             case G2S -> convert(sp, gold, 1, silver, gSell, all);
             case S2C -> convert(sp, silver, 1, copper, sSell, all);
+            case G2D -> convert(sp, gold, 10, diamond, 1, all);
+            case D2G -> convert(sp, diamond, 1, gold, 10, all);
             // 정리: 가능한 만큼 큰 동전으로 / 잔돈: 전부 동화로 (모두 오늘 환율)
-            case TIDY -> convert(sp, copper, sBuy, silver, 1, true) | convert(sp, silver, gBuy, gold, 1, true);
-            case ALL_COPPER -> convert(sp, gold, 1, silver, gSell, true) | convert(sp, silver, 1, copper, sSell, true);
+            case TIDY -> convert(sp, copper, sBuy, silver, 1, true) | convert(sp, silver, gBuy, gold, 1, true) | convert(sp, gold, 10, diamond, 1, true);
+            case ALL_COPPER -> convert(sp, diamond, 1, gold, 10, true) | convert(sp, gold, 1, silver, gSell, true) | convert(sp, silver, 1, copper, sSell, true);
             default -> false;
         };
         if (ok) {

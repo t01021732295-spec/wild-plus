@@ -187,6 +187,9 @@ def build(van: Path):
     ap.save(out_item / "sky_sapphire_apple.png")
     plume().save(out_item / "dragon_plume.png")
     repair_kit().save(out_item / "repair_kit.png")
+    # 다이아화: 금화 그림을 다이아몬드 빛으로
+    DIA = ["#06302e", "#0c5c58", "#13908a", "#22c4bc", "#4ee8e0", "#a4fff8", "#f0ffff"]
+    recolor(OUT / "item/gold_coin.png", DIA, sel_all).save(out_item / "diamond_coin.png")
     return n + 1
 
 

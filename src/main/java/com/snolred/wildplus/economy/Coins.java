@@ -15,13 +15,14 @@ import net.minecraft.core.NonNullList;
 
 /**
  * 화폐 시스템.
- * 동화 1 = 1동, 은화 1 = 10동, 금화 1 = 100동.
+ * 동화 1 = 1동, 은화 1 = 10동, 금화 1 = 100동, 다이아화 1 = 1,000동.
  * 동전 주머니에는 동전을 "금액"으로 넣어 두고, 필요할 때 가장 적은 개수의 동전으로 꺼낼 수 있다(= 환전).
  */
 public final class Coins {
     public static final int COPPER = 1;
     public static final int SILVER = 10;
     public static final int GOLD = 100;
+    public static final int DIAMOND = 1000;
     public static final String POUCH_KEY = "wildplus_coins";
 
     private Coins() {}
@@ -31,6 +32,7 @@ public final class Coins {
         if (stack.is(ModItems3.COPPER_COIN.get())) return COPPER;
         if (stack.is(ModItems3.SILVER_COIN.get())) return SILVER;
         if (stack.is(ModItems3.GOLD_COIN.get())) return GOLD;
+        if (stack.is(ModItems3.DIAMOND_COIN.get())) return DIAMOND;
         return 0;
     }
 
@@ -156,9 +158,11 @@ public final class Coins {
     /** 금액을 가장 적은 개수의 동전으로 */
     public static List<ItemStack> toCoins(long amount) {
         List<ItemStack> out = new ArrayList<>();
-        long gold = amount / GOLD;
+        long diamond = amount / DIAMOND;
+        long gold = (amount % DIAMOND) / GOLD;
         long silver = (amount % GOLD) / SILVER;
         long copper = amount % SILVER;
+        addStacks(out, new ItemStack(ModItems3.DIAMOND_COIN.get()), diamond);
         addStacks(out, new ItemStack(ModItems3.GOLD_COIN.get()), gold);
         addStacks(out, new ItemStack(ModItems3.SILVER_COIN.get()), silver);
         addStacks(out, new ItemStack(ModItems3.COPPER_COIN.get()), copper);
@@ -187,6 +191,6 @@ public final class Coins {
     /** "1,234동 (금화 12 · 은화 3 · 동화 4)" */
     public static Component describe(long amount) {
         return Component.translatable("wildplus.coins.amount", String.format("%,d", amount),
-                amount / GOLD, (amount % GOLD) / SILVER, amount % SILVER);
+                amount / DIAMOND, (amount % DIAMOND) / GOLD, (amount % GOLD) / SILVER, amount % SILVER);
     }
 }
