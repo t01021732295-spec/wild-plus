@@ -651,7 +651,7 @@
   "item.wildplus.sapphire_boots": "사파이어 부츠",
   "item.wildplus.sky_sapphire_boots": "스카이 사파이어 부츠",
   "tooltip.wildplus.sapphire_sword": "빙결검: 맞은 적 구속 II (3초)\n25% 확률로 서리 폭발 (주변 3칸 적 피해 4 + 얼림)\n강화대에서 용의 깃털 + 1,000동으로 스카이 사파이어 승급",
-  "tooltip.wildplus.sky_sapphire_sword": "공격력 8 · 공격 속도 2.0 · 내구도 무한\n빙결검 (서리 폭발 40% · 피해 6) + 급강하 일격 (공중에서 때리면 1.5배)",
+  "tooltip.wildplus.sky_sapphire_sword": "공격력 8 · 공격 속도 2.0 · 내구도 무한\n빙결검 (서리 폭발 40% · 피해 6) + 실명 3초 + 급강하 일격 (공중에서 때리면 1.5배)",
   "tooltip.wildplus.sapphire_pickaxe": "냉각: 웅크리고 들면 주변 4칸 용암이 굳음 (원천 → 흑요석)\n물속에서도 빨리 캠 (해양의 힘)\n강화대에서 용의 깃털 + 1,000동으로 스카이 사파이어 승급",
   "tooltip.wildplus.sky_sapphire_pickaxe": "내구도 무한 · 냉각 (용암 굳히기 · 물속 빨리 캐기)",
   "tooltip.wildplus.sapphire_axe": "얼음 처형: 느려졌거나 얼어 있는 적에게 피해 1.5배 (사파이어 검과 같이 쓰기 좋음)\n강화대에서 용의 깃털 + 1,000동으로 스카이 사파이어 승급",
@@ -661,11 +661,11 @@
   "tooltip.wildplus.sapphire_hoe": "물의 축복: 웅크리고 들면 주변 4칸 작물이 빨리 자라고 경작지가 촉촉해짐\n강화대에서 용의 깃털 + 1,000동으로 스카이 사파이어 승급",
   "tooltip.wildplus.sky_sapphire_hoe": "내구도 무한 · 물의 축복 (두 배로 빨리 자람)",
   "tooltip.wildplus.sapphire_helmet": "2부위: 수중 호흡 + 돌고래의 가호\n4부위: 전달체의 힘 · 받는 피해 10% 감소 · 때린 적 얼림 · 낙하 피해 절반\n강화대에서 용의 깃털 + 1,000동으로 스카이 사파이어 승급",
-  "tooltip.wildplus.sky_sapphire_helmet": "내구도 무한 · 불에 타지 않음\n2부위: 저항 I + 수중 호흡 · 돌고래의 가호\n4부위: + 신속 I · 전달체의 힘 · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림",
+  "tooltip.wildplus.sky_sapphire_helmet": "내구도 무한 · 불에 타지 않음\n2부위: 저항 I + 수중 호흡 · 돌고래의 가호\n4부위: 저항 II + 신속 I · 전달체의 힘 · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림",
   "tooltip.wildplus.sapphire_chestplate": "2부위: 수중 호흡 + 돌고래의 가호\n4부위: 전달체의 힘 · 받는 피해 10% 감소 · 때린 적 얼림 · 낙하 피해 절반\n강화대에서 용의 깃털 + 1,000동으로 스카이 사파이어 승급",
-  "tooltip.wildplus.sky_sapphire_chestplate": "겉날개 겸용! (폭죽 가속 가능) · 내구도 무한\n2부위: 저항 I + 수중 호흡 · 돌고래의 가호\n4부위: + 신속 I · 전달체의 힘 · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림",
+  "tooltip.wildplus.sky_sapphire_chestplate": "겉날개 겸용! (폭죽 가속 가능) · 내구도 무한\n2부위: 저항 I + 수중 호흡 · 돌고래의 가호\n4부위: 저항 II + 신속 I · 전달체의 힘 · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림",
   "tooltip.wildplus.sapphire_leggings": "2부위: 수중 호흡 + 돌고래의 가호\n4부위: 전달체의 힘 · 받는 피해 10% 감소 · 때린 적 얼림 · 낙하 피해 절반\n강화대에서 용의 깃털 + 1,000동으로 스카이 사파이어 승급",
-  "tooltip.wildplus.sky_sapphire_leggings": "내구도 무한 · 불에 타지 않음\n2부위: 저항 I + 수중 호흡 · 돌고래의 가호\n4부위: + 신속 I · 전달체의 힘 · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림",
+  "tooltip.wildplus.sky_sapphire_leggings": "내구도 무한 · 불에 타지 않음\n2부위: 저항 I + 수중 호흡 · 돌고래의 가호\n4부위: 저항 II + 신속 I · 전달체의 힘 · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림",
   "tooltip.wildplus.sapphire_boots": "2부위: 수중 호흡 + 돌고래의 가호\n4부위: 전달체의 힘 · 받는 피해 10% 감소 · 때린 적 얼림 · 낙하 피해 절반\n강화대에서 용의 깃털 + 1,000동으로 스카이 사파이어 승급",
-  "tooltip.wildplus.sky_sapphire_boots": "내구도 무한 · 불에 타지 않음\n2부위: 저항 I + 수중 호흡 · 돌고래의 가호\n4부위: + 신속 I · 전달체의 힘 · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림"
+  "tooltip.wildplus.sky_sapphire_boots": "내구도 무한 · 불에 타지 않음\n2부위: 저항 I + 수중 호흡 · 돌고래의 가호\n4부위: 저항 II + 신속 I · 전달체의 힘 · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림"
 }

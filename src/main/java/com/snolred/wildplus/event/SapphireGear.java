@@ -85,7 +85,7 @@ public final class SapphireGear {
             p.addEffect(fx(MobEffects.DOLPHINS_GRACE, 0));
         }
         if (n >= 4) p.addEffect(fx(MobEffects.CONDUIT_POWER, 0));
-        if (sky >= 2) p.addEffect(fx(MobEffects.RESISTANCE, 0));
+        if (sky >= 2) p.addEffect(fx(MobEffects.RESISTANCE, sky >= 4 ? 1 : 0));
         if (sky >= 4) p.addEffect(fx(MobEffects.SPEED, 0));
         ItemStack hand = p.getMainHandItem();
         // 곡괭이: 물속에서는 해양의 힘(빨리 캠), 웅크리면 주변 용암을 굳힘
@@ -169,6 +169,8 @@ public final class SapphireGear {
         boolean sky = player.getMainHandItem().is(SKY_SAPPHIRE_SWORD.get());
         LivingEntity target = event.getEntity();
         target.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 1));
+        // 스카이 사파이어 검: 실명 (3초)
+        if (sky) target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0));
         if (player.getRandom().nextFloat() >= (sky ? 0.4F : 0.25F)) return;
         bursting = true;
         try {

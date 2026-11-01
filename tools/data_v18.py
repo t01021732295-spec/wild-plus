@@ -24,7 +24,7 @@ TIP_EN = {
     "hoe": "Water Blessing: sneak to grow nearby crops and moisten farmland",
 }
 SKY_KO = {
-    "sword": "공격력 8 · 공격 속도 2.0 · 내구도 무한\n빙결검 (서리 폭발 40% · 피해 6) + 급강하 일격 (공중에서 때리면 1.5배)",
+    "sword": "공격력 8 · 공격 속도 2.0 · 내구도 무한\n빙결검 (서리 폭발 40% · 피해 6) + 실명 3초 + 급강하 일격 (공중에서 때리면 1.5배)",
     "pickaxe": "내구도 무한 · 냉각 (용암 굳히기 · 물속 빨리 캐기)",
     "axe": "내구도 무한 · 얼음 처형 (느린·언 적에게 1.5배)",
     "shovel": "내구도 무한 · 빙하 삽",
@@ -74,10 +74,10 @@ for a in ARMOR:
     LANG_KO[f"tooltip.wildplus.sapphire_{a}"] = "2부위: 수중 호흡 + 돌고래의 가호\n4부위: 전달체의 힘 · 받는 피해 10% 감소 · 때린 적 얼림 · 낙하 피해 절반" + UP
     LANG_EN[f"tooltip.wildplus.sapphire_{a}"] = "2 pieces: Water Breathing + Dolphin's Grace\n4 pieces: -10% damage, freeze attackers, half fall damage"
     LANG_KO[f"tooltip.wildplus.sky_sapphire_{a}"] = ("내구도 무한 · 불에 타지 않음\n2부위: 저항 I + 수중 호흡 · 돌고래의 가호\n"
-                                                     "4부위: + 신속 I · 전달체의 힘 · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림")
+                                                     "4부위: 저항 II + 신속 I · 전달체의 힘 · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림")
     LANG_EN[f"tooltip.wildplus.sky_sapphire_{a}"] = "Unbreakable · 2 pieces: Resistance I · 4 pieces: + Speed I, no fall damage"
 LANG_KO["tooltip.wildplus.sky_sapphire_chestplate"] = ("겉날개 겸용! (폭죽 가속 가능) · 내구도 무한\n2부위: 저항 I + 수중 호흡 · 돌고래의 가호\n"
-                                                      "4부위: + 신속 I · 전달체의 힘 · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림")
+                                                      "4부위: 저항 II + 신속 I · 전달체의 힘 · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림")
 LANG_EN["tooltip.wildplus.sky_sapphire_chestplate"] = "Works as an elytra! · Unbreakable"
 
 
