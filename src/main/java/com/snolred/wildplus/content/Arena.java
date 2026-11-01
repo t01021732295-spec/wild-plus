@@ -759,8 +759,8 @@ public final class Arena {
         }
         // 양쪽 출발 지점 표시
         for (int k = -4; k <= 4; k++) {
-            lv.setBlock(CENTER.offset(-12, 0, k), Blocks.RED_CONCRETE.defaultBlockState(), 2);
-            lv.setBlock(CENTER.offset(12, 0, k), Blocks.BLUE_CONCRETE.defaultBlockState(), 2);
+            lv.setBlock(CENTER.offset(-12, 0, k), Blocks.REDSTONE_BLOCK.defaultBlockState(), 2);
+            lv.setBlock(CENTER.offset(12, 0, k), Blocks.LAPIS_BLOCK.defaultBlockState(), 2);
         }
     }
 
