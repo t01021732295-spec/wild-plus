@@ -46,5 +46,8 @@ public final class ModMenus {
     public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.HallMenu>> HALL =
             MENUS.register("hall_of_fame", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.HallMenu::new));
 
+    public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.AutoCrafterMenu>> AUTO_CRAFTER =
+            MENUS.register("auto_crafter", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.AutoCrafterMenu::new));
+
     private ModMenus() {}
 }

@@ -28,6 +28,8 @@
     "wildplus:tower_gate",
     "wildplus:big_part",
     "wildplus:filter_hopper",
-    "wildplus:mailbox"
+    "wildplus:mailbox",
+    "wildplus:trash_can",
+    "wildplus:auto_crafter"
   ]
 }

@@ -76,7 +76,9 @@ public final class ShipPrices {
         put(m, Items.ENCHANTED_BOOK, 500); put(m, Items.BOW, 100); put(m, Items.FISHING_ROD, 50); put(m, Items.LILY_PAD, 10);
         put(m, Items.INK_SAC, 20); put(m, Items.BOWL, 2); put(m, Items.LEATHER_BOOTS, 20); put(m, Items.STICK, 1);
         put(m, Items.TRIPWIRE_HOOK, 10); put(m, Items.BAMBOO, 5); put(m, Items.GLOW_INK_SAC, 60); put(m, Items.PRISMARINE_SHARD, 30);
-        put(m, Items.PRISMARINE_CRYSTALS, 40); put(m, Items.KELP, 2); put(m, Items.DRIED_KELP, 5); put(m, Items.SEA_PICKLE, 20);
+        put(m, Items.PRISMARINE_CRYSTALS, 40);
+        // 19차: 물병 (물약도 같은 아이템이라 같은 값) · 빈 병
+        put(m, Items.POTION, 20); put(m, Items.GLASS_BOTTLE, 5); put(m, Items.KELP, 2); put(m, Items.DRIED_KELP, 5); put(m, Items.SEA_PICKLE, 20);
         table = m;
         return m;
     }

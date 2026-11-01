@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "ITI",
+    "RMR",
+    "IHI"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "T": "minecraft:crafting_table",
+    "R": "minecraft:redstone",
+    "M": "wildplus:mythril_ingot",
+    "H": "minecraft:hopper"
+  },
+  "result": {
+    "id": "wildplus:auto_crafter",
+    "count": 1
+  }
+}

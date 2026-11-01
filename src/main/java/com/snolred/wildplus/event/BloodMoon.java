@@ -64,9 +64,25 @@ public final class BloodMoon {
 
         if (night && !active && lastRolledDay != day) {
             lastRolledDay = day;
-            if (day >= WildConfig.BLOOD_MOON_GRACE_DAYS.getAsInt()
-                    && level.getRandom().nextDouble() < WildConfig.BLOOD_MOON_CHANCE.get()) {
-                start(level);
+            if (day >= WildConfig.BLOOD_MOON_GRACE_DAYS.getAsInt()) {
+                // 블러드문이 안 뜬 밤이 이어질수록 확률이 하루에 5%p 씩 오른다
+                var cd = com.snolred.wildplus.content.ContentData.get(level.getServer());
+                net.minecraft.nbt.CompoundTag bm = cd.section("bloodmoon");
+                int missed = bm.getIntOr("missed", 0);
+                double chance = Math.min(1.0, WildConfig.BLOOD_MOON_CHANCE.get() + 0.05 * missed);
+                if (level.getRandom().nextDouble() < chance) {
+                    bm.putInt("missed", 0);
+                    cd.dirty();
+                    start(level);
+                } else {
+                    bm.putInt("missed", missed + 1);
+                    cd.dirty();
+                    double next = Math.min(1.0, WildConfig.BLOOD_MOON_CHANCE.get() + 0.05 * (missed + 1));
+                    for (var p : level.players()) {
+                        p.sendOverlayMessage(net.minecraft.network.chat.Component.literal(String.format("🌙 오늘 밤은 조용해요 · 내일 밤 블러드문 확률 %d%%",
+                                Math.round(next * 100))).withStyle(net.minecraft.ChatFormatting.DARK_RED));
+                    }
+                }
             }
         } else if (night && active) {
             sawNight = true;

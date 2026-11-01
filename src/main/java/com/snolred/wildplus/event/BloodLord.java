@@ -53,7 +53,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  * 보상: 군주의 심장, 핏빛 파편, 금화, 다이아몬드, 행운의 부적(50%).
  */
 public final class BloodLord {
-    public static final String TAG = "wildplus_blood_lord";
+    public static final String TAG = "wildplus_blood_lord", AWAKE = "wildplus_blood_lord_awake";
     public static final int KILLS_NEEDED = 10;
     private static final String RAGE_TAG = "wildplus_rage";
     private static int eliteKills;
@@ -111,14 +111,17 @@ public final class BloodLord {
         if (lord == null) return null;
         lord.snapTo(at.getX() + 0.5, at.getY(), at.getZ() + 0.5, rnd.nextFloat() * 360F, 0F);
         lord.getPersistentData().putBoolean(TAG, true);
-        set(lord, Attributes.MAX_HEALTH, 400);
-        set(lord, Attributes.ATTACK_DAMAGE, 16);
+        // 30% 확률로 각성: 체력 1.8배 · 공격 1.4배 · 더 크고 빠름, 보상 두 배
+        boolean awake = rnd.nextFloat() < 0.3F;
+        if (awake) lord.getPersistentData().putBoolean(AWAKE, true);
+        set(lord, Attributes.MAX_HEALTH, awake ? 720 : 400);
+        set(lord, Attributes.ATTACK_DAMAGE, awake ? 22 : 16);
         set(lord, Attributes.ARMOR, 14);
         set(lord, Attributes.ARMOR_TOUGHNESS, 6);
         set(lord, Attributes.KNOCKBACK_RESISTANCE, 1.0);
-        set(lord, Attributes.MOVEMENT_SPEED, 0.3);
+        set(lord, Attributes.MOVEMENT_SPEED, awake ? 0.34 : 0.3);
         set(lord, Attributes.FOLLOW_RANGE, 48);
-        set(lord, Attributes.SCALE, 1.6);
+        set(lord, Attributes.SCALE, awake ? 2.0 : 1.6);
         lord.setHealth(lord.getMaxHealth());
         lord.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.NETHERITE_SWORD));
         lord.setItemSlot(EquipmentSlot.HEAD, new ItemStack(ModItems.BLOODSTEEL_HELMET.get()));
@@ -126,7 +129,14 @@ public final class BloodLord {
         for (EquipmentSlot s : EquipmentSlot.values()) lord.setDropChance(s, 0.0F);
         lord.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, MobEffectInstance.INFINITE_DURATION, 0, false, false));
         lord.addEffect(new MobEffectInstance(MobEffects.GLOWING, 20 * 30, 0, false, false));
-        lord.setCustomName(Component.translatable("entity.wildplus.blood_lord").withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD));
+        lord.setCustomName(awake ? Component.literal("각성한 ").append(Component.translatable("entity.wildplus.blood_lord"))
+                .withStyle(ChatFormatting.RED, ChatFormatting.BOLD, ChatFormatting.UNDERLINE)
+                : Component.translatable("entity.wildplus.blood_lord").withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD));
+        if (awake) {
+            lord.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, MobEffectInstance.INFINITE_DURATION, 0, false, true));
+            lord.setItemSlot(EquipmentSlot.LEGS, new ItemStack(ModItems.BLOODSTEEL_LEGGINGS.get()));
+            lord.setItemSlot(EquipmentSlot.FEET, new ItemStack(ModItems.BLOODSTEEL_BOOTS.get()));
+        }
         lord.setCustomNameVisible(true);
         lord.setPersistenceRequired();
         lord.setTarget(near);
@@ -134,7 +144,11 @@ public final class BloodLord {
         level.playSound(null, at, SoundEvents.WITHER_SPAWN, SoundSource.HOSTILE, 1.5F, 0.8F);
         level.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("message.wildplus.blood_lord.spawn",
                 near.getName()).withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD), false);
-        WildPlus.LOGGER.info("Blood Lord spawned at {}", at);
+        if (awake) {
+            level.getServer().getPlayerList().broadcastSystemMessage(Component.literal("⚠ 이번 핏빛 군주는 각성했다! (체력·공격 대폭 강화, 보상 두 배)")
+                    .withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
+        }
+        WildPlus.LOGGER.info("Blood Lord spawned at {} awake={}", at, awake);
         return lord;
     }
 
@@ -142,7 +156,9 @@ public final class BloodLord {
     @SubscribeEvent
     public static void onJoin(EntityJoinLevelEvent event) {
         if (!event.getLevel().isClientSide() && isLord(event.getEntity()) && !BARS.containsKey(event.getEntity().getUUID())) {
-            ServerBossEvent bar = new ServerBossEvent(UUID.randomUUID(), Component.translatable("entity.wildplus.blood_lord")
+            boolean awake = event.getEntity().getPersistentData().getBooleanOr(AWAKE, false);
+            ServerBossEvent bar = new ServerBossEvent(UUID.randomUUID(), awake ? Component.literal("각성한 ").append(Component.translatable("entity.wildplus.blood_lord"))
+                    .withStyle(ChatFormatting.RED, ChatFormatting.BOLD) : Component.translatable("entity.wildplus.blood_lord")
                     .withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.NOTCHED_20);
             BARS.put(event.getEntity().getUUID(), bar);
         }
@@ -231,6 +247,12 @@ public final class BloodLord {
         LivingEntity e = event.getEntity();
         if (!isLord(e)) return;
         RandomSource r = e.getRandom();
+        if (e.getPersistentData().getBooleanOr(AWAKE, false)) {
+            drop(event, e, new ItemStack(ModItems6.LORD_HEART.get()));
+            drop(event, e, new ItemStack(ModItems3.GOLD_COIN.get(), 15 + r.nextInt(11)));
+            drop(event, e, new ItemStack(com.snolred.wildplus.registry.ModItems7.RUBY.get(), 3 + r.nextInt(3)));
+            drop(event, e, new ItemStack(Items.NETHERITE_INGOT));
+        }
         drop(event, e, new ItemStack(ModItems6.LORD_HEART.get()));
         drop(event, e, new ItemStack(ModItems.BLOOD_SHARD.get(), 10 + r.nextInt(11)));
         drop(event, e, new ItemStack(ModItems3.GOLD_COIN.get(), 5 + r.nextInt(6)));

@@ -56,6 +56,12 @@ public final class ModBlocks2 {
     public static final DeferredBlock<com.snolred.wildplus.block.MailboxBlock> MAILBOX = BLOCKS.registerBlock("mailbox",
             com.snolred.wildplus.block.MailboxBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().strength(2.0F));
 
+    // ───────── 2.8 ─────────
+    public static final DeferredBlock<com.snolred.wildplus.block.TrashCanBlock> TRASH_CAN = BLOCKS.registerBlock("trash_can",
+            com.snolred.wildplus.block.TrashCanBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().strength(2.0F));
+    public static final DeferredBlock<com.snolred.wildplus.block.AutoCrafterBlock> AUTO_CRAFTER = BLOCKS.registerBlock("auto_crafter",
+            com.snolred.wildplus.block.AutoCrafterBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.CRAFTER));
+
     public static void init() {}
 
     private ModBlocks2() {}

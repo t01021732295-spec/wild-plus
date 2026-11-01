@@ -124,6 +124,10 @@ public final class RubyGear {
         Player p = event.getEntity();
         if (!(p.level() instanceof ServerLevel level) || p.tickCount % 40 != 0) return;
         if (pieces(p) >= 2) p.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 80, 0, true, false, true));
+        // 핏빛 각인: 체력이 절반 이하면 힘 I
+        if (hasEngraving(p, "BLOOD") && p.getHealth() <= p.getMaxHealth() * 0.5F) {
+            p.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 60, 0, true, false, true));
+        }
         // 스타 루비 세트: 2부위 재생 I / 4부위 재생 II + 화염 저항 + 야간 투시
         int star = starPieces(p);
         if (star >= 2) p.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, star >= 4 ? 1 : 0, true, false, true));
@@ -175,6 +179,15 @@ public final class RubyGear {
         if (event.getSource().getEntity() instanceof Player p && event.getSource().getDirectEntity() == p && !p.level().isClientSide()
                 && hasEngraving(p, "FROST")) {
             event.getEntity().addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 40, 1));
+        }
+    }
+
+    /** 핏빛 각인: 준 피해의 15% 흡혈 (최대 4) */
+    @SubscribeEvent
+    public static void onBloodHit(LivingDamageEvent.Post event) {
+        if (event.getSource().getEntity() instanceof Player p && !p.level().isClientSide() && hasEngraving(p, "BLOOD")
+                && p.getHealth() < p.getMaxHealth()) {
+            p.heal(Math.min(4.0F, event.getHealthDamage() * 0.15F));
         }
     }
 

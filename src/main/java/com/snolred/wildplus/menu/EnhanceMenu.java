@@ -34,6 +34,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
         if (mat.is(com.snolred.wildplus.registry.ModItems8.TITAN_CORE.get())) return "TITAN";
         if (mat.is(com.snolred.wildplus.registry.ModItems8.LICH_ORB.get())) return "LICH";
         if (mat.is(com.snolred.wildplus.registry.ModItems8.FROST_CROWN.get())) return "FROST";
+        if (mat.is(com.snolred.wildplus.registry.ModItems6.LORD_HEART.get())) return "BLOOD";
         return "";
     }
 
@@ -42,6 +43,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
             case "TITAN" -> "대지 각인";
             case "LICH" -> "망령 각인";
             case "FROST" -> "서리 각인";
+            case "BLOOD" -> "핏빛 각인";
             default -> "";
         };
     }
@@ -129,7 +131,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
             String kind = engraveKind(input.getItem(1));
             if (!com.snolred.wildplus.event.RubyGear.isStar(stack) || !com.snolred.wildplus.event.RubyGear.engraving(stack).isEmpty()) return true;
             if (kind.isEmpty()) {
-                sp.sendOverlayMessage(Component.literal("재료 칸에 레이드 전리품(거신의 핵 · 망령 군주의 구슬 · 서리 왕관 조각)을 넣으세요")
+                sp.sendOverlayMessage(Component.literal("재료 칸에 레이드 전리품이나 핏빛 군주의 심장을 넣으세요")
                         .withStyle(ChatFormatting.RED));
                 return true;
             }

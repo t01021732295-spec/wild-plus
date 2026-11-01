@@ -595,5 +595,9 @@
   "item.wildplus.explosive_arrow": "Explosive Arrow",
   "item.wildplus.homing_arrow": "Homing Arrow",
   "item.wildplus.lightning_arrow": "Lightning Arrow",
-  "item.wildplus.frost_arrow": "Frost Arrow"
+  "item.wildplus.frost_arrow": "Frost Arrow",
+  "block.wildplus.trash_can": "Trash Can",
+  "tooltip.wildplus.trash_can": "Deletes anything put inside. Works with hoppers",
+  "block.wildplus.auto_crafter": "Auto Crafter",
+  "tooltip.wildplus.auto_crafter": "Set a recipe in the 3x3 pattern; crafts automatically as ingredients arrive. Hopper in from top/sides, out from bottom"
 }

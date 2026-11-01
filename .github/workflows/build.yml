@@ -347,6 +347,20 @@ jobs:
             sleep 4
             run "execute if block 38 121 35 minecraft:chest{Items:[{id:\"minecraft:dirt\",count:4}]} if block 35 121 35 wildplus:sorting_chest{items:[{id:\"minecraft:diamond\"}]} run say SORT_OK"
             run "data get block 38 121 35 Items"
+            # 2.8: 쓰레기통 (상자→호퍼→쓰레기통) · 자동 제작대 (원목 → 판자, 아래 호퍼로 상자에)
+            run "fill 24 118 42 31 124 47 minecraft:air"
+            run "setblock 25 121 44 wildplus:trash_can"
+            run "setblock 25 122 44 minecraft:hopper[facing=down]{Items:[{Slot:0b,id:\"minecraft:dirt\",count:5}]}"
+            run "setblock 28 121 44 wildplus:auto_crafter{pattern:[{id:\"minecraft:oak_log\",count:1}]}"
+            run "setblock 28 122 44 minecraft:hopper[facing=down]{Items:[{Slot:0b,id:\"minecraft:oak_log\",count:3}]}"
+            run "setblock 28 120 44 minecraft:hopper[facing=down]"
+            run "setblock 28 119 44 minecraft:chest"
+            sleep 12
+            echo "say TEST trash and crafter"; sleep 1
+            run "execute if block 25 122 44 minecraft:hopper unless block 25 122 44 minecraft:hopper{Items:[{id:\"minecraft:dirt\"}]} run say TRASH_OK"
+            run "execute if block 28 119 44 minecraft:chest{Items:[{id:\"minecraft:oak_planks\"}]} run say AUTOCRAFT_OK"
+            run "data get block 28 119 44 Items"
+            run "data get block 28 121 44"
             # 13차: 이벤트 투척병(영웅의 시간)이 땅에 깨지면 이벤트 시작 · 루비 광맥 생성
             run "fill 60 119 60 62 119 62 minecraft:stone"
             run "summon minecraft:snowball 61.5 124 61.5 {Item:{id:\"wildplus:event_bottle\",count:1,components:{\"minecraft:custom_data\":{wildplus_event:\"HERO_TIME\"}}},Motion:[0.0,-1.0,0.0]}"
@@ -829,6 +843,22 @@ jobs:
             xdotool key e || true
             sleep 3
             import -window root shot-apples-bows.png || true
+            xdotool key Escape; sleep 1
+            # ── 2.8: 쓰레기통 · 자동 제작대 ──
+            cmd "/clear @s"
+            cmd "/setblock 464 120 -12 wildplus:trash_can"
+            cmd "/setblock 466 120 -12 wildplus:auto_crafter{pattern:[{id:\"minecraft:oak_planks\",count:1},{id:\"minecraft:oak_planks\",count:1},{},{id:\"minecraft:oak_planks\",count:1},{id:\"minecraft:oak_planks\",count:1}],items:[{id:\"minecraft:oak_planks\",count:20}]}"
+            cmd "/setblock 466 121 -12 minecraft:hopper[facing=down]"
+            cmd "/tp @s 465.5 121 -8.5 180 25"
+            sleep 4
+            xdotool key F1 || true
+            sleep 1
+            import -window root shot-trash-crafter.png || true
+            xdotool key F1 || true
+            cmd "/setblock 466 121 -12 minecraft:air"
+            cmd "/tp @s 466.5 120 -9.8 180 35"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-auto-crafter.png || true
             xdotool key Escape; sleep 1
             # 랜덤 이벤트 · 새 효과
             cmd "/gamemode creative"

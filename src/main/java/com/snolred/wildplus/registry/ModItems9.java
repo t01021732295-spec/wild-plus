@@ -80,6 +80,10 @@ public final class ModItems9 {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> FEEDER = ITEMS.registerSimpleBlockItem("feeder", ModBlocks2.FEEDER);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> MAILBOX = ITEMS.registerSimpleBlockItem("mailbox", ModBlocks2.MAILBOX);
 
+    // 2.8
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> TRASH_CAN = ITEMS.registerSimpleBlockItem("trash_can", ModBlocks2.TRASH_CAN);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> AUTO_CRAFTER = ITEMS.registerSimpleBlockItem("auto_crafter", ModBlocks2.AUTO_CRAFTER);
+
     /** 루비 → 스타 루비 짝 */
     public static Map<Item, Item> upgrades() {
         return Map.of(
