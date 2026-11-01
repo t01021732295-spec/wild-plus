@@ -628,6 +628,8 @@
   "tooltip.wildplus.dragon_plume": "드래곤의 숨결 2 + 겉날개 → 깃털 2개\n강화대에서 사파이어 장비를 스카이 사파이어로 승급",
   "equipment.wildplus.sapphire": "사파이어",
   "equipment.wildplus.sky_sapphire": "스카이 사파이어",
+  "item.wildplus.repair_kit": "휴대용 수리 키트",
+  "tooltip.wildplus.repair_kit": "우클릭: 손에 든 것 · 입은 갑옷 중 닳은 장비를 각 25%씩 수리\n고친 장비 하나마다 1회 소모 (10회)",
   "item.wildplus.sapphire_apple": "사파이어 사과",
   "tooltip.wildplus.sapphire_apple": "수중 호흡 · 돌고래의 가호 (3분)\n저항 I · 흡수 I (1분)",
   "item.wildplus.sky_sapphire_apple": "스카이 사파이어 사과",

@@ -89,6 +89,33 @@ def plume():
     return im
 
 
+def repair_kit():
+    """빨간 공구 상자 + 은색 손잡이 · 걸쇠 + 렌치"""
+    im = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    px = im.load()
+    for y in range(6, 15):
+        for x in range(1, 15):
+            edge = x in (1, 14) or y in (6, 14)
+            base = (120, 20, 24) if edge else ((214, 46, 46) if y < 9 else (184, 32, 36))
+            px[x, y] = base + (255,)
+    for x in range(1, 15):
+        px[x, 9] = (90, 14, 18, 255)
+    for x in range(5, 11):
+        px[x, 3] = (190, 196, 206, 255)
+    for y in range(3, 6):
+        px[5, y] = (150, 156, 168, 255)
+        px[10, y] = (150, 156, 168, 255)
+    for (x, y) in [(7, 9), (8, 9), (7, 10), (8, 10)]:
+        px[x, y] = (230, 196, 80, 255)
+    # 렌치
+    for t in range(6):
+        px[3 + t, 13 - t // 2] = (210, 216, 226, 255)
+    px[2, 12] = px[2, 14] = (210, 216, 226, 255)
+    for (x, y) in [(3, 7), (12, 7)]:
+        px[x, y] = (255, 120, 120, 255)
+    return im
+
+
 def build(van: Path):
     T = van / "minecraft/textures"
     if not T.exists():
@@ -159,6 +186,7 @@ def build(van: Path):
     snowflake(ap, 5, 11)
     ap.save(out_item / "sky_sapphire_apple.png")
     plume().save(out_item / "dragon_plume.png")
+    repair_kit().save(out_item / "repair_kit.png")
     return n + 1
 
 

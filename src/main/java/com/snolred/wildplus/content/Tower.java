@@ -217,8 +217,8 @@ public final class Tower {
         double a = r.nextDouble() * Math.PI * 2, d = 6 + r.nextDouble() * (R - 7);
         m.snapTo(CENTER.getX() + 0.5 + Math.cos(a) * d, CENTER.getY() + 1, CENTER.getZ() + 0.5 + Math.sin(a) * d, r.nextFloat() * 360F, 0F);
         m.finalizeSpawn(lv, lv.getCurrentDifficultyAt(CENTER), EntitySpawnReason.EVENT, null);
-        set(m, Attributes.MAX_HEALTH, 1.0 + 0.08 * floor);
-        set(m, Attributes.ATTACK_DAMAGE, 1.0 + 0.05 * floor);
+        set(m, Attributes.MAX_HEALTH, 1.0 + 0.05 * floor);
+        set(m, Attributes.ATTACK_DAMAGE, 1.0 + 0.03 * floor);
         AttributeInstance fr = m.getAttribute(Attributes.FOLLOW_RANGE);
         if (fr != null) fr.setBaseValue(48);
         m.setHealth(m.getMaxHealth());
@@ -238,7 +238,7 @@ public final class Tower {
     private static void wave(ServerLevel lv) {
         RandomSource r = lv.getRandom();
         List<EntityType<? extends Mob>> pool = pool(floor);
-        int n = Math.min(16, 2 + floor / 2 + ACTIVE.size());
+        int n = Math.min(12, 2 + floor / 3 + ACTIVE.size());
         if (floor % 5 == 0) n = Math.max(2, n / 2);
         for (int i = 0; i < n; i++) spawn(lv, pool.get(r.nextInt(pool.size())), r);
         if (floor % 10 == 0) {
@@ -280,7 +280,7 @@ public final class Tower {
         });
         if (bar != null) {
             bar.setName(Component.literal(String.format("🗼 하늘의 탑 %d층 · %s · 남은 몬스터 %d", floor, themeName(floor), MOBS.size())));
-            bar.setProgress(phase == Phase.FIGHT ? Mth.clamp(MOBS.size() / (float) Math.max(1, Math.min(16, 2 + floor / 2 + ACTIVE.size())), 0F, 1F) : 1F);
+            bar.setProgress(phase == Phase.FIGHT ? Mth.clamp(MOBS.size() / (float) Math.max(1, Math.min(12, 2 + floor / 3 + ACTIVE.size())), 0F, 1F) : 1F);
         }
         switch (phase) {
             case ARRIVE -> {
@@ -344,7 +344,18 @@ public final class Tower {
                 && p.getY() > CENTER.getY() - 3 && p.getY() < CENTER.getY() + H + 3;
     }
 
+    /** 층을 깨면 투기장에 남은 소환수(벡스 등)·떠돌이 몹을 모두 정리 (길들인 동물은 남김) */
+    private static void sweep(ServerLevel lv) {
+        net.minecraft.world.phys.AABB box = new net.minecraft.world.phys.AABB(CENTER).inflate(R + 4, 0, R + 4).expandTowards(0, H + 6, 0).move(0, -3, 0);
+        for (Mob m : lv.getEntitiesOfClass(Mob.class, box)) {
+            if (m instanceof net.minecraft.world.entity.OwnableEntity o && o.getOwner() != null) continue;
+            lv.sendParticles(ParticleTypes.POOF, m.getX(), m.getY() + m.getBbHeight() * 0.5, m.getZ(), 8, 0.3, 0.3, 0.3, 0.02);
+            m.discard();
+        }
+    }
+
     private static void cleared(ServerLevel lv) {
+        sweep(lv);
         MinecraftServer server = lv.getServer();
         long coins = 10L * floor;
         for (UUID id : ACTIVE) {
@@ -429,6 +440,7 @@ public final class Tower {
             if (e != null) e.discard();
         }
         MOBS.clear();
+        sweep(lv);
         if (bar != null) bar.removeAllPlayers();
         bar = null;
         for (int cx = (CENTER.getX() - R - 2) >> 4; cx <= (CENTER.getX() + R + 2) >> 4; cx++) {

@@ -106,6 +106,10 @@ public final class ModItems11 {
     public static final DeferredItem<com.snolred.wildplus.item.WildBowItem> SKY_SAPPHIRE_BOW = ITEMS.registerItem("sky_sapphire_bow",
             p -> new com.snolred.wildplus.item.WildBowItem(sky(p.durability(4000).enchantable(1)), "sky_sapphire", 1.75F, 1.5F));
 
+    /** 휴대용 수리 키트 (10회) */
+    public static final DeferredItem<com.snolred.wildplus.item.RepairKitItem> REPAIR_KIT = ITEMS.registerItem("repair_kit",
+            p -> new com.snolred.wildplus.item.RepairKitItem(p.durability(10).rarity(Rarity.UNCOMMON)));
+
     // ───────── 사과 ─────────
     /** 사파이어: 수중 호흡 · 돌고래의 가호 3분, 저항 I · 흡수 I 1분 */
     public static final DeferredItem<Item> SAPPHIRE_APPLE = ModItems10.apple("sapphire_apple", Rarity.EPIC, true, 4, 1.2F,
