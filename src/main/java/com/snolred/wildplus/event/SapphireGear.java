@@ -18,9 +18,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
@@ -111,11 +109,11 @@ public final class SapphireGear {
             int grown = 0, tries = hand.is(SKY_SAPPHIRE_HOE.get()) ? 6 : 3;
             for (BlockPos pos : BlockPos.betweenClosed(c.offset(-4, -2, -4), c.offset(4, 2, 4))) {
                 BlockState st = level.getBlockState(pos);
-                if (st.getBlock() instanceof FarmBlock && st.getValue(FarmBlock.MOISTURE) < 7) {
-                    level.setBlock(pos, st.setValue(FarmBlock.MOISTURE, 7), 2);
+                if (st.is(Blocks.FARMLAND) && st.getValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.MOISTURE) < 7) {
+                    level.setBlock(pos, st.setValue(net.minecraft.world.level.block.state.properties.BlockStateProperties.MOISTURE, 7), 2);
                 }
                 if (grown < tries && st.getBlock() instanceof CropBlock crop && !crop.isMaxAge(st) && p.getRandom().nextInt(3) == 0) {
-                    ((BonemealableBlock) crop).performBonemeal(level, level.getRandom(), pos.immutable(), st);
+                    for (int k = 0; k < 4; k++) level.getBlockState(pos).randomTick(level, pos.immutable(), level.getRandom());
                     level.sendParticles(ParticleTypes.SPLASH, pos.getX() + 0.5, pos.getY() + 0.6, pos.getZ() + 0.5, 4, 0.25, 0.1, 0.25, 0.0);
                     grown++;
                 }

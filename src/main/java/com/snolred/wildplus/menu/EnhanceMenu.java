@@ -114,7 +114,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
             if (to == null) return true;
             net.minecraft.world.item.Item need = com.snolred.wildplus.registry.ModItems9.upgradeMaterial(stack.getItem());
             if (!input.getItem(1).is(need)) {
-                sp.sendOverlayMessage(Component.literal("아래 재료 칸에 " + need.getName().getString() + "을(를) 넣으세요").withStyle(ChatFormatting.RED));
+                sp.sendOverlayMessage(Component.literal("아래 재료 칸에 " + need.getDefaultInstance().getHoverName().getString() + "을(를) 넣으세요").withStyle(ChatFormatting.RED));
                 return true;
             }
             if (!Coins.pay(sp, STAR_COST)) {
