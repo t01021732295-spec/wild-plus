@@ -27,8 +27,8 @@ import org.jspecify.annotations.Nullable;
  */
 public class EnhanceMenu extends AbstractContainerMenu {
     public static final int BTN_REPAIR = 50, BTN_STAR = 60, BTN_TRUE_DMG = 61, BTN_ENGRAVE = 62, BTN_LIFESTEAL = 63;
-    /** 흡혈 강화: 핏빛 강철 주괴 50개마다 +1%, 최대 10% */
-    public static final int LIFESTEAL_COST = 50, LIFESTEAL_MAX = 10;
+    /** 흡혈 강화: 핏빛 강철 주괴 50개마다 +1%, 최대 30% */
+    public static final int LIFESTEAL_COST = 50, LIFESTEAL_MAX = 30;
     public static final long STAR_COST = 1000, TRUE_DMG_COST = 500, ENGRAVE_COST = 2000;
 
     /** 레이드 전리품 → 각인 종류 */
