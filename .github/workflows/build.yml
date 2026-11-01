@@ -885,6 +885,19 @@ jobs:
             sleep 3
             import -window root shot-sapphire-wear.png || true
             xdotool key F5 || true
+            # ── 2.10: 보스 9종 ──
+            cmd "/clear @s"
+            cmd "/time set noon"
+            cmd "/fill 470 119 -30 498 125 -20 minecraft:air"
+            cmd "/fill 470 118 -30 498 118 -20 minecraft:smooth_stone"
+            x=472; for b in titan_boss lich_boss frost_boss vine_boss pharaoh_boss flame_boss abyss_boss void_boss gold_boss; do cmd "/summon wildplus:$b $x 119 -26 {NoAI:1b,Rotation:[0f,0f],PersistenceRequired:1b}"; x=$((x+3)); done
+            cmd "/tp @s 484.5 121 -18.5 180 10"
+            sleep 5
+            xdotool key F1 || true
+            sleep 1
+            import -window root shot-bosses.png || true
+            xdotool key F1 || true
+            cmd "/kill @e[type=!player,x=470,y=115,z=-32,dx=30,dy=12,dz=14]"
             # 랜덤 이벤트 · 새 효과
             cmd "/gamemode creative"
             cmd "/tp @s 478 121 30 0 10"

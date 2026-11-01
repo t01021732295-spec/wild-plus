@@ -39,7 +39,36 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<GoldenSlimeEntity>> GOLDEN_SLIME = ENTITIES.registerEntityType("golden_slime",
             GoldenSlimeEntity::new, MobCategory.MONSTER, b -> b.sized(0.52F, 0.52F).eyeHeight(0.325F).clientTrackingRange(10));
 
+    // ───────── 보스 (레이드 3 · 하늘의 탑 6) ─────────
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.BossMobs.Titan>> TITAN_BOSS = ENTITIES.registerEntityType("titan_boss",
+            com.snolred.wildplus.entity.BossMobs.Titan::new, MobCategory.MONSTER, b -> b.sized(1.95F, 2.2F).fireImmune().clientTrackingRange(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.BossMobs.Lich>> LICH_BOSS = ENTITIES.registerEntityType("lich_boss",
+            com.snolred.wildplus.entity.BossMobs.Lich::new, MobCategory.MONSTER, b -> b.sized(0.6F, 1.95F).fireImmune().clientTrackingRange(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.BossMobs.FrostQueen>> FROST_BOSS = ENTITIES.registerEntityType("frost_boss",
+            com.snolred.wildplus.entity.BossMobs.FrostQueen::new, MobCategory.MONSTER, b -> b.sized(0.6F, 1.99F).fireImmune().clientTrackingRange(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.BossMobs.VineExecutioner>> VINE_BOSS = ENTITIES.registerEntityType("vine_boss",
+            com.snolred.wildplus.entity.BossMobs.VineExecutioner::new, MobCategory.MONSTER, b -> b.sized(0.6F, 1.95F).fireImmune().clientTrackingRange(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.BossMobs.SandPharaoh>> PHARAOH_BOSS = ENTITIES.registerEntityType("pharaoh_boss",
+            com.snolred.wildplus.entity.BossMobs.SandPharaoh::new, MobCategory.MONSTER, b -> b.sized(0.6F, 1.95F).fireImmune().clientTrackingRange(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.BossMobs.FlameLord>> FLAME_BOSS = ENTITIES.registerEntityType("flame_boss",
+            com.snolred.wildplus.entity.BossMobs.FlameLord::new, MobCategory.MONSTER, b -> b.sized(0.7F, 2.4F).fireImmune().clientTrackingRange(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.BossMobs.AbyssWarden>> ABYSS_BOSS = ENTITIES.registerEntityType("abyss_boss",
+            com.snolred.wildplus.entity.BossMobs.AbyssWarden::new, MobCategory.MONSTER, b -> b.sized(0.6F, 1.95F).fireImmune().clientTrackingRange(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.BossMobs.VoidKnight>> VOID_BOSS = ENTITIES.registerEntityType("void_boss",
+            com.snolred.wildplus.entity.BossMobs.VoidKnight::new, MobCategory.MONSTER, b -> b.sized(0.6F, 1.95F).fireImmune().clientTrackingRange(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.BossMobs.GoldenKing>> GOLD_BOSS = ENTITIES.registerEntityType("gold_boss",
+            com.snolred.wildplus.entity.BossMobs.GoldenKing::new, MobCategory.MONSTER, b -> b.sized(0.6F, 1.95F).fireImmune().clientTrackingRange(10));
+
     public static void onAttributes(EntityAttributeCreationEvent event) {
+        event.put(TITAN_BOSS.get(), net.minecraft.world.entity.monster.Ravager.createAttributes().build());
+        event.put(LICH_BOSS.get(), net.minecraft.world.entity.monster.illager.Evoker.createAttributes().build());
+        event.put(FROST_BOSS.get(), net.minecraft.world.entity.monster.skeleton.AbstractSkeleton.createAttributes().build());
+        event.put(VINE_BOSS.get(), net.minecraft.world.entity.monster.illager.Vindicator.createAttributes().build());
+        event.put(PHARAOH_BOSS.get(), net.minecraft.world.entity.monster.zombie.Husk.createAttributes().build());
+        event.put(FLAME_BOSS.get(), net.minecraft.world.entity.monster.skeleton.AbstractSkeleton.createAttributes().build());
+        event.put(ABYSS_BOSS.get(), net.minecraft.world.entity.monster.zombie.Drowned.createAttributes().build());
+        event.put(VOID_BOSS.get(), net.minecraft.world.entity.monster.illager.Vindicator.createAttributes().build());
+        event.put(GOLD_BOSS.get(), net.minecraft.world.entity.monster.illager.Vindicator.createAttributes().build());
         var merchant = Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.5).add(Attributes.MAX_HEALTH, 30.0).build();
         event.put(MERCHANT.get(), merchant);
         event.put(BLACKSMITH_MERCHANT.get(), merchant);

@@ -63,9 +63,9 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  */
 public final class Raid {
     public enum Boss {
-        TITAN("대지의 거신", "돌진 · 땅 내리치기 / 낙석 / 광폭화 + 약탈자 호위", 700, 16, 2.0F, BossEvent.BossBarColor.YELLOW),
-        LICH("망령 군주", "송곳니 · 벡스 / 순간이동 · 번개 / 위더 스켈레톤 · 암흑", 520, 10, 1.8F, BossEvent.BossBarColor.PURPLE),
-        FROST("서리 여왕", "얼음 화살 · 서리 폭발 / 얼음 가시 / 눈보라 + 호위병", 560, 10, 1.9F, BossEvent.BossBarColor.BLUE);
+        TITAN("대지의 거신", "땅 내리치기 · 지진 돌진 / 낙석 / 광폭화 + 약탈자 호위", 700, 16, 2.0F, BossEvent.BossBarColor.YELLOW),
+        LICH("망령 군주", "송곳니 · 영혼 사슬 / 순간이동 · 번개 / 위더 스켈레톤 · 암흑", 520, 10, 1.8F, BossEvent.BossBarColor.PURPLE),
+        FROST("서리 여왕", "얼음 화살 · 서리 폭발 / 얼음 감옥 · 얼음 가시 / 눈보라 + 호위병", 560, 10, 1.9F, BossEvent.BossBarColor.BLUE);
 
         public final String title, patterns;
         public final int health, damage;
@@ -83,9 +83,9 @@ public final class Raid {
 
         EntityType<? extends Mob> type() {
             return switch (this) {
-                case TITAN -> EntityTypes.RAVAGER;
-                case LICH -> EntityTypes.EVOKER;
-                case FROST -> EntityTypes.STRAY;
+                case TITAN -> com.snolred.wildplus.registry.ModEntities.TITAN_BOSS.get();
+                case LICH -> com.snolred.wildplus.registry.ModEntities.LICH_BOSS.get();
+                case FROST -> com.snolred.wildplus.registry.ModEntities.FROST_BOSS.get();
             };
         }
 
@@ -120,6 +120,23 @@ public final class Raid {
     private static final Map<UUID, String> NAMES = new HashMap<>();
     private static final List<Strike> STRIKES = new ArrayList<>();
     private static final List<UUID> MINIONS = new ArrayList<>();
+    /** 얼음 감옥 블록 {위치, 사라질 시간} */
+    private static final List<long[]> ICE = new ArrayList<>();
+
+    private static void tickIce(long now, boolean all) {
+        if (ICE.isEmpty() || level == null) return;
+        var it = ICE.iterator();
+        while (it.hasNext()) {
+            long[] e = it.next();
+            if (!all && now < e[1]) continue;
+            BlockPos q = BlockPos.of(e[0]);
+            if (level.getBlockState(q).is(net.minecraft.world.level.block.Blocks.PACKED_ICE)) {
+                level.setBlock(q, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
+                level.sendParticles(ParticleTypes.ITEM_SNOWBALL, q.getX() + 0.5, q.getY() + 0.5, q.getZ() + 0.5, 6, 0.3, 0.3, 0.3, 0.02);
+            }
+            it.remove();
+        }
+    }
 
     private Raid() {}
 
@@ -198,7 +215,7 @@ public final class Raid {
         set(mob, Attributes.FOLLOW_RANGE, 48);
         set(mob, Attributes.SCALE, b.scale);
         mob.setHealth(mob.getMaxHealth());
-        if (b == Boss.FROST) mob.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.DIAMOND_HELMET));
+        if (b == Boss.FROST) mob.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
         for (EquipmentSlot s : EquipmentSlot.values()) mob.setDropChance(s, 0.0F);
         mob.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, MobEffectInstance.INFINITE_DURATION, 0, false, false));
         mob.getPersistentData().putBoolean(TAG, true);
@@ -245,6 +262,7 @@ public final class Raid {
             return;
         }
         tickStrikes(now);
+        tickIce(now, false);
         if (now % 5 != 0) return;
         float ratio = mob.getHealth() / mob.getMaxHealth();
         bar.setProgress(Mth.clamp(ratio, 0F, 1F));
@@ -292,6 +310,16 @@ public final class Raid {
         switch (boss) {
             case TITAN -> {
                 if (t % 160 == 0) strike(mob.position(), 30, 5.5F, dmg * 0.8F, 0);
+                // 지진 돌진: 대상 쪽으로 땅이 줄지어 갈라지고 거신이 돌진
+                if (t % 220 == 110 && !near.isEmpty()) {
+                    ServerPlayer tg = near.get(r.nextInt(near.size()));
+                    Vec3 dir = tg.position().subtract(mob.position()).multiply(1, 0, 1).normalize();
+                    for (int i = 1; i <= 8; i++) strike(mob.position().add(dir.scale(i * 2.2)), 12 + i * 3, 1.9F, dmg * 0.7F, 0);
+                    mob.setDeltaMovement(dir.x * 1.6, 0.25, dir.z * 1.6);
+                    mob.hurtMarked = true;
+                    for (ServerPlayer p : near) p.sendOverlayMessage(Component.literal("⚠ 지진 돌진! 옆으로 피하세요").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
+                    level.playSound(null, mob.blockPosition(), SoundEvents.RAVAGER_ROAR, SoundSource.HOSTILE, 1.5F, 0.7F);
+                }
                 if (phase >= 2 && t % 100 == 50) for (ServerPlayer p : near) strike(p.position(), 40, 2.5F, dmg * 0.6F, 1);
                 if (phase >= 3 && t % 400 == 200) minions(mob, EntityTypes.VINDICATOR, 2);
             }
@@ -302,6 +330,23 @@ public final class Raid {
                     level.sendParticles(ParticleTypes.REVERSE_PORTAL, mob.getX(), mob.getY() + 1, mob.getZ(), 40, 0.5, 1, 0.5, 0.1);
                     mob.teleportTo(to.getX() + 0.5, to.getY(), to.getZ() + 0.5);
                     level.playSound(null, to, SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 1.0F, 0.6F);
+                }
+                // 영혼 사슬: 한 명을 끌어당기고 체력을 빨아들임
+                if (t % 260 == 130 && !near.isEmpty()) {
+                    ServerPlayer tg = near.get(r.nextInt(near.size()));
+                    Vec3 d = mob.position().subtract(tg.position());
+                    for (int i = 0; i < 12; i++) {
+                        Vec3 at = tg.position().add(d.scale(i / 12.0));
+                        level.sendParticles(ParticleTypes.SOUL, at.x, at.y + 1.2, at.z, 2, 0.05, 0.05, 0.05, 0.0);
+                    }
+                    Vec3 n = d.normalize();
+                    tg.push(n.x * 1.5, 0.35, n.z * 1.5);
+                    tg.connection.send(new ClientboundSetEntityMotionPacket(tg));
+                    tg.hurtServer(level, level.damageSources().indirectMagic(mob, mob), dmg * 0.5F);
+                    tg.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 100, 0));
+                    mob.heal(mob.getMaxHealth() * 0.02F);
+                    tg.sendOverlayMessage(Component.literal("⚠ 영혼 사슬에 묶였어요!").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD));
+                    level.playSound(null, tg.blockPosition(), SoundEvents.EVOKER_CAST_SPELL, SoundSource.HOSTILE, 1.5F, 0.6F);
                 }
                 if (phase >= 2 && t % 120 == 60) {
                     for (ServerPlayer p : near) {
@@ -319,6 +364,23 @@ public final class Raid {
             case FROST -> {
                 if (t % 140 == 0) strike(mob.position(), 25, 6.0F, dmg * 0.6F, 3);
                 if (phase >= 2 && t % 110 == 55) for (ServerPlayer p : near) strike(p.position(), 35, 2.0F, dmg * 0.7F, 3);
+                // 얼음 감옥: 한 명을 얼음 속에 4초 가둠 (깨고 나올 수도 있음)
+                if (phase >= 2 && t % 240 == 120 && !near.isEmpty()) {
+                    ServerPlayer tg = near.get(r.nextInt(near.size()));
+                    BlockPos c = tg.blockPosition();
+                    for (BlockPos q : new BlockPos[]{c.north(), c.south(), c.east(), c.west(), c.north().above(), c.south().above(),
+                            c.east().above(), c.west().above(), c.above(2)}) {
+                        if (level.getBlockState(q).isAir()) {
+                            level.setBlock(q, net.minecraft.world.level.block.Blocks.PACKED_ICE.defaultBlockState(), 3);
+                            ICE.add(new long[]{q.asLong(), level.getGameTime() + 80});
+                        }
+                    }
+                    tg.teleportTo(c.getX() + 0.5, c.getY(), c.getZ() + 0.5);
+                    tg.setTicksFrozen(tg.getTicksRequiredToFreeze() + 80);
+                    tg.hurtServer(level, level.damageSources().freeze(), dmg * 0.4F);
+                    tg.sendOverlayMessage(Component.literal("⚠ 얼음 감옥! 4초 버티거나 깨고 나오세요").withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD));
+                    level.playSound(null, c, SoundEvents.GLASS_PLACE, SoundSource.HOSTILE, 1.5F, 0.5F);
+                }
                 if (phase >= 3) {
                     if (t % 40 == 0) {
                         for (ServerPlayer p : near) {
@@ -592,6 +654,7 @@ public final class Raid {
 
     private static void cleanup(boolean removeBoss) {
         if (level != null) {
+            tickIce(0, true);
             for (ServerPlayer p : new ArrayList<>(level.players())) if (inArena(p)) sendHome(p);
             if (removeBoss && bossId != null) {
                 Entity e = level.getEntity(bossId);

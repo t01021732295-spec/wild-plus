@@ -36,6 +36,46 @@ public final class ModRenderers {
         event.registerEntityRenderer(ModEntities.BANKER_MERCHANT.get(), ctx -> new MerchantRenderer(ctx, tex("banker_merchant")));
         event.registerEntityRenderer(ModEntities.BANDIT.get(), BanditRenderer::new);
         event.registerEntityRenderer(ModEntities.GOLDEN_SLIME.get(), GoldenSlimeRenderer::new);
+        // 보스: 바닐라 모델 + 전용 텍스처
+        event.registerEntityRenderer(ModEntities.TITAN_BOSS.get(), ctx -> new net.minecraft.client.renderer.entity.RavagerRenderer(ctx) {
+            @Override
+            public Identifier getTextureLocation(net.minecraft.client.renderer.entity.state.RavagerRenderState s) {
+                return tex("boss/titan");
+            }
+        });
+        event.registerEntityRenderer(ModEntities.LICH_BOSS.get(), ctx -> new net.minecraft.client.renderer.entity.EvokerRenderer<com.snolred.wildplus.entity.BossMobs.Lich>(ctx) {
+            @Override
+            public Identifier getTextureLocation(net.minecraft.client.renderer.entity.state.EvokerRenderState s) {
+                return tex("boss/lich");
+            }
+        });
+        event.registerEntityRenderer(ModEntities.FROST_BOSS.get(), ctx -> new net.minecraft.client.renderer.entity.StrayRenderer(ctx) {
+            @Override
+            public Identifier getTextureLocation(net.minecraft.client.renderer.entity.state.SkeletonRenderState s) {
+                return tex("boss/frost");
+            }
+        });
+        event.registerEntityRenderer(ModEntities.VINE_BOSS.get(), ctx -> new IllagerTex(ctx, tex("boss/vine")));
+        event.registerEntityRenderer(ModEntities.VOID_BOSS.get(), ctx -> new IllagerTex(ctx, tex("boss/void")));
+        event.registerEntityRenderer(ModEntities.GOLD_BOSS.get(), ctx -> new IllagerTex(ctx, tex("boss/gold")));
+        event.registerEntityRenderer(ModEntities.PHARAOH_BOSS.get(), ctx -> new net.minecraft.client.renderer.entity.HuskRenderer(ctx) {
+            @Override
+            public Identifier getTextureLocation(net.minecraft.client.renderer.entity.state.ZombieRenderState s) {
+                return tex("boss/pharaoh");
+            }
+        });
+        event.registerEntityRenderer(ModEntities.FLAME_BOSS.get(), ctx -> new net.minecraft.client.renderer.entity.WitherSkeletonRenderer(ctx) {
+            @Override
+            public Identifier getTextureLocation(net.minecraft.client.renderer.entity.state.SkeletonRenderState s) {
+                return tex("boss/flame");
+            }
+        });
+        event.registerEntityRenderer(ModEntities.ABYSS_BOSS.get(), ctx -> new net.minecraft.client.renderer.entity.DrownedRenderer(ctx) {
+            @Override
+            public Identifier getTextureLocation(net.minecraft.client.renderer.entity.state.ZombieRenderState s) {
+                return tex("boss/abyss");
+            }
+        });
         event.registerBlockEntityRenderer(com.snolred.wildplus.registry.ModBlockEntities.VENDING_MACHINE.get(), VendingMachineRenderer::new);
     }
 
@@ -53,6 +93,20 @@ public final class ModRenderers {
 
         @Override
         public Identifier getTextureLocation(VillagerRenderState state) {
+            return texture;
+        }
+    }
+
+    static final class IllagerTex extends VindicatorRenderer {
+        private final Identifier texture;
+
+        IllagerTex(EntityRendererProvider.Context ctx, Identifier texture) {
+            super(ctx);
+            this.texture = texture;
+        }
+
+        @Override
+        public Identifier getTextureLocation(IllagerRenderState state) {
             return texture;
         }
     }

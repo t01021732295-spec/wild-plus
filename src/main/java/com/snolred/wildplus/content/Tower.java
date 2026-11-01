@@ -209,6 +209,20 @@ public final class Tower {
         return p;
     }
 
+    private static UUID bossId;
+    private static int bossKind;
+
+    private static EntityType<? extends Mob> bossType(int kind) {
+        return switch (kind) {
+            case 0 -> com.snolred.wildplus.registry.ModEntities.VINE_BOSS.get();
+            case 1 -> com.snolred.wildplus.registry.ModEntities.PHARAOH_BOSS.get();
+            case 2 -> com.snolred.wildplus.registry.ModEntities.FLAME_BOSS.get();
+            case 3 -> com.snolred.wildplus.registry.ModEntities.ABYSS_BOSS.get();
+            case 4 -> com.snolred.wildplus.registry.ModEntities.VOID_BOSS.get();
+            default -> com.snolred.wildplus.registry.ModEntities.GOLD_BOSS.get();
+        };
+    }
+
     private static void set(Mob mob, Holder<Attribute> attr, double mult) {
         AttributeInstance a = mob.getAttribute(attr);
         if (a != null) a.setBaseValue(a.getBaseValue() * mult);
@@ -245,13 +259,37 @@ public final class Tower {
         if (floor % 5 == 0) n = Math.max(2, n / 2);
         for (int i = 0; i < n; i++) spawn(lv, pool.get(r.nextInt(pool.size())), r);
         if (floor % 10 == 0) {
-            Mob big = spawn(lv, floor >= 30 ? EntityTypes.RAVAGER : floor >= 20 ? EntityTypes.EVOKER : EntityTypes.VINDICATOR, r);
+            // 테마마다 전용 보스 (고유 생김새 + 고유 패턴)
+            int kind = ((floor - 1) / 10) % THEMES.length;
+            Mob big = spawn(lv, bossType(kind), r);
             if (big != null) {
-                EliteMobs.makeElite(big, 2);
-                set(big, Attributes.MAX_HEALTH, 2.5 + ACTIVE.size() * 0.5);
-                set(big, Attributes.SCALE, 1.5);
+                set(big, Attributes.MAX_HEALTH, 4.0 + ACTIVE.size() * 1.0);
+                set(big, Attributes.SCALE, 1.6);
+                AttributeInstance kb = big.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
+                if (kb != null) kb.setBaseValue(0.8);
                 big.setHealth(big.getMaxHealth());
-                big.setCustomName(Component.literal(floor + "층 수문장").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+                big.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, MobEffectInstance.INFINITE_DURATION, 0, false, false));
+                switch (kind) {
+                    case 0, 4 -> big.setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, new ItemStack(Items.NETHERITE_AXE));
+                    case 1 -> big.setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_SWORD));
+                    case 2 -> big.setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, new ItemStack(Items.NETHERITE_SWORD));
+                    case 3 -> big.setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, new ItemStack(Items.TRIDENT));
+                    default -> big.setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_AXE));
+                }
+                for (net.minecraft.world.entity.EquipmentSlot sl : net.minecraft.world.entity.EquipmentSlot.values()) big.setDropChance(sl, 0F);
+                big.setCustomName(Component.literal("👑 " + BossSkills.TOWER_NAMES[kind] + " · " + floor + "층").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+                big.setCustomNameVisible(true);
+                bossId = big.getUUID();
+                bossKind = kind;
+                for (UUID id : ACTIVE) {
+                    ServerPlayer p = lv.getServer().getPlayerList().getPlayer(id);
+                    if (p == null) continue;
+                    p.connection.send(new ClientboundSetTitleTextPacket(Component.literal("👑 " + BossSkills.TOWER_NAMES[kind])
+                            .withStyle(ChatFormatting.RED, ChatFormatting.BOLD)));
+                    p.sendSystemMessage(Component.literal("👑 " + BossSkills.TOWER_NAMES[kind] + " 등장! 패턴: " + BossSkills.TOWER_SKILLS[kind])
+                            .withStyle(ChatFormatting.GOLD));
+                }
+                lv.playSound(null, CENTER.above(), SoundEvents.WITHER_SPAWN, SoundSource.HOSTILE, 0.8F, 1.1F);
             }
         } else if (floor % 5 == 0) {
             Mob elite = spawn(lv, pool.get(r.nextInt(pool.size())), r);
@@ -303,6 +341,15 @@ public final class Tower {
                             || Math.abs(m.getZ() - CENTER.getZ()) > R + 3)) {
                         m.teleportTo(CENTER.getX() + 0.5, CENTER.getY() + 1, CENTER.getZ() + 0.5);
                     }
+                }
+                // 보스 고유 패턴
+                if (bossId != null && lv.getEntity(bossId) instanceof Mob boss && boss.isAlive()) {
+                    List<ServerPlayer> ps = new ArrayList<>();
+                    for (UUID id : ACTIVE) {
+                        ServerPlayer p = event.getServer().getPlayerList().getPlayer(id);
+                        if (p != null && p.isAlive()) ps.add(p);
+                    }
+                    BossSkills.tower(bossKind, lv, boss, ps, now - floorStart, 4.0F + floor * 0.2F);
                 }
                 if (MOBS.isEmpty()) cleared(lv);
             }
@@ -358,6 +405,8 @@ public final class Tower {
     }
 
     private static void cleared(ServerLevel lv) {
+        bossId = null;
+        BossSkills.clear();
         sweep(lv);
         MinecraftServer server = lv.getServer();
         long coins = 10L * floor;
@@ -444,6 +493,8 @@ public final class Tower {
             if (e != null) e.discard();
         }
         MOBS.clear();
+        bossId = null;
+        BossSkills.clear();
         sweep(lv);
         if (bar != null) bar.removeAllPlayers();
         bar = null;
