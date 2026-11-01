@@ -328,16 +328,16 @@ jobs:
             run "setblock 398 119 3 minecraft:farmland[moisture=7]"
             run "setblock 398 120 3 minecraft:wheat[age=7]"
             # 16차: 필터 호퍼 (동쪽을 보고, 다이아만 남쪽 상자로 · 흙은 동쪽 상자로)
-            run "fill 68 119 68 72 124 72 minecraft:air"
-            run "setblock 70 121 70 wildplus:filter_hopper[facing=east]{filters:[{id:\"minecraft:diamond\",count:1}]}"
-            run "setblock 71 121 70 minecraft:chest[facing=west]"
-            run "setblock 70 121 71 minecraft:chest[facing=north]"
-            run "setblock 70 122 70 minecraft:chest[facing=north]{Items:[{Slot:0b,id:\"minecraft:dirt\",count:4},{Slot:1b,id:\"minecraft:diamond\",count:2}]}"
+            run "fill 42 119 42 46 124 46 minecraft:air"
+            run "setblock 44 121 44 wildplus:filter_hopper[facing=east]{filters:[{id:\"minecraft:diamond\",count:1}]}"
+            run "setblock 45 121 44 minecraft:chest[facing=west]"
+            run "setblock 44 121 45 minecraft:chest[facing=north]"
+            run "setblock 44 122 44 minecraft:chest[facing=north]{Items:[{Slot:0b,id:\"minecraft:dirt\",count:4},{Slot:1b,id:\"minecraft:diamond\",count:2}]}"
             sleep 8
             echo "say TEST filter hopper"; sleep 1
-            run "execute if block 70 121 71 minecraft:chest{Items:[{id:\"minecraft:diamond\"}]} if block 71 121 70 minecraft:chest{Items:[{id:\"minecraft:dirt\"}]} run say FILTER_OK"
-            run "data get block 70 121 71 Items"
-            run "data get block 71 121 70 Items"
+            run "execute if block 44 121 45 minecraft:chest{Items:[{id:\"minecraft:diamond\"}]} if block 45 121 44 minecraft:chest{Items:[{id:\"minecraft:dirt\"}]} run say FILTER_OK"
+            run "data get block 44 121 45 Items"
+            run "data get block 45 121 44 Items"
             # 13차: 이벤트 투척병(영웅의 시간)이 땅에 깨지면 이벤트 시작 · 루비 광맥 생성
             run "fill 60 119 60 62 119 62 minecraft:stone"
             run "summon minecraft:snowball 61.5 124 61.5 {Item:{id:\"wildplus:event_bottle\",count:1,components:{\"minecraft:custom_data\":{wildplus_event:\"HERO_TIME\"}}},Motion:[0.0,-1.0,0.0]}"
