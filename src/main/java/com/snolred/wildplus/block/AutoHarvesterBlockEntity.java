@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * 칸: 0~8 씨앗 / 9~26 작물. 호퍼로 씨앗을 넣고 작물을 뺄 수 있다.
  */
 public class AutoHarvesterBlockEntity extends MachineBlockEntity {
-    public static final int SEEDS = 9, OUTPUT = 18, SEED_RESERVE = 32;
+    public static final int SEEDS = 9, OUTPUT = 18, SEED_RESERVE = 16;
     private boolean autoPlant = true;
 
     public boolean autoPlant() {
@@ -56,9 +56,17 @@ public class AutoHarvesterBlockEntity extends MachineBlockEntity {
         return n;
     }
 
-    /** 수확한 씨앗을 씨앗 칸에 (종류마다 SEED_RESERVE 까지) 채우고 남은 것을 돌려준다 */
+    /** 이름이 "~씨앗"인 진짜 씨앗 (당근·감자처럼 먹는 작물은 아님) */
+    public static boolean isPureSeed(ItemStack stack) {
+        return net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath().endsWith("seeds");
+    }
+
+    /**
+     * 수확한 씨앗을 씨앗 칸에 채우고 남은 것을 돌려준다.
+     * 진짜 씨앗은 씨앗 칸이 꽉 찰 때까지 전부, 당근·감자처럼 작물이 곧 씨앗인 것은 다시 심을 만큼(SEED_RESERVE)만.
+     */
     private ItemStack storeSeed(ItemStack stack) {
-        int room = SEED_RESERVE - seedCount(stack.getItem());
+        int room = isPureSeed(stack) ? Integer.MAX_VALUE : SEED_RESERVE - seedCount(stack.getItem());
         if (room <= 0) return stack;
         ItemStack part = stack.split(Math.min(room, stack.getCount()));
         for (int i = 0; i < SEEDS && !part.isEmpty(); i++) {

@@ -42,7 +42,9 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
             addRenderableWidget(new UiButton(leftPos + W - 110, topPos + H - 24, 100, 17,
                     Component.translatable(pub ? "gui.wildplus.warp.make_private" : "gui.wildplus.warp.make_public"),
                     pub ? UiButton.DARK : UiButton.TEAL, () -> click(PickMenu.BTN_TOGGLE)));
-            // 이름 바꾸기 (주인만): 입력칸 + 버튼 → 서버 명령어 /warpname 으로 보낸다
+        }
+        if ((menu.flags & PickMenu.FLAG_CAN_RENAME) != 0) {
+            // 이름 바꾸기 (주인 · 공개 워프): 입력칸 + 버튼 → 서버 명령어 /warpname 으로 보낸다
             nameBox = addRenderableWidget(new net.minecraft.client.gui.components.EditBox(this.font, leftPos + 10, topPos + H - 47, W - 104, 16,
                     Component.translatable("gui.wildplus.warp.rename")));
             nameBox.setMaxLength(32);

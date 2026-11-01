@@ -77,11 +77,7 @@ public class ShippingBinBlock extends BaseEntityBlock {
                 player.sendOverlayMessage(Component.translatable("message.wildplus.shipping.locked").withStyle(net.minecraft.ChatFormatting.RED));
                 return InteractionResult.SUCCESS;
             }
-            long pending = be.pendingCenti();
-            player.openMenu(new SimpleMenuProvider((id, inv, p) -> ChestMenu.threeRows(id, inv, be.items()),
-                    Component.translatable("container.wildplus.shipping_bin",
-                            Component.translatable(be.isPublic() ? "gui.wildplus.public" : "gui.wildplus.private"),
-                            ShipPrices.fmt((int) Math.min(Integer.MAX_VALUE, pending)))));
+            if (player instanceof net.minecraft.server.level.ServerPlayer sp) com.snolred.wildplus.menu.ShippingMenu.open(sp, be);
         }
         return InteractionResult.SUCCESS;
     }

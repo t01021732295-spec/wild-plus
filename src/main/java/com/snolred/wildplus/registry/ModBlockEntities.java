@@ -36,6 +36,9 @@ public final class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.OreMinerBlockEntity>> ORE_MINER =
             BLOCK_ENTITIES.register("ore_miner", () -> new BlockEntityType<>(com.snolred.wildplus.block.OreMinerBlockEntity::new,
                     ModBlocks.ORE_MINER.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.FilterHopperBlockEntity>> FILTER_HOPPER =
+            BLOCK_ENTITIES.register("filter_hopper", () -> new BlockEntityType<>(com.snolred.wildplus.block.FilterHopperBlockEntity::new,
+                    com.snolred.wildplus.registry.ModBlocks2.FILTER_HOPPER.get()));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.AutoFisherBlockEntity>> AUTO_FISHER =
             BLOCK_ENTITIES.register("auto_fisher", () -> new BlockEntityType<>(com.snolred.wildplus.block.AutoFisherBlockEntity::new,
                     ModBlocks.AUTO_FISHER.get()));

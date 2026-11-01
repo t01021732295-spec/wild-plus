@@ -35,7 +35,8 @@ public class OreMinerBlockEntity extends MachineBlockEntity {
             new Ore("다이아몬드", () -> Items.DIAMOND, 1),
             new Ore("에메랄드", () -> Items.EMERALD, 1),
             new Ore("미스릴 원석", () -> ModItems2.RAW_MYTHRIL.get(), 1),
-            new Ore("비취", () -> ModItems2.JADE.get(), 1));
+            new Ore("비취", () -> ModItems2.JADE.get(), 1),
+            new Ore("루비", () -> com.snolred.wildplus.registry.ModItems7.RUBY.get(), 1));
 
     private int selected = -1;
     private long lastMillis;

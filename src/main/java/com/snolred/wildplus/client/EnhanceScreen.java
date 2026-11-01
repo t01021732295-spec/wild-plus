@@ -32,7 +32,7 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
         rows.clear();
         for (int i = 0; i < ROWS; i++) {
             int id = i;
-            rows.add(addRenderableWidget(UiButton.of(leftPos + W - 56, topPos + 18 + i * 18, 48, 16, "", UiButton.GOLD, () -> click(id))));
+            rows.add(addRenderableWidget(UiButton.of(leftPos + W - 56, topPos + 18 + i * 18, 48, 16, "", UiButton.GOLD, () -> click(rowId(id)))));
         }
         repair = addRenderableWidget(UiButton.of(leftPos + 6, topPos + 66, 52, 16, "", UiButton.STEEL, () -> click(EnhanceMenu.BTN_REPAIR)));
         refresh();
@@ -44,12 +44,29 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
         }
     }
 
+    /** 줄 i 가 누르는 버튼 id (특별 강화가 먼저, 그 다음 인챈트) */
+    private int rowId(int i) {
+        List<Integer> sp = EnhanceMenu.specials(menu.item());
+        return i < sp.size() ? sp.get(i) : i - sp.size();
+    }
+
     private void refresh() {
         List<Enhance.Option> opts = Enhance.options(menu.item());
+        List<Integer> sp = EnhanceMenu.specials(menu.item());
         for (int i = 0; i < ROWS; i++) {
             UiButton b = rows.get(i);
-            b.visible = i < opts.size();
-            if (b.visible) b.setMessage(Component.literal(String.format("%,d동", opts.get(i).cost())));
+            b.visible = i < sp.size() + opts.size();
+            if (!b.visible) continue;
+            if (i < sp.size()) {
+                boolean star = sp.get(i) == EnhanceMenu.BTN_STAR;
+                b.setMessage(Component.literal(String.format("%,d동", star ? EnhanceMenu.STAR_COST : EnhanceMenu.TRUE_DMG_COST)));
+                b.style(star ? UiButton.RED : UiButton.ORANGE);
+                b.active = !star || menu.material().is(net.minecraft.world.item.Items.NETHER_STAR);
+            } else {
+                b.setMessage(Component.literal(String.format("%,d동", opts.get(i - sp.size()).cost())));
+                b.style(UiButton.GOLD);
+                b.active = true;
+            }
         }
         long rc = Enhance.repairCost(menu.item());
         repair.visible = rc > 0;
@@ -99,24 +116,37 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
         ItemStack item = menu.item();
         List<Enhance.Option> opts = Enhance.options(item);
         int ink = 0xFF3A2410, soft = 0xFF7A5A30;
+        List<Integer> sp = EnhanceMenu.specials(item);
+        int shift = sp.size();
+        for (int i = 0; i < shift; i++) {
+            int ry = 22 + i * 18;
+            if (sp.get(i) == EnhanceMenu.BTN_STAR) {
+                UiKit.bold(g, "✦ 스타 루비 승급", 68, ry, 0xFFB0103A);
+                UiKit.text(g, menu.material().is(net.minecraft.world.item.Items.NETHER_STAR) ? "별 ✔" : "별 필요", 162, ry, 0xFF7A5A30);
+            } else {
+                int lv = com.snolred.wildplus.event.RubyGear.trueLevel(item);
+                UiKit.text(g, String.format("고정 피해 %.1f", 4 + 0.5 * lv), 68, ry, ink);
+                UiKit.bold(g, String.format("→ %.1f", 4 + 0.5 * (lv + 1)), 140, ry, 0xFFB0400A);
+            }
+        }
         if (item.isEmpty()) {
             UiKit.text(g, "장비를 모루에 올려놓으세요", 68, 22, ink);
             UiKit.text(g, "인챈트를 IX(9)까지", 68, 36, soft);
             UiKit.text(g, "동전으로 강화할 수 있어요", 68, 48, soft);
-        } else if (opts.isEmpty()) {
+        } else if (opts.isEmpty() && shift == 0) {
             UiKit.text(g, "강화할 수 있는 인챈트가 없어요", 68, 22, ink);
             UiKit.text(g, "먼저 마법 부여대로", 68, 36, soft);
             UiKit.text(g, "바닐라 최대 레벨까지", 68, 48, soft);
         }
-        for (int i = 0; i < Math.min(ROWS, opts.size()); i++) {
+        for (int i = 0; i < Math.min(ROWS - shift, opts.size()); i++) {
             Enhance.Option o = opts.get(i);
             Component from = Enchantment.getFullname(o.enchant(), o.level());
-            UiKit.text(g, from.getString(), 68, 22 + i * 18, ink);
-            UiKit.bold(g, "→ " + roman(o.level() + 1), 68 + UiKit.font().width(from.getString()) + 4, 22 + i * 18, 0xFFB0400A);
+            int ry = 22 + (i + shift) * 18;
+            UiKit.text(g, from.getString(), 68, ry, ink);
+            UiKit.bold(g, "→ " + roman(o.level() + 1), 68 + UiKit.font().width(from.getString()) + 4, ry, 0xFFB0400A);
         }
         UiKit.center(g, "모루", 32, 20, 0xFFFFB86A);
-        UiKit.text(g, "단계마다", 8, 86, 0xFFB8BEC8);
-        UiKit.text(g, "비용 ×3", 8, 96, 0xFFFFB86A);
+        UiKit.center(g, "재료", 18, 83, 0xFFB8BEC8);
     }
 
     private static String roman(int n) {

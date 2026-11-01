@@ -27,7 +27,6 @@ public final class WildCommands {
                     String name = com.mojang.brigadier.arguments.StringArgumentType.getString(ctx, "name");
                     net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
                     if (com.snolred.wildplus.economy.Warps.rename(sp, name)) {
-                        sp.closeContainer();
                         ctx.getSource().sendSuccess(() -> Component.translatable("commands.wildplus.warp_renamed", name), false);
                         return 1;
                     }

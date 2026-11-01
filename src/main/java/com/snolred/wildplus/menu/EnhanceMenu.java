@@ -26,10 +26,12 @@ import org.jspecify.annotations.Nullable;
  * 버튼 0~19 = 그 줄 인챈트 +1, 50 = 수리. 창을 닫으면 아이템은 돌려준다.
  */
 public class EnhanceMenu extends AbstractContainerMenu {
-    public static final int BTN_REPAIR = 50;
+    public static final int BTN_REPAIR = 50, BTN_STAR = 60, BTN_TRUE_DMG = 61;
+    public static final long STAR_COST = 1000, TRUE_DMG_COST = 500;
+    public static final int MAT_X = 10, MAT_Y = 92;
     public static final int SLOT_X = 20, SLOT_Y = 40;
 
-    private final SimpleContainer input = new SimpleContainer(1) {
+    private final SimpleContainer input = new SimpleContainer(2) {
         @Override
         public void setChanged() {
             super.setChanged();
@@ -51,6 +53,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
                 return 1;
             }
         });
+        addSlot(new Slot(input, 1, MAT_X, MAT_Y));
         addStandardInventorySlots(inv, 38, 120);
     }
 
@@ -63,11 +66,63 @@ public class EnhanceMenu extends AbstractContainerMenu {
         return slots.get(0).getItem();
     }
 
+    public ItemStack material() {
+        return slots.get(1).getItem();
+    }
+
+    /** 이 장비에 지금 할 수 있는 특별 강화 버튼 (스타 루비 승급 · 고정 피해 강화) */
+    public static java.util.List<Integer> specials(ItemStack stack) {
+        java.util.List<Integer> out = new java.util.ArrayList<>();
+        if (stack.isEmpty()) return out;
+        if (com.snolred.wildplus.registry.ModItems9.upgrades().containsKey(stack.getItem())) out.add(BTN_STAR);
+        if (stack.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SWORD.get())
+                && com.snolred.wildplus.event.RubyGear.trueLevel(stack) < 4) out.add(BTN_TRUE_DMG);
+        return out;
+    }
+
     @Override
     public boolean clickMenuButton(Player who, int id) {
         if (!(who instanceof ServerPlayer sp)) return false;
         ItemStack stack = input.getItem(0);
         if (stack.isEmpty()) return false;
+        if (id == BTN_STAR) {
+            net.minecraft.world.item.Item to = com.snolred.wildplus.registry.ModItems9.upgrades().get(stack.getItem());
+            if (to == null) return true;
+            if (!input.getItem(1).is(net.minecraft.world.item.Items.NETHER_STAR)) {
+                sp.sendOverlayMessage(Component.literal("아래 재료 칸에 네더의 별을 넣으세요").withStyle(ChatFormatting.RED));
+                return true;
+            }
+            if (!Coins.pay(sp, STAR_COST)) {
+                sp.sendOverlayMessage(Component.translatable("message.wildplus.enhance.no_money", STAR_COST).withStyle(ChatFormatting.RED));
+                return true;
+            }
+            input.getItem(1).shrink(1);
+            ItemStack star = stack.transmuteCopy(to, 1);
+            star.setDamageValue(0);
+            input.setItem(0, star);
+            input.setChanged();
+            sp.level().playSound(null, sp.blockPosition(), SoundEvents.BEACON_POWER_SELECT, SoundSource.BLOCKS, 1.0F, 1.2F);
+            sp.level().playSound(null, sp.blockPosition(), SoundEvents.SMITHING_TABLE_USE, SoundSource.BLOCKS, 1.0F, 0.8F);
+            sp.sendSystemMessage(Component.literal("✦ 스타 루비로 승급했어요! ").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD)
+                    .append(star.getHoverName().copy().withStyle(ChatFormatting.GOLD)));
+            return true;
+        }
+        if (id == BTN_TRUE_DMG) {
+            if (!stack.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SWORD.get())) return true;
+            int lv = com.snolred.wildplus.event.RubyGear.trueLevel(stack);
+            if (lv >= 4) return true;
+            if (!Coins.pay(sp, TRUE_DMG_COST)) {
+                sp.sendOverlayMessage(Component.translatable("message.wildplus.enhance.no_money", TRUE_DMG_COST).withStyle(ChatFormatting.RED));
+                return true;
+            }
+            net.minecraft.world.item.component.CustomData.update(net.minecraft.core.component.DataComponents.CUSTOM_DATA, stack,
+                    tag -> tag.putInt(com.snolred.wildplus.event.RubyGear.TRUE_DMG, lv + 1));
+            input.setChanged();
+            sp.level().playSound(null, sp.blockPosition(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 0.7F, 1.4F);
+            sp.sendSystemMessage(Component.literal(String.format("스타 루비 검 고정 피해 %.1f → %.1f", 4 + 0.5 * lv, 4 + 0.5 * (lv + 1)))
+                    .withStyle(ChatFormatting.LIGHT_PURPLE));
+            return true;
+        }
         if (id == BTN_REPAIR) {
             long cost = Enhance.repairCost(stack);
             if (cost <= 0) return true;
@@ -101,8 +156,10 @@ public class EnhanceMenu extends AbstractContainerMenu {
         if (!slot.hasItem()) return ItemStack.EMPTY;
         ItemStack s = slot.getItem();
         ItemStack copy = s.copy();
-        if (index == 0) {
-            if (!moveItemStackTo(s, 1, this.slots.size(), true)) return ItemStack.EMPTY;
+        if (index <= 1) {
+            if (!moveItemStackTo(s, 2, this.slots.size(), true)) return ItemStack.EMPTY;
+        } else if (s.is(net.minecraft.world.item.Items.NETHER_STAR)) {
+            if (!moveItemStackTo(s, 1, 2, false)) return ItemStack.EMPTY;
         } else {
             if (!moveItemStackTo(s, 0, 1, false)) return ItemStack.EMPTY;
         }

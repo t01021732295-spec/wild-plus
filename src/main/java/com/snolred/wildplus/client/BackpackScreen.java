@@ -7,20 +7,20 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
-/** 배낭 화면 (10열). 등급별 색: 동 · 은 · 금 */
+/** 배낭 화면 (10열, 다이아는 14열). 등급별 색: 동 · 은 · 금 · 다이아 */
 public class BackpackScreen extends AbstractContainerScreen<BackpackMenu> {
-    private static final int[][] COLORS = {{0xFF6B3A1E, 0xFFB87333}, {0xFF5A5F66, 0xFFB8BEC6}, {0xFF7A5A10, 0xFFE0B840}};
+    private static final int[][] COLORS = {{0xFF6B3A1E, 0xFFB87333}, {0xFF5A5F66, 0xFFB8BEC6}, {0xFF7A5A10, 0xFFE0B840}, {0xFF1B6E78, 0xFF6FE8F0}};
 
     public BackpackScreen(BackpackMenu menu, Inventory inv, Component title) {
-        super(menu, inv, title, 196, menu.rows * 18 + 114);
+        super(menu, inv, title, menu.cols * 18 + 16, menu.rows * 18 + 114);
     }
 
     @Override
     protected void init() {
         super.init();
-        this.inventoryLabelX = 17;
+        this.inventoryLabelX = (menu.cols * 18 + 16 - 162) / 2;
         this.inventoryLabelY = 18 + menu.rows * 18 + 3;
-        if (menu.tier < 2) {
+        if (menu.tier < BackpackItem.MAX_TIER) {
             addRenderableWidget(new UiButton(leftPos + imageWidth - 100, topPos + 4, 94, 12, Component.translatable("gui.wildplus.backpack.upgrade",
                     BackpackItem.tierName(menu.tier + 1), BackpackItem.UPGRADE_COST[menu.tier]), UiButton.GOLD, () -> {
                         if (this.minecraft != null && this.minecraft.gameMode != null) {

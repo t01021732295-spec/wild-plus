@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/hopper_side",
+  "textures": {
+    "particle": "wildplus:block/filter_hopper_outside",
+    "top": "wildplus:block/filter_hopper_top",
+    "side": "wildplus:block/filter_hopper_outside",
+    "inside": "wildplus:block/filter_hopper_inside"
+  }
+}

@@ -103,15 +103,16 @@ def dungeon():
             lantern(t, 32, y + 4, z)
     stair_end = 11 + (GROUND - L1)  # 1층에 닿는 z
 
-    # 계단 끝 ↔ 복도
-    carve(t, 31, L1, stair_end - 1, 33, L1 + 3, stair_end + 1)
+    # 계단 끝 ↔ 복도 (계단 마지막 칸은 남겨 둔다)
+    carve(t, 31, L1, stair_end, 33, L1 + 3, stair_end + 1)
+    carve(t, 31, L1 + 1, stair_end - 1, 33, L1 + 3, stair_end - 1)
 
     # 북서: 좀비 스포너 방
     room(t, 13, 13, 25, 25, L1, 6, "minecraft:mossy_cobblestone")
     carve(t, 18, L1, 11, 20, L1 + 2, 12)
     spawner(t, 19, L1, 19, "minecraft:zombie")
-    t.set(14, L1, 14, *chest("wildplus:chests/dungeon", "south"))
-    t.set(24, L1, 24, *chest("wildplus:chests/dungeon", "north"))
+    t.set(14, L1, 14, "minecraft:barrel", {"facing": "up", "open": "false"})
+    t.set(24, L1, 24, "minecraft:barrel", {"facing": "up", "open": "false"})
     for (x, z) in [(13, 13), (25, 13), (13, 25), (25, 25)]:
         t.fill(x, L1, z, x, L1 + 5, z, "minecraft:chiseled_deepslate")
     lantern(t, 19, L1 + 5, 15)
@@ -129,7 +130,7 @@ def dungeon():
             t.set(38, y, z, "minecraft:bookshelf")
     t.set(44, L1, 19, "minecraft:enchanting_table")
     t.set(41, L1, 15, "minecraft:lectern", {"facing": "south", "has_book": "false", "powered": "false"})
-    t.set(48, L1, 15, *chest("wildplus:chests/dungeon", "south"))
+    t.set(48, L1, 15, "minecraft:bookshelf")
     t.set(40, L1, 22, "minecraft:cobweb")
     t.set(47, L1 + 4, 21, "minecraft:cobweb")
     lantern(t, 44, L1 + 5, 19)
@@ -147,7 +148,7 @@ def dungeon():
         t.entity(cx + 1.5, L1, 40.5, mob("minecraft:zombie", 180.0))
         t.set(cx, L1, 39, "minecraft:hay_block", {"axis": "y"})
     spawner(t, 19, L1, 46, "minecraft:skeleton")
-    t.set(14, L1, 49, *chest("wildplus:chests/dungeon", "north"))
+    t.set(14, L1, 49, "minecraft:barrel", {"facing": "up", "open": "false"})
     lantern(t, 19, L1 + 4, 46)
 
     # 남동: 지하 납골당 (석관)
@@ -156,8 +157,8 @@ def dungeon():
     for (x, z) in [(40, 40), (40, 46), (47, 40), (47, 46)]:
         t.fill(x, L1, z, x + 1, L1, z + 2, "minecraft:polished_deepslate")
         t.set(x, L1 + 1, z + 1, "minecraft:skeleton_skull", {"rotation": "0", "powered": "false"})
-    t.set(44, L1, 44, *chest("wildplus:chests/dungeon", "north"))
-    t.set(41, L1, 49, *chest("wildplus:chests/dungeon", "north"))
+    t.set(44, L1, 44, "minecraft:soul_lantern", {"hanging": "false", "waterlogged": "false"})
+    t.set(41, L1, 49, "minecraft:barrel", {"facing": "up", "open": "false"})
     spawner(t, 44, L1, 40, "minecraft:skeleton")
     lantern(t, 44, L1 + 5, 44)
     t.entity(45.5, L1, 47.5, mob("minecraft:skeleton", 90.0))
@@ -189,6 +190,9 @@ def dungeon():
     # ───────── 2층 ─────────
     # 대기실 (계단 착지)
     room(t, 26, 37, 38, 43, L2, 5)
+    for x in range(31, 34):
+        t.set(x, L2, 28 + (L1 - L2) - 1, "minecraft:deepslate_tile_stairs", {"facing": "north", "half": "bottom", "shape": "straight",
+                                                                             "waterlogged": "false"})
     # 거미굴(서) · 해골 방(동)
     room(t, 4, 30, 16, 42, L2, 5, "minecraft:coarse_dirt")
     room(t, 48, 30, 60, 42, L2, 5, "minecraft:bone_block")
@@ -199,9 +203,9 @@ def dungeon():
     spawner(t, 10, L2, 36, "minecraft:cave_spider")
     for (x, y, z) in [(5, L2 + 3, 31), (6, L2 + 4, 41), (14, L2 + 3, 40), (12, L2, 32), (8, L2 + 4, 35)]:
         t.set(x, y, z, "minecraft:cobweb")
-    t.set(5, L2, 41, *chest("wildplus:chests/dungeon", "east"))
+    t.set(5, L2, 41, "minecraft:cobweb")
     spawner(t, 54, L2, 36, "minecraft:skeleton")
-    t.set(59, L2, 41, *chest("wildplus:chests/dungeon", "west"))
+    t.set(59, L2, 41, "minecraft:bone_block", {"axis": "y"})
     for (x, z) in [(49, 31), (59, 31), (49, 41)]:
         t.set(x, L2, z, "minecraft:skeleton_skull", {"rotation": str(rnd.randrange(16)), "powered": "false"})
     lantern(t, 10, L2 + 4, 36)
@@ -218,11 +222,19 @@ def dungeon():
     t.entity(32.0, L2, 51.5, boss())
     for (x, z) in [(24.5, 50.5), (40.5, 50.5)]:
         t.entity(x, L2, z, mob("minecraft:wither_skeleton", 180.0))
-    # 보물 창고 (투기장 뒤)
+    # 보물 창고 (투기장 뒤) — 고대 수호자를 쓰러뜨려야 봉인문이 열린다. 벽·천장·바닥은 부술 수 없는 봉인 벽돌
     room(t, 24, 59, 40, 62, L2, 4, "minecraft:gold_block")
-    carve(t, 31, L2, 58, 33, L2 + 2, 58)
+    for x in range(23, 42):
+        for y in range(L2 - 1, L2 + 5):
+            for z in range(58, 64):
+                inside = 24 <= x <= 40 and 59 <= z <= 62 and L2 <= y <= L2 + 3
+                if not inside:
+                    t.set(x, y, z, "wildplus:dungeon_seal", {"gate": "false"})
+    t.fill(31, L2, 58, 33, L2 + 2, 58, "wildplus:dungeon_seal", {"gate": "true"})
     for x in (25, 28, 36, 39):
         t.set(x, L2, 62, *chest("wildplus:chests/dungeon_vault", "north"))
+    for (x, z, f) in ((24, 60, "east"), (40, 60, "west"), (24, 61, "east"), (40, 61, "west")):
+        t.set(x, L2, z, *chest("wildplus:chests/dungeon", f))
     for x in (26, 27, 37, 38):
         t.set(x, L2, 62, "minecraft:gold_block")
     t.set(32, L2, 62, "minecraft:diamond_block")

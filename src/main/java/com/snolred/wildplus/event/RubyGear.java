@@ -47,6 +47,32 @@ public final class RubyGear {
 
     private record Replant(ServerLevel level, BlockPos pos, BlockState state) {}
 
+    /** 루비 또는 스타 루비 */
+    private static boolean is(ItemStack s, net.neoforged.neoforge.registries.DeferredItem<Item> ruby, net.neoforged.neoforge.registries.DeferredItem<Item> star) {
+        return s.is(ruby.get()) || s.is(star.get());
+    }
+
+    public static final String TRUE_DMG = "wildplus_true_dmg";
+
+    /** 스타 루비 검 고정 피해 강화 단계 (0~4, 한 단계 0.5) */
+    public static int trueLevel(ItemStack s) {
+        return s.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY)
+                .copyTag().getIntOr(TRUE_DMG, 0);
+    }
+
+    public static float trueDamage(ItemStack s) {
+        return 4.0F + 0.5F * Math.min(4, trueLevel(s));
+    }
+
+    public static int starPieces(LivingEntity p) {
+        Item[] items = {com.snolred.wildplus.registry.ModItems9.STAR_RUBY_HELMET.get(), com.snolred.wildplus.registry.ModItems9.STAR_RUBY_CHESTPLATE.get(),
+                com.snolred.wildplus.registry.ModItems9.STAR_RUBY_LEGGINGS.get(), com.snolred.wildplus.registry.ModItems9.STAR_RUBY_BOOTS.get()};
+        EquipmentSlot[] slots = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+        int n = 0;
+        for (int i = 0; i < 4; i++) if (p.getItemBySlot(slots[i]).is(items[i])) n++;
+        return n;
+    }
+
     public static int pieces(LivingEntity p) {
         Item[] items = {ModItems7.RUBY_HELMET.get(), ModItems7.RUBY_CHESTPLATE.get(), ModItems7.RUBY_LEGGINGS.get(), ModItems7.RUBY_BOOTS.get()};
         EquipmentSlot[] slots = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
@@ -61,7 +87,14 @@ public final class RubyGear {
         Player p = event.getEntity();
         if (!(p.level() instanceof ServerLevel level) || p.tickCount % 40 != 0) return;
         if (pieces(p) >= 2) p.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 80, 0, true, false, true));
-        if (p.isShiftKeyDown() && p.getMainHandItem().is(ModItems7.RUBY_PICKAXE.get()) && p instanceof ServerPlayer sp) {
+        // 스타 루비 세트: 2부위 재생 I / 4부위 재생 II + 화염 저항 + 야간 투시
+        int star = starPieces(p);
+        if (star >= 2) p.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, star >= 4 ? 1 : 0, true, false, true));
+        if (star >= 4) {
+            p.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 80, 0, true, false, true));
+            p.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 400, 0, true, false, true));
+        }
+        if (p.isShiftKeyDown() && is(p.getMainHandItem(), ModItems7.RUBY_PICKAXE, com.snolred.wildplus.registry.ModItems9.STAR_RUBY_PICKAXE) && p instanceof ServerPlayer sp) {
             BlockPos c = p.blockPosition();
             int shown = 0;
             for (BlockPos pos : BlockPos.betweenClosed(c.offset(-8, -8, -8), c.offset(8, 8, 8))) {
@@ -78,7 +111,7 @@ public final class RubyGear {
         LivingEntity target = event.getEntity();
         // 도끼: 불타는 적에게 1.5배
         if (event.getSource().getEntity() instanceof Player p && event.getSource().getDirectEntity() == p
-                && p.getMainHandItem().is(ModItems7.RUBY_AXE.get()) && target.isOnFire()) {
+                && is(p.getMainHandItem(), ModItems7.RUBY_AXE, com.snolred.wildplus.registry.ModItems9.STAR_RUBY_AXE) && target.isOnFire()) {
             event.setAmount(event.getAmount() * 1.5F);
             if (target.level() instanceof ServerLevel level) {
                 level.sendParticles(ParticleTypes.LAVA, target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), 4, 0.2, 0.2, 0.2, 0.0);
@@ -95,10 +128,22 @@ public final class RubyGear {
     @SubscribeEvent
     public static void onDamageDealt(LivingDamageEvent.Post event) {
         if (bursting || !(event.getSource().getEntity() instanceof Player player) || !(player.level() instanceof ServerLevel level)
-                || event.getSource().getDirectEntity() != player || !player.getMainHandItem().is(ModItems7.RUBY_SWORD.get())) {
+                || event.getSource().getDirectEntity() != player
+                || !is(player.getMainHandItem(), ModItems7.RUBY_SWORD, com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SWORD)) {
             return;
         }
         LivingEntity target = event.getEntity();
+        // 스타 루비 검: 방어구를 무시하는 고정 피해 (기본 4, 강화로 최대 6)
+        if (player.getMainHandItem().is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SWORD.get()) && target.isAlive()) {
+            bursting = true;
+            try {
+                target.invulnerableTime = 0;
+                target.hurtServer(level, level.damageSources().indirectMagic(player, player), trueDamage(player.getMainHandItem()));
+                level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY() + target.getBbHeight() * 0.7, target.getZ(), 6, 0.2, 0.2, 0.2, 0.2);
+            } finally {
+                bursting = false;
+            }
+        }
         target.igniteForSeconds(4.0F);
         if (player.getRandom().nextFloat() >= 0.25F) return;
         bursting = true;
@@ -121,7 +166,7 @@ public final class RubyGear {
         ItemStack tool = event.getTool();
         if (tool.isEmpty() || !(event.getBreaker() instanceof Player)) return;
         BlockState state = event.getState();
-        if (tool.is(ModItems7.RUBY_SHOVEL.get())) {
+        if (is(tool, ModItems7.RUBY_SHOVEL, com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SHOVEL)) {
             boolean smelted = false;
             for (ItemEntity e : event.getDrops()) {
                 ItemStack s = e.getItem();
@@ -137,7 +182,7 @@ public final class RubyGear {
                 BlockPos pos = event.getPos();
                 event.getLevel().sendParticles(ParticleTypes.FLAME, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 5, 0.25, 0.25, 0.25, 0.01);
             }
-        } else if (tool.is(ModItems7.RUBY_HOE.get()) && state.getBlock() instanceof CropBlock crop && crop.isMaxAge(state)) {
+        } else if (is(tool, ModItems7.RUBY_HOE, com.snolred.wildplus.registry.ModItems9.STAR_RUBY_HOE) && state.getBlock() instanceof CropBlock crop && crop.isMaxAge(state)) {
             Item seed = crop.asItem();
             for (ItemEntity e : event.getDrops()) {
                 if (e.getItem().is(seed)) {

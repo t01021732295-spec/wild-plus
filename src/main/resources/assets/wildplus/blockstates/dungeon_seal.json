@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "gate=false": {
+      "model": "wildplus:block/dungeon_seal"
+    },
+    "gate=true": {
+      "model": "wildplus:block/dungeon_seal_gate"
+    }
+  }
+}

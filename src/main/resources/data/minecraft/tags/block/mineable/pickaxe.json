@@ -26,6 +26,7 @@
     "wildplus:ruby_block",
     "wildplus:raid_altar",
     "wildplus:tower_gate",
-    "wildplus:big_part"
+    "wildplus:big_part",
+    "wildplus:filter_hopper"
   ]
 }

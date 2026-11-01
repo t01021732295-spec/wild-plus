@@ -36,6 +36,16 @@ public final class ModBlocks2 {
             p -> new com.snolred.wildplus.block.BigBlock(p, com.snolred.wildplus.menu.ContentMenu::openGoals, -1, 1, 0, 0, 2, null),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS).noOcclusion().strength(2.0F));
 
+    /** 던전 보물 창고 봉인 벽돌 (부술 수 없음, 보스를 잡으면 문만 열림) */
+    public static final DeferredBlock<com.snolred.wildplus.block.SealBlock> DUNGEON_SEAL = BLOCKS.registerBlock("dungeon_seal",
+            com.snolred.wildplus.block.SealBlock::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BEDROCK).noLootTable()
+                    .lightLevel(s -> s.getValue(com.snolred.wildplus.block.SealBlock.GATE) ? 7 : 0));
+
+    /** 필터 호퍼 (미스릴·비취) */
+    public static final DeferredBlock<com.snolred.wildplus.block.FilterHopperBlock> FILTER_HOPPER = BLOCKS.registerBlock("filter_hopper",
+            com.snolred.wildplus.block.FilterHopperBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.HOPPER));
+
     public static void init() {}
 
     private ModBlocks2() {}

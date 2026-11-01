@@ -67,10 +67,16 @@ public final class Warps {
         UUID id = LAST_OPENED.get(player.getUUID());
         WildData data = WildData.get(player.level().getServer());
         WildData.Warp w = id == null ? null : data.warps.get(id);
-        if (w == null || !w.owner.equals(player.getUUID())) return false;
+        if (w == null || !canRename(w, player)) return false;
         w.name = name.length() > 32 ? name.substring(0, 32) : name;
         data.setDirty();
+        openMenu(player, w);
         return true;
+    }
+
+    /** 이름을 바꿀 수 있는지: 주인이거나, 공개 워프이거나, 주인이 없는 워프(마을 등) */
+    public static boolean canRename(WildData.Warp w, ServerPlayer p) {
+        return w.owner.equals(p.getUUID()) || w.isPublic || w.owner.equals(new UUID(0L, 0L));
     }
 
     /** 워프 포인트를 우클릭했을 때: 갈 수 있는 워프 목록 화면 */
@@ -89,8 +95,9 @@ public final class Warps {
                     who + " · " + dimName(w.dimension) + " " + w.pos.getX() + ", " + w.pos.getY() + ", " + w.pos.getZ()));
         }
         boolean owner = here.owner.equals(player.getUUID());
-        if (owner) LAST_OPENED.put(player.getUUID(), here.id);
-        int flags = (owner ? PickMenu.FLAG_CAN_TOGGLE : 0) | (here.isPublic ? PickMenu.FLAG_PUBLIC : 0);
+        boolean rename = canRename(here, player);
+        if (rename) LAST_OPENED.put(player.getUUID(), here.id);
+        int flags = (owner ? PickMenu.FLAG_CAN_TOGGLE : 0) | (here.isPublic ? PickMenu.FLAG_PUBLIC : 0) | (rename ? PickMenu.FLAG_CAN_RENAME : 0);
         BlockPos herePos = here.pos;
         PickMenu.open(player, Component.translatable("container.wildplus.warp", here.name),
                 "현재 위치: " + here.name + (here.isPublic ? " (공개)" : " (비공개)"),

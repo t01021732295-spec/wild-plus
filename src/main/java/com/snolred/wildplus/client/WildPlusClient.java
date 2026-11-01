@@ -41,6 +41,8 @@ public class WildPlusClient {
         event.register(com.snolred.wildplus.registry.ModMenus.CASINO.get(), CasinoScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.HALL.get(), HallScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.CONTENT.get(), ContentScreen::new);
+        event.register(com.snolred.wildplus.registry.ModMenus.SHIPPING.get(), ShippingScreen::new);
+        event.register(com.snolred.wildplus.registry.ModMenus.FILTER_HOPPER.get(), FilterHopperScreen::new);
     }
 
     /** 몬스터(또는 다친 생물) 머리 위 이름표 자리에 체력바를 그린다 */
@@ -89,6 +91,11 @@ public class WildPlusClient {
             for (int i = lines.length - 1; i >= 0; i--) {
                 event.getToolTip().add(1, Component.literal(lines[i].trim()).withStyle(i == 0 ? ChatFormatting.GRAY : ChatFormatting.DARK_GRAY));
             }
+        }
+        if (stack.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SWORD.get())) {
+            int lv = com.snolred.wildplus.event.RubyGear.trueLevel(stack);
+            event.getToolTip().add(1, Component.literal(String.format("✦ 고정 피해 %.1f (방어 무시) · 강화 %d/4", 4 + 0.5 * lv, lv))
+                    .withStyle(ChatFormatting.LIGHT_PURPLE));
         }
         int ship = com.snolred.wildplus.economy.ShipPrices.centi(stack);
         if (ship > 0) {

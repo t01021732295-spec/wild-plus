@@ -40,10 +40,11 @@ public class MachineScreen extends AbstractContainerScreen<MachineMenu> {
             for (int i = 0; i < ores.size(); i++) {
                 int id = i;
                 int col = i % 4, row = i / 4;
-                oreButtons.add(addRenderableWidget(UiButton.of(leftPos + 7 + col * 41, topPos + 18 + row * 17, 40, 15, ores.get(i).name(),
+                oreButtons.add(addRenderableWidget(UiButton.of(leftPos + 7 + col * 41, topPos + 17 + row * 13, 40, 12, ores.get(i).name(),
                         UiButton.STEEL, () -> click(id))));
             }
-            addRenderableWidget(UiButton.of(leftPos + 7 + 3 * 41, topPos + 18 + 2 * 17, 40, 15, "■ 멈춤", UiButton.RED,
+            int stop = ores.size();
+            addRenderableWidget(UiButton.of(leftPos + 7 + (stop % 4) * 41, topPos + 17 + (stop / 4) * 13, 40, 12, "■ 멈춤", UiButton.RED,
                     () -> click(MachineMenu.BTN_STOP)));
         }
     }

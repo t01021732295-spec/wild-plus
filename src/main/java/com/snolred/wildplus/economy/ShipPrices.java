@@ -55,6 +55,28 @@ public final class ShipPrices {
         put(m, com.snolred.wildplus.registry.ModItems5.CATFISH.get(), 200); put(m, com.snolred.wildplus.registry.ModItems5.TUNA.get(), 300);
         put(m, com.snolred.wildplus.registry.ModItems5.SWEETFISH.get(), 200); put(m, com.snolred.wildplus.registry.ModItems5.DRAGON_KING_FISH.get(), 20000);
         put(m, com.snolred.wildplus.registry.ModItems5.TUNA_STEAK.get(), 450);
+        // 16차: 루비 · 광물 블록 · 원석 · 낚시 잡동사니
+        put(m, com.snolred.wildplus.registry.ModItems7.RUBY.get(), 4000);
+        put(m, com.snolred.wildplus.registry.ModItems7.RUBY_BLOCK.get(), 36000);
+        put(m, com.snolred.wildplus.registry.ModItems2.MYTHRIL_BLOCK.get(), 6300);
+        put(m, com.snolred.wildplus.registry.ModItems2.JADE_BLOCK.get(), 4500);
+        put(m, ModItems.BLOODSTEEL_INGOT.get(), 1500);
+        put(m, Items.RAW_IRON, 100); put(m, Items.RAW_GOLD, 250); put(m, Items.RAW_COPPER, 25);
+        put(m, Items.RAW_IRON_BLOCK, 900); put(m, Items.RAW_GOLD_BLOCK, 2250); put(m, Items.RAW_COPPER_BLOCK, 225);
+        put(m, Items.COAL_BLOCK, 180); put(m, Items.IRON_BLOCK, 1125); put(m, Items.GOLD_BLOCK, 2700); put(m, Items.COPPER_BLOCK, 270);
+        put(m, Items.REDSTONE_BLOCK, 180); put(m, Items.LAPIS_BLOCK, 450); put(m, Items.DIAMOND_BLOCK, 27000); put(m, Items.EMERALD_BLOCK, 9000);
+        put(m, Items.QUARTZ_BLOCK, 160); put(m, Items.AMETHYST_BLOCK, 160);
+        put(m, Items.NETHERITE_SCRAP, 4000); put(m, Items.NETHERITE_INGOT, 18000); put(m, Items.NETHERITE_BLOCK, 162000);
+        put(m, Items.GOLD_NUGGET, 33); put(m, Items.IRON_NUGGET, 14);
+        // 낚시: 익힌 물고기 · 잡동사니 · 보물
+        put(m, Items.COOKED_COD, 130); put(m, Items.COOKED_SALMON, 150);
+        put(m, ModItems2.COOKED_RAINBOW_TROUT.get(), 200); put(m, ModItems2.GRILLED_EEL.get(), 650);
+        put(m, com.snolred.wildplus.registry.ModItems5.GRILLED_SWEETFISH.get(), 260);
+        put(m, Items.NAUTILUS_SHELL, 800); put(m, Items.HEART_OF_THE_SEA, 15000); put(m, Items.NAME_TAG, 1500); put(m, Items.SADDLE, 1200);
+        put(m, Items.ENCHANTED_BOOK, 500); put(m, Items.BOW, 100); put(m, Items.FISHING_ROD, 50); put(m, Items.LILY_PAD, 10);
+        put(m, Items.INK_SAC, 20); put(m, Items.BOWL, 2); put(m, Items.LEATHER_BOOTS, 20); put(m, Items.STICK, 1);
+        put(m, Items.TRIPWIRE_HOOK, 10); put(m, Items.BAMBOO, 5); put(m, Items.GLOW_INK_SAC, 60); put(m, Items.PRISMARINE_SHARD, 30);
+        put(m, Items.PRISMARINE_CRYSTALS, 40); put(m, Items.KELP, 2); put(m, Items.DRIED_KELP, 5); put(m, Items.SEA_PICKLE, 20);
         table = m;
         return m;
     }

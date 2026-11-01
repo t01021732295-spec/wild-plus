@@ -327,6 +327,17 @@ jobs:
             run "fill 394 126 2 396 127 4 minecraft:oak_leaves[persistent=true]"
             run "setblock 398 119 3 minecraft:farmland[moisture=7]"
             run "setblock 398 120 3 minecraft:wheat[age=7]"
+            # 16차: 필터 호퍼 (동쪽을 보고, 다이아만 남쪽 상자로 · 흙은 동쪽 상자로)
+            run "fill 68 119 68 72 124 72 minecraft:air"
+            run "setblock 70 121 70 wildplus:filter_hopper[facing=east]{filters:[{id:\"minecraft:diamond\",count:1}]}"
+            run "setblock 71 121 70 minecraft:chest[facing=west]"
+            run "setblock 70 121 71 minecraft:chest[facing=north]"
+            run "setblock 70 122 70 minecraft:chest[facing=north]{Items:[{Slot:0b,id:\"minecraft:dirt\",count:4},{Slot:1b,id:\"minecraft:diamond\",count:2}]}"
+            sleep 8
+            echo "say TEST filter hopper"; sleep 1
+            run "execute if block 70 121 71 minecraft:chest{Items:[{id:\"minecraft:diamond\"}]} if block 71 121 70 minecraft:chest{Items:[{id:\"minecraft:dirt\"}]} run say FILTER_OK"
+            run "data get block 70 121 71 Items"
+            run "data get block 71 121 70 Items"
             # 13차: 이벤트 투척병(영웅의 시간)이 땅에 깨지면 이벤트 시작 · 루비 광맥 생성
             run "fill 60 119 60 62 119 62 minecraft:stone"
             run "summon minecraft:snowball 61.5 124 61.5 {Item:{id:\"wildplus:event_bottle\",count:1,components:{\"minecraft:custom_data\":{wildplus_event:\"HERO_TIME\"}}},Motion:[0.0,-1.0,0.0]}"
@@ -757,6 +768,33 @@ jobs:
             import -window root shot-tower-clear.png || true
             cmd "/wildplus weekend leave"
             sleep 2
+            # ── 16차: 스타 루비 · 필터 호퍼 · 다이아 배낭 · 던전 봉인 ──
+            cmd "/gamemode creative"
+            cmd "/clear @s"
+            cmd "/time set noon"
+            cmd "/summon minecraft:armor_stand 452.5 120 -12.5 {Rotation:[180f,0f],ShowArms:1b,equipment:{head:{id:\"wildplus:star_ruby_helmet\",count:1},chest:{id:\"wildplus:star_ruby_chestplate\",count:1},legs:{id:\"wildplus:star_ruby_leggings\",count:1},feet:{id:\"wildplus:star_ruby_boots\",count:1},mainhand:{id:\"wildplus:star_ruby_sword\",count:1}}}"
+            cmd "/summon minecraft:armor_stand 450.5 120 -12.5 {Rotation:[180f,0f],ShowArms:1b,equipment:{head:{id:\"wildplus:ruby_helmet\",count:1},chest:{id:\"wildplus:ruby_chestplate\",count:1},legs:{id:\"wildplus:ruby_leggings\",count:1},feet:{id:\"wildplus:ruby_boots\",count:1},mainhand:{id:\"wildplus:ruby_sword\",count:1}}}"
+            i=0; for t in sword pickaxe axe shovel hoe helmet chestplate leggings boots; do cmd "/item replace entity @s hotbar.$i with wildplus:star_ruby_$t"; i=$((i+1)); done
+            cmd "/setblock 448 120 -12 wildplus:filter_hopper[facing=down]"
+            cmd "/tp @s 451.5 120.5 -9.0 180 15"
+            sleep 4
+            import -window root shot-star-gear.png || true
+            cmd "/tp @s 448.5 120 -9.8 180 35"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-filter-hopper.png || true
+            xdotool key Escape; sleep 1
+            cmd "/item replace entity @s weapon.mainhand with wildplus:diamond_backpack"
+            cmd "/tp @s 451.5 120 -4.5 0 -30"
+            sleep 1; xdotool click 3; sleep 2
+            import -window root shot-backpack-diamond.png || true
+            xdotool key Escape; sleep 1
+            cmd "/effect give @s minecraft:night_vision 60 0 true"
+            cmd "/tp @s 632.5 99 44.5 0 5"
+            sleep 5
+            xdotool key F1 || true
+            sleep 1
+            import -window root shot-vault-seal.png || true
+            xdotool key F1 || true
             # 랜덤 이벤트 · 새 효과
             cmd "/gamemode creative"
             cmd "/tp @s 478 121 30 0 10"

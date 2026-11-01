@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
@@ -45,7 +46,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  */
 public final class DungeonGuardian {
     public static final String TAG = "wildplus_dungeon_boss";
-    private static final String READY = "wildplus_dungeon_boss_ready", CALLED = "wildplus_dungeon_boss_called";
+    private static final String READY = "wildplus_dungeon_boss_ready", CALLED = "wildplus_dungeon_boss_called", HOME = "wildplus_dungeon_boss_home";
     private static final Map<UUID, ServerBossEvent> BARS = new HashMap<>();
 
     private DungeonGuardian() {}
@@ -65,6 +66,7 @@ public final class DungeonGuardian {
         var data = boss.getPersistentData();
         if (!data.getBooleanOr(READY, false)) {
             data.putBoolean(READY, true);
+            data.putLong(HOME, boss.blockPosition().asLong());
             set(boss, Attributes.MAX_HEALTH, 300);
             set(boss, Attributes.ATTACK_DAMAGE, 14);
             set(boss, Attributes.ARMOR, 14);
@@ -146,9 +148,25 @@ public final class DungeonGuardian {
         if (!isBoss(e) || !(e.level() instanceof ServerLevel level)) return;
         ServerBossEvent bar = BARS.remove(e.getUUID());
         if (bar != null) bar.removeAllPlayers();
+        openVault(level, BlockPos.of(e.getPersistentData().getLongOr(HOME, e.blockPosition().asLong())));
+        openVault(level, e.blockPosition());
         Component who = event.getSource().getEntity() instanceof Player p ? p.getName() : Component.literal("누군가");
         level.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("message.wildplus.dungeon_guardian.dead", who)
                 .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD), false);
+    }
+
+    /** 보스 주변의 봉인문(gate=true)을 없앤다 */
+    private static void openVault(ServerLevel level, BlockPos center) {
+        int opened = 0;
+        for (BlockPos p : BlockPos.betweenClosed(center.offset(-16, -6, -16), center.offset(16, 8, 16))) {
+            var st = level.getBlockState(p);
+            if (st.is(com.snolred.wildplus.registry.ModBlocks2.DUNGEON_SEAL.get()) && st.getValue(com.snolred.wildplus.block.SealBlock.GATE)) {
+                level.setBlock(p, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
+                level.sendParticles(net.minecraft.core.particles.ParticleTypes.SOUL_FIRE_FLAME, p.getX() + 0.5, p.getY() + 0.5, p.getZ() + 0.5, 12, 0.3, 0.3, 0.3, 0.02);
+                opened++;
+            }
+        }
+        if (opened > 0) level.playSound(null, center, SoundEvents.END_PORTAL_SPAWN, SoundSource.HOSTILE, 0.8F, 1.2F);
     }
 
     @SubscribeEvent

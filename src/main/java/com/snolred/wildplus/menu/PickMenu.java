@@ -21,7 +21,7 @@ import org.jspecify.annotations.Nullable;
  */
 public class PickMenu extends AbstractContainerMenu {
     public static final int BTN_TOGGLE = 900;
-    public static final int FLAG_CAN_TOGGLE = 1, FLAG_PUBLIC = 2;
+    public static final int FLAG_CAN_TOGGLE = 1, FLAG_PUBLIC = 2, FLAG_CAN_RENAME = 4;
 
     public record Entry(String title, String sub) {}
 

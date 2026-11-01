@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "facing=down": {
+      "model": "wildplus:block/filter_hopper"
+    },
+    "facing=north": {
+      "model": "wildplus:block/filter_hopper_side"
+    },
+    "facing=east": {
+      "model": "wildplus:block/filter_hopper_side",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/filter_hopper_side",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/filter_hopper_side",
+      "y": 270
+    }
+  }
+}

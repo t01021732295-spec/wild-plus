@@ -32,6 +32,7 @@ public class BackpackMenu extends AbstractContainerMenu {
 
     public final int tier;
     public final int rows;
+    public final int cols;
     public final int bagSlot;
     private final Container bag;
     private final Inventory inventory;
@@ -51,7 +52,8 @@ public class BackpackMenu extends AbstractContainerMenu {
         this.bagSlot = bagSlot;
         this.inventory = inv;
         this.stack = stack;
-        this.bagSize = rows * BackpackItem.COLUMNS;
+        this.cols = BackpackItem.COLS[tier];
+        this.bagSize = rows * cols;
         SimpleContainer container = new SimpleContainer(bagSize) {
             @Override
             public void setChanged() {
@@ -67,8 +69,8 @@ public class BackpackMenu extends AbstractContainerMenu {
         this.bag = container;
 
         for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < BackpackItem.COLUMNS; c++) {
-                addSlot(new Slot(bag, c + r * BackpackItem.COLUMNS, 8 + c * 18, 18 + r * 18) {
+            for (int c = 0; c < cols; c++) {
+                addSlot(new Slot(bag, c + r * cols, 8 + c * 18, 18 + r * 18) {
                     @Override
                     public boolean mayPlace(ItemStack s) {
                         return !(s.getItem() instanceof BackpackItem);
@@ -76,7 +78,7 @@ public class BackpackMenu extends AbstractContainerMenu {
                 });
             }
         }
-        int invX = 17, invY = 18 + rows * 18 + 14;
+        int invX = (cols * 18 + 16 - 162) / 2, invY = 18 + rows * 18 + 14;
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 9; c++) {
                 addSlot(playerSlot(inv, c + r * 9 + 9, invX + c * 18, invY + r * 18));
@@ -111,14 +113,15 @@ public class BackpackMenu extends AbstractContainerMenu {
 
     @Override
     public boolean clickMenuButton(Player player, int id) {
-        if (id != BTN_UPGRADE || tier >= 2 || !(player instanceof ServerPlayer sp) || stack == null) return false;
+        if (id != BTN_UPGRADE || tier >= BackpackItem.MAX_TIER || !(player instanceof ServerPlayer sp) || stack == null) return false;
         long cost = BackpackItem.UPGRADE_COST[tier];
         if (!Coins.pay(sp, cost)) {
             sp.sendSystemMessage(Component.translatable("message.wildplus.backpack.no_money", cost).withStyle(ChatFormatting.RED));
             return true;
         }
         save(bag);
-        Item next = tier == 0 ? ModItems4.SILVER_BACKPACK.get() : ModItems4.GOLD_BACKPACK.get();
+        Item next = tier == 0 ? ModItems4.SILVER_BACKPACK.get() : tier == 1 ? ModItems4.GOLD_BACKPACK.get()
+                : com.snolred.wildplus.registry.ModItems9.DIAMOND_BACKPACK.get();
         ItemStack upgraded = stack.transmuteCopy(next, 1);
         sp.getInventory().setItem(bagSlot, upgraded);
         sp.level().playSound(null, sp.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7F, 1.4F);
