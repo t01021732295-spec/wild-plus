@@ -39,7 +39,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 /**
  * 부동산: 청크(16×16, 위아래 전부)를 돈으로 사서 내 땅으로 만든다.
  * - 값: 첫 땅 40만동, 땅이 하나 늘 때마다 +20만동. 되팔면 20만동만 돌려받음 (나머지는 국고로 사라짐)
- * - 재산세: 청크당 게임 하루 5,000동, 접속 여부와 상관없이 매일 걷음 (접속 중이면 통장→동전, 아니면 통장에서). 7일치 밀리면 땅이 모두 풀림
+ * - 재산세: 청크당 5,000동. 접속 중이면 게임 하루마다(통장→동전), 접속 안 하면 현실 24시간마다(통장에서). 7일치 밀리면 땅이 모두 풀림
  * - 설정(주인의 모든 땅에 적용): 출입(모두 · 친구만 · 주인만), 블록 부수기·설치, 상자·문 등 사용
  * - 폭발(크리퍼 · TNT)로 땅의 블록이 부서지지 않음
  */
@@ -197,7 +197,10 @@ public final class Land {
         }
     }
 
-    /** 재산세: 게임 날짜가 바뀌면 모든 땅 주인에게서 (접속 안 해도) 걷는다 */
+    /**
+     * 재산세: 접속 중인 주인은 게임 날짜가 바뀔 때마다,
+     * 접속하지 않은 주인은 현실 시간 24시간마다 (서버가 꺼져 있던 시간도 다음에 켜질 때 몰아서, 최대 7일치) 걷는다.
+     */
     @SubscribeEvent
     public static void onServerTick(net.neoforged.neoforge.event.tick.ServerTickEvent.Post event) {
         MinecraftServer s = event.getServer();
@@ -205,18 +208,38 @@ public final class Land {
         CompoundTag r = root(s);
         long day = ContentData.gameDay;
         long last = r.getLongOr("tax_day", -1L);
-        if (last < 0) {
+        boolean newDay = last >= 0 && last < day;
+        if (last < day) {
             r.putLong("tax_day", day);
             ContentData.get(s).dirty();
-            return;
         }
-        if (last >= day) return;
-        r.putLong("tax_day", day);
-        long days = Math.min(MAX_DEBT, day - last);
+        long nowMs = System.currentTimeMillis();
         java.util.Set<UUID> owners = new java.util.HashSet<>(CHUNKS.values());
-        for (UUID o : owners) for (int i = 0; i < days; i++) chargeOwner(s, o);
-        ContentData.get(s).dirty();
+        for (UUID o : owners) {
+            CompoundTag me = owner(s, o);
+            boolean online = s.getPlayerList().getPlayer(o) != null;
+            long realMs = me.getLongOr("real_ms", 0L);
+            if (realMs == 0L) {
+                me.putLong("real_ms", nowMs);
+                ContentData.get(s).dirty();
+                continue;
+            }
+            if (online) {
+                if (newDay) {
+                    chargeOwner(s, o);
+                    me.putLong("real_ms", nowMs);
+                }
+            } else {
+                long days = (nowMs - realMs) / REAL_DAY_MS;
+                if (days <= 0) continue;
+                for (int i = 0; i < Math.min(MAX_DEBT, days); i++) chargeOwner(s, o);
+                me.putLong("real_ms", realMs + days * REAL_DAY_MS);
+                ContentData.get(s).dirty();
+            }
+        }
     }
+
+    private static final long REAL_DAY_MS = 24L * 60 * 60 * 1000;
 
     private static void chargeOwner(MinecraftServer s, UUID id) {
         int n = owned(id);
