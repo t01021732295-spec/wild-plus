@@ -162,6 +162,10 @@ public class ShippingBinBlockEntity extends BlockEntity implements net.minecraft
                 items.setItem(i, ItemStack.EMPTY);
             }
         }
+        // 신화 등급: 출하 +10%
+        if (owner != null && sold > 0 && WildData.get(server.getServer()).honor(owner) >= 6) {
+            centi += (centi - remainderCenti) / 10;
+        }
         long coins = centi / 100;
         remainderCenti = centi % 100;
         setChanged();

@@ -36,9 +36,10 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
  * 결제는 은행 통장에서 먼저, 모자라면 가진 동전으로. 쓴 돈은 국고로 들어간다.
  */
 public final class Honor {
-    public static final long[] RANK_COST = {2_000, 8_000, 25_000, 80_000, 250_000};
-    public static final String[] RANK_NAME = {"없음", "브론즈", "실버", "골드", "다이아", "레전드"};
-    public static final int[] RANK_COLOR = {0xFFAAAAAA, 0xFFCD7F32, 0xFFC0C8D0, 0xFFFFC83D, 0xFF5FE3FF, 0xFFFF5AE0};
+    public static final long[] RANK_COST = {2_000, 8_000, 25_000, 80_000, 250_000, 600_000};
+    public static final String[] RANK_NAME = {"없음", "브론즈", "실버", "골드", "다이아", "레전드", "신화"};
+    public static final int[] RANK_COLOR = {0xFFAAAAAA, 0xFFCD7F32, 0xFFC0C8D0, 0xFFFFC83D, 0xFF5FE3FF, 0xFFFF5AE0, 0xFFFF3B3B};
+    public static final int MAX_RANK = 6;
     public static final long FLIGHT_COST = 500, BOSS_COST = 3_000, FESTIVAL_COST = 5_000;
     public static final long FLIGHT_TICKS = 20L * 60 * 30, FESTIVAL_TICKS = 20L * 60 * 60;
     public static final int BTN_RANK = 0, BTN_FLIGHT = 1, BTN_BOSS = 2, BTN_FESTIVAL = 3;
@@ -47,7 +48,7 @@ public final class Honor {
     public static final int BTN_HEAL = 4, BTN_XP = 5, BTN_MERCHANT = 6, BTN_MAP = 7, BTN_GUARD = 8;
     /** 등급마다 새로 생기는 혜택 (누적) */
     public static final String[] PERK = {"", "1분마다 배고픔 회복", "낙하 피해 절반", "몬스터 처치 시 동전",
-            "상시 성급함 I", "상시 신속 I · 받는 피해 -10% · 비행 반값"};
+            "상시 성급함 I", "상시 신속 I · 받는 피해 -10% · 비행 반값", "상시 힘 I · 재생 I · 비행 무료 · 출하 +10%"};
     public static final net.minecraft.tags.TagKey<net.minecraft.world.level.levelgen.structure.Structure> TREASURE_SITES =
             net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.STRUCTURE, WildPlus.id("treasure_sites"));
     public static final String LEAVE_AT = "wildplus_leave_at";
@@ -59,7 +60,7 @@ public final class Honor {
     }
 
     public static long flightCost(int rank) {
-        return rank >= 5 ? FLIGHT_COST / 2 : FLIGHT_COST;
+        return rank >= 6 ? 0 : rank >= 5 ? FLIGHT_COST / 2 : FLIGHT_COST;
     }
 
     public static long now(MinecraftServer server) {
@@ -97,7 +98,7 @@ public final class Honor {
         int rank = data.honor(p.getUUID());
         switch (id) {
             case BTN_RANK -> {
-                if (rank >= 5) return;
+                if (rank >= MAX_RANK) return;
                 long cost = RANK_COST[rank];
                 if (!pay(p, cost)) {
                     fail(p, cost);
@@ -282,6 +283,10 @@ public final class Honor {
         if (p.tickCount % 100 == 0) {
             if (rank >= 4) p.addEffect(new MobEffectInstance(MobEffects.HASTE, 140, 0, true, false, true));
             if (rank >= 5) p.addEffect(new MobEffectInstance(MobEffects.SPEED, 140, 0, true, false, true));
+            if (rank >= 6) {
+                p.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 140, 0, true, false, true));
+                p.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 140, 0, true, false, true));
+            }
             applyHealth(p, data.honor(id));
             String name = p.getName().getString();
             if (!name.equals(data.names.get(id))) {

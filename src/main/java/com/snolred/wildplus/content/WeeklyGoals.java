@@ -77,6 +77,67 @@ public final class WeeklyGoals {
         return out;
     }
 
+    public static final long PRO_COST = 5000;
+
+    /** 프로 패스 단계 보상 (일반보다 좋음) */
+    public static List<ItemStack> proReward(int tier) {
+        List<ItemStack> out = new ArrayList<>();
+        switch (tier) {
+            case 0 -> {
+                out.add(new ItemStack(ModItems3.GOLD_COIN.get(), 10));
+                out.add(new ItemStack(ModItems7.RUBY.get(), 2));
+            }
+            case 1 -> out.add(EventBottleItem.of(RandomEvents.Type.GOLD_RUSH).copyWithCount(3));
+            case 2 -> out.add(new ItemStack(ModItems7.RUBY_BLOCK.get()));
+            case 3 -> out.add(new ItemStack(Items.DIAMOND_BLOCK, 2));
+            case 4 -> {
+                out.add(new ItemStack(com.snolred.wildplus.registry.ModItems10.DIAMOND_APPLE.get(), 4));
+                out.add(new ItemStack(Items.EXPERIENCE_BOTTLE, 64));
+            }
+            case 5 -> out.add(new ItemStack(ModItems3.GOLD_COIN.get(), 40));
+            case 6 -> out.add(new ItemStack(Items.NETHERITE_INGOT, 2));
+            case 7 -> out.add(new ItemStack(Items.NETHER_STAR));
+            case 8 -> out.add(new ItemStack(Items.TOTEM_OF_UNDYING, 2));
+            default -> {
+                out.add(new ItemStack(com.snolred.wildplus.registry.ModItems10.STAR_RUBY_APPLE.get(), 2));
+                out.add(new ItemStack(ModItems3.GOLD_COIN.get(), 100));
+                out.add(new ItemStack(Items.NETHER_STAR));
+            }
+        }
+        return out;
+    }
+
+    /** 이번 시즌 프로 패스 해금 (5,000동, 통장 먼저) */
+    public static boolean unlockPro(ServerPlayer p) {
+        MinecraftServer server = p.level().getServer();
+        CompoundTag me = season(server, p.getUUID());
+        if (me.getBooleanOr("pro", false)) return false;
+        if (!com.snolred.wildplus.economy.Honor.pay(p, PRO_COST)) {
+            p.sendOverlayMessage(Component.literal(String.format("프로 패스는 %,d동이 필요해요", PRO_COST)).withStyle(ChatFormatting.RED));
+            return false;
+        }
+        me.putBoolean("pro", true);
+        ContentData.get(server).dirty();
+        p.level().playSound(null, p.blockPosition(), SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, SoundSource.PLAYERS, 0.8F, 1.2F);
+        p.sendSystemMessage(Component.literal("✦ 이번 시즌 프로 패스를 해금했어요! 이미 달성한 단계 보상도 받을 수 있어요").withStyle(ChatFormatting.GOLD));
+        return true;
+    }
+
+    public static boolean claimPro(ServerPlayer p, int tier) {
+        if (tier < 0 || tier >= TIERS) return false;
+        MinecraftServer server = p.level().getServer();
+        CompoundTag me = season(server, p.getUUID());
+        int mask = me.getIntOr("proClaimed", 0);
+        if (!me.getBooleanOr("pro", false) || (mask & (1 << tier)) != 0 || me.getIntOr("points", 0) < (tier + 1) * TIER_POINTS) return false;
+        me.putInt("proClaimed", mask | (1 << tier));
+        ContentData.get(server).dirty();
+        for (ItemStack s : proReward(tier)) {
+            if (!p.getInventory().add(s) && !s.isEmpty()) net.minecraft.world.Containers.dropItemStack(p.level(), p.getX(), p.getY(), p.getZ(), s);
+        }
+        p.level().playSound(null, p.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.8F, 1.5F);
+        return true;
+    }
+
     private WeeklyGoals() {}
 
     // ───────── 이번 주 목표 ─────────
@@ -171,6 +232,8 @@ public final class WeeklyGoals {
             me.putLong("season", s);
             me.putInt("points", 0);
             me.putInt("claimed", 0);
+            me.putBoolean("pro", false);
+            me.putInt("proClaimed", 0);
             d.dirty();
         }
         return me;

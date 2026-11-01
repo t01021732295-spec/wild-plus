@@ -25,7 +25,7 @@ import net.minecraft.world.item.ItemStack;
  */
 public class ContentMenu extends AbstractContainerMenu {
     public static final int RAID = 0, TOWER = 1, GOALS = 2;
-    public static final int BTN_START = 0, BTN_GOAL = 1, BTN_TIER = 10;
+    public static final int BTN_START = 0, BTN_GOAL = 1, BTN_TIER = 10, BTN_PRO_TIER = 30, BTN_PRO_UNLOCK = 50, BTN_SKIP = 51;
 
     public final int mode;
     public final CompoundTag info;
@@ -128,6 +128,8 @@ public class ContentMenu extends AbstractContainerMenu {
                 CompoundTag s = WeeklyGoals.season(server, p.getUUID());
                 t.putInt("points", s.getIntOr("points", 0));
                 t.putInt("tierClaimed", s.getIntOr("claimed", 0));
+                t.putBoolean("pro", s.getBooleanOr("pro", false));
+                t.putInt("proClaimed", s.getIntOr("proClaimed", 0));
                 // 시즌 번호는 이 월드에서 처음 연 시즌을 1로
                 CompoundTag meta = d.section("meta");
                 if (meta.getLongOr("season0g", Long.MIN_VALUE) == Long.MIN_VALUE) {
@@ -162,6 +164,8 @@ public class ContentMenu extends AbstractContainerMenu {
             default -> {
                 if (id >= BTN_GOAL && id < BTN_GOAL + 4) WeeklyGoals.claimGoal(sp, id - BTN_GOAL);
                 else if (id >= BTN_TIER && id < BTN_TIER + WeeklyGoals.TIERS) WeeklyGoals.claimTier(sp, id - BTN_TIER);
+                else if (id >= BTN_PRO_TIER && id < BTN_PRO_TIER + WeeklyGoals.TIERS) WeeklyGoals.claimPro(sp, id - BTN_PRO_TIER);
+                else if (id == BTN_PRO_UNLOCK) WeeklyGoals.unlockPro(sp);
             }
         }
         if (reopen) server.execute(() -> open(sp, pos, mode));

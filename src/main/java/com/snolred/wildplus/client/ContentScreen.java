@@ -70,17 +70,27 @@ public class ContentScreen extends AbstractContainerScreen<ContentMenu> {
                     CompoundTag e = goals.getCompoundOrEmpty(i);
                     boolean done = e.getIntOr("progress", 0) >= e.getIntOr("target", 1);
                     if (done && !e.getBooleanOr("claimed", false)) {
-                        int gx = x + 10 + (i % 2) * 152, gy = y + 26 + (i / 2) * 46;
+                        int gx = x + 10 + (i % 2) * 152, gy = y + 24 + (i / 2) * 38;
                         int id = ContentMenu.BTN_GOAL + i;
-                        addRenderableWidget(UiButton.of(gx + 108, gy + 27, 36, 13, "받기", UiButton.GREEN, () -> press(id)));
+                        addRenderableWidget(UiButton.of(gx + 108, gy + 21, 34, 11, "받기", UiButton.GREEN, () -> press(id)));
                     }
                 }
-                int points = t.getIntOr("points", 0), claimed = t.getIntOr("tierClaimed", 0);
+                int points = t.getIntOr("points", 0), claimed = t.getIntOr("tierClaimed", 0), proClaimed = t.getIntOr("proClaimed", 0);
+                boolean pro = t.getBooleanOr("pro", false);
                 for (int i = 0; i < WeeklyGoals.TIERS; i++) {
-                    if (points >= (i + 1) * WeeklyGoals.TIER_POINTS && (claimed & (1 << i)) == 0) {
+                    boolean reached = points >= (i + 1) * WeeklyGoals.TIER_POINTS;
+                    if (reached && (claimed & (1 << i)) == 0) {
                         int id = ContentMenu.BTN_TIER + i;
-                        addRenderableWidget(UiButton.of(x + 11 + i * 30, y + H - 20, 28, 12, "받기", UiButton.GOLD, () -> press(id)));
+                        addRenderableWidget(UiButton.of(x + 11 + i * 30, y + 126 + 18, 28, 10, "받기", UiButton.GOLD, () -> press(id)));
                     }
+                    if (pro && reached && (proClaimed & (1 << i)) == 0) {
+                        int id = ContentMenu.BTN_PRO_TIER + i;
+                        addRenderableWidget(UiButton.of(x + 11 + i * 30, y + 158 + 18, 28, 10, "받기", UiButton.RED, () -> press(id)));
+                    }
+                }
+                if (!pro) {
+                    addRenderableWidget(UiButton.of(x + W / 2 - 75, y + 190, 150, 15,
+                            String.format("✦ 프로 패스 해금 · %,d동", WeeklyGoals.PRO_COST), UiButton.RED, () -> press(ContentMenu.BTN_PRO_UNLOCK)));
                 }
             }
         }
@@ -191,7 +201,7 @@ public class ContentScreen extends AbstractContainerScreen<ContentMenu> {
             UiKit.text(g, BOSS_PHASES[boss][i], rx + 38, py + 2, 0xFFE6DEF0);
         }
         UiKit.text(g, "바닥에 원이 보이면 피하세요!", rx + 7, ry + 88, 0xFFB8A8C8);
-        UiKit.text(g, "제한 시간 15분 · 깰 때마다 단계 +1", rx + 7, ry + 101, 0xFF7E7290);
+        UiKit.text(g, "전용 방에서 15분 · 템 유지", rx + 7, ry + 101, 0xFF7E7290);
 
         // 보상 (아래 왼쪽)
         int by = y + 152;
@@ -303,55 +313,67 @@ public class ContentScreen extends AbstractContainerScreen<ContentMenu> {
         int x = leftPos, y = topPos;
         // 나무 테 + 코르크
         UiKit.device(g, x, y, W, H, 0xFF9A6A3A, 0xFF5E3A1A);
-        g.fillGradient(x + 5, y + 5, x + W - 5, y + 116, 0xFFC99A64, 0xFFB98A54);
-        UiKit.speckle(g, x + 5, y + 5, W - 10, 111, 13, 420, 0x30704020, 0x22FFF0D0);
-        UiKit.bold(g, "📋 이번 주 공동 목표", x + 10, y + 9, 0xFF3A2410);
-        UiKit.right(g, "새 목표까지 게임 속 " + t.getIntOr("reset", 7) + "일", x + W - 10, y + 9, 0xFF5A3A1A);
+        g.fillGradient(x + 5, y + 5, x + W - 5, y + 100, 0xFFC99A64, 0xFFB98A54);
+        UiKit.speckle(g, x + 5, y + 5, W - 10, 95, 13, 380, 0x30704020, 0x22FFF0D0);
+        UiKit.bold(g, "📋 이번 주 공동 목표", x + 10, y + 8, 0xFF3A2410);
+        UiKit.right(g, "새 목표까지 게임 속 " + t.getIntOr("reset", 7) + "일", x + W - 10, y + 8, 0xFF5A3A1A);
 
         ListTag goals = t.getListOrEmpty("goals");
         int[] tints = {0xFFFFF6C8, 0xFFE4F4FF, 0xFFFFE4EC, 0xFFE6FFE6};
         int[] pins = {0xFFE5484D, 0xFF3B82F6, 0xFF22A35A, 0xFFF2C14E};
         for (int i = 0; i < Math.min(4, goals.size()); i++) {
             CompoundTag e = goals.getCompoundOrEmpty(i);
-            int gx = x + 10 + (i % 2) * 152, gy = y + 26 + (i / 2) * 46;
+            int gx = x + 10 + (i % 2) * 152, gy = y + 24 + (i / 2) * 38;
             int prog = e.getIntOr("progress", 0), target = Math.max(1, e.getIntOr("target", 1));
             boolean done = prog >= target, claimed = e.getBooleanOr("claimed", false);
-            g.fill(gx + 2, gy + 2, gx + 148, gy + 44, 0x40000000);
-            g.fill(gx, gy, gx + 146, gy + 42, tints[i]);
+            g.fill(gx + 2, gy + 2, gx + 148, gy + 36, 0x40000000);
+            g.fill(gx, gy, gx + 146, gy + 34, tints[i]);
             g.fill(gx, gy, gx + 146, gy + 1, 0x60FFFFFF);
-            UiKit.circle(g, gx + 69, gy - 3, 7, pins[i]);
-            UiKit.bold(g, e.getStringOr("label", "?"), gx + 6, gy + 6, 0xFF2A2018);
-            bar(g, gx + 6, gy + 18, 134, 7, prog / (float) target, 0xFFD8CCB4, done ? 0xFF4BD58A : 0xFF6BA8FF, done ? 0xFF1E8A4C : 0xFF2563D9);
-            UiKit.text(g, fmt(prog) + " / " + fmt(target), gx + 6, gy + 29, 0xFF5A4A38);
+            UiKit.circle(g, gx + 69, gy - 3, 6, pins[i]);
+            UiKit.bold(g, e.getStringOr("label", "?"), gx + 6, gy + 4, 0xFF2A2018);
+            bar(g, gx + 6, gy + 14, 134, 6, prog / (float) target, 0xFFD8CCB4, done ? 0xFF4BD58A : 0xFF6BA8FF, done ? 0xFF1E8A4C : 0xFF2563D9);
+            UiKit.text(g, fmt(prog) + " / " + fmt(target), gx + 6, gy + 23, 0xFF5A4A38);
             if (claimed) {
-                UiKit.right(g, "받음 ✔", gx + 140, gy + 29, 0xFF1E8A4C);
+                UiKit.right(g, "받음 ✔", gx + 140, gy + 23, 0xFF1E8A4C);
             } else if (!done) {
-                UiKit.right(g, fmt(e.getIntOr("reward", 0)) + "동 · " + WeeklyGoals.GOAL_POINTS + "점", gx + 140, gy + 29, 0xFF8A6A3A);
+                UiKit.right(g, fmt(e.getIntOr("reward", 0)) + "동 · " + WeeklyGoals.GOAL_POINTS + "점", gx + 140, gy + 23, 0xFF8A6A3A);
             }
         }
 
-        // 시즌 패스
-        int sy = y + 120;
+        // 시즌 패스 (일반 줄 + 프로 줄)
+        int sy = y + 102;
         g.fillGradient(x + 5, sy, x + W - 5, y + H - 5, 0xFF2A1F3D, 0xFF161026);
         UiKit.hline(g, x + 5, sy, W - 10, 0xFFE0B04A);
-        int points = t.getIntOr("points", 0), claimed = t.getIntOr("tierClaimed", 0);
+        int points = t.getIntOr("points", 0), claimed = t.getIntOr("tierClaimed", 0), proClaimed = t.getIntOr("proClaimed", 0);
+        boolean pro = t.getBooleanOr("pro", false);
         int tier = Math.min(WeeklyGoals.TIERS, points / WeeklyGoals.TIER_POINTS);
-        UiKit.bold(g, "✦ 시즌 " + t.getLongOr("season", 1) + " 패스", x + 10, sy + 5, 0xFFFFD27A);
-        UiKit.right(g, "점수 " + fmt(points) + " · " + tier + "단계 · " + t.getIntOr("weeksLeft", 8) + "주 남음", x + W - 10, sy + 5, 0xFFCFC2E8);
+        UiKit.bold(g, "✦ 시즌 " + t.getLongOr("season", 1) + " 패스", x + 10, sy + 4, 0xFFFFD27A);
+        UiKit.right(g, "점수 " + fmt(points) + " · " + tier + "단계 · " + t.getIntOr("weeksLeft", 8) + "주 남음", x + W - 10, sy + 4, 0xFFCFC2E8);
         float within = tier >= WeeklyGoals.TIERS ? 1F : (points % WeeklyGoals.TIER_POINTS) / (float) WeeklyGoals.TIER_POINTS;
-        bar(g, x + 10, sy + 17, W - 20, 6, (tier + within) / WeeklyGoals.TIERS, 0xFF3A2F50, 0xFFFFE08A, 0xFFE0A030);
-        for (int i = 0; i < WeeklyGoals.TIERS; i++) {
-            int cx = x + 11 + i * 30, cy = sy + 28;
-            boolean reached = points >= (i + 1) * WeeklyGoals.TIER_POINTS, got = (claimed & (1 << i)) != 0;
-            int border = got ? 0xFF3FB27F : reached ? 0xFFFFD27A : 0xFF4A3F60;
-            UiKit.round(g, cx, cy, 28, 38, 3, border);
-            UiKit.roundGradient(g, cx + 1, cy + 1, 26, 36, 3, reached ? 0xFF4A3A20 : 0xFF241C34, reached ? 0xFF2A2010 : 0xFF181226);
-            UiKit.center(g, String.valueOf(i + 1), cx + 14, cy + 3, reached ? 0xFFFFE08A : 0xFF7E7290);
-            List<ItemStack> r = WeeklyGoals.tierReward(i);
-            itemCount(g, r.get(0), cx + 6, cy + 14, 0xFFFFFFFF);
-            if (!reached) g.fill(cx + 1, cy + 1, cx + 27, cy + 37, 0x70000000);
-            if (got) UiKit.center(g, "✔", cx + 14, cy + 29, 0xFF4BD58A);
+        bar(g, x + 10, sy + 15, W - 20, 5, (tier + within) / WeeklyGoals.TIERS, 0xFF3A2F50, 0xFFFFE08A, 0xFFE0A030);
+        for (int row = 0; row < 2; row++) {
+            boolean proRow = row == 1;
+            int mask = proRow ? proClaimed : claimed;
+            for (int i = 0; i < WeeklyGoals.TIERS; i++) {
+                int cx = x + 11 + i * 30, cy = y + 126 + row * 32;
+                boolean reached = points >= (i + 1) * WeeklyGoals.TIER_POINTS, got = (mask & (1 << i)) != 0;
+                boolean open = reached && (!proRow || pro);
+                int border = got ? 0xFF3FB27F : open ? (proRow ? 0xFFFF5A6E : 0xFFFFD27A) : (proRow ? 0xFF5A2A40 : 0xFF4A3F60);
+                UiKit.round(g, cx, cy, 28, 28, 3, border);
+                int top = proRow ? (open ? 0xFF5A1A2A : 0xFF2A1220) : (open ? 0xFF4A3A20 : 0xFF241C34);
+                UiKit.roundGradient(g, cx + 1, cy + 1, 26, 26, 3, top, proRow ? 0xFF1A0A12 : 0xFF181226);
+                List<ItemStack> r = proRow ? WeeklyGoals.proReward(i) : WeeklyGoals.tierReward(i);
+                itemCount(g, r.get(0), cx + 6, cy + 3, 0xFFFFFFFF);
+                if (!open) g.fill(cx + 1, cy + 1, cx + 27, cy + 27, 0x80000000);
+                if (got) UiKit.center(g, "✔", cx + 14, cy + 18, 0xFF4BD58A);
+                else if (!reached) UiKit.center(g, String.valueOf(i + 1), cx + 14, cy + 19, 0xFF7E7290);
+            }
         }
-        UiKit.center(g, "점수: 목표 40 · 레이드 60 · 탑 1층 4 · 100점 = 1단계", x + W / 2, y + H - 33, 0xFF9C8FB0);
+        if (pro) {
+            UiKit.center(g, "★ 프로 패스 해금됨 · 위 줄 일반 · 아래 빨간 줄 프로", x + W / 2, y + 194, 0xFFFF8A9A);
+            UiKit.center(g, "점수: 목표 40 · 레이드 60 · 탑 1층 4 · 100점 = 1단계", x + W / 2, y + 206, 0xFF9C8FB0);
+        } else {
+            UiKit.center(g, "아래 빨간 줄 = 프로 보상 (지난 단계도 받을 수 있음)", x + W / 2, y + 210, 0xFF9C8FB0);
+        }
     }
 }

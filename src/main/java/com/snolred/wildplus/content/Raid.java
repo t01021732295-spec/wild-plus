@@ -107,6 +107,12 @@ public final class Raid {
     private static Boss boss;
     private static ServerLevel level;
     private static BlockPos altar;
+    /** 레이드 전용 방 (하늘 위 원형 투기장) · 끝나면 돌아갈 제단 위치 */
+    public static final BlockPos ARENA = new BlockPos(1_000_000, 200, -1_000_000);
+    public static final int ARENA_R = 18, ARENA_H = 11;
+    private static BlockPos home;
+    private static net.minecraft.resources.ResourceKey<net.minecraft.world.level.Level> homeDim;
+    private static final java.util.Set<UUID> FIGHTERS = new java.util.LinkedHashSet<>();
     private static ServerBossEvent bar;
     private static long startedAt, lastNear;
     private static int phase, tier;
@@ -156,14 +162,29 @@ public final class Raid {
             opener.sendSystemMessage(Component.literal("이미 레이드가 진행 중이에요!").withStyle(ChatFormatting.RED));
             return;
         }
-        ServerLevel lv = (ServerLevel) opener.level();
-        List<ServerPlayer> party = nearby(lv, altarPos, 24);
+        ServerLevel from = (ServerLevel) opener.level();
+        List<ServerPlayer> party = nearby(from, altarPos, 24);
         if (party.isEmpty()) party.add(opener);
         Boss b = bossOfWeek();
+        ServerLevel lv = from.getServer().overworld();
         int t = tier(lv.getServer());
-        Direction facing = lv.getBlockState(altarPos).hasProperty(HorizontalDirectionalBlock.FACING)
-                ? lv.getBlockState(altarPos).getValue(HorizontalDirectionalBlock.FACING) : Direction.NORTH;
-        BlockPos spawn = lv.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, altarPos.relative(facing, 7));
+        Direction facing = Direction.NORTH;
+        // 레이드 전용 방을 짓고 모두 데려간다
+        home = altarPos.immutable();
+        homeDim = from.dimension();
+        state(lv.getServer()).putLong("home", home.asLong());
+        ContentData.get(lv.getServer()).dirty();
+        forceArena(lv, true);
+        buildArena(lv, b);
+        FIGHTERS.clear();
+        for (int i = 0; i < party.size(); i++) {
+            ServerPlayer p = party.get(i);
+            double a = Math.PI / 2 + (i - (party.size() - 1) / 2.0) * 0.35;
+            p.teleportTo(lv, ARENA.getX() + 0.5 + Math.cos(a) * 12, ARENA.getY() + 1, ARENA.getZ() + 0.5 + Math.sin(a) * 12,
+                    java.util.Set.of(), 180F, 0F, true);
+            FIGHTERS.add(p.getUUID());
+        }
+        BlockPos spawn = ARENA.above().north(6);
         Mob mob = b.type().create(lv, EntitySpawnReason.EVENT);
         if (mob == null) return;
         mob.snapTo(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5, facing.getOpposite().toYRot(), 0F);
@@ -190,7 +211,7 @@ public final class Raid {
 
         boss = b;
         level = lv;
-        altar = altarPos.immutable();
+        altar = ARENA;
         tier = t;
         phase = 1;
         startedAt = lastNear = lv.getGameTime();
@@ -277,8 +298,7 @@ public final class Raid {
             case LICH -> {
                 if (t % 200 == 0) {
                     double a = r.nextDouble() * Math.PI * 2;
-                    BlockPos to = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
-                            altar.offset(Mth.floor(Math.cos(a) * 8), 0, Mth.floor(Math.sin(a) * 8)));
+                    BlockPos to = altar.offset(Mth.floor(Math.cos(a) * 8), 1, Mth.floor(Math.sin(a) * 8));
                     level.sendParticles(ParticleTypes.REVERSE_PORTAL, mob.getX(), mob.getY() + 1, mob.getZ(), 40, 0.5, 1, 0.5, 0.1);
                     mob.teleportTo(to.getX() + 0.5, to.getY(), to.getZ() + 0.5);
                     level.playSound(null, to, SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 1.0F, 0.6F);
@@ -472,6 +492,102 @@ public final class Raid {
         cleanup(false);
     }
 
+    // ───────── 레이드 전용 방 ─────────
+    private static void forceArena(ServerLevel lv, boolean on) {
+        for (int cx = (ARENA.getX() - ARENA_R - 2) >> 4; cx <= (ARENA.getX() + ARENA_R + 2) >> 4; cx++) {
+            for (int cz = (ARENA.getZ() - ARENA_R - 2) >> 4; cz <= (ARENA.getZ() + ARENA_R + 2) >> 4; cz++) lv.setChunkForced(cx, cz, on);
+        }
+    }
+
+    /** 보스마다 다른 원형 투기장: 거신 = 현무암 협곡 · 망령 = 심층암 묘실 · 서리 = 얼음 궁전 */
+    private static void buildArena(ServerLevel lv, Boss b) {
+        net.minecraft.world.level.block.Block floor, accent, wall, pillar, light;
+        switch (b) {
+            case TITAN -> {
+                floor = net.minecraft.world.level.block.Blocks.SMOOTH_BASALT; accent = net.minecraft.world.level.block.Blocks.POLISHED_BASALT;
+                wall = net.minecraft.world.level.block.Blocks.BASALT; pillar = net.minecraft.world.level.block.Blocks.POLISHED_BLACKSTONE_BRICKS;
+                light = net.minecraft.world.level.block.Blocks.SHROOMLIGHT;
+            }
+            case LICH -> {
+                floor = net.minecraft.world.level.block.Blocks.DEEPSLATE_TILES; accent = net.minecraft.world.level.block.Blocks.SCULK;
+                wall = net.minecraft.world.level.block.Blocks.POLISHED_DEEPSLATE; pillar = net.minecraft.world.level.block.Blocks.CRYING_OBSIDIAN;
+                light = net.minecraft.world.level.block.Blocks.SEA_LANTERN;
+            }
+            default -> {
+                floor = net.minecraft.world.level.block.Blocks.PACKED_ICE; accent = net.minecraft.world.level.block.Blocks.SNOW_BLOCK;
+                wall = net.minecraft.world.level.block.Blocks.BLUE_ICE; pillar = net.minecraft.world.level.block.Blocks.PACKED_ICE;
+                light = net.minecraft.world.level.block.Blocks.SEA_LANTERN;
+            }
+        }
+        var air = net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
+        var barrier = net.minecraft.world.level.block.Blocks.BARRIER.defaultBlockState();
+        int cx = ARENA.getX(), cy = ARENA.getY(), cz = ARENA.getZ(), R = ARENA_R;
+        for (int dx = -R - 1; dx <= R + 1; dx++) {
+            for (int dz = -R - 1; dz <= R + 1; dz++) {
+                double d = Math.sqrt(dx * dx + dz * dz);
+                if (d > R + 1.5) continue;
+                boolean edge = d > R;
+                int ring = (int) d;
+                var fl = (dx == 0 && dz == 0) ? light : (ring % 6 == 0 && (dx + dz) % 3 == 0) ? light : (ring % 4 == 0 ? accent : floor);
+                lv.setBlock(new BlockPos(cx + dx, cy, cz + dz), (edge ? wall : fl).defaultBlockState(), 2);
+                lv.setBlock(new BlockPos(cx + dx, cy - 1, cz + dz), wall.defaultBlockState(), 2);
+                for (int y = 1; y <= ARENA_H; y++) {
+                    var st = edge ? (y <= 4 || (y <= ARENA_H - 2 && (dx + dz) % 5 == 0) ? wall.defaultBlockState() : y == ARENA_H ? barrier : air)
+                            : (y == ARENA_H ? barrier : air);
+                    lv.setBlock(new BlockPos(cx + dx, cy + y, cz + dz), st, 2);
+                }
+                lv.setBlock(new BlockPos(cx + dx, cy + ARENA_H + 1, cz + dz), barrier, 2);
+            }
+        }
+        // 엄폐용 기둥 4개 (꼭대기에 조명)
+        for (int k = 0; k < 4; k++) {
+            double a = Math.PI / 4 + k * Math.PI / 2;
+            int px = cx + (int) Math.round(Math.cos(a) * 10), pz = cz + (int) Math.round(Math.sin(a) * 10);
+            for (int y = 1; y <= 5; y++) {
+                lv.setBlock(new BlockPos(px, cy + y, pz), pillar.defaultBlockState(), 2);
+                lv.setBlock(new BlockPos(px + 1, cy + y, pz), pillar.defaultBlockState(), 2);
+            }
+            lv.setBlock(new BlockPos(px, cy + 6, pz), light.defaultBlockState(), 2);
+        }
+    }
+
+    /** 레이드 방에 있는 사람을 제단으로 돌려보낸다 */
+    private static void sendHome(ServerPlayer p) {
+        ServerLevel to = homeDim != null ? p.level().getServer().getLevel(homeDim) : null;
+        if (to == null) to = p.level().getServer().overworld();
+        BlockPos h = home != null ? home : BlockPos.of(state(p.level().getServer()).getLongOr("home", 0L));
+        if (home == null) h = to.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, h).below(2);
+        p.teleportTo(to, h.getX() + 0.5, h.getY() + 2, h.getZ() + 0.5, java.util.Set.of(), p.getYRot(), 0F, true);
+        p.clearFire();
+    }
+
+    private static boolean inArena(net.minecraft.world.entity.Entity e) {
+        return e.level() == level && Math.abs(e.getX() - ARENA.getX()) < ARENA_R + 4 && Math.abs(e.getZ() - ARENA.getZ()) < ARENA_R + 4
+                && Math.abs(e.getY() - ARENA.getY()) < 20;
+    }
+
+    /** 레이드가 끝난 뒤(서버 재시작 등) 레이드 방에 남아 있으면 제단으로 */
+    @SubscribeEvent
+    public static void onLogin(net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent event) {
+        if (bossId == null && event.getEntity() instanceof ServerPlayer p && Math.abs(p.getX() - ARENA.getX()) < ARENA_R + 4
+                && Math.abs(p.getZ() - ARENA.getZ()) < ARENA_R + 4) {
+            sendHome(p);
+        }
+    }
+
+    /** 레이드 방에서 쓰러지면 죽지 않고 제단으로 (아이템 유지) */
+    @SubscribeEvent
+    public static void onPlayerDeath(LivingDeathEvent event) {
+        if (bossId == null || !(event.getEntity() instanceof ServerPlayer p) || !FIGHTERS.contains(p.getUUID()) || !inArena(p)) return;
+        event.setCanceled(true);
+        p.setHealth(p.getMaxHealth());
+        p.removeAllEffects();
+        FIGHTERS.remove(p.getUUID());
+        sendHome(p);
+        p.sendSystemMessage(Component.literal("💀 레이드에서 쓰러졌어요 (아이템은 그대로) · 제단으로 돌아왔어요").withStyle(ChatFormatting.RED));
+        if (FIGHTERS.isEmpty()) fail("모두 쓰러졌어요");
+    }
+
     private static void fail(String why) {
         if (level != null) {
             level.getServer().getPlayerList().broadcastSystemMessage(Component.literal("✖ 레이드 실패: " + why).withStyle(ChatFormatting.RED), false);
@@ -481,6 +597,7 @@ public final class Raid {
 
     private static void cleanup(boolean removeBoss) {
         if (level != null) {
+            for (ServerPlayer p : new ArrayList<>(level.players())) if (inArena(p)) sendHome(p);
             if (removeBoss && bossId != null) {
                 Entity e = level.getEntity(bossId);
                 if (e != null) e.discard();
@@ -495,6 +612,8 @@ public final class Raid {
         bossId = null;
         STRIKES.clear();
         MINIONS.clear();
+        FIGHTERS.clear();
+        if (level != null) forceArena(level, false);
     }
 
     /** 서버를 다시 켰을 때 남아 있는 레이드 보스·부하는 정리 */

@@ -309,11 +309,25 @@ public final class Tower {
                     if (p != null && p.blockPosition().equals(EXIT.above())) eliminate(event.getServer(), id, p, "스스로 내려감");
                 }
                 if (!running) return;
+                // 대기 건너뛰기: 누군가 웅크리면 바로 다음 층
+                for (UUID id : ACTIVE) {
+                    ServerPlayer p = event.getServer().getPlayerList().getPlayer(id);
+                    if (p != null && p.isShiftKeyDown() && timer - now > 10) {
+                        timer = now;
+                        for (UUID o : ACTIVE) {
+                            ServerPlayer op = event.getServer().getPlayerList().getPlayer(o);
+                            if (op != null) op.sendOverlayMessage(Component.literal("⏩ " + p.getGameProfile().name() + " 님이 대기를 건너뛰었어요")
+                                    .withStyle(ChatFormatting.AQUA));
+                        }
+                        break;
+                    }
+                }
                 long left = (timer - now) / 20;
-                if (left <= 5 && left > 0 && now % 20 == 0) {
+                if (left > 0 && now % 20 == 0) {
                     for (UUID id : ACTIVE) {
                         ServerPlayer p = event.getServer().getPlayerList().getPlayer(id);
-                        if (p != null) p.sendOverlayMessage(Component.literal(left + "초 뒤 " + (floor + 1) + "층 · 금빛 발판 = 탈출").withStyle(ChatFormatting.YELLOW));
+                        if (p != null) p.sendOverlayMessage(Component.literal(left + "초 뒤 " + (floor + 1) + "층 · 웅크리면 바로 시작 · 금빛 발판 = 탈출")
+                                .withStyle(ChatFormatting.YELLOW));
                     }
                 }
                 if (now >= timer) {
