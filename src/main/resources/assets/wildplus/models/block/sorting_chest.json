@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "wildplus:block/sorting_chest_front",
+    "side": "wildplus:block/sorting_chest_side",
+    "top": "wildplus:block/sorting_chest_top"
+  }
+}

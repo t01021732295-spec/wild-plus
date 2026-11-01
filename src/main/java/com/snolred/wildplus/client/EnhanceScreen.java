@@ -58,10 +58,12 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
             b.visible = i < sp.size() + opts.size();
             if (!b.visible) continue;
             if (i < sp.size()) {
-                boolean star = sp.get(i) == EnhanceMenu.BTN_STAR;
-                b.setMessage(Component.literal(String.format("%,d동", star ? EnhanceMenu.STAR_COST : EnhanceMenu.TRUE_DMG_COST)));
-                b.style(star ? UiButton.RED : UiButton.ORANGE);
-                b.active = !star || menu.material().is(net.minecraft.world.item.Items.NETHER_STAR);
+                int sid = sp.get(i);
+                boolean star = sid == EnhanceMenu.BTN_STAR, engrave = sid == EnhanceMenu.BTN_ENGRAVE;
+                b.setMessage(Component.literal(String.format("%,d동", star ? EnhanceMenu.STAR_COST : engrave ? EnhanceMenu.ENGRAVE_COST : EnhanceMenu.TRUE_DMG_COST)));
+                b.style(star ? UiButton.RED : engrave ? UiButton.TEAL : UiButton.ORANGE);
+                b.active = star ? menu.material().is(net.minecraft.world.item.Items.NETHER_STAR)
+                        : !engrave || !EnhanceMenu.engraveKind(menu.material()).isEmpty();
             } else {
                 b.setMessage(Component.literal(String.format("%,d동", opts.get(i - sp.size()).cost())));
                 b.style(UiButton.GOLD);
@@ -123,6 +125,9 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
             if (sp.get(i) == EnhanceMenu.BTN_STAR) {
                 UiKit.bold(g, "✦ 스타 루비 승급", 68, ry, 0xFFB0103A);
                 UiKit.text(g, menu.material().is(net.minecraft.world.item.Items.NETHER_STAR) ? "별 ✔" : "별 필요", 162, ry, 0xFF7A5A30);
+            } else if (sp.get(i) == EnhanceMenu.BTN_ENGRAVE) {
+                String kind = EnhanceMenu.engraveKind(menu.material());
+                UiKit.bold(g, kind.isEmpty() ? "✦ 각인 (전리품 필요)" : "✦ " + EnhanceMenu.engraveName(kind), 68, ry, 0xFF0E6E64);
             } else {
                 int lv = com.snolred.wildplus.event.RubyGear.trueLevel(item);
                 UiKit.text(g, String.format("고정 피해 %.1f", 4 + 0.5 * lv), 68, ry, ink);

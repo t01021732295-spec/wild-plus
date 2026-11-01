@@ -75,6 +75,11 @@ public final class ModItems9 {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> FILTER_HOPPER = ITEMS.registerSimpleBlockItem("filter_hopper",
             ModBlocks2.FILTER_HOPPER);
 
+    // 17차
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> SORTING_CHEST = ITEMS.registerSimpleBlockItem("sorting_chest", ModBlocks2.SORTING_CHEST);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> FEEDER = ITEMS.registerSimpleBlockItem("feeder", ModBlocks2.FEEDER);
+    public static final DeferredItem<net.minecraft.world.item.BlockItem> MAILBOX = ITEMS.registerSimpleBlockItem("mailbox", ModBlocks2.MAILBOX);
+
     /** 루비 → 스타 루비 짝 */
     public static Map<Item, Item> upgrades() {
         return Map.of(

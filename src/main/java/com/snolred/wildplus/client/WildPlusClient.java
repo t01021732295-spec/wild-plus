@@ -42,6 +42,7 @@ public class WildPlusClient {
         event.register(com.snolred.wildplus.registry.ModMenus.HALL.get(), HallScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.CONTENT.get(), ContentScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.SHIPPING.get(), ShippingScreen::new);
+        event.register(com.snolred.wildplus.registry.ModMenus.MAIL.get(), MailScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.FILTER_HOPPER.get(), FilterHopperScreen::new);
     }
 
@@ -96,6 +97,15 @@ public class WildPlusClient {
             int lv = com.snolred.wildplus.event.RubyGear.trueLevel(stack);
             event.getToolTip().add(1, Component.literal(String.format("✦ 고정 피해 %.1f (방어 무시) · 강화 %d/4", 4 + 0.5 * lv, lv))
                     .withStyle(ChatFormatting.LIGHT_PURPLE));
+        }
+        String eng = com.snolred.wildplus.event.RubyGear.engraving(stack);
+        if (!eng.isEmpty()) {
+            String text = switch (eng) {
+                case "TITAN" -> "✦ 대지 각인: 낙하 피해 없음 · 밀려나지 않음";
+                case "LICH" -> "✦ 망령 각인: 처치하면 체력 회복 · 경험치 1.5배";
+                default -> "✦ 서리 각인: 때린 적 구속 II · 나를 때린 적 구속";
+            };
+            event.getToolTip().add(1, Component.literal(text).withStyle(ChatFormatting.AQUA));
         }
         int ship = com.snolred.wildplus.economy.ShipPrices.centi(stack);
         if (ship > 0) {

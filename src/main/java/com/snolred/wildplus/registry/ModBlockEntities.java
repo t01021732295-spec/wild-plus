@@ -36,6 +36,12 @@ public final class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.OreMinerBlockEntity>> ORE_MINER =
             BLOCK_ENTITIES.register("ore_miner", () -> new BlockEntityType<>(com.snolred.wildplus.block.OreMinerBlockEntity::new,
                     ModBlocks.ORE_MINER.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.SortingChestBlockEntity>> SORTING_CHEST =
+            BLOCK_ENTITIES.register("sorting_chest", () -> new BlockEntityType<>(com.snolred.wildplus.block.SortingChestBlockEntity::new,
+                    com.snolred.wildplus.registry.ModBlocks2.SORTING_CHEST.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.FeederBlockEntity>> FEEDER =
+            BLOCK_ENTITIES.register("feeder", () -> new BlockEntityType<>(com.snolred.wildplus.block.FeederBlockEntity::new,
+                    com.snolred.wildplus.registry.ModBlocks2.FEEDER.get()));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.FilterHopperBlockEntity>> FILTER_HOPPER =
             BLOCK_ENTITIES.register("filter_hopper", () -> new BlockEntityType<>(com.snolred.wildplus.block.FilterHopperBlockEntity::new,
                     com.snolred.wildplus.registry.ModBlocks2.FILTER_HOPPER.get()));

@@ -52,7 +52,44 @@ public final class RubyGear {
         return s.is(ruby.get()) || s.is(star.get());
     }
 
-    public static final String TRUE_DMG = "wildplus_true_dmg";
+    public static final String TRUE_DMG = "wildplus_true_dmg", ENGRAVE = "wildplus_engrave";
+
+    /** 스타 루비 각인: TITAN(대지) · LICH(망령) · FROST(서리), 없으면 "" */
+    public static String engraving(ItemStack s) {
+        return s.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY)
+                .copyTag().getStringOr(ENGRAVE, "");
+    }
+
+    public static boolean isStar(ItemStack s) {
+        return com.snolred.wildplus.registry.ModItems9.upgrades().containsValue(s.getItem());
+    }
+
+    /** 손에 든 무기·입은 갑옷 중 하나라도 그 각인이 있으면 */
+    public static boolean hasEngraving(LivingEntity e, String kind) {
+        for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.MAINHAND, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
+            if (kind.equals(engraving(e.getItemBySlot(slot)))) return true;
+        }
+        return false;
+    }
+
+    @SubscribeEvent
+    public static void onKnockback(net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent event) {
+        if (event.getEntity() instanceof Player p && hasEngraving(p, "TITAN")) event.setCanceled(true);
+    }
+
+    @SubscribeEvent
+    public static void onKillEngrave(net.neoforged.neoforge.event.entity.living.LivingDeathEvent event) {
+        if (event.getSource().getEntity() instanceof Player p && !p.level().isClientSide() && hasEngraving(p, "LICH")) {
+            p.heal(3.0F);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onXpEngrave(net.neoforged.neoforge.event.entity.living.LivingExperienceDropEvent event) {
+        if (event.getAttackingPlayer() != null && hasEngraving(event.getAttackingPlayer(), "LICH")) {
+            event.setDroppedExperience(Math.round(event.getDroppedExperience() * 1.5F));
+        }
+    }
 
     /** 스타 루비 검 고정 피해 강화 단계 (0~4, 한 단계 0.5) */
     public static int trueLevel(ItemStack s) {
@@ -117,6 +154,14 @@ public final class RubyGear {
                 level.sendParticles(ParticleTypes.LAVA, target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), 4, 0.2, 0.2, 0.2, 0.0);
             }
         }
+        // 각인: 대지 = 낙하 피해 없음 · 서리 = 나를 때린 적 구속
+        if (target instanceof Player p && hasEngraving(p, "TITAN") && event.getSource().is(net.minecraft.tags.DamageTypeTags.IS_FALL)) {
+            event.setCanceled(true);
+            return;
+        }
+        if (target instanceof Player p && hasEngraving(p, "FROST") && event.getSource().getDirectEntity() instanceof LivingEntity att && att != p) {
+            att.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 0));
+        }
         // 4부위: 피해 10% 감소 + 때린 적 불태우기
         if (target instanceof Player p && pieces(p) >= 4) {
             event.setAmount(event.getAmount() * 0.9F);
@@ -125,6 +170,14 @@ public final class RubyGear {
     }
 
     // ───────── 검 ─────────
+    @SubscribeEvent
+    public static void onFrostHit(LivingDamageEvent.Post event) {
+        if (event.getSource().getEntity() instanceof Player p && event.getSource().getDirectEntity() == p && !p.level().isClientSide()
+                && hasEngraving(p, "FROST")) {
+            event.getEntity().addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 40, 1));
+        }
+    }
+
     @SubscribeEvent
     public static void onDamageDealt(LivingDamageEvent.Post event) {
         if (bursting || !(event.getSource().getEntity() instanceof Player player) || !(player.level() instanceof ServerLevel level)

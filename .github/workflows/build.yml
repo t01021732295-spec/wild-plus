@@ -338,6 +338,13 @@ jobs:
             run "execute if block 44 121 45 minecraft:chest{Items:[{id:\"minecraft:diamond\"}]} if block 45 121 44 minecraft:chest{Items:[{id:\"minecraft:dirt\"}]} run say FILTER_OK"
             run "data get block 44 121 45 Items"
             run "data get block 45 121 44 Items"
+            # 17차: 정렬 상자 (흙 3·다이아 1 → 흙이 든 상자로만)
+            run "fill 34 119 34 40 123 40 minecraft:air"
+            run "setblock 35 121 35 wildplus:sorting_chest{items:[{id:\"minecraft:dirt\",count:3},{id:\"minecraft:diamond\",count:1}]}"
+            run "setblock 38 121 35 minecraft:chest{Items:[{Slot:0b,id:\"minecraft:dirt\",count:1}]}"
+            sleep 4
+            run "execute if block 38 121 35 minecraft:chest{Items:[{id:\"minecraft:dirt\",count:4}]} if block 35 121 35 wildplus:sorting_chest{items:[{id:\"minecraft:diamond\"}]} run say SORT_OK"
+            run "data get block 38 121 35 Items"
             # 13차: 이벤트 투척병(영웅의 시간)이 땅에 깨지면 이벤트 시작 · 루비 광맥 생성
             run "fill 60 119 60 62 119 62 minecraft:stone"
             run "summon minecraft:snowball 61.5 124 61.5 {Item:{id:\"wildplus:event_bottle\",count:1,components:{\"minecraft:custom_data\":{wildplus_event:\"HERO_TIME\"}}},Motion:[0.0,-1.0,0.0]}"
@@ -795,6 +802,23 @@ jobs:
             sleep 1
             import -window root shot-vault-seal.png || true
             xdotool key F1 || true
+            # ── 17차: 정렬 상자 · 사료통 · 우편함 ──
+            cmd "/setblock 456 120 -12 wildplus:sorting_chest[facing=south]"
+            cmd "/setblock 458 120 -12 wildplus:feeder[facing=south]"
+            cmd "/setblock 460 120 -12 wildplus:mailbox[facing=south]"
+            cmd "/summon minecraft:cow 458.5 120 -14.5"
+            cmd "/tp @s 458.5 121 -7.5 180 20"
+            sleep 4
+            xdotool key F1 || true
+            sleep 1
+            import -window root shot-auto-blocks.png || true
+            xdotool key F1 || true
+            cmd "/tp @s 460.5 120 -9.8 180 30"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-mailbox.png || true
+            xdotool key Escape; sleep 1
+            cmd "/sethome"
+            cmd "/party list"
             # 랜덤 이벤트 · 새 효과
             cmd "/gamemode creative"
             cmd "/tp @s 478 121 30 0 10"

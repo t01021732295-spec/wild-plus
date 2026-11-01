@@ -46,7 +46,8 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  */
 public final class DungeonGuardian {
     public static final String TAG = "wildplus_dungeon_boss";
-    private static final String READY = "wildplus_dungeon_boss_ready", CALLED = "wildplus_dungeon_boss_called", HOME = "wildplus_dungeon_boss_home";
+    private static final String READY = "wildplus_dungeon_boss_ready", CALLED = "wildplus_dungeon_boss_called", HOME = "wildplus_dungeon_boss_home",
+            TIER = "wildplus_dungeon_tier";
     private static final Map<UUID, ServerBossEvent> BARS = new HashMap<>();
 
     private DungeonGuardian() {}
@@ -67,8 +68,9 @@ public final class DungeonGuardian {
         if (!data.getBooleanOr(READY, false)) {
             data.putBoolean(READY, true);
             data.putLong(HOME, boss.blockPosition().asLong());
-            set(boss, Attributes.MAX_HEALTH, 300);
-            set(boss, Attributes.ATTACK_DAMAGE, 14);
+            int tier = Math.max(1, data.getIntOr(TIER, 1));
+            set(boss, Attributes.MAX_HEALTH, 300 * (1.0 + 0.35 * (tier - 1)));
+            set(boss, Attributes.ATTACK_DAMAGE, 14 * (1.0 + 0.15 * (tier - 1)));
             set(boss, Attributes.ARMOR, 14);
             set(boss, Attributes.ARMOR_TOUGHNESS, 6);
             set(boss, Attributes.KNOCKBACK_RESISTANCE, 1.0);
@@ -79,7 +81,8 @@ public final class DungeonGuardian {
             boss.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.GOLDEN_HELMET));
             for (EquipmentSlot s : EquipmentSlot.values()) boss.setDropChance(s, 0.0F);
             boss.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, MobEffectInstance.INFINITE_DURATION, 0, false, false));
-            boss.setCustomName(Component.translatable("entity.wildplus.dungeon_guardian").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
+            boss.setCustomName(Component.translatable("entity.wildplus.dungeon_guardian").append(tier > 1 ? " · " + tier + "단계" : "")
+                    .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
             boss.setCustomNameVisible(true);
             boss.setPersistenceRequired();
         }
@@ -148,25 +151,86 @@ public final class DungeonGuardian {
         if (!isBoss(e) || !(e.level() instanceof ServerLevel level)) return;
         ServerBossEvent bar = BARS.remove(e.getUUID());
         if (bar != null) bar.removeAllPlayers();
-        openVault(level, BlockPos.of(e.getPersistentData().getLongOr(HOME, e.blockPosition().asLong())));
-        openVault(level, e.blockPosition());
+        BlockPos home = BlockPos.of(e.getPersistentData().getLongOr(HOME, e.blockPosition().asLong()));
+        List<BlockPos> gates = new java.util.ArrayList<>(openVault(level, home));
+        gates.addAll(openVault(level, e.blockPosition()));
+        remember(level, home, Math.max(1, e.getPersistentData().getIntOr(TIER, 1)), gates);
         Component who = event.getSource().getEntity() instanceof Player p ? p.getName() : Component.literal("누군가");
         level.getServer().getPlayerList().broadcastSystemMessage(Component.translatable("message.wildplus.dungeon_guardian.dead", who)
                 .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD), false);
     }
 
     /** 보스 주변의 봉인문(gate=true)을 없앤다 */
-    private static void openVault(ServerLevel level, BlockPos center) {
+    private static List<BlockPos> openVault(ServerLevel level, BlockPos center) {
+        List<BlockPos> out = new java.util.ArrayList<>();
         int opened = 0;
         for (BlockPos p : BlockPos.betweenClosed(center.offset(-16, -6, -16), center.offset(16, 8, 16))) {
             var st = level.getBlockState(p);
             if (st.is(com.snolred.wildplus.registry.ModBlocks2.DUNGEON_SEAL.get()) && st.getValue(com.snolred.wildplus.block.SealBlock.GATE)) {
                 level.setBlock(p, net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(), 3);
                 level.sendParticles(net.minecraft.core.particles.ParticleTypes.SOUL_FIRE_FLAME, p.getX() + 0.5, p.getY() + 0.5, p.getZ() + 0.5, 12, 0.3, 0.3, 0.3, 0.02);
+                out.add(p.immutable());
                 opened++;
             }
         }
         if (opened > 0) level.playSound(null, center, SoundEvents.END_PORTAL_SPAWN, SoundSource.HOSTILE, 0.8F, 1.2F);
+        return out;
+    }
+
+    // ───────── 던전 단계: 쓰러뜨린 다음 주(게임 속 7일)에 더 강해져서 다시 나타나고, 창고가 다시 봉인·채워진다 ─────────
+    private static void remember(ServerLevel level, BlockPos home, int tier, List<BlockPos> gates) {
+        var d = com.snolred.wildplus.content.ContentData.get(level.getServer());
+        net.minecraft.nbt.CompoundTag t = new net.minecraft.nbt.CompoundTag();
+        t.putInt("tier", Math.min(10, tier + 1));
+        t.putLong("week", com.snolred.wildplus.content.ContentData.week());
+        t.putLongArray("gates", gates.stream().mapToLong(BlockPos::asLong).toArray());
+        d.section("dungeons").put(String.valueOf(home.asLong()), t);
+        d.dirty();
+        level.getServer().getPlayerList().broadcastSystemMessage(Component.literal("다음 주(게임 속 7일 뒤)에 이 던전의 수호자가 "
+                + Math.min(10, tier + 1) + "단계로 돌아오고 보물 창고가 다시 채워져요").withStyle(ChatFormatting.GRAY), false);
+    }
+
+    @SubscribeEvent
+    public static void onRespawnTick(ServerTickEvent.Post event) {
+        if (event.getServer().getTickCount() % 200 != 37) return;
+        var d = com.snolred.wildplus.content.ContentData.get(event.getServer());
+        net.minecraft.nbt.CompoundTag all = d.section("dungeons");
+        long week = com.snolred.wildplus.content.ContentData.week();
+        ServerLevel level = event.getServer().overworld();
+        for (String key : new java.util.ArrayList<>(all.keySet())) {
+            net.minecraft.nbt.CompoundTag t = all.getCompoundOrEmpty(key);
+            if (t.getLongOr("week", week) >= week) continue;
+            BlockPos home = BlockPos.of(Long.parseLong(key));
+            if (!level.isLoaded(home) || level.getNearestPlayer(home.getX(), home.getY(), home.getZ(), 64, false) == null) continue;
+            int tier = t.getIntOr("tier", 2);
+            // 봉인문 다시 닫기
+            for (long g : t.getLongArray("gates").orElse(new long[0])) {
+                level.setBlock(BlockPos.of(g), com.snolred.wildplus.registry.ModBlocks2.DUNGEON_SEAL.get().defaultBlockState()
+                        .setValue(com.snolred.wildplus.block.SealBlock.GATE, true), 3);
+            }
+            // 창고 상자 다시 채우기 (보스 자리에서 16칸 안의 상자)
+            for (BlockPos p : BlockPos.betweenClosed(home.offset(-16, -4, -4), home.offset(16, 6, 16))) {
+                if (level.getBlockEntity(p) instanceof net.minecraft.world.level.block.entity.ChestBlockEntity chest) {
+                    chest.clearContent();
+                    var cs = level.getBlockState(p);
+                    boolean vault = cs.hasProperty(net.minecraft.world.level.block.ChestBlock.FACING)
+                            && cs.getValue(net.minecraft.world.level.block.ChestBlock.FACING) == net.minecraft.core.Direction.NORTH;
+                    chest.setLootTable(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
+                            com.snolred.wildplus.WildPlus.id(vault ? "chests/dungeon_vault" : "chests/dungeon")), level.getRandom().nextLong());
+                }
+            }
+            Mob boss = net.minecraft.world.entity.EntityTypes.WITHER_SKELETON.create(level, net.minecraft.world.entity.EntitySpawnReason.EVENT);
+            if (boss != null) {
+                boss.snapTo(home.getX() + 0.5, home.getY(), home.getZ() + 0.5, 180F, 0F);
+                boss.getPersistentData().putBoolean(TAG, true);
+                boss.getPersistentData().putInt(TIER, tier);
+                level.addFreshEntity(boss);
+            }
+            all.remove(key);
+            d.dirty();
+            level.getServer().getPlayerList().broadcastSystemMessage(Component.literal("☠ 고대 수호자가 " + tier + "단계로 되살아났어요! 보물 창고가 다시 봉인됐어요")
+                    .withStyle(ChatFormatting.DARK_RED, ChatFormatting.BOLD), false);
+        }
     }
 
     @SubscribeEvent
@@ -174,7 +238,9 @@ public final class DungeonGuardian {
         LivingEntity e = event.getEntity();
         if (!isBoss(e)) return;
         RandomSource r = e.getRandom();
-        drop(event, e, new ItemStack(ModItems3.GOLD_COIN.get(), 10 + r.nextInt(11)));
+        int tier = Math.max(1, e.getPersistentData().getIntOr(TIER, 1));
+        drop(event, e, new ItemStack(ModItems3.GOLD_COIN.get(), (10 + r.nextInt(11)) * (2 + tier) / 3));
+        if (tier >= 2) drop(event, e, new ItemStack(com.snolred.wildplus.registry.ModItems7.RUBY.get(), tier));
         drop(event, e, new ItemStack(Items.DIAMOND, 4 + r.nextInt(5)));
         drop(event, e, new ItemStack(Items.NETHERITE_INGOT));
         drop(event, e, new ItemStack(Items.EXPERIENCE_BOTTLE, 8 + r.nextInt(9)));

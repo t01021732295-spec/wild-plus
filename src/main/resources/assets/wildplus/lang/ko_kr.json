@@ -572,5 +572,11 @@
   "tooltip.wildplus.star_ruby_helmet": "내구도 무한 · 불에 타지 않음\n2부위: 재생 I / 4부위: 재생 II + 화염 저항 + 야간 투시",
   "tooltip.wildplus.star_ruby_chestplate": "내구도 무한 · 불에 타지 않음\n2부위: 재생 I / 4부위: 재생 II + 화염 저항 + 야간 투시",
   "tooltip.wildplus.star_ruby_leggings": "내구도 무한 · 불에 타지 않음\n2부위: 재생 I / 4부위: 재생 II + 화염 저항 + 야간 투시",
-  "tooltip.wildplus.star_ruby_boots": "내구도 무한 · 불에 타지 않음\n2부위: 재생 I / 4부위: 재생 II + 화염 저항 + 야간 투시"
+  "tooltip.wildplus.star_ruby_boots": "내구도 무한 · 불에 타지 않음\n2부위: 재생 I / 4부위: 재생 II + 화염 저항 + 야간 투시",
+  "block.wildplus.sorting_chest": "정렬 상자",
+  "tooltip.wildplus.sorting_chest": "넣은 아이템을 반경 8칸 안의 상자·통 중 같은 아이템이 있는 곳으로 자동 분배",
+  "block.wildplus.feeder": "자동 사료통",
+  "tooltip.wildplus.feeder": "먹이를 넣어 두면 반경 8칸 동물을 30초마다 번식 (24마리까지)\n바닥의 알·깃털·양털·가죽을 주워 담고, 빈 양동이로 우유를 받음",
+  "block.wildplus.mailbox": "우편함",
+  "tooltip.wildplus.mailbox": "친구에게 아이템을 보내고, 받은 우편을 꺼냄\n어느 우편함에서나 같은 우편 (한 사람당 54묶음)"
 }

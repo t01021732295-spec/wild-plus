@@ -26,8 +26,25 @@ import org.jspecify.annotations.Nullable;
  * 버튼 0~19 = 그 줄 인챈트 +1, 50 = 수리. 창을 닫으면 아이템은 돌려준다.
  */
 public class EnhanceMenu extends AbstractContainerMenu {
-    public static final int BTN_REPAIR = 50, BTN_STAR = 60, BTN_TRUE_DMG = 61;
-    public static final long STAR_COST = 1000, TRUE_DMG_COST = 500;
+    public static final int BTN_REPAIR = 50, BTN_STAR = 60, BTN_TRUE_DMG = 61, BTN_ENGRAVE = 62;
+    public static final long STAR_COST = 1000, TRUE_DMG_COST = 500, ENGRAVE_COST = 2000;
+
+    /** 레이드 전리품 → 각인 종류 */
+    public static String engraveKind(ItemStack mat) {
+        if (mat.is(com.snolred.wildplus.registry.ModItems8.TITAN_CORE.get())) return "TITAN";
+        if (mat.is(com.snolred.wildplus.registry.ModItems8.LICH_ORB.get())) return "LICH";
+        if (mat.is(com.snolred.wildplus.registry.ModItems8.FROST_CROWN.get())) return "FROST";
+        return "";
+    }
+
+    public static String engraveName(String kind) {
+        return switch (kind) {
+            case "TITAN" -> "대지 각인";
+            case "LICH" -> "망령 각인";
+            case "FROST" -> "서리 각인";
+            default -> "";
+        };
+    }
     public static final int MAT_X = 10, MAT_Y = 92;
     public static final int SLOT_X = 20, SLOT_Y = 40;
 
@@ -77,6 +94,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
         if (com.snolred.wildplus.registry.ModItems9.upgrades().containsKey(stack.getItem())) out.add(BTN_STAR);
         if (stack.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SWORD.get())
                 && com.snolred.wildplus.event.RubyGear.trueLevel(stack) < 4) out.add(BTN_TRUE_DMG);
+        if (com.snolred.wildplus.event.RubyGear.isStar(stack) && com.snolred.wildplus.event.RubyGear.engraving(stack).isEmpty()) out.add(BTN_ENGRAVE);
         return out;
     }
 
@@ -105,6 +123,26 @@ public class EnhanceMenu extends AbstractContainerMenu {
             sp.level().playSound(null, sp.blockPosition(), SoundEvents.SMITHING_TABLE_USE, SoundSource.BLOCKS, 1.0F, 0.8F);
             sp.sendSystemMessage(Component.literal("✦ 스타 루비로 승급했어요! ").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD)
                     .append(star.getHoverName().copy().withStyle(ChatFormatting.GOLD)));
+            return true;
+        }
+        if (id == BTN_ENGRAVE) {
+            String kind = engraveKind(input.getItem(1));
+            if (!com.snolred.wildplus.event.RubyGear.isStar(stack) || !com.snolred.wildplus.event.RubyGear.engraving(stack).isEmpty()) return true;
+            if (kind.isEmpty()) {
+                sp.sendOverlayMessage(Component.literal("재료 칸에 레이드 전리품(거신의 핵 · 망령 군주의 구슬 · 서리 왕관 조각)을 넣으세요")
+                        .withStyle(ChatFormatting.RED));
+                return true;
+            }
+            if (!Coins.pay(sp, ENGRAVE_COST)) {
+                sp.sendOverlayMessage(Component.translatable("message.wildplus.enhance.no_money", ENGRAVE_COST).withStyle(ChatFormatting.RED));
+                return true;
+            }
+            input.getItem(1).shrink(1);
+            net.minecraft.world.item.component.CustomData.update(net.minecraft.core.component.DataComponents.CUSTOM_DATA, stack,
+                    tag -> tag.putString(com.snolred.wildplus.event.RubyGear.ENGRAVE, kind));
+            input.setChanged();
+            sp.level().playSound(null, sp.blockPosition(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, 0.7F);
+            sp.sendSystemMessage(Component.literal("✦ " + engraveName(kind) + "을(를) 새겼어요!").withStyle(ChatFormatting.LIGHT_PURPLE));
             return true;
         }
         if (id == BTN_TRUE_DMG) {
@@ -158,7 +196,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
         ItemStack copy = s.copy();
         if (index <= 1) {
             if (!moveItemStackTo(s, 2, this.slots.size(), true)) return ItemStack.EMPTY;
-        } else if (s.is(net.minecraft.world.item.Items.NETHER_STAR)) {
+        } else if (s.is(net.minecraft.world.item.Items.NETHER_STAR) || !engraveKind(s).isEmpty()) {
             if (!moveItemStackTo(s, 1, 2, false)) return ItemStack.EMPTY;
         } else {
             if (!moveItemStackTo(s, 0, 1, false)) return ItemStack.EMPTY;

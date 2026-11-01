@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " D ",
+    "ICI",
+    " L "
+  ],
+  "key": {
+    "D": "minecraft:red_dye",
+    "I": "minecraft:iron_ingot",
+    "C": "minecraft:chest",
+    "L": "#minecraft:logs"
+  },
+  "result": {
+    "id": "wildplus:mailbox",
+    "count": 1
+  }
+}

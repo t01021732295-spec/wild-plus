@@ -46,6 +46,16 @@ public final class ModBlocks2 {
     public static final DeferredBlock<com.snolred.wildplus.block.FilterHopperBlock> FILTER_HOPPER = BLOCKS.registerBlock("filter_hopper",
             com.snolred.wildplus.block.FilterHopperBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.HOPPER));
 
+    // ───────── 17차 ─────────
+    public static final DeferredBlock<com.snolred.wildplus.block.BoxBlock> SORTING_CHEST = BLOCKS.registerBlock("sorting_chest",
+            p -> new com.snolred.wildplus.block.BoxBlock(p, com.snolred.wildplus.block.BoxBlock.Kind.SORTING),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL));
+    public static final DeferredBlock<com.snolred.wildplus.block.BoxBlock> FEEDER = BLOCKS.registerBlock("feeder",
+            p -> new com.snolred.wildplus.block.BoxBlock(p, com.snolred.wildplus.block.BoxBlock.Kind.FEEDER),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.SPRUCE_PLANKS).noOcclusion());
+    public static final DeferredBlock<com.snolred.wildplus.block.MailboxBlock> MAILBOX = BLOCKS.registerBlock("mailbox",
+            com.snolred.wildplus.block.MailboxBlock::new, () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).noOcclusion().strength(2.0F));
+
     public static void init() {}
 
     private ModBlocks2() {}

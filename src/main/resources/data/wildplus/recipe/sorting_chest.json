@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    " C ",
+    "MHM",
+    " R "
+  ],
+  "key": {
+    "C": "minecraft:chest",
+    "M": "wildplus:mythril_ingot",
+    "H": "minecraft:hopper",
+    "R": "minecraft:comparator"
+  },
+  "result": {
+    "id": "wildplus:sorting_chest",
+    "count": 1
+  }
+}

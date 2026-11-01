@@ -35,6 +35,8 @@ public final class ModMenus {
             MENUS.register("machine", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.MachineMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.CasinoMenu>> CASINO =
             MENUS.register("casino", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.CasinoMenu::new));
+    public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.MailMenu>> MAIL =
+            MENUS.register("mailbox", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.MailMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.ShippingMenu>> SHIPPING =
             MENUS.register("shipping_bin", () -> net.neoforged.neoforge.common.extensions.IMenuTypeExtension.create(com.snolred.wildplus.menu.ShippingMenu::new));
     public static final DeferredHolder<MenuType<?>, MenuType<com.snolred.wildplus.menu.FilterHopperMenu>> FILTER_HOPPER =

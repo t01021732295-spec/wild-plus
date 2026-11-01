@@ -73,6 +73,8 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.ContentEvents.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Raid.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Tower.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Social.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Mail.class);
 
         modContainer.registerConfig(ModConfig.Type.SYNCED, WildConfig.SPEC);
     }

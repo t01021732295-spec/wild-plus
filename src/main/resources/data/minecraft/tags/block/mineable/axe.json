@@ -6,6 +6,8 @@
     "wildplus:enhance_table",
     "wildplus:auto_fisher",
     "wildplus:casino_table",
-    "wildplus:goal_board"
+    "wildplus:goal_board",
+    "wildplus:sorting_chest",
+    "wildplus:feeder"
   ]
 }

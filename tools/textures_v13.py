@@ -158,9 +158,51 @@ def build(van: Path):
         recolor(block / f"{name}.png", MYTHRIL, sel_all).save(OUT / "block" / f"filter_{name}.png")
     seal_bricks(False).save(OUT / "block/dungeon_seal.png")
     seal_bricks(True).save(OUT / "block/dungeon_seal_gate.png")
-    return n + 8
+    sorting_textures()
+    return n + 11
 
 
 if __name__ == "__main__":
     import sys
     print(build(Path(sys.argv[1])))
+
+
+def sorting_textures():
+    """정렬 상자: 짙은 나무 상자 + 금속 테 + 앞면에 색깔 화살표 세 개(분류)"""
+    rnd = random.Random(7)
+
+    def wood(seed):
+        im = Image.new("RGBA", (16, 16))
+        px = im.load()
+        r = random.Random(seed)
+        for y in range(16):
+            for x in range(16):
+                n = r.randint(-8, 8) + (6 if (y // 4) % 2 else 0)
+                px[x, y] = (110 + n, 74 + n // 2, 42 + n // 3, 255)
+        for i in range(16):
+            for (x, y) in [(i, 0), (i, 15), (0, i), (15, i)]:
+                px[x, y] = (70, 72, 80, 255)
+        for (x, y) in [(1, 1), (14, 1), (1, 14), (14, 14)]:
+            px[x, y] = (190, 195, 205, 255)
+        return im
+
+    side = wood(3)
+    front = wood(4)
+    px = front.load()
+    cols = [(229, 72, 77), (59, 130, 246), (34, 163, 90)]
+    for k, c in enumerate(cols):
+        y = 4 + k * 4
+        for x in range(3, 11):
+            px[x, y] = c + (255,)
+        for (x, yy) in [(10, y - 1), (11, y - 1), (11, y), (12, y), (10, y + 1), (11, y + 1)]:
+            px[x, yy] = c + (255,)
+    top = wood(5)
+    px = top.load()
+    for x in range(5, 11):
+        for y in range(5, 11):
+            px[x, y] = (40, 34, 30, 255)
+    for (x, y) in [(6, 6), (9, 6), (6, 9), (9, 9)]:
+        px[x, y] = (200, 170, 90, 255)
+    side.save(OUT / "block/sorting_chest_side.png")
+    front.save(OUT / "block/sorting_chest_front.png")
+    top.save(OUT / "block/sorting_chest_top.png")

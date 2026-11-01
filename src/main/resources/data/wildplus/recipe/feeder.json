@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PWP",
+    "PHP"
+  ],
+  "key": {
+    "P": "#minecraft:planks",
+    "W": "minecraft:wheat",
+    "H": "minecraft:hopper"
+  },
+  "result": {
+    "id": "wildplus:feeder",
+    "count": 1
+  }
+}
