@@ -84,6 +84,7 @@ public final class SapphireGear {
             p.addEffect(fx(MobEffects.WATER_BREATHING, 0));
             p.addEffect(fx(MobEffects.DOLPHINS_GRACE, 0));
         }
+        if (n >= 4) p.addEffect(fx(MobEffects.CONDUIT_POWER, 0));
         if (sky >= 2) p.addEffect(fx(MobEffects.RESISTANCE, 0));
         if (sky >= 4) p.addEffect(fx(MobEffects.SPEED, 0));
         ItemStack hand = p.getMainHandItem();

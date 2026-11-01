@@ -71,13 +71,13 @@ for t in TOOLS:
     LANG_KO[f"tooltip.wildplus.sky_sapphire_{t}"] = SKY_KO[t]
     LANG_EN[f"tooltip.wildplus.sky_sapphire_{t}"] = "Unbreakable · " + TIP_EN[t]
 for a in ARMOR:
-    LANG_KO[f"tooltip.wildplus.sapphire_{a}"] = "2부위: 수중 호흡 + 돌고래의 가호\n4부위: 받는 피해 10% 감소 · 때린 적 얼림 · 낙하 피해 절반" + UP
+    LANG_KO[f"tooltip.wildplus.sapphire_{a}"] = "2부위: 수중 호흡 + 돌고래의 가호\n4부위: 전달체의 힘 · 받는 피해 10% 감소 · 때린 적 얼림 · 낙하 피해 절반" + UP
     LANG_EN[f"tooltip.wildplus.sapphire_{a}"] = "2 pieces: Water Breathing + Dolphin's Grace\n4 pieces: -10% damage, freeze attackers, half fall damage"
     LANG_KO[f"tooltip.wildplus.sky_sapphire_{a}"] = ("내구도 무한 · 불에 타지 않음\n2부위: 저항 I + 수중 호흡 · 돌고래의 가호\n"
-                                                     "4부위: + 신속 I · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림")
+                                                     "4부위: + 신속 I · 전달체의 힘 · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림")
     LANG_EN[f"tooltip.wildplus.sky_sapphire_{a}"] = "Unbreakable · 2 pieces: Resistance I · 4 pieces: + Speed I, no fall damage"
 LANG_KO["tooltip.wildplus.sky_sapphire_chestplate"] = ("겉날개 겸용! (폭죽 가속 가능) · 내구도 무한\n2부위: 저항 I + 수중 호흡 · 돌고래의 가호\n"
-                                                      "4부위: + 신속 I · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림")
+                                                      "4부위: + 신속 I · 전달체의 힘 · 낙하 피해 없음 · 피해 10% 감소 · 때린 적 얼림")
 LANG_EN["tooltip.wildplus.sky_sapphire_chestplate"] = "Works as an elytra! · Unbreakable"
 
 
