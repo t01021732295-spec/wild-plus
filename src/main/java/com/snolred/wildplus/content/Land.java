@@ -38,15 +38,15 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 /**
  * 부동산: 청크(16×16, 위아래 전부)를 돈으로 사서 내 땅으로 만든다.
- * - 값: 첫 땅 5,000동, 땅이 하나 늘 때마다 +2,500동. 되팔면 2,500동만 돌려받음 (나머지는 국고로 사라짐)
- * - 유지비: 청크당 게임 하루 100동 (주인이 접속해 있을 때만 걷음). 7일치 밀리면 땅이 모두 풀림
+ * - 값: 첫 땅 40만동, 땅이 하나 늘 때마다 +20만동. 되팔면 20만동만 돌려받음 (나머지는 국고로 사라짐)
+ * - 재산세: 청크당 게임 하루 5,000동, 접속 여부와 상관없이 매일 걷음 (접속 중이면 통장→동전, 아니면 통장에서). 7일치 밀리면 땅이 모두 풀림
  * - 설정(주인의 모든 땅에 적용): 출입(모두 · 친구만 · 주인만), 블록 부수기·설치, 상자·문 등 사용
  * - 폭발(크리퍼 · TNT)로 땅의 블록이 부서지지 않음
  */
 public final class Land {
     private Land() {}
 
-    public static final long BASE_PRICE = 5_000, STEP_PRICE = 2_500, REFUND = 2_500, UPKEEP = 100;
+    public static final long BASE_PRICE = 400_000, STEP_PRICE = 200_000, REFUND = 200_000, UPKEEP = 5_000;
     public static final int ACCESS_ALL = 0, ACCESS_FRIENDS = 1, ACCESS_OWNER = 2, MAX_DEBT = 7;
     private static final String[] ACCESS_NAME = {"모두 출입 가능", "친구만 출입", "나만 출입"};
 
@@ -195,40 +195,63 @@ public final class Land {
                 p.sendOverlayMessage(Component.literal("🌲 주인 없는 땅").withStyle(ChatFormatting.GRAY));
             }
         }
-        // 유지비: 게임 하루에 한 번 (접속해 있을 때)
-        if (p.tickCount % 200 == 0) chargeUpkeep(p);
     }
 
-    private static void chargeUpkeep(ServerPlayer p) {
-        int n = owned(p.getUUID());
-        if (n == 0) return;
-        MinecraftServer s = p.level().getServer();
-        CompoundTag me = owner(s, p.getUUID());
+    /** 재산세: 게임 날짜가 바뀌면 모든 땅 주인에게서 (접속 안 해도) 걷는다 */
+    @SubscribeEvent
+    public static void onServerTick(net.neoforged.neoforge.event.tick.ServerTickEvent.Post event) {
+        MinecraftServer s = event.getServer();
+        if (s.getTickCount() % 100 != 13 || CHUNKS.isEmpty()) return;
+        CompoundTag r = root(s);
         long day = ContentData.gameDay;
-        long last = me.getLongOr("upkeep_day", -1L);
+        long last = r.getLongOr("tax_day", -1L);
         if (last < 0) {
-            me.putLong("upkeep_day", day);
+            r.putLong("tax_day", day);
             ContentData.get(s).dirty();
             return;
         }
         if (last >= day) return;
-        me.putLong("upkeep_day", day);
+        r.putLong("tax_day", day);
+        long days = Math.min(MAX_DEBT, day - last);
+        java.util.Set<UUID> owners = new java.util.HashSet<>(CHUNKS.values());
+        for (UUID o : owners) for (int i = 0; i < days; i++) chargeOwner(s, o);
+        ContentData.get(s).dirty();
+    }
+
+    private static void chargeOwner(MinecraftServer s, UUID id) {
+        int n = owned(id);
+        if (n == 0) return;
+        CompoundTag me = owner(s, id);
         long cost = UPKEEP * n;
-        if (Honor.pay(p, cost)) {
+        ServerPlayer p = s.getPlayerList().getPlayer(id);
+        var wd = com.snolred.wildplus.economy.WildData.get(s);
+        boolean paid;
+        if (p != null) {
+            paid = Honor.pay(p, cost);
+        } else if (wd.balance(id) >= cost) {
+            wd.addBalance(id, -cost);
+            wd.treasury += cost;
+            wd.setDirty();
+            paid = true;
+        } else {
+            paid = false;
+        }
+        if (paid) {
             me.putInt("debt", 0);
-            p.sendSystemMessage(Component.literal(String.format("🏠 땅 유지비 %,d동을 냈어요 (땅 %d칸)", cost, n)).withStyle(ChatFormatting.GRAY));
+            me.putLong("tax_paid", me.getLongOr("tax_paid", 0L) + cost);
+            if (p != null) p.sendSystemMessage(Component.literal(String.format("🏠 재산세 %,d동을 냈어요 (땅 %d칸 × %,d동)", cost, n, UPKEEP))
+                    .withStyle(ChatFormatting.GRAY));
         } else {
             int debt = me.getIntOr("debt", 0) + 1;
             me.putInt("debt", debt);
             if (debt >= MAX_DEBT) {
-                releaseAll(s, p.getUUID());
-                p.sendSystemMessage(Component.literal("🏠 유지비가 " + MAX_DEBT + "일 밀려서 땅이 모두 풀렸어요").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
-            } else {
-                p.sendSystemMessage(Component.literal(String.format("🏠 유지비 %,d동을 못 냈어요 (%d/%d일 밀림 · %d일 밀리면 땅이 풀려요)",
+                releaseAll(s, id);
+                if (p != null) p.sendSystemMessage(Component.literal("🏠 재산세가 " + MAX_DEBT + "일 밀려서 땅이 모두 풀렸어요").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+            } else if (p != null) {
+                p.sendSystemMessage(Component.literal(String.format("🏠 재산세 %,d동을 못 냈어요 (%d/%d일 밀림 · %d일 밀리면 땅이 풀려요)",
                         cost, debt, MAX_DEBT, MAX_DEBT)).withStyle(ChatFormatting.RED));
             }
         }
-        ContentData.get(s).dirty();
     }
 
     private static void releaseAll(MinecraftServer s, UUID id) {
@@ -255,7 +278,7 @@ public final class Land {
         }
         CompoundTag me = owner(s, p.getUUID());
         if (me.getIntOr("debt", 0) > 0) {
-            p.sendSystemMessage(Component.literal("밀린 유지비가 있으면 땅을 더 살 수 없어요").withStyle(ChatFormatting.RED));
+            p.sendSystemMessage(Component.literal("밀린 재산세가 있으면 땅을 더 살 수 없어요").withStyle(ChatFormatting.RED));
             return;
         }
         long price = nextPrice(p.getUUID());
@@ -266,11 +289,10 @@ public final class Land {
         CHUNKS.put(k, p.getUUID());
         chunks(s).putString(k, p.getUUID().toString());
         me.putString("name", p.getGameProfile().name());
-        if (!me.contains("upkeep_day")) me.putLong("upkeep_day", ContentData.gameDay);
         ContentData.get(s).dirty();
         showBorder(p);
         p.level().playSound(null, p.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.8F, 1.2F);
-        p.sendSystemMessage(Component.literal(String.format("🏠 땅을 샀어요! (%,d동 · 이제 땅 %d칸 · 유지비 하루 %,d동)",
+        p.sendSystemMessage(Component.literal(String.format("🏠 땅을 샀어요! (%,d동 · 이제 땅 %d칸 · 재산세 하루 %,d동)",
                 price, owned(p.getUUID()), UPKEEP * owned(p.getUUID()))).withStyle(ChatFormatting.GREEN));
     }
 
@@ -341,8 +363,8 @@ public final class Land {
             mine.putBoolean("use", !use);
             ContentData.get(s).dirty();
         });
-        e.add(new PickMenu.Entry(String.format("📜 내 땅 %d칸 · 유지비 하루 %,d동", n, UPKEEP * n),
-                mine.getIntOr("debt", 0) > 0 ? "⚠ 밀린 유지비 " + mine.getIntOr("debt", 0) + "일" : "다음 땅 " + String.format("%,d동", nextPrice(me))));
+        e.add(new PickMenu.Entry(String.format("📜 내 땅 %d칸 · 재산세 하루 %,d동", n, UPKEEP * n),
+                mine.getIntOr("debt", 0) > 0 ? "⚠ 밀린 재산세 " + mine.getIntOr("debt", 0) + "일" : "다음 땅 " + String.format("%,d동", nextPrice(me))));
         act.add(() -> {});
         ListTag members = mine.getListOrEmpty("members");
         List<String> names = new ArrayList<>();
