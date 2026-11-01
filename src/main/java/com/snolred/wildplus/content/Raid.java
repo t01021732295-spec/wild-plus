@@ -316,7 +316,6 @@ public final class Raid {
                     Vec3 dir = tg.position().subtract(mob.position()).multiply(1, 0, 1).normalize();
                     for (int i = 1; i <= 8; i++) strike(mob.position().add(dir.scale(i * 2.2)), 12 + i * 3, 1.9F, dmg * 0.7F, 0);
                     mob.setDeltaMovement(dir.x * 1.6, 0.25, dir.z * 1.6);
-                    mob.hurtMarked = true;
                     for (ServerPlayer p : near) p.sendOverlayMessage(Component.literal("⚠ 지진 돌진! 옆으로 피하세요").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
                     level.playSound(null, mob.blockPosition(), SoundEvents.RAVAGER_ROAR, SoundSource.HOSTILE, 1.5F, 0.7F);
                 }

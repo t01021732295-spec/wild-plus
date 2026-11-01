@@ -186,7 +186,6 @@ public final class BossSkills {
                     announce(players, "도약 내려찍기!", ChatFormatting.DARK_GREEN);
                     Vec3 d = target.position().subtract(boss.position());
                     boss.setDeltaMovement(d.x * 0.16, 0.9, d.z * 0.16);
-                    boss.hurtMarked = true;
                     strike(lv, target.position(), 25, 3.5F, dmg * 1.2F, 0, boss);
                 }
                 if (low && t % 120 == 40) for (ServerPlayer p : players) strike(lv, p.position(), 30, 2.5F, dmg * 0.6F, 6, boss);
