@@ -99,6 +99,11 @@ public class WildPlusClient {
             event.getToolTip().add(1, Component.literal(String.format("✦ 고정 피해 %.1f (방어 무시) · 강화 %d/4", 4 + 0.5 * lv, lv))
                     .withStyle(ChatFormatting.LIGHT_PURPLE));
         }
+        int ls = com.snolred.wildplus.event.RubyGear.lifesteal(stack);
+        if (ls > 0) {
+            event.getToolTip().add(1, Component.literal(String.format("♥ 흡혈 %d%% (핏빛 강철 강화 %d/%d)", ls, ls,
+                    com.snolred.wildplus.menu.EnhanceMenu.LIFESTEAL_MAX)).withStyle(ChatFormatting.DARK_RED));
+        }
         String eng = com.snolred.wildplus.event.RubyGear.engraving(stack);
         if (!eng.isEmpty()) {
             String text = switch (eng) {

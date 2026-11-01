@@ -26,7 +26,9 @@ import org.jspecify.annotations.Nullable;
  * 버튼 0~19 = 그 줄 인챈트 +1, 50 = 수리. 창을 닫으면 아이템은 돌려준다.
  */
 public class EnhanceMenu extends AbstractContainerMenu {
-    public static final int BTN_REPAIR = 50, BTN_STAR = 60, BTN_TRUE_DMG = 61, BTN_ENGRAVE = 62;
+    public static final int BTN_REPAIR = 50, BTN_STAR = 60, BTN_TRUE_DMG = 61, BTN_ENGRAVE = 62, BTN_LIFESTEAL = 63;
+    /** 흡혈 강화: 핏빛 강철 주괴 50개마다 +1%, 최대 10% */
+    public static final int LIFESTEAL_COST = 50, LIFESTEAL_MAX = 10;
     public static final long STAR_COST = 1000, TRUE_DMG_COST = 500, ENGRAVE_COST = 2000;
 
     /** 레이드 전리품 → 각인 종류 */
@@ -97,6 +99,8 @@ public class EnhanceMenu extends AbstractContainerMenu {
         if (stack.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SWORD.get())
                 && com.snolred.wildplus.event.RubyGear.trueLevel(stack) < 4) out.add(BTN_TRUE_DMG);
         if (com.snolred.wildplus.event.RubyGear.isStar(stack) && com.snolred.wildplus.event.RubyGear.engraving(stack).isEmpty()) out.add(BTN_ENGRAVE);
+        if (com.snolred.wildplus.event.RubyGear.lifestealable(stack)
+                && com.snolred.wildplus.event.RubyGear.lifesteal(stack) < LIFESTEAL_MAX) out.add(BTN_LIFESTEAL);
         return out;
     }
 
@@ -145,6 +149,23 @@ public class EnhanceMenu extends AbstractContainerMenu {
             input.setChanged();
             sp.level().playSound(null, sp.blockPosition(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, 0.7F);
             sp.sendSystemMessage(Component.literal("✦ " + engraveName(kind) + "을(를) 새겼어요!").withStyle(ChatFormatting.LIGHT_PURPLE));
+            return true;
+        }
+        if (id == BTN_LIFESTEAL) {
+            if (!com.snolred.wildplus.event.RubyGear.lifestealable(stack)) return true;
+            int lv = com.snolred.wildplus.event.RubyGear.lifesteal(stack);
+            if (lv >= LIFESTEAL_MAX) return true;
+            ItemStack mat = input.getItem(1);
+            if (!mat.is(com.snolred.wildplus.registry.ModItems.BLOODSTEEL_INGOT.get()) || mat.getCount() < LIFESTEAL_COST) {
+                sp.sendOverlayMessage(Component.literal("재료 칸에 핏빛 강철 주괴 " + LIFESTEAL_COST + "개를 넣으세요").withStyle(ChatFormatting.RED));
+                return true;
+            }
+            mat.shrink(LIFESTEAL_COST);
+            net.minecraft.world.item.component.CustomData.update(net.minecraft.core.component.DataComponents.CUSTOM_DATA, stack,
+                    tag -> tag.putInt(com.snolred.wildplus.event.RubyGear.LIFESTEAL, lv + 1));
+            input.setChanged();
+            sp.level().playSound(null, sp.blockPosition(), SoundEvents.WITHER_SHOOT, SoundSource.BLOCKS, 0.4F, 1.6F);
+            sp.sendSystemMessage(Component.literal(String.format("♥ 흡혈 %d%% → %d%%", lv, lv + 1)).withStyle(ChatFormatting.DARK_RED));
             return true;
         }
         if (id == BTN_TRUE_DMG) {

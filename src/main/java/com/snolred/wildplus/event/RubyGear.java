@@ -52,7 +52,19 @@ public final class RubyGear {
         return s.is(ruby.get()) || s.is(star.get());
     }
 
-    public static final String TRUE_DMG = "wildplus_true_dmg", ENGRAVE = "wildplus_engrave";
+    public static final String TRUE_DMG = "wildplus_true_dmg", ENGRAVE = "wildplus_engrave", LIFESTEAL = "wildplus_lifesteal";
+
+    /** 흡혈 강화 단계 (1단계 = 준 피해의 1%) */
+    public static int lifesteal(ItemStack s) {
+        return s.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY)
+                .copyTag().getIntOr(LIFESTEAL, 0);
+    }
+
+    /** 흡혈 강화를 할 수 있는 근접 무기 (검 · 도끼 · 철퇴 · 삼지창) */
+    public static boolean lifestealable(ItemStack s) {
+        return s.is(net.minecraft.tags.ItemTags.SWORDS) || s.is(net.minecraft.tags.ItemTags.AXES)
+                || s.is(net.minecraft.world.item.Items.MACE) || s.is(net.minecraft.world.item.Items.TRIDENT);
+    }
 
     /** 스타 루비 각인: TITAN(대지) · LICH(망령) · FROST(서리), 없으면 "" */
     public static String engraving(ItemStack s) {
@@ -185,6 +197,12 @@ public final class RubyGear {
     /** 핏빛 각인: 준 피해의 15% 흡혈 (최대 4) */
     @SubscribeEvent
     public static void onBloodHit(LivingDamageEvent.Post event) {
+        // 핏빛 강철 흡혈 강화: 손에 든 무기로 직접 때렸을 때 준 피해의 n%
+        if (event.getSource().getEntity() instanceof Player ap && !ap.level().isClientSide()
+                && event.getSource().getDirectEntity() == ap && ap.getHealth() < ap.getMaxHealth()) {
+            int ls = lifesteal(ap.getMainHandItem());
+            if (ls > 0) ap.heal(event.getHealthDamage() * ls / 100.0F);
+        }
         if (event.getSource().getEntity() instanceof Player p && !p.level().isClientSide() && hasEngraving(p, "BLOOD")
                 && p.getHealth() < p.getMaxHealth()) {
             p.heal(Math.min(4.0F, event.getHealthDamage() * 0.15F));

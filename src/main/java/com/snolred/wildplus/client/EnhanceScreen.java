@@ -60,6 +60,13 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
             if (i < sp.size()) {
                 int sid = sp.get(i);
                 boolean star = sid == EnhanceMenu.BTN_STAR, engrave = sid == EnhanceMenu.BTN_ENGRAVE;
+                if (sid == EnhanceMenu.BTN_LIFESTEAL) {
+                    b.setMessage(Component.literal("강철 " + EnhanceMenu.LIFESTEAL_COST));
+                    b.style(UiButton.RED);
+                    b.active = menu.material().is(com.snolred.wildplus.registry.ModItems.BLOODSTEEL_INGOT.get())
+                            && menu.material().getCount() >= EnhanceMenu.LIFESTEAL_COST;
+                    continue;
+                }
                 b.setMessage(Component.literal(String.format("%,d동", star ? EnhanceMenu.STAR_COST : engrave ? EnhanceMenu.ENGRAVE_COST : EnhanceMenu.TRUE_DMG_COST)));
                 b.style(star ? UiButton.RED : engrave ? UiButton.TEAL : UiButton.ORANGE);
                 b.active = star ? menu.material().is(net.minecraft.world.item.Items.NETHER_STAR)
@@ -125,6 +132,13 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
             if (sp.get(i) == EnhanceMenu.BTN_STAR) {
                 UiKit.bold(g, "✦ 스타 루비 승급", 68, ry, 0xFFB0103A);
                 UiKit.text(g, menu.material().is(net.minecraft.world.item.Items.NETHER_STAR) ? "별 ✔" : "별 필요", 162, ry, 0xFF7A5A30);
+            } else if (sp.get(i) == EnhanceMenu.BTN_LIFESTEAL) {
+                int lv = com.snolred.wildplus.event.RubyGear.lifesteal(item);
+                UiKit.text(g, String.format("♥ 흡혈 %d%%", lv), 68, ry, ink);
+                UiKit.bold(g, String.format("→ %d%%", lv + 1), 122, ry, 0xFFB0103A);
+                ItemStack m = menu.material();
+                int have = m.is(com.snolred.wildplus.registry.ModItems.BLOODSTEEL_INGOT.get()) ? m.getCount() : 0;
+                UiKit.text(g, have + "/" + EnhanceMenu.LIFESTEAL_COST, 150, ry, have >= EnhanceMenu.LIFESTEAL_COST ? 0xFF22A35A : soft);
             } else if (sp.get(i) == EnhanceMenu.BTN_ENGRAVE) {
                 String kind = EnhanceMenu.engraveKind(menu.material());
                 UiKit.bold(g, kind.isEmpty() ? "✦ 각인 (전리품 필요)" : "✦ " + EnhanceMenu.engraveName(kind), 68, ry, 0xFF0E6E64);
