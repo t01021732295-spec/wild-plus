@@ -114,9 +114,9 @@ public final class Luxury {
         List<PickMenu.Entry> entries = new ArrayList<>();
         for (Good g : list) {
             String price = g.price() > 0 ? String.format("%,d동", g.price()) : "";
-            entries.add(new PickMenu.Entry(g.name(), g.sub().isEmpty() ? price : g.sub() + (price.isEmpty() ? "" : " · " + price)));
+            entries.add(new PickMenu.Entry(g.name(), price));
         }
-        PickMenu.open(p, Component.literal("💎 명품관"), "고르면 바로 결제 (통장에서 먼저 · 쓴 돈은 국고로)", "", entries, 0, i -> {
+        PickMenu.open(p, Component.literal("💎 명품관"), "고르면 바로 결제 · 통장에서 먼저", "", entries, 0, i -> {
             Good g = list.get(i);
             if (g.price() > 0 && !Honor.pay(p, g.price())) {
                 p.sendOverlayMessage(Component.literal(String.format("돈이 모자라요 (%,d동)", g.price())).withStyle(ChatFormatting.RED));

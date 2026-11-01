@@ -359,10 +359,10 @@ public final class Land {
         List<PickMenu.Entry> e = new ArrayList<>();
         List<Runnable> act = new ArrayList<>();
         String hereText = here == null ? "주인 없는 땅" : here.equals(me) ? "내 땅" : ownerName(s, here) + "의 땅";
-        e.add(new PickMenu.Entry("📍 여기: " + hereText, String.format("청크 %d, %d · 누르면 테두리 보기", p.getBlockX() >> 4, p.getBlockZ() >> 4)));
+        e.add(new PickMenu.Entry("📍 여기: " + hereText, "테두리 보기"));
         act.add(() -> showBorder(p));
         if (here == null) {
-            e.add(new PickMenu.Entry("🏠 이 땅 사기", String.format("%,d동 (통장 먼저)", nextPrice(me))));
+            e.add(new PickMenu.Entry("🏠 이 땅 사기", String.format("%,d동", nextPrice(me))));
             act.add(() -> buy(p));
         } else if (here.equals(me)) {
             e.add(new PickMenu.Entry("💸 이 땅 팔기", String.format("%,d동 돌려받음", REFUND)));
@@ -386,8 +386,8 @@ public final class Land {
             mine.putBoolean("use", !use);
             ContentData.get(s).dirty();
         });
-        e.add(new PickMenu.Entry(String.format("📜 내 땅 %d칸 · 재산세 하루 %,d동", n, UPKEEP * n),
-                mine.getIntOr("debt", 0) > 0 ? "⚠ 밀린 재산세 " + mine.getIntOr("debt", 0) + "일" : "다음 땅 " + String.format("%,d동", nextPrice(me))));
+        e.add(new PickMenu.Entry(String.format("📜 내 땅 %d칸 · 세금 %,d/일", n, UPKEEP * n),
+                mine.getIntOr("debt", 0) > 0 ? "⚠ " + mine.getIntOr("debt", 0) + "일 밀림" : ""));
         act.add(() -> {});
         ListTag members = mine.getListOrEmpty("members");
         List<String> names = new ArrayList<>();
@@ -396,7 +396,7 @@ public final class Land {
             String nm = ContentData.get(s).player("land_owner", UUID.fromString(id)).getStringOr("name", null);
             ServerPlayer on = s.getPlayerList().getPlayer(UUID.fromString(id));
             String shown = on != null ? on.getGameProfile().name() : nm != null ? nm : mine.getCompoundOrEmpty("member_names").getStringOr(id, "?");
-            e.add(new PickMenu.Entry("👥 친구: " + shown, "누르면 친구에서 빼기"));
+            e.add(new PickMenu.Entry("👥 친구: " + shown, "누르면 빼기"));
             act.add(() -> {
                 ListTag l = mine.getListOrEmpty("members");
                 l.removeIf(t -> t instanceof StringTag st && st.value().equals(id));
@@ -404,7 +404,7 @@ public final class Land {
                 ContentData.get(s).dirty();
             });
         }
-        PickMenu.open(p, Component.literal("🏠 부동산"), "친구 추가: /land trust 이름 · 빼기: /land untrust 이름",
+        PickMenu.open(p, Component.literal("🏠 부동산"), "친구 추가: /land trust 이름",
                 "", e, 0, i -> {
                     if (i >= 0 && i < act.size()) act.get(i).run();
                     open(p);
