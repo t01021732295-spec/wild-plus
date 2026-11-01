@@ -106,6 +106,22 @@ public final class ModItems11 {
     public static final DeferredItem<com.snolred.wildplus.item.WildBowItem> SKY_SAPPHIRE_BOW = ITEMS.registerItem("sky_sapphire_bow",
             p -> new com.snolred.wildplus.item.WildBowItem(sky(p.durability(4000).enchantable(1)), "sky_sapphire", 1.75F, 1.5F));
 
+    // ───────── 사과 ─────────
+    /** 사파이어: 수중 호흡 · 돌고래의 가호 3분, 저항 I · 흡수 I 1분 */
+    public static final DeferredItem<Item> SAPPHIRE_APPLE = ModItems10.apple("sapphire_apple", Rarity.EPIC, true, 4, 1.2F,
+            ModItems10.e(net.minecraft.world.effect.MobEffects.WATER_BREATHING, 180, 0),
+            ModItems10.e(net.minecraft.world.effect.MobEffects.DOLPHINS_GRACE, 180, 0),
+            ModItems10.e(net.minecraft.world.effect.MobEffects.RESISTANCE, 60, 0),
+            ModItems10.e(net.minecraft.world.effect.MobEffects.ABSORPTION, 60, 0));
+    /** 스카이 사파이어: 저항 II · 신속 II 1분, 흡수 IV 3분, 느린 낙하 · 전달체의 힘 · 수중 호흡 5분 */
+    public static final DeferredItem<Item> SKY_SAPPHIRE_APPLE = ModItems10.apple("sky_sapphire_apple", Rarity.EPIC, true, 8, 1.6F,
+            ModItems10.e(net.minecraft.world.effect.MobEffects.RESISTANCE, 60, 1),
+            ModItems10.e(net.minecraft.world.effect.MobEffects.SPEED, 60, 1),
+            ModItems10.e(net.minecraft.world.effect.MobEffects.ABSORPTION, 180, 3),
+            ModItems10.e(net.minecraft.world.effect.MobEffects.SLOW_FALLING, 300, 0),
+            ModItems10.e(net.minecraft.world.effect.MobEffects.CONDUIT_POWER, 300, 0),
+            ModItems10.e(net.minecraft.world.effect.MobEffects.WATER_BREATHING, 300, 0));
+
     private static EnumMap<ArmorType, Integer> defense(int boots, int legs, int chest, int helmet, int body) {
         EnumMap<ArmorType, Integer> map = new EnumMap<>(ArmorType.class);
         map.put(ArmorType.BOOTS, boots);

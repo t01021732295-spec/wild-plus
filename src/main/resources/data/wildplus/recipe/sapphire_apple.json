@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "MMM",
+    "MAM",
+    "MMM"
+  ],
+  "key": {
+    "M": "wildplus:sapphire",
+    "A": "minecraft:apple"
+  },
+  "result": {
+    "id": "wildplus:sapphire_apple",
+    "count": 1
+  }
+}

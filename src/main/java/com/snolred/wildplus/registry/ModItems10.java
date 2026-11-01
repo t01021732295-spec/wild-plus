@@ -20,11 +20,11 @@ import net.neoforged.neoforge.registries.DeferredItem;
  * 비싼 광물일수록 효과가 강하다. 루비·네더라이트·스타 루비 사과는 빛이 난다.
  */
 public final class ModItems10 {
-    private static MobEffectInstance e(Holder<MobEffect> eff, int seconds, int amp) {
+    static MobEffectInstance e(Holder<MobEffect> eff, int seconds, int amp) {
         return new MobEffectInstance(eff, seconds * 20, amp);
     }
 
-    private static DeferredItem<Item> apple(String name, Rarity rarity, boolean glint, int food, float sat, MobEffectInstance... effects) {
+    static DeferredItem<Item> apple(String name, Rarity rarity, boolean glint, int food, float sat, MobEffectInstance... effects) {
         return ITEMS.registerSimpleItem(name, p -> {
             p = p.rarity(rarity).food(new FoodProperties.Builder().nutrition(food).saturationModifier(sat).alwaysEdible().build(),
                     Consumables.defaultFood().onConsume(new ApplyStatusEffectsConsumeEffect(List.of(effects))).build());

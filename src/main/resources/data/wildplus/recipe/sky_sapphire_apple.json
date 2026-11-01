@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BBB",
+    "BAB",
+    "BPB"
+  ],
+  "key": {
+    "B": "wildplus:sapphire_block",
+    "A": "wildplus:sapphire_apple",
+    "P": "wildplus:dragon_plume"
+  },
+  "result": {
+    "id": "wildplus:sky_sapphire_apple",
+    "count": 1
+  }
+}

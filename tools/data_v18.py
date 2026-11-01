@@ -40,6 +40,10 @@ LANG_KO = {
     "tooltip.wildplus.dragon_plume": "드래곤의 숨결 2 + 겉날개 → 깃털 2개\n강화대에서 사파이어 장비를 스카이 사파이어로 승급",
     "equipment.wildplus.sapphire": "사파이어",
     "equipment.wildplus.sky_sapphire": "스카이 사파이어",
+    "item.wildplus.sapphire_apple": "사파이어 사과",
+    "tooltip.wildplus.sapphire_apple": "수중 호흡 · 돌고래의 가호 (3분)\n저항 I · 흡수 I (1분)",
+    "item.wildplus.sky_sapphire_apple": "스카이 사파이어 사과",
+    "tooltip.wildplus.sky_sapphire_apple": "저항 II · 신속 II (1분) · 흡수 IV (3분)\n느린 낙하 · 전달체의 힘 · 수중 호흡 (5분)",
     "item.wildplus.sapphire_bow": "사파이어 활",
     "tooltip.wildplus.sapphire_bow": "얼음 화살: 맞은 적 구속 II · 얼림\n당김 1.4배 · 피해 1.25배" + UP,
     "item.wildplus.sky_sapphire_bow": "스카이 사파이어 활",
@@ -55,6 +59,8 @@ LANG_EN = {
     "tooltip.wildplus.dragon_plume": "Upgrades sapphire gear to Sky Sapphire at the enhance table",
     "equipment.wildplus.sapphire": "Sapphire",
     "equipment.wildplus.sky_sapphire": "Sky Sapphire",
+    "item.wildplus.sapphire_apple": "Sapphire Apple",
+    "item.wildplus.sky_sapphire_apple": "Sky Sapphire Apple",
     "item.wildplus.sapphire_bow": "Sapphire Bow",
     "tooltip.wildplus.sapphire_bow": "Frost arrows: Slowness II + freeze",
     "item.wildplus.sky_sapphire_bow": "Sky Sapphire Bow",
@@ -110,6 +116,8 @@ def assets():
         write(ASSETS / f"items/{b}.json", {"model": {"type": "minecraft:model", "model": i(f"block/{b}")}})
     simple("sapphire")
     simple("dragon_plume")
+    simple("sapphire_apple")
+    simple("sky_sapphire_apple")
     for p in ["sapphire", "sky_sapphire"]:
         for t in TOOLS:
             simple(f"{p}_{t}", "minecraft:item/handheld")
@@ -144,6 +152,9 @@ def data():
         "sapphire_leggings": shaped(["XXX", "X X", "X X"], {"X": S}, i("sapphire_leggings")),
         "sapphire_boots": shaped(["X X", "X X"], {"X": S}, i("sapphire_boots")),
         "sapphire_bow": shaped([" MS", "M S", " MS"], {"M": S, "S": "minecraft:string"}, i("sapphire_bow")),
+        "sapphire_apple": shaped(["MMM", "MAM", "MMM"], {"M": S, "A": "minecraft:apple"}, i("sapphire_apple"), category="misc"),
+        "sky_sapphire_apple": shaped(["BBB", "BAB", "BPB"], {"B": i("sapphire_block"), "A": i("sapphire_apple"), "P": i("dragon_plume")},
+                                     i("sky_sapphire_apple"), category="misc"),
         "dragon_plume": shapeless(["minecraft:elytra", "minecraft:dragon_breath", "minecraft:dragon_breath"], i("dragon_plume"), 2),
     }
     for name, obj in rec.items():

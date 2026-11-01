@@ -151,6 +151,13 @@ def build(van: Path):
         snowflake(im, 3, 3)
         im.save(out_item / f"sky_sapphire_bow{suf}.png")
         n += 2
+    # 사과: 황금 사과의 금빛 몸통을 사파이어 색으로
+    from textures_v14 import body_only
+    body_only(vb / "golden_apple.png", SAPPHIRE).save(out_item / "sapphire_apple.png")
+    ap = body_only(vb / "golden_apple.png", SKY)
+    snowflake(ap, 11, 6)
+    snowflake(ap, 5, 11)
+    ap.save(out_item / "sky_sapphire_apple.png")
     plume().save(out_item / "dragon_plume.png")
     return n + 1
 
