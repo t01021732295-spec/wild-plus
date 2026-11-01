@@ -759,9 +759,17 @@ public final class Arena {
         }
         // 양쪽 출발 지점 표시
         for (int k = -4; k <= 4; k++) {
-            lv.setBlock(CENTER.offset(-12, 0, k), Blocks.RED_GLAZED_TERRACOTTA.defaultBlockState(), 2);
-            lv.setBlock(CENTER.offset(12, 0, k), Blocks.BLUE_GLAZED_TERRACOTTA.defaultBlockState(), 2);
+            lv.setBlock(CENTER.offset(-12, 0, k), Blocks.RED_CONCRETE.defaultBlockState(), 2);
+            lv.setBlock(CENTER.offset(12, 0, k), Blocks.BLUE_CONCRETE.defaultBlockState(), 2);
         }
+    }
+
+    /** 시험용: 경기장만 지어서 보여 준다 */
+    public static void debugBuild(ServerPlayer p, int t) {
+        ServerLevel lv = p.level().getServer().overworld();
+        force(lv, true);
+        build(lv, THEMES[Math.floorMod(t, THEMES.length)]);
+        p.teleportTo(lv, CENTER.getX() + 0.5, CENTER.getY() + 8, CENTER.getZ() - R - 3.5, Set.of(), 0F, 25F, true);
     }
 
     // ───────── 명령어 ─────────

@@ -909,6 +909,42 @@ jobs:
             sleep 2
             import -window root shot-land.png || true
             xdotool key Escape; sleep 1
+            # ── 2.12: 치장 · 에메랄드 · 투기장 ──
+            cmd "/clear @s"
+            cmd "/wildplus cosmetic 1 1 2"
+            cmd "/item replace entity @s weapon.mainhand with wildplus:display_greatsword"
+            cmd "/tp @s 480.5 121 -14.5 0 10"
+            sleep 3
+            xdotool key F5 || true; sleep 1; xdotool key F5 || true
+            sleep 3
+            import -window root shot-cosmetic-front.png || true
+            xdotool key F5 || true; sleep 1
+            cmd "/wildplus cosmetic 3 2 1"
+            sleep 3
+            import -window root shot-cosmetic-back.png || true
+            xdotool key F5 || true; sleep 1
+            cmd "/wildplus cosmetic 0 0 0"
+            cmd "/clear @s"
+            i=0; for t in sword pickaxe axe shovel hoe bow helmet chestplate leggings; do cmd "/item replace entity @s hotbar.$i with wildplus:emerald_$t"; i=$((i+1)); done
+            i=0; for t in sword pickaxe axe shovel hoe bow helmet chestplate leggings boots; do cmd "/item replace entity @s inventory.$i with wildplus:royal_emerald_$t"; i=$((i+1)); done
+            cmd "/item replace entity @s inventory.10 with wildplus:life_crystal"
+            cmd "/item replace entity @s inventory.11 with wildplus:royal_emerald_apple"
+            cmd "/item replace entity @s inventory.12 with wildplus:display_staff"
+            cmd "/item replace entity @s inventory.13 with wildplus:display_scythe"
+            sleep 1; xdotool key e || true; sleep 3
+            import -window root shot-emerald.png || true
+            xdotool key Escape; sleep 1
+            cmd "/clear @s"
+            cmd "/arena"
+            sleep 2
+            import -window root shot-arena.png || true
+            xdotool key Escape; sleep 1
+            cmd "/wildplus arenamap 0"
+            sleep 6
+            import -window root shot-arena-map0.png || true
+            cmd "/wildplus arenamap 2"
+            sleep 6
+            import -window root shot-arena-map2.png || true
             # 랜덤 이벤트 · 새 효과
             cmd "/gamemode creative"
             cmd "/tp @s 478 121 30 0 10"

@@ -73,6 +73,23 @@ public final class WildCommands {
                 // 랜덤 이벤트: /wildplus event <이름> · /wildplus event stop
                 .then(eventCommand())
                 .then(weekendCommand())
+                .then(Commands.literal("cosmetic").then(Commands.argument("w", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 3))
+                        .then(Commands.argument("h", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 2))
+                        .then(Commands.argument("o", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 4)).executes(ctx -> {
+                            var p = ctx.getSource().getPlayerOrException();
+                            var d = com.snolred.wildplus.content.ContentData.get(p.level().getServer()).player("luxury", p.getUUID());
+                            d.putInt("wings", com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "w"));
+                            d.putInt("halo", com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "h"));
+                            d.putInt("outfit", com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "o"));
+                            com.snolred.wildplus.content.ContentData.get(p.level().getServer()).dirty();
+                            com.snolred.wildplus.net.CosmeticSync.broadcast(p.level().getServer());
+                            return 1;
+                        })))))
+                .then(Commands.literal("arenamap").then(Commands.argument("t", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 9)).executes(ctx -> {
+                    com.snolred.wildplus.content.Arena.debugBuild(ctx.getSource().getPlayerOrException(),
+                            com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "t"));
+                    return 1;
+                })))
                 .then(Commands.literal("enchtest").executes(ctx -> {
                     var server = ctx.getSource().getServer();
                     var reg = server.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT);

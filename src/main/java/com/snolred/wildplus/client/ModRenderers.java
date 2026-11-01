@@ -79,6 +79,15 @@ public final class ModRenderers {
         event.registerBlockEntityRenderer(com.snolred.wildplus.registry.ModBlockEntities.VENDING_MACHINE.get(), VendingMachineRenderer::new);
     }
 
+    /** 모든 플레이어 그림에 치장(날개 · 링 · 옷) 층을 붙인다 */
+    @SubscribeEvent
+    static void addLayers(EntityRenderersEvent.AddLayers event) {
+        for (var skin : event.getSkins()) {
+            net.minecraft.client.renderer.entity.player.AvatarRenderer<net.minecraft.client.player.AbstractClientPlayer> r = event.getPlayerRenderer(skin);
+            if (r != null) r.addLayer(new CosmeticLayer(r));
+        }
+    }
+
     private static Identifier tex(String name) {
         return WildPlus.id("textures/entity/" + name + ".png");
     }

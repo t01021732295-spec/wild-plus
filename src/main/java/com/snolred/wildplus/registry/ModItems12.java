@@ -129,6 +129,14 @@ public final class ModItems12 {
 
     public static final DeferredItem<net.minecraft.world.item.BlockItem> ARENA_DESK = ITEMS.registerSimpleBlockItem("arena_desk", ModBlocks2.ARENA_DESK);
 
+    // ───────── 관상용 무기 (명품관) ─────────
+    public static final DeferredItem<Item> DISPLAY_GREATSWORD = ITEMS.registerSimpleItem("display_greatsword",
+            p -> p.stacksTo(1).rarity(Rarity.EPIC).fireResistant().component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true));
+    public static final DeferredItem<Item> DISPLAY_STAFF = ITEMS.registerSimpleItem("display_staff",
+            p -> p.stacksTo(1).rarity(Rarity.EPIC).fireResistant().component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true));
+    public static final DeferredItem<Item> DISPLAY_SCYTHE = ITEMS.registerSimpleItem("display_scythe",
+            p -> p.stacksTo(1).rarity(Rarity.EPIC).fireResistant().component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true));
+
     public static void init() {}
 
     private ModItems12() {}

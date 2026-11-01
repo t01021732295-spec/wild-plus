@@ -92,6 +92,34 @@ public final class Luxury {
             g.add(new Good("👑 칭호 [" + TITLE[i] + "]" + (have ? " (보유 · 누르면 달기)" : ""), "이름 앞에 영구 표시", have ? 0 : TITLE_PRICE[i],
                     pl -> grantTitle(pl, k)));
         }
+        // ───────── 치장 (몸에 그려짐) ─────────
+        int cos = d.getIntOr("cos", 0);
+        String[][] items = {
+                {"wings", "1", "🪽 천사의 날개", "1500000"}, {"wings", "2", "🦇 악마의 날개", "1500000"}, {"wings", "3", "🐉 용의 날개", "2500000"},
+                {"halo", "1", "😇 황금 링", "1000000"}, {"halo", "2", "✨ 별빛 링", "1500000"},
+                {"outfit", "1", "🎖 기사단 정복", "1000000"}, {"outfit", "2", "👑 왕실 로브", "1000000"},
+                {"outfit", "3", "🥷 그림자 닌자복", "1000000"}, {"outfit", "4", "🤍 천사의 드레스", "1000000"}};
+        for (int i = 0; i < items.length; i++) {
+            String[] it = items[i];
+            int bit = 1 << i;
+            boolean have = (cos & bit) != 0;
+            int val = Integer.parseInt(it[1]);
+            boolean worn = d.getIntOr(it[0], 0) == val;
+            String label = it[2] + (worn ? " (착용 중 · 누르면 벗기)" : have ? " (보유 · 누르면 입기)" : "");
+            g.add(new Good(label, "치장", have ? 0 : Long.parseLong(it[3]), pl -> {
+                CompoundTag dd = data(pl.level().getServer(), pl);
+                dd.putInt("cos", dd.getIntOr("cos", 0) | bit);
+                dd.putInt(it[0], dd.getIntOr(it[0], 0) == val && have ? 0 : val);
+                ContentData.get(pl.level().getServer()).dirty();
+                com.snolred.wildplus.net.CosmeticSync.broadcast(pl.level().getServer());
+            }));
+        }
+        g.add(new Good("⚔ 관상용 무기: 황금 왕의 대검", "", 1_000_000,
+                pl -> item(pl, new ItemStack(com.snolred.wildplus.registry.ModItems12.DISPLAY_GREATSWORD.get()))));
+        g.add(new Good("⚔ 관상용 무기: 별빛 지팡이", "", 1_000_000,
+                pl -> item(pl, new ItemStack(com.snolred.wildplus.registry.ModItems12.DISPLAY_STAFF.get()))));
+        g.add(new Good("⚔ 관상용 무기: 공허의 낫", "", 1_000_000,
+                pl -> item(pl, new ItemStack(com.snolred.wildplus.registry.ModItems12.DISPLAY_SCYTHE.get()))));
         g.add(new Good("칭호 떼기", "", 0, pl -> {
             data(pl.level().getServer(), pl).putInt("title", 0);
             ContentData.get(pl.level().getServer()).dirty();

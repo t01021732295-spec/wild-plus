@@ -11,6 +11,12 @@ TIP = {
     "hoe": ("풍작: 다 자란 작물 30% 확률로 수확량 두 배", "내구도 무한 · 풍작 50%"),
 }
 LANG_KO = {
+    "item.wildplus.display_greatsword": "황금 왕의 대검 (관상용)",
+    "tooltip.wildplus.display_greatsword": "명품관 한정 · 들고 다니며 뽐내는 장식 무기",
+    "item.wildplus.display_staff": "별빛 지팡이 (관상용)",
+    "tooltip.wildplus.display_staff": "명품관 한정 · 들고 다니며 뽐내는 장식 무기",
+    "item.wildplus.display_scythe": "공허의 낫 (관상용)",
+    "tooltip.wildplus.display_scythe": "명품관 한정 · 들고 다니며 뽐내는 장식 무기",
     "block.wildplus.arena_desk": "투기장 접수처",
     "tooltip.wildplus.arena_desk": "투기장 경기 만들기 · 참가 · 관전 · 랭킹 · 메달 상점\n/arena 로도 열 수 있음",
     "item.wildplus.life_crystal": "생명의 결정",
@@ -24,7 +30,8 @@ LANG_KO = {
     "item.wildplus.royal_emerald_apple": "로열 에메랄드 사과",
     "tooltip.wildplus.royal_emerald_apple": "재생 II (1분) · 흡수 IV (3분)\n행운 II · 마을의 영웅 III · 체력 증가 II (5분)",
 }
-LANG_EN = {"block.wildplus.arena_desk": "Arena Desk", "item.wildplus.life_crystal": "Life Crystal", "item.wildplus.emerald_bow": "Emerald Bow",
+LANG_EN = {"item.wildplus.display_greatsword": "Golden King's Greatsword", "item.wildplus.display_staff": "Starlight Staff",
+           "item.wildplus.display_scythe": "Void Scythe", "block.wildplus.arena_desk": "Arena Desk", "item.wildplus.life_crystal": "Life Crystal", "item.wildplus.emerald_bow": "Emerald Bow",
            "item.wildplus.royal_emerald_bow": "Royal Emerald Bow", "item.wildplus.royal_emerald_apple": "Royal Emerald Apple",
            "equipment.wildplus.emerald": "Emerald", "equipment.wildplus.royal_emerald": "Royal Emerald"}
 for t in TOOLS + ARMOR:
@@ -47,6 +54,8 @@ def assets():
     write(ASSETS / "blockstates/arena_desk.json", {"variants": {"": {"model": i("block/arena_desk")}}})
     write(ASSETS / "items/arena_desk.json", {"model": {"type": "minecraft:model", "model": i("block/arena_desk")}})
     simple("life_crystal")
+    for w in ["greatsword", "staff", "scythe"]:
+        simple(f"display_{w}", "minecraft:item/handheld")
     simple("royal_emerald_apple")
     for p in ["emerald", "royal_emerald"]:
         for t in TOOLS:

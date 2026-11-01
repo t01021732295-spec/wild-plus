@@ -49,6 +49,7 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModEffects.POTIONS.register(modEventBus);
         modEventBus.addListener(ModEntities::onAttributes);
         modEventBus.addListener(com.snolred.wildplus.net.BankSync::register);
+        modEventBus.addListener(com.snolred.wildplus.net.CosmeticSync::register);
         // 한 묶음 늘리기: 원래 64개씩 쌓이는 아이템을 99개까지 (마인크래프트가 허용하는 최대치)
         modEventBus.addListener(net.neoforged.bus.api.EventPriority.LOWEST,
                 (net.neoforged.neoforge.event.ModifyDefaultComponentsEvent e) -> e.modifyMatching(
@@ -81,6 +82,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Arena.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.WealthTax.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.net.BankSync.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.net.CosmeticSync.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.Luxury.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.ContentEvents.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Raid.class);
