@@ -1,2 +1,0 @@
-ArrowLooseEvent\.class$
-/AbstractArrow\.class$

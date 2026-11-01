@@ -1,6 +1,0 @@
-assets/minecraft/textures/item/bow.png
-assets/minecraft/textures/item/bow_pulling_0.png
-assets/minecraft/textures/item/bow_pulling_1.png
-assets/minecraft/textures/item/bow_pulling_2.png
-assets/minecraft/textures/item/arrow.png
-assets/minecraft/textures/item/spectral_arrow.png

@@ -1,0 +1,1 @@
+net/minecraft/world/item/Item.java	public Item.Properties (sword|tool|humanoidArmor|pickaxe)\(	14

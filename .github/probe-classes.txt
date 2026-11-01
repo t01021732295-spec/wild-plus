@@ -1,5 +1,0 @@
-net.minecraft.world.entity.projectile.arrow.AbstractArrow
-net.minecraft.world.entity.projectile.AbstractArrow
-net.minecraft.world.item.BowItem
-net.minecraft.world.item.ArrowItem
-net.minecraft.world.item.ProjectileWeaponItem

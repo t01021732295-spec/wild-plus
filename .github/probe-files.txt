@@ -1,3 +1,6 @@
-assets/minecraft/items/bow.json
-assets/minecraft/models/item/bow.json
-assets/minecraft/models/item/bow_pulling_0.json
+data/minecraft/tags/item/enchantable/sword.json
+data/minecraft/tags/item/enchantable/mining.json
+data/minecraft/tags/item/enchantable/armor.json
+data/minecraft/tags/item/enchantable/weapon.json
+data/minecraft/tags/item/swords.json
+data/minecraft/tags/item/enchantable/durability.json
