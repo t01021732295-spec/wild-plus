@@ -12,6 +12,11 @@ public final class ContentEvents {
     private ContentEvents() {}
 
     @SubscribeEvent
+    public static void onTick(net.neoforged.neoforge.event.tick.ServerTickEvent.Post event) {
+        if (event.getServer().getTickCount() % 20 == 0) ContentData.updateDay(event.getServer());
+    }
+
+    @SubscribeEvent
     public static void onDeath(LivingDeathEvent event) {
         if (event.getSource().getEntity() instanceof ServerPlayer p && !event.getEntity().level().isClientSide()) {
             WeeklyGoals.onKill(p, event.getEntity());

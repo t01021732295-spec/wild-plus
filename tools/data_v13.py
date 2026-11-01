@@ -12,7 +12,7 @@ LANG_KO = {
     "item.wildplus.titan_core": "거신의 핵",
     "item.wildplus.lich_orb": "망령 군주의 구슬",
     "item.wildplus.frost_crown": "서리 왕관 조각",
-    "tooltip.wildplus.raid_altar": "3×3 크기 · 친구들과 함께 이번 주 레이드 보스에 도전\n보스는 금요일마다 바뀌고, 깰 때마다 강해짐",
+    "tooltip.wildplus.raid_altar": "3×3 크기 · 친구들과 함께 이번 주 레이드 보스에 도전\n보스는 게임 속 7일마다 바뀌고, 깰 때마다 강해짐",
     "tooltip.wildplus.tower_gate": "폭 3 · 높이 3 · 근처 친구들과 하늘의 탑에 오름\n층마다 보상, 쓰러져도 아이템 유지",
     "tooltip.wildplus.goal_board": "폭 3 · 높이 2 · 이번 주 공동 목표와 시즌 패스 보상",
     "tooltip.wildplus.titan_core": "대지의 거신 레이드 전리품 · 은행 상인이 1,000동에 사 줌",

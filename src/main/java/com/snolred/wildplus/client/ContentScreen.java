@@ -151,7 +151,7 @@ public class ContentScreen extends AbstractContainerScreen<ContentMenu> {
         g.fillGradient(x + 4, y + 4, x + W - 4, y + 20, 0xFF5A1020, 0xFF2A0610);
         UiKit.hline(g, x + 4, y + 20, W - 8, 0xFFB8862A);
         UiKit.bold(g, "⚔ 주말 레이드", x + 10, y + 8, 0xFFFFD27A);
-        UiKit.right(g, "새 보스까지 " + t.getIntOr("reset", 7) + "일 (금요일)", x + W - 10, y + 8, 0xFFE8B8C0);
+        UiKit.right(g, "새 보스까지 게임 속 " + t.getIntOr("reset", 7) + "일", x + W - 10, y + 8, 0xFFE8B8C0);
 
         // 보스 카드 (왼쪽)
         int cx = x + 10, cy = y + 26, cw = 154, ch = 120;
@@ -306,7 +306,7 @@ public class ContentScreen extends AbstractContainerScreen<ContentMenu> {
         g.fillGradient(x + 5, y + 5, x + W - 5, y + 116, 0xFFC99A64, 0xFFB98A54);
         UiKit.speckle(g, x + 5, y + 5, W - 10, 111, 13, 420, 0x30704020, 0x22FFF0D0);
         UiKit.bold(g, "📋 이번 주 공동 목표", x + 10, y + 9, 0xFF3A2410);
-        UiKit.right(g, "새 목표까지 " + t.getIntOr("reset", 7) + "일 (금요일)", x + W - 10, y + 9, 0xFF5A3A1A);
+        UiKit.right(g, "새 목표까지 게임 속 " + t.getIntOr("reset", 7) + "일", x + W - 10, y + 9, 0xFF5A3A1A);
 
         ListTag goals = t.getListOrEmpty("goals");
         int[] tints = {0xFFFFF6C8, 0xFFE4F4FF, 0xFFFFE4EC, 0xFFE6FFE6};

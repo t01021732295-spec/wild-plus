@@ -1,8 +1,6 @@
 package com.snolred.wildplus.content;
 
 import com.mojang.serialization.Codec;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.UUID;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -34,6 +32,7 @@ public class ContentData extends SavedData {
     }
 
     public static ContentData get(MinecraftServer server) {
+        updateDay(server);
         return server.overworld().getDataStorage().computeIfAbsent(TYPE);
     }
 
@@ -61,18 +60,30 @@ public class ContentData extends SavedData {
         setDirty();
     }
 
-    /** 현실 시간 기준 "주" 번호: 금요일마다 바뀐다 (한국 시간). 1970-01-01 은 목요일. */
-    public static long week() {
-        long day = LocalDate.now(ZoneId.of("Asia/Seoul")).toEpochDay();
-        return Math.floorDiv(day - 1, 7);
+    /** 게임 속 날짜 (서버 틱마다 갱신) */
+    public static volatile long gameDay;
+    public static final int WEEK_DAYS = 7, SEASON_WEEKS = 8;
+
+    public static void updateDay(MinecraftServer server) {
+        gameDay = Math.max(0, server.overworld().getOverworldClockTime() / 24000L);
     }
 
-    /** 시즌 = 8주 */
+    /** 게임 시간 기준 "주" 번호: 게임 속 7일마다 바뀐다 */
+    public static long week() {
+        return Math.floorDiv(gameDay, WEEK_DAYS);
+    }
+
+    /** 시즌 = 8주 (게임 속 56일) */
     public static long season() {
-        return Math.floorDiv(week(), 8);
+        return Math.floorDiv(week(), SEASON_WEEKS);
     }
 
     public static int weeksLeftInSeason() {
-        return (int) (8 - Math.floorMod(week(), 8));
+        return (int) (SEASON_WEEKS - Math.floorMod(week(), SEASON_WEEKS));
+    }
+
+    /** 다음 주까지 남은 게임 속 날 수 */
+    public static int daysToReset() {
+        return (int) (WEEK_DAYS - Math.floorMod(gameDay, WEEK_DAYS));
     }
 }

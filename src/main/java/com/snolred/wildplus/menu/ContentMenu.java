@@ -5,9 +5,6 @@ import com.snolred.wildplus.content.Raid;
 import com.snolred.wildplus.content.Tower;
 import com.snolred.wildplus.content.WeeklyGoals;
 import com.snolred.wildplus.registry.ModMenus;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -75,11 +72,8 @@ public class ContentMenu extends AbstractContainerMenu {
         });
     }
 
-    /** 다음 금요일까지 남은 날 */
     public static int daysToReset() {
-        LocalDate d = LocalDate.now(ZoneId.of("Asia/Seoul"));
-        int n = (DayOfWeek.FRIDAY.getValue() - d.getDayOfWeek().getValue() + 7) % 7;
-        return n == 0 ? 7 : n;
+        return ContentData.daysToReset();
     }
 
     private static CompoundTag snapshot(ServerPlayer p, BlockPos pos, int mode) {
@@ -136,11 +130,11 @@ public class ContentMenu extends AbstractContainerMenu {
                 t.putInt("tierClaimed", s.getIntOr("claimed", 0));
                 // 시즌 번호는 이 월드에서 처음 연 시즌을 1로
                 CompoundTag meta = d.section("meta");
-                if (meta.getLongOr("season0", Long.MIN_VALUE) == Long.MIN_VALUE) {
-                    meta.putLong("season0", ContentData.season());
+                if (meta.getLongOr("season0g", Long.MIN_VALUE) == Long.MIN_VALUE) {
+                    meta.putLong("season0g", ContentData.season());
                     d.dirty();
                 }
-                t.putLong("season", ContentData.season() - meta.getLongOr("season0", ContentData.season()) + 1);
+                t.putLong("season", ContentData.season() - meta.getLongOr("season0g", ContentData.season()) + 1);
                 t.putInt("weeksLeft", ContentData.weeksLeftInSeason());
             }
         }
