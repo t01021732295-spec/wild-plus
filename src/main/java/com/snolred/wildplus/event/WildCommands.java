@@ -73,6 +73,25 @@ public final class WildCommands {
                 // 랜덤 이벤트: /wildplus event <이름> · /wildplus event stop
                 .then(eventCommand())
                 .then(weekendCommand())
+                .then(Commands.literal("enchtest").executes(ctx -> {
+                    var server = ctx.getSource().getServer();
+                    var reg = server.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT);
+                    for (var e : com.snolred.wildplus.registry.ModItems.ITEMS.getEntries()) {
+                        var stack = new net.minecraft.world.item.ItemStack(e.get());
+                        if (!stack.isDamageableItem() && !(stack.getItem() instanceof net.minecraft.world.item.BowItem)) continue;
+                        int n = 0;
+                        try {
+                            n = net.minecraft.world.item.enchantment.EnchantmentHelper.getAvailableEnchantmentResults(30, stack,
+                                    reg.listElements().map(h -> (net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>) h)).size();
+                        } catch (Throwable t) {
+                            n = -1;
+                        }
+                        String line = "ENCH " + e.getId().getPath() + " enchantable=" + stack.isEnchantable()
+                                + " comp=" + stack.get(net.minecraft.core.component.DataComponents.ENCHANTABLE) + " options=" + n;
+                        com.snolred.wildplus.WildPlus.LOGGER.info(line);
+                    }
+                    return 1;
+                }))
                 // 시험용: 핏빛 군주 · 정예 몹 소환
                 .then(Commands.literal("bloodlord").executes(ctx -> {
                     var p = ctx.getSource().getPlayerOrException();

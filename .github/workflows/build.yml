@@ -338,6 +338,8 @@ jobs:
             run "execute if block 44 121 45 minecraft:chest{Items:[{id:\"minecraft:diamond\"}]} if block 45 121 44 minecraft:chest{Items:[{id:\"minecraft:dirt\"}]} run say FILTER_OK"
             run "data get block 44 121 45 Items"
             run "data get block 45 121 44 Items"
+            run "wildplus enchtest"
+            sleep 2
             # 17차: 정렬 상자 (흙 3·다이아 1 → 흙이 든 상자로만)
             run "fill 34 119 34 40 123 40 minecraft:air"
             run "setblock 35 121 35 wildplus:sorting_chest{items:[{id:\"minecraft:dirt\",count:3},{id:\"minecraft:diamond\",count:1}]}"
