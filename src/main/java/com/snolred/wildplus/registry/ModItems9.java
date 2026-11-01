@@ -20,7 +20,7 @@ import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 /**
- * 16차: 스타 루비 장비 (네더라이트 위 최종 장비). 강화대에서 루비 장비 + 네더의 별 + 1,000동으로 승급.
+ * 16차: 스텔라 루비 장비 (네더라이트 위 최종 장비). 강화대에서 루비 장비 + 네더의 별 + 1,000동으로 승급.
  * 모두 불·용암에 타지 않고, 내구도가 닳지 않는다.
  * 검: 공격력 9 · 공격 속도 1.6 · 고정 피해 4 (강화대에서 0.5씩 최대 6)
  */
@@ -84,7 +84,7 @@ public final class ModItems9 {
     public static final DeferredItem<net.minecraft.world.item.BlockItem> TRASH_CAN = ITEMS.registerSimpleBlockItem("trash_can", ModBlocks2.TRASH_CAN);
     public static final DeferredItem<net.minecraft.world.item.BlockItem> AUTO_CRAFTER = ITEMS.registerSimpleBlockItem("auto_crafter", ModBlocks2.AUTO_CRAFTER);
 
-    /** 루비 → 스타 루비 짝 */
+    /** 루비 → 스텔라 루비 짝 */
     public static Map<Item, Item> upgrades() {
         Map<Item, Item> m = new java.util.LinkedHashMap<>(Map.of(
                 ModItems7.RUBY_SWORD.get(), STAR_RUBY_SWORD.get(), ModItems7.RUBY_PICKAXE.get(), STAR_RUBY_PICKAXE.get(),
@@ -93,11 +93,13 @@ public final class ModItems9 {
                 ModItems7.RUBY_CHESTPLATE.get(), STAR_RUBY_CHESTPLATE.get(), ModItems7.RUBY_LEGGINGS.get(), STAR_RUBY_LEGGINGS.get(),
                 ModItems7.RUBY_BOOTS.get(), STAR_RUBY_BOOTS.get(), ModItems10.RUBY_BOW.get(), ModItems10.STAR_RUBY_BOW.get()));
         m.putAll(ModItems11.upgrades());
+        m.putAll(ModItems12.upgrades());
         return m;
     }
 
     /** 승급에 필요한 재료: 루비 → 네더의 별, 사파이어 → 용의 깃털 */
     public static Item upgradeMaterial(Item from) {
+        if (ModItems12.upgrades().containsKey(from)) return ModItems12.LIFE_CRYSTAL.get();
         return ModItems11.upgrades().containsKey(from) ? ModItems11.DRAGON_PLUME.get() : net.minecraft.world.item.Items.NETHER_STAR;
     }
 

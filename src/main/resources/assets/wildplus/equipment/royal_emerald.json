@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "wildplus:royal_emerald"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "wildplus:royal_emerald"
+      }
+    ]
+  }
+}

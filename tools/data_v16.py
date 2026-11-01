@@ -13,8 +13,8 @@ APPLES = {
     "ruby": ("루비 사과", "Ruby Apple", i("ruby"), "힘 II (1분) · 화염 저항 (5분) · 흡수"),
 }
 BOWS = {"mythril_bow": ("미스릴 활", "Mythril Bow", "당기는 속도 1.5배 · 화살 피해 1.2배"),
-        "ruby_bow": ("루비 활", "Ruby Bow", "불화살 · 화살 피해 1.35배 · 당김 1.25배 · 불에 안 탐\n강화대에서 네더의 별 + 1,000동으로 스타 루비 활 승급"),
-        "star_ruby_bow": ("스타 루비 활", "Star Ruby Bow", "화살 3발 동시 · 당김 2배 · 피해 1.6배 · 불화살\n맞으면 방어 무시 고정 피해 3 · 내구도 무한")}
+        "ruby_bow": ("루비 활", "Ruby Bow", "불화살 · 화살 피해 1.35배 · 당김 1.25배 · 불에 안 탐\n강화대에서 네더의 별 + 1,000동으로 스텔라 루비 활 승급"),
+        "star_ruby_bow": ("스텔라 루비 활", "Stellar Ruby Bow", "화살 3발 동시 · 당김 2배 · 피해 1.6배 · 불화살\n맞으면 방어 무시 고정 피해 3 · 내구도 무한")}
 ARROWS = {"explosive_arrow": ("폭발 화살", "Explosive Arrow", "맞은 곳이 폭발 (블록은 부서지지 않음)", "minecraft:tnt"),
           "homing_arrow": ("유도 화살", "Homing Arrow", "16칸 안의 가장 가까운 몬스터를 따라감", "minecraft:ender_eye"),
           "lightning_arrow": ("번개 화살", "Lightning Arrow", "맞은 곳에 번개가 떨어짐", "minecraft:lightning_rod"),
@@ -25,10 +25,10 @@ for k, (ko, en, mat, tip) in APPLES.items():
     LANG_KO[f"item.wildplus.{k}_apple"] = ko
     LANG_EN[f"item.wildplus.{k}_apple"] = en
     LANG_KO[f"tooltip.wildplus.{k}_apple"] = tip
-LANG_KO.update({"item.wildplus.netherite_apple": "네더라이트 사과", "item.wildplus.star_ruby_apple": "스타 루비 사과",
+LANG_KO.update({"item.wildplus.netherite_apple": "네더라이트 사과", "item.wildplus.star_ruby_apple": "스텔라 루비 사과",
                 "tooltip.wildplus.netherite_apple": "저항 III · 흡수 IV · 재생 II · 화염 저항",
                 "tooltip.wildplus.star_ruby_apple": "힘 II · 저항 II · 재생 II · 신속 II (1분)\n흡수 IV (3분) · 화염 저항 · 야간 투시 (5분)"})
-LANG_EN.update({"item.wildplus.netherite_apple": "Netherite Apple", "item.wildplus.star_ruby_apple": "Star Ruby Apple"})
+LANG_EN.update({"item.wildplus.netherite_apple": "Netherite Apple", "item.wildplus.star_ruby_apple": "Stellar Ruby Apple"})
 for k, (ko, en, tip) in BOWS.items():
     LANG_KO[f"item.wildplus.{k}"], LANG_EN[f"item.wildplus.{k}"], LANG_KO[f"tooltip.wildplus.{k}"] = ko, en, tip
 for k, (ko, en, tip, _) in ARROWS.items():

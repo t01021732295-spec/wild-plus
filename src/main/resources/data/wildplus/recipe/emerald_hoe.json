@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "XX",
+    " #",
+    " #"
+  ],
+  "key": {
+    "X": "minecraft:emerald",
+    "#": "minecraft:stick"
+  },
+  "result": {
+    "id": "wildplus:emerald_hoe",
+    "count": 1
+  }
+}

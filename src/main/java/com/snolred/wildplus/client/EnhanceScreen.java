@@ -131,9 +131,12 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
             int ry = 22 + i * 18;
             if (sp.get(i) == EnhanceMenu.BTN_STAR) {
                 boolean sapph = com.snolred.wildplus.registry.ModItems11.upgrades().containsKey(item.getItem());
-                UiKit.bold(g, sapph ? "✦ 스카이 사파이어" : "✦ 스타 루비 승급", 68, ry, sapph ? 0xFF1D4ED8 : 0xFFB0103A);
+                boolean emer = com.snolred.wildplus.registry.ModItems12.upgrades().containsKey(item.getItem());
+                UiKit.bold(g, emer ? "✦ 로열 에메랄드" : sapph ? "✦ 스카이 사파이어" : "✦ 스텔라 루비", 68, ry,
+                        emer ? 0xFF0E7A3A : sapph ? 0xFF1D4ED8 : 0xFFB0103A);
                 boolean has = menu.material().is(com.snolred.wildplus.registry.ModItems9.upgradeMaterial(item.getItem()));
-                UiKit.text(g, has ? (sapph ? "깃털 ✔" : "별 ✔") : (sapph ? "깃털 필요" : "별 필요"), 158, ry, 0xFF7A5A30);
+                String what = emer ? "결정" : sapph ? "깃털" : "별";
+                UiKit.text(g, what + (has ? " ✔" : " 필요"), 158, ry, 0xFF7A5A30);
             } else if (sp.get(i) == EnhanceMenu.BTN_LIFESTEAL) {
                 int lv = com.snolred.wildplus.event.RubyGear.lifesteal(item);
                 UiKit.text(g, String.format("♥ 흡혈 %d%%", lv), 68, ry, ink);

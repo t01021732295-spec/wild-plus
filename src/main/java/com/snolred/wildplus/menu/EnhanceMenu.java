@@ -91,7 +91,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
         return slots.get(1).getItem();
     }
 
-    /** 이 장비에 지금 할 수 있는 특별 강화 버튼 (스타 루비 승급 · 고정 피해 강화) */
+    /** 이 장비에 지금 할 수 있는 특별 강화 버튼 (스텔라 루비 승급 · 고정 피해 강화) */
     public static java.util.List<Integer> specials(ItemStack stack) {
         java.util.List<Integer> out = new java.util.ArrayList<>();
         if (stack.isEmpty()) return out;
@@ -128,7 +128,8 @@ public class EnhanceMenu extends AbstractContainerMenu {
             input.setChanged();
             sp.level().playSound(null, sp.blockPosition(), SoundEvents.BEACON_POWER_SELECT, SoundSource.BLOCKS, 1.0F, 1.2F);
             sp.level().playSound(null, sp.blockPosition(), SoundEvents.SMITHING_TABLE_USE, SoundSource.BLOCKS, 1.0F, 0.8F);
-            sp.sendSystemMessage(Component.literal(need == net.minecraft.world.item.Items.NETHER_STAR ? "✦ 스타 루비로 승급했어요! " : "✦ 스카이 사파이어로 승급했어요! ").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD)
+            sp.sendSystemMessage(Component.literal(need == net.minecraft.world.item.Items.NETHER_STAR ? "✦ 스텔라 루비로 승급했어요! "
+                    : need == com.snolred.wildplus.registry.ModItems12.LIFE_CRYSTAL.get() ? "✦ 로열 에메랄드로 승급했어요! " : "✦ 스카이 사파이어로 승급했어요! ").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD)
                     .append(star.getHoverName().copy().withStyle(ChatFormatting.GOLD)));
             return true;
         }
@@ -181,7 +182,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
                     tag -> tag.putInt(com.snolred.wildplus.event.RubyGear.TRUE_DMG, lv + 1));
             input.setChanged();
             sp.level().playSound(null, sp.blockPosition(), SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 0.7F, 1.4F);
-            sp.sendSystemMessage(Component.literal(String.format("스타 루비 검 고정 피해 %.1f → %.1f", 4 + 0.5 * lv, 4 + 0.5 * (lv + 1)))
+            sp.sendSystemMessage(Component.literal(String.format("스텔라 루비 검 고정 피해 %.1f → %.1f", 4 + 0.5 * lv, 4 + 0.5 * (lv + 1)))
                     .withStyle(ChatFormatting.LIGHT_PURPLE));
             return true;
         }
@@ -220,7 +221,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
         ItemStack copy = s.copy();
         if (index <= 1) {
             if (!moveItemStackTo(s, 2, this.slots.size(), true)) return ItemStack.EMPTY;
-        } else if (s.is(net.minecraft.world.item.Items.NETHER_STAR) || s.is(com.snolred.wildplus.registry.ModItems11.DRAGON_PLUME.get())
+        } else if (s.is(net.minecraft.world.item.Items.NETHER_STAR) || s.is(com.snolred.wildplus.registry.ModItems11.DRAGON_PLUME.get()) || s.is(com.snolred.wildplus.registry.ModItems12.LIFE_CRYSTAL.get())
                 || s.is(com.snolred.wildplus.registry.ModItems.BLOODSTEEL_INGOT.get()) || !engraveKind(s).isEmpty()) {
             if (!moveItemStackTo(s, 1, 2, false)) return ItemStack.EMPTY;
         } else {

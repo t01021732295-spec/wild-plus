@@ -49,7 +49,7 @@ public final class Luxury {
 
     private static List<Good> goods(ServerPlayer p) {
         List<Good> g = new ArrayList<>();
-        g.add(new Good("✦ 네더의 별", "스타 루비 승급 재료", 1_000_000, pl -> item(pl, new ItemStack(Items.NETHER_STAR))));
+        g.add(new Good("✦ 네더의 별", "스텔라 루비 승급 재료", 1_000_000, pl -> item(pl, new ItemStack(Items.NETHER_STAR))));
         g.add(new Good("✦ 겉날개", "하늘을 나는 날개", 2_000_000, pl -> item(pl, new ItemStack(Items.ELYTRA))));
         g.add(new Good("✦ 용의 깃털", "스카이 사파이어 승급 재료", 1_500_000,
                 pl -> item(pl, new ItemStack(com.snolred.wildplus.registry.ModItems11.DRAGON_PLUME.get()))));

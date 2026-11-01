@@ -47,7 +47,7 @@ public final class RubyGear {
 
     private record Replant(ServerLevel level, BlockPos pos, BlockState state) {}
 
-    /** 루비 또는 스타 루비 */
+    /** 루비 또는 스텔라 루비 */
     private static boolean is(ItemStack s, net.neoforged.neoforge.registries.DeferredItem<Item> ruby, net.neoforged.neoforge.registries.DeferredItem<Item> star) {
         return s.is(ruby.get()) || s.is(star.get());
     }
@@ -66,7 +66,7 @@ public final class RubyGear {
                 || s.is(net.minecraft.world.item.Items.MACE) || s.is(net.minecraft.world.item.Items.TRIDENT);
     }
 
-    /** 스타 루비 각인: TITAN(대지) · LICH(망령) · FROST(서리), 없으면 "" */
+    /** 스텔라 루비 각인: TITAN(대지) · LICH(망령) · FROST(서리), 없으면 "" */
     public static String engraving(ItemStack s) {
         return s.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY)
                 .copyTag().getStringOr(ENGRAVE, "");
@@ -103,7 +103,7 @@ public final class RubyGear {
         }
     }
 
-    /** 스타 루비 검 고정 피해 강화 단계 (0~4, 한 단계 0.5) */
+    /** 스텔라 루비 검 고정 피해 강화 단계 (0~4, 한 단계 0.5) */
     public static int trueLevel(ItemStack s) {
         return s.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY)
                 .copyTag().getIntOr(TRUE_DMG, 0);
@@ -140,7 +140,7 @@ public final class RubyGear {
         if (hasEngraving(p, "BLOOD") && p.getHealth() <= p.getMaxHealth() * 0.5F) {
             p.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 60, 0, true, false, true));
         }
-        // 스타 루비 세트: 2부위 재생 I / 4부위 재생 II + 화염 저항 + 야간 투시
+        // 스텔라 루비 세트: 2부위 재생 I / 4부위 재생 II + 화염 저항 + 야간 투시
         int star = starPieces(p);
         if (star >= 2) p.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 80, star >= 4 ? 1 : 0, true, false, true));
         if (star >= 4) {
@@ -150,7 +150,7 @@ public final class RubyGear {
         if (p.isShiftKeyDown() && is(p.getMainHandItem(), ModItems7.RUBY_PICKAXE, com.snolred.wildplus.registry.ModItems9.STAR_RUBY_PICKAXE) && p instanceof ServerPlayer sp) {
             BlockPos c = p.blockPosition();
             int shown = 0;
-            // 스타 루비 곡괭이: 16칸 · 48개까지
+            // 스텔라 루비 곡괭이: 16칸 · 48개까지
             boolean starPick = p.getMainHandItem().is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_PICKAXE.get());
             int r = starPick ? 16 : 8, max = starPick ? 48 : 24;
             for (BlockPos pos : BlockPos.betweenClosed(c.offset(-r, -r, -r), c.offset(r, r, r))) {
@@ -174,7 +174,7 @@ public final class RubyGear {
                 level.sendParticles(ParticleTypes.LAVA, target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), 4, 0.2, 0.2, 0.2, 0.0);
             }
         }
-        // 스타 루비 도끼: 때린 적에게 불 (처형과 바로 이어짐)
+        // 스텔라 루비 도끼: 때린 적에게 불 (처형과 바로 이어짐)
         if (event.getSource().getEntity() instanceof Player p2 && event.getSource().getDirectEntity() == p2
                 && p2.getMainHandItem().is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_AXE.get())) {
             target.igniteForSeconds(4.0F);
@@ -226,7 +226,7 @@ public final class RubyGear {
             return;
         }
         LivingEntity target = event.getEntity();
-        // 스타 루비 검: 방어구를 무시하는 고정 피해 (기본 4, 강화로 최대 6)
+        // 스텔라 루비 검: 방어구를 무시하는 고정 피해 (기본 4, 강화로 최대 6)
         if (player.getMainHandItem().is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SWORD.get()) && target.isAlive()) {
             bursting = true;
             try {
@@ -261,7 +261,7 @@ public final class RubyGear {
 
     private static boolean areaBreaking;
 
-    /** 스타 루비 삽: 3×3 파기 / 스타 루비 괭이: 주변 3×3의 다 자란 작물도 함께 수확 (웅크리면 한 칸) */
+    /** 스텔라 루비 삽: 3×3 파기 / 스텔라 루비 괭이: 주변 3×3의 다 자란 작물도 함께 수확 (웅크리면 한 칸) */
     @SubscribeEvent
     public static void onBreakArea(net.neoforged.neoforge.event.level.block.BreakBlockEvent event) {
         if (areaBreaking || !(event.getPlayer() instanceof ServerPlayer player) || !(event.getLevel() instanceof ServerLevel level)
@@ -300,7 +300,7 @@ public final class RubyGear {
         ItemStack tool = event.getTool();
         if (tool.isEmpty() || !(event.getBreaker() instanceof Player)) return;
         BlockState state = event.getState();
-        // 스타 루비 곡괭이: 광석을 캐면 25% 확률로 전리품 두 배 (광석 블록 그대로 나올 땐 제외)
+        // 스텔라 루비 곡괭이: 광석을 캐면 25% 확률로 전리품 두 배 (광석 블록 그대로 나올 땐 제외)
         if (tool.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_PICKAXE.get()) && state.is(Tags.Blocks.ORES)
                 && event.getLevel().getRandom().nextFloat() < 0.25F) {
             boolean selfDrop = false;
@@ -311,7 +311,7 @@ public final class RubyGear {
                 event.getLevel().sendParticles(ParticleTypes.SOUL_FIRE_FLAME, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 10, 0.3, 0.3, 0.3, 0.02);
             }
         }
-        // 스타 루비 괭이: 다 자란 작물 50% 확률로 수확량 두 배
+        // 스텔라 루비 괭이: 다 자란 작물 50% 확률로 수확량 두 배
         if (tool.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_HOE.get()) && state.getBlock() instanceof CropBlock c0 && c0.isMaxAge(state)
                 && event.getLevel().getRandom().nextBoolean()) {
             for (ItemEntity e : event.getDrops()) if (!e.getItem().is(c0.asItem())) e.getItem().grow(e.getItem().getCount());

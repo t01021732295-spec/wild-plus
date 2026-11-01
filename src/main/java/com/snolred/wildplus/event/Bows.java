@@ -30,7 +30,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 /**
  * 활 · 화살.
  * 활: 미스릴(당김 1.5배 · 피해 1.2배) · 루비(불화살 · 피해 1.35배, 불에 안 탐) ·
- *     스타 루비(당김 2배 · 피해 1.6배 · 화살 3발 · 맞으면 고정 피해 3 · 내구도 무한)
+ *     스텔라 루비(당김 2배 · 피해 1.6배 · 화살 3발 · 맞으면 고정 피해 3 · 내구도 무한)
  * 화살: 폭발(맞은 곳 폭발, 블록은 안 부숨) · 유도(가까운 몬스터를 따라감) · 번개(맞은 곳에 번개) · 서리(구속 III · 얼림)
  */
 public final class Bows {
@@ -62,7 +62,7 @@ public final class Bows {
             HOMING.add(arrow.getUUID());
             HOMING_LEVEL.add(level);
         }
-        // 스타 루비 활: 양옆으로 화살 2발 더 (주울 수 없음)
+        // 스텔라 루비 활: 양옆으로 화살 2발 더 (주울 수 없음)
         if (bow.equals("star_ruby") && !data.getBooleanOr(EXTRA, false) && arrow.getOwner() instanceof LivingEntity owner) {
             Vec3 v = arrow.getDeltaMovement();
             for (int side : new int[]{-1, 1}) {
@@ -165,7 +165,7 @@ public final class Bows {
         }
     }
 
-    /** 스타 루비 활 화살: 맞으면 방어 무시 고정 피해 3 */
+    /** 스텔라 루비 활 화살: 맞으면 방어 무시 고정 피해 3 */
     @SubscribeEvent
     public static void onHit(LivingDamageEvent.Post event) {
         if (!(event.getSource().getDirectEntity() instanceof AbstractArrow a) || !"star_ruby".equals(a.getPersistentData().getStringOr(BOW_TAG, ""))) return;

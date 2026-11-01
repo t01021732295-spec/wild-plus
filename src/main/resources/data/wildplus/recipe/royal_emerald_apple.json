@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BBB",
+    "BAB",
+    "BCB"
+  ],
+  "key": {
+    "B": "minecraft:emerald_block",
+    "A": "wildplus:emerald_apple",
+    "C": "wildplus:life_crystal"
+  },
+  "result": {
+    "id": "wildplus:royal_emerald_apple",
+    "count": 1
+  }
+}

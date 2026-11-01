@@ -77,7 +77,7 @@ public final class ModItems11 {
         return p.fireResistant().rarity(Rarity.EPIC).component(DataComponents.UNBREAKABLE, Unit.INSTANCE);
     }
 
-    /** 검: 공격력 8 · 공격 속도 2.0 (스타 루비 9 · 1.6 보다 빠름) */
+    /** 검: 공격력 8 · 공격 속도 2.0 (스텔라 루비 9 · 1.6 보다 빠름) */
     public static final DeferredItem<Item> SKY_SAPPHIRE_SWORD = ITEMS.registerItem("sky_sapphire_sword",
             p -> new Item(sky(p.sword(SKY_SAPPHIRE_TOOL, 3.0F, -2.0F))));
     public static final DeferredItem<Item> SKY_SAPPHIRE_PICKAXE = ITEMS.registerItem("sky_sapphire_pickaxe",

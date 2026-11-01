@@ -17,7 +17,7 @@ import net.neoforged.neoforge.registries.DeferredItem;
 
 /**
  * 18차: 광물 사과 (사과 + 광물 8개, 황금 사과처럼 언제든 먹을 수 있음).
- * 비싼 광물일수록 효과가 강하다. 루비·네더라이트·스타 루비 사과는 빛이 난다.
+ * 비싼 광물일수록 효과가 강하다. 루비·네더라이트·스텔라 루비 사과는 빛이 난다.
  */
 public final class ModItems10 {
     static MobEffectInstance e(Holder<MobEffect> eff, int seconds, int amp) {
@@ -63,7 +63,7 @@ public final class ModItems10 {
     /** 네더라이트: 저항 III 30초 · 흡수 IV 2분 · 재생 II 20초 · 화염 저항 5분 */
     public static final DeferredItem<Item> NETHERITE_APPLE = apple("netherite_apple", Rarity.EPIC, true, 6, 1.4F,
             e(MobEffects.RESISTANCE, 30, 2), e(MobEffects.ABSORPTION, 120, 3), e(MobEffects.REGENERATION, 20, 1), e(MobEffects.FIRE_RESISTANCE, 300, 0));
-    /** 스타 루비: 힘 II · 저항 II · 재생 II · 신속 II 1분 + 흡수 IV 3분 + 화염 저항 · 야간 투시 5분 */
+    /** 스텔라 루비: 힘 II · 저항 II · 재생 II · 신속 II 1분 + 흡수 IV 3분 + 화염 저항 · 야간 투시 5분 */
     public static final DeferredItem<Item> STAR_RUBY_APPLE = apple("star_ruby_apple", Rarity.EPIC, true, 8, 1.6F,
             e(MobEffects.STRENGTH, 60, 1), e(MobEffects.RESISTANCE, 60, 1), e(MobEffects.REGENERATION, 60, 1), e(MobEffects.SPEED, 60, 1),
             e(MobEffects.ABSORPTION, 180, 3), e(MobEffects.FIRE_RESISTANCE, 300, 0), e(MobEffects.NIGHT_VISION, 300, 0));

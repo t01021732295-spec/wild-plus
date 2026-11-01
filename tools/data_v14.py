@@ -1,4 +1,4 @@
-"""16차 데이터: 스타 루비 장비, 다이아 배낭, 필터 호퍼, 던전 봉인 벽돌, 출하 상자 창."""
+"""16차 데이터: 스텔라 루비 장비, 다이아 배낭, 필터 호퍼, 던전 봉인 벽돌, 출하 상자 창."""
 from data_v2 import ASSETS, DATA, MC, i, merge_tag, self_loot, shaped, shapeless, write
 
 TOOLS = ["sword", "pickaxe", "axe", "shovel", "hoe"]
@@ -15,7 +15,7 @@ LANG_KO = {
     "item.wildplus.diamond_backpack": "다이아 배낭",
     "tooltip.wildplus.diamond_backpack": "98칸 (14×7). 우클릭으로 열기 · 불에 타지 않음",
     "gui.wildplus.backpack.tier3": "다이아 배낭",
-    "tooltip.wildplus.ruby_sword": "화염검: 맞은 적을 4초 동안 불태움\n25% 확률로 폭염 (주변 3칸 적에게 피해 4 + 불)\n강화대에서 네더의 별 + 1,000동으로 스타 루비 승급",
+    "tooltip.wildplus.ruby_sword": "화염검: 맞은 적을 4초 동안 불태움\n25% 확률로 폭염 (주변 3칸 적에게 피해 4 + 불)\n강화대에서 네더의 별 + 1,000동으로 스텔라 루비 승급",
 }
 LANG_EN = {
     "block.wildplus.filter_hopper": "Filter Hopper",
@@ -37,15 +37,15 @@ STAR_TIP_EN = {
     "pickaxe": "Unbreakable · Vein Sense", "axe": "Unbreakable · Execute", "shovel": "Unbreakable · Kiln Shovel", "hoe": "Unbreakable · Auto Replant",
 }
 for t in TOOLS + ARMOR:
-    LANG_KO[f"item.wildplus.star_ruby_{t}"] = f"스타 루비 {KO[t]}"
-    LANG_EN[f"item.wildplus.star_ruby_{t}"] = f"Star Ruby {EN[t]}"
+    LANG_KO[f"item.wildplus.star_ruby_{t}"] = f"스텔라 루비 {KO[t]}"
+    LANG_EN[f"item.wildplus.star_ruby_{t}"] = f"Stellar Ruby {EN[t]}"
 for t in TOOLS:
     LANG_KO[f"tooltip.wildplus.star_ruby_{t}"] = STAR_TIP_KO[t]
     LANG_EN[f"tooltip.wildplus.star_ruby_{t}"] = STAR_TIP_EN[t]
 for a in ARMOR:
     LANG_KO[f"tooltip.wildplus.star_ruby_{a}"] = "내구도 무한 · 불에 타지 않음\n2부위: 재생 I / 4부위: 재생 II + 화염 저항 + 야간 투시"
     LANG_EN[f"tooltip.wildplus.star_ruby_{a}"] = "Unbreakable · fireproof\n2 pieces: Regeneration I / 4 pieces: Regeneration II + Fire Resistance + Night Vision"
-    LANG_KO[f"tooltip.wildplus.ruby_{a}"] = "2부위: 화염 저항\n4부위: 나를 때린 적이 불타고 받는 피해 10% 감소\n강화대에서 스타 루비로 승급 가능"
+    LANG_KO[f"tooltip.wildplus.ruby_{a}"] = "2부위: 화염 저항\n4부위: 나를 때린 적이 불타고 받는 피해 10% 감소\n강화대에서 스텔라 루비로 승급 가능"
 
 
 def model(name, parent, tex):

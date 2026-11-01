@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:totem_of_undying",
+    "minecraft:heart_of_the_sea",
+    "minecraft:emerald_block",
+    "minecraft:emerald_block"
+  ],
+  "result": {
+    "id": "wildplus:life_crystal",
+    "count": 2
+  }
+}

@@ -47,8 +47,9 @@ public final class InfoHud {
                     Component.translatable("hud.wildplus.dir." + player.getDirection().getName()));
             w = Math.max(w, mc.font.width(line2));
         }
-        // 소지금 (가방 동전 + 동전 주머니)
-        Component line3 = Component.translatable("hud.wildplus.money", String.format("%,d", com.snolred.wildplus.economy.Coins.totalValue(player)));
+        // 소지금 (가방 동전 + 동전 주머니 + 통장)
+        Component line3 = Component.translatable("hud.wildplus.money",
+                String.format("%,d", com.snolred.wildplus.economy.Coins.totalValue(player) + com.snolred.wildplus.net.BankSync.clientBank));
         w = Math.max(w, mc.font.width(line3));
         int lines = 2 + (line2 == null ? 0 : 1);
         int h = lines * 11 + 5;
