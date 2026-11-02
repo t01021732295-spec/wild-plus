@@ -32,7 +32,8 @@ import org.jspecify.annotations.Nullable;
  * 자동 제작대.
  * <ul>
  *   <li>설계도 3×3 (칸당 1개 견본): 만들 물건의 조합법을 제작대처럼 놓는다.</li>
- *   <li>재료 칸 9개(0~8): 설계도에 쓰인 아이템만 들어간다. 호퍼로 옆·위에서 넣을 수 있다.</li>
+ *   <li>재료 칸 9개(0~8): 재료 칸 i 에는 설계도 칸 i 의 아이템만 들어간다 (비어 있는 설계도 칸 자리는 막힘).
+ *       그래서 한 가지 재료가 다른 재료 자리를 차지해 막히는 일이 없다. 호퍼로 넣으면 같은 재료 칸끼리 고르게 채운다.</li>
  *   <li>결과 칸(9): 0.4초마다 하나씩 만들어 쌓는다. 아래 호퍼로 꺼낼 수 있다.</li>
  *   <li>레드스톤 신호를 받으면 멈춘다.</li>
  * </ul>
@@ -127,7 +128,9 @@ public class AutoCrafterBlockEntity extends BlockEntity implements WorldlyContai
                 continue;
             }
             int found = -1;
-            for (int b = 0; b < BUFFER; b++) {
+            ItemStack own = items.get(i); // 자기 칸 먼저
+            if (!own.isEmpty() && ItemStack.isSameItem(own, p) && own.getCount() - take[i] > 0) found = i;
+            for (int b = 0; b < BUFFER && found < 0; b++) {
                 ItemStack s = items.get(b);
                 if (!s.isEmpty() && ItemStack.isSameItem(s, p) && s.getCount() - take[b] > 0) {
                     found = b;
@@ -161,14 +164,14 @@ public class AutoCrafterBlockEntity extends BlockEntity implements WorldlyContai
         if (!usedInPattern(stack)) return stack;
         for (int b = 0; b < BUFFER && !stack.isEmpty(); b++) {
             ItemStack s = items.get(b);
-            if (!s.isEmpty() && ItemStack.isSameItemSameComponents(s, stack) && s.getCount() < s.getMaxStackSize()) {
+            if (canPlaceItem(b, stack) && !s.isEmpty() && ItemStack.isSameItemSameComponents(s, stack) && s.getCount() < s.getMaxStackSize()) {
                 int m = Math.min(stack.getCount(), s.getMaxStackSize() - s.getCount());
                 s.grow(m);
                 stack.shrink(m);
             }
         }
         for (int b = 0; b < BUFFER && !stack.isEmpty(); b++) {
-            if (items.get(b).isEmpty()) {
+            if (items.get(b).isEmpty() && canPlaceItem(b, stack)) {
                 items.set(b, stack.copy());
                 stack.setCount(0);
             }
@@ -185,7 +188,13 @@ public class AutoCrafterBlockEntity extends BlockEntity implements WorldlyContai
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction dir) {
-        return slot < BUFFER && dir != Direction.DOWN && canPlaceItem(slot, stack);
+        if (slot >= BUFFER || dir == Direction.DOWN || !canPlaceItem(slot, stack)) return false;
+        // 호퍼로 들어올 때는 같은 재료 칸 중 가장 적은 칸부터 (한 칸만 64개로 차지 않게)
+        int mine = items.get(slot).getCount();
+        for (int b = 0; b < BUFFER; b++) {
+            if (b != slot && canPlaceItem(b, stack) && items.get(b).getCount() < mine) return false;
+        }
+        return true;
     }
 
     @Override
@@ -195,7 +204,11 @@ public class AutoCrafterBlockEntity extends BlockEntity implements WorldlyContai
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        return slot < BUFFER && usedInPattern(stack);
+        if (slot >= BUFFER) return false;
+        ItemStack want = pattern.getItem(slot);
+        if (want.isEmpty() || !ItemStack.isSameItem(want, stack)) return false;
+        ItemStack have = items.get(slot);
+        return have.isEmpty() || ItemStack.isSameItemSameComponents(have, stack);
     }
 
     @Override

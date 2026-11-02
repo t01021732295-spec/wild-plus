@@ -33,10 +33,13 @@ public class AutoCrafterMenu extends AbstractContainerMenu {
         this.box = box;
         this.pattern = pattern;
         for (int i = 0; i < AutoCrafterBlockEntity.BUFFER; i++) {
+            final int k = i;
             addSlot(new Slot(box, i, BUF_X + i * 18, BUF_Y) {
                 @Override
                 public boolean mayPlace(ItemStack s) {
-                    return inPattern(s);
+                    // 재료 칸 i 에는 설계도 칸 i 의 아이템만
+                    ItemStack want = pattern.getItem(k);
+                    return !want.isEmpty() && ItemStack.isSameItem(want, s);
                 }
             });
         }

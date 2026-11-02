@@ -3,7 +3,7 @@ from data_v2 import ASSETS, DATA, MC, i, merge_tag, self_loot, shaped, shapeless
 
 LANG_KO = {
     "block.wildplus.sorting_chest": "정렬 상자",
-    "tooltip.wildplus.sorting_chest": "넣은 아이템을 반경 8칸 안의 상자·통 중 같은 아이템이 있는 곳으로 자동 분배",
+    "tooltip.wildplus.sorting_chest": "넣은 아이템을 반경 8칸 안 상자·통으로 자동 분배\n받을 상자 지정: 상자에 아이템 액자를 붙이고 그 아이템을 끼우기\n액자에 정렬 상자를 끼운 상자 = 나머지 전부 · 지정 없으면 같은 아이템 있는 상자로",
     "block.wildplus.feeder": "자동 사료통",
     "tooltip.wildplus.feeder": "먹이를 넣어 두면 반경 8칸 동물을 30초마다 번식 (24마리까지)\n바닥의 알·깃털·양털·가죽을 주워 담고, 빈 양동이로 우유를 받음",
     "block.wildplus.mailbox": "우편함",
@@ -11,7 +11,7 @@ LANG_KO = {
 }
 LANG_EN = {
     "block.wildplus.sorting_chest": "Sorting Chest",
-    "tooltip.wildplus.sorting_chest": "Sends items to nearby chests that already hold the same item",
+    "tooltip.wildplus.sorting_chest": "Sends items to nearby chests. Put an item frame with an item on a chest to assign it; a frame with a sorting chest marks the overflow chest",
     "block.wildplus.feeder": "Auto Feeder",
     "tooltip.wildplus.feeder": "Breeds nearby animals every 30s, collects eggs/feathers/wool, milks cows with empty buckets",
     "block.wildplus.mailbox": "Mailbox",

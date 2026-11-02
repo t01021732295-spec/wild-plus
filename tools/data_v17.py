@@ -6,7 +6,7 @@ LANG_KO = {
     "block.wildplus.trash_can": "쓰레기통",
     "tooltip.wildplus.trash_can": "넣은 아이템이 바로 사라짐 (되돌릴 수 없음)\n호퍼·필터 호퍼를 연결하면 자동으로 버림",
     "block.wildplus.auto_crafter": "자동 제작대",
-    "tooltip.wildplus.auto_crafter": "설계도 3×3에 조합법을 놓으면 재료가 들어오는 대로 자동 제작\n위·옆 호퍼로 재료 입력, 아래 호퍼로 결과 출력 · 레드스톤 신호로 정지",
+    "tooltip.wildplus.auto_crafter": "설계도 3×3에 조합법을 놓으면 재료가 들어오는 대로 자동 제작\n재료 칸 1~9는 설계도 같은 자리 재료 전용 (다른 재료가 자리를 막지 않음)\n위·옆 호퍼로 재료 입력, 아래 호퍼로 결과 출력 · 레드스톤 신호로 정지",
 }
 LANG_EN = {
     "block.wildplus.trash_can": "Trash Can",

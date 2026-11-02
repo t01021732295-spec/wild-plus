@@ -10,7 +10,7 @@ EN = {"sword": "Sword", "pickaxe": "Pickaxe", "axe": "Axe", "shovel": "Shovel", 
 
 LANG_KO = {
     "block.wildplus.filter_hopper": "필터 호퍼",
-    "tooltip.wildplus.filter_hopper": "필터에 넣은 아이템만 옆(좌우)으로, 나머지는 바라보는 쪽(일자)으로\n아래를 보게 놓으면 필터 아이템은 네 옆면 중 상자가 있는 쪽으로",
+    "tooltip.wildplus.filter_hopper": "필터에 넣은 아이템은 옆(좌우)으로만 (아래 호퍼가 빼가지 않음), 나머지는 바라보는 쪽(일자)으로\n아래를 보게 놓으면 필터 아이템은 네 옆면 중 상자가 있는 쪽으로",
     "block.wildplus.dungeon_seal": "봉인 벽돌",
     "item.wildplus.diamond_backpack": "다이아 배낭",
     "tooltip.wildplus.diamond_backpack": "98칸 (14×7). 우클릭으로 열기 · 불에 타지 않음",

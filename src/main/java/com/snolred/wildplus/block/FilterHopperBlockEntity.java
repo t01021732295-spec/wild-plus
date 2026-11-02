@@ -21,7 +21,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /** 필터 호퍼: 5칸 + 필터 견본 9칸. 8틱마다 아이템 하나를 옮긴다 (보통 호퍼와 같은 속도). */
-public class FilterHopperBlockEntity extends BlockEntity implements Hopper {
+public class FilterHopperBlockEntity extends BlockEntity implements Hopper, net.minecraft.world.WorldlyContainer {
     public static final int SIZE = 5, FILTERS = 9;
     private final NonNullList<ItemStack> items = NonNullList.withSize(SIZE, ItemStack.EMPTY);
     public final SimpleContainer filters = new SimpleContainer(FILTERS) {
@@ -92,6 +92,24 @@ public class FilterHopperBlockEntity extends BlockEntity implements Hopper {
             return true;
         }
         return false;
+    }
+
+    // ───────── 면별 출입: 필터 아이템은 옆으로만 나가야 하므로 아래(다른 호퍼 · 광차)에서 빼갈 수 없다 ─────────
+    private static final int[] ALL = {0, 1, 2, 3, 4};
+
+    @Override
+    public int[] getSlotsForFace(Direction side) {
+        return ALL;
+    }
+
+    @Override
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @org.jspecify.annotations.Nullable Direction dir) {
+        return true;
+    }
+
+    @Override
+    public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction dir) {
+        return !matches(stack);
     }
 
     // ───────── Hopper / Container ─────────

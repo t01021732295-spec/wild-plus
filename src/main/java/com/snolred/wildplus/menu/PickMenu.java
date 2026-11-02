@@ -25,12 +25,27 @@ public class PickMenu extends AbstractContainerMenu {
     /** 화면 테마: 투기장(콜로세움) · 진열장(유리 케이스 격자) */
     public static final int FLAG_ARENA = 8, FLAG_SHOP = 16;
 
-    /** 한 줄: 이름 · 부가 설명 · (진열장 화면용) 아이템 그림 */
-    public record Entry(String title, String sub, ItemStack icon) {
+    /** 한 줄: 이름 · 부가 설명 · (진열장 화면용) 아이템 그림 · 모양(K_…) */
+    public record Entry(String title, String sub, ItemStack icon, int kind) {
         public Entry(String title, String sub) {
-            this(title, sub, ItemStack.EMPTY);
+            this(title, sub, ItemStack.EMPTY, K_ROW);
+        }
+
+        public Entry(String title, String sub, ItemStack icon) {
+            this(title, sub, icon, K_ROW);
+        }
+
+        public static Entry of(int kind, String title, String sub) {
+            return new Entry(title, sub, ItemStack.EMPTY, kind);
         }
     }
+
+    /**
+     * 투기장 판 화면의 칸 모양.
+     * 설정(◀ 값 ▶: ▶ = 번호, ◀ = 번호 + DEC) · 큰 버튼 · 아래 작은 버튼 · 안내 글(못 누름) · A팀/B팀 판(참가 버튼)
+     */
+    public static final int K_ROW = 0, K_OPTION = 1, K_PRIMARY = 2, K_SMALL = 3, K_INFO = 4, K_TEAM_A = 5, K_TEAM_B = 6, K_DANGER = 7;
+    public static final int DEC = 1000;
 
     public final String header;
     public final String empty;
@@ -50,7 +65,7 @@ public class PickMenu extends AbstractContainerMenu {
         int n = buf.readVarInt();
         List<Entry> list = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
-            list.add(new Entry(buf.readUtf(), buf.readUtf(), ItemStack.OPTIONAL_STREAM_CODEC.decode(buf)));
+            list.add(new Entry(buf.readUtf(), buf.readUtf(), ItemStack.OPTIONAL_STREAM_CODEC.decode(buf), buf.readVarInt()));
         }
         this.entries = list;
         this.onPick = null;
@@ -83,6 +98,7 @@ public class PickMenu extends AbstractContainerMenu {
                 buf.writeUtf(e.title());
                 buf.writeUtf(e.sub());
                 ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, e.icon());
+                buf.writeVarInt(e.kind());
             }
         });
     }
@@ -90,6 +106,10 @@ public class PickMenu extends AbstractContainerMenu {
     @Override
     public boolean clickMenuButton(Player player, int id) {
         if (id >= 0 && id < entries.size() && onPick != null) {
+            onPick.accept(id);
+            return true;
+        }
+        if (id >= DEC && id - DEC < entries.size() && onPick != null) { // 설정 ◀
             onPick.accept(id);
             return true;
         }

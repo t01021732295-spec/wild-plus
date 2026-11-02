@@ -573,7 +573,7 @@
   "tooltip.wildplus.star_ruby_leggings": "Unbreakable · fireproof\n2 pieces: Regeneration I / 4 pieces: Regeneration II + Fire Resistance + Night Vision",
   "tooltip.wildplus.star_ruby_boots": "Unbreakable · fireproof\n2 pieces: Regeneration I / 4 pieces: Regeneration II + Fire Resistance + Night Vision",
   "block.wildplus.sorting_chest": "Sorting Chest",
-  "tooltip.wildplus.sorting_chest": "Sends items to nearby chests that already hold the same item",
+  "tooltip.wildplus.sorting_chest": "Sends items to nearby chests. Put an item frame with an item on a chest to assign it; a frame with a sorting chest marks the overflow chest",
   "block.wildplus.feeder": "Auto Feeder",
   "tooltip.wildplus.feeder": "Breeds nearby animals every 30s, collects eggs/feathers/wool, milks cows with empty buckets",
   "block.wildplus.mailbox": "Mailbox",

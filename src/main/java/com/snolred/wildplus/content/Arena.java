@@ -155,61 +155,96 @@ public final class Arena {
         MinecraftServer s = p.level().getServer();
         UUID me = p.getUUID();
         List<PickMenu.Entry> e = new ArrayList<>();
-        List<Runnable> act = new ArrayList<>();
+        List<Runnable> act = new ArrayList<>();   // 누르기 (설정은 ▶)
+        List<Runnable> dec = new ArrayList<>();   // 설정 ◀
+        Set<Integer> leaves = new java.util.HashSet<>(); // 다른 화면으로 가는 버튼 (다시 안 엶)
+        int[] startIdx = {-1}; // 경기 시작: 성공하면 닫고, 못 하면 다시 엶
         CompoundTag st = stats(s, me);
         int pts = st.getIntOr("points", 0);
+        Runnable none = () -> {};
         String header;
         if (phase == Phase.NONE) {
             int[] d = DRAFT.computeIfAbsent(me, k -> new int[]{1, 1, -1});
-            header = "경기 만들기 · 설정을 눌러 바꾸고 모집 시작";
-            e.add(new PickMenu.Entry("👥 팀 인원: " + d[0] + " 대 " + d[0], "누르면 바뀜 (1~4)"));
+            header = "경기 만들기 · ◀ ▶ 로 설정을 고르고 모집 시작";
+            e.add(PickMenu.Entry.of(PickMenu.K_OPTION, "👥 팀 인원", d[0] + " 대 " + d[0]));
             act.add(() -> d[0] = d[0] % 4 + 1);
-            e.add(new PickMenu.Entry(d[1] == 1 ? "⚔ 장비: 지급 장비 (공평)" : "🛡 장비: 본인 장비", "누르면 바뀜"));
+            dec.add(() -> d[0] = (d[0] + 2) % 4 + 1);
+            e.add(PickMenu.Entry.of(PickMenu.K_OPTION, "⚔ 장비", d[1] == 1 ? "지급 장비 (공평)" : "본인 장비"));
             act.add(() -> d[1] = 1 - d[1]);
-            e.add(new PickMenu.Entry("🗺 맵: " + (d[2] < 0 ? "무작위" : THEMES[d[2]].name()), "누르면 바뀜"));
+            dec.add(() -> d[1] = 1 - d[1]);
+            e.add(PickMenu.Entry.of(PickMenu.K_OPTION, "🗺 맵", d[2] < 0 ? "무작위" : THEMES[d[2]].name()));
             act.add(() -> d[2] = d[2] + 1 >= THEMES.length ? -1 : d[2] + 1);
-            e.add(new PickMenu.Entry("▶ 모집 시작", "나는 A팀으로 들어가요"));
+            dec.add(() -> d[2] = d[2] <= -1 ? THEMES.length - 1 : d[2] - 1);
+            e.add(PickMenu.Entry.of(PickMenu.K_PRIMARY, "⚔ 모집 시작", "나는 🔴 A팀"));
             act.add(() -> createLobby(p, d));
+            dec.add(none);
         } else if (phase == Phase.LOBBY) {
-            header = String.format("%d 대 %d · %s · %s", teamSize, teamSize, kit ? "지급 장비" : "본인 장비", theme < 0 ? "무작위 맵" : THEMES[theme].name());
-            e.add(new PickMenu.Entry(String.format("🔴 A팀 (%d/%d)", TEAM_A.size(), teamSize), teamText(s, TEAM_A)));
+            header = String.format("모집 중 · %d 대 %d · %s · %s", teamSize, teamSize, kit ? "지급 장비" : "본인 장비",
+                    theme < 0 ? "무작위 맵" : THEMES[theme].name());
+            boolean inA = TEAM_A.contains(me), inB = TEAM_B.contains(me);
+            e.add(PickMenu.Entry.of(PickMenu.K_TEAM_A, String.format("A팀 %d/%d", TEAM_A.size(), teamSize),
+                    (inA ? "*" : "") + teamText(s, TEAM_A)));
             act.add(() -> join(p, true));
-            e.add(new PickMenu.Entry(String.format("🔵 B팀 (%d/%d)", TEAM_B.size(), teamSize), teamText(s, TEAM_B)));
+            dec.add(none);
+            e.add(PickMenu.Entry.of(PickMenu.K_TEAM_B, String.format("B팀 %d/%d", TEAM_B.size(), teamSize),
+                    (inB ? "*" : "") + teamText(s, TEAM_B)));
             act.add(() -> join(p, false));
-            if (TEAM_A.contains(me) || TEAM_B.contains(me)) {
-                e.add(new PickMenu.Entry("🚪 나가기", ""));
+            dec.add(none);
+            if (me.equals(host)) {
+                startIdx[0] = e.size();
+                e.add(PickMenu.Entry.of(PickMenu.K_PRIMARY, "▶ 경기 시작", "양 팀 인원이 같아야 해요"));
+                act.add(() -> start(p));
+                dec.add(none);
+            }
+            if (inA || inB) {
+                e.add(PickMenu.Entry.of(PickMenu.K_SMALL, "🚪 나가기", ""));
                 act.add(() -> leaveLobby(p));
+                dec.add(none);
             }
             if (me.equals(host)) {
-                e.add(new PickMenu.Entry("▶ 경기 시작", "양 팀 인원이 같아야 해요"));
-                act.add(() -> start(p));
-                e.add(new PickMenu.Entry("✖ 모집 취소", ""));
+                e.add(PickMenu.Entry.of(PickMenu.K_DANGER, "✖ 모집 취소", ""));
                 act.add(() -> {
                     reset(s);
                     broadcast(s, Component.literal("⚔ 투기장 모집이 취소됐어요").withStyle(ChatFormatting.GRAY));
                 });
+                dec.add(none);
             }
         } else {
             header = String.format("경기 중 · 🔴 %d명 vs 🔵 %d명", alive(TEAM_A), alive(TEAM_B));
-            e.add(new PickMenu.Entry("👀 관전하러 가기", "관전석으로 이동"));
+            leaves.add(e.size());
+            e.add(PickMenu.Entry.of(PickMenu.K_PRIMARY, "👀 관전하러 가기", "관전석으로 이동"));
             act.add(() -> {
                 if (!inMatch(me)) {
                     saveReturn(p);
                     toStand(p);
                 }
             });
+            dec.add(none);
         }
-        e.add(new PickMenu.Entry(String.format("🏅 승점 %d · %s", pts, TIER[tier(pts)]),
-                String.format("메달 %,d · %d승 %d패", st.getLongOr("medals", 0L), st.getIntOr("wins", 0), st.getIntOr("losses", 0))));
-        act.add(() -> {});
-        e.add(new PickMenu.Entry("🛒 메달 상점", "투기장 메달로 사기"));
+        e.add(PickMenu.Entry.of(PickMenu.K_INFO, String.format("🏅 승점 %d · %s", pts, TIER[tier(pts)]),
+                String.format("메달 %,d개 · %d승 %d패", st.getLongOr("medals", 0L), st.getIntOr("wins", 0), st.getIntOr("losses", 0))));
+        act.add(none);
+        dec.add(none);
+        leaves.add(e.size());
+        e.add(PickMenu.Entry.of(PickMenu.K_SMALL, "🛒 메달 상점", ""));
         act.add(() -> shop(p));
-        e.add(new PickMenu.Entry("🏆 랭킹 보기", ""));
+        dec.add(none);
+        leaves.add(e.size());
+        e.add(PickMenu.Entry.of(PickMenu.K_SMALL, "🏆 랭킹", ""));
         act.add(() -> ranking(p));
+        dec.add(none);
         PickMenu.open(p, Component.literal("⚔ 투기장"), header, "", e, PickMenu.FLAG_ARENA, i -> {
-            if (i < 0 || i >= act.size()) return;
-            act.get(i).run();
-            if (i != act.size() - 2 && i != act.size() - 1) open(p);
+            boolean down = i >= PickMenu.DEC;
+            int k = down ? i - PickMenu.DEC : i;
+            if (k < 0 || k >= act.size()) return;
+            Phase before = phase;
+            (down ? dec : act).get(k).run();
+            if (leaves.contains(k)) return;
+            if (k == startIdx[0] && phase != before) {
+                p.closeContainer();
+                return;
+            }
+            open(p);
         }, null, pl -> true);
     }
 

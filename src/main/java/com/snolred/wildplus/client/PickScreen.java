@@ -24,6 +24,16 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
     private static final UiButton.Style ARENA_KEY = new UiButton.Style(0xFFC9A86A, 0xFF8E6A32, 0xFF3E2A10, 0xFFFFF4DA, true,
             UiButton.Shape.SOFT);
     private final boolean arena, shop;
+    /** 투기장 판 화면 (설정 ◀▶ · 팀 판 · 큰 버튼): 칸 모양이 하나라도 있으면 */
+    private final boolean panel;
+    private record Rect(int x, int y, int w, int h, int top, int bottom, int border) {}
+    private record Txt(int x, int y, String s, int c, int align, boolean bold) {}
+    private final List<Rect> rects = new ArrayList<>();
+    private final List<Txt> txts = new ArrayList<>();
+    private static final UiButton.Style ARENA_GO = new UiButton.Style(0xFFE8484F, 0xFF9E1820, 0xFF3E070B, 0xFFFFF4DA, true, UiButton.Shape.SOFT);
+    private static final UiButton.Style ARENA_STOP = new UiButton.Style(0xFF6A625A, 0xFF433C35, 0xFF1E1A16, 0xFFF0E6D6, true, UiButton.Shape.SOFT);
+    private static final UiButton.Style ARENA_RED = new UiButton.Style(0xFFF0595E, 0xFFC92A31, 0xFF701217, 0xFFFFFFFF, true, UiButton.Shape.SOFT);
+    private static final UiButton.Style ARENA_BLUE = new UiButton.Style(0xFF4C8DF6, 0xFF2563D9, 0xFF123C8C, 0xFFFFFFFF, true, UiButton.Shape.SOFT);
     private final int W;
     /** 목록 줄: 흰 카드, 마우스 올리면 옅은 하늘색 */
     private static final UiButton.Style ROW_STYLE = new UiButton.Style(0xFFFFFFFF, 0xFFF1F4F8, 0xFFC9D1DC, 0xFF1E2430, false,
@@ -40,6 +50,7 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
                         : (menu.flags & PickMenu.FLAG_CAN_TOGGLE) != 0 ? 222 : (menu.flags & PickMenu.FLAG_ARENA) != 0 ? 206 : 200);
         this.arena = (menu.flags & PickMenu.FLAG_ARENA) != 0;
         this.shop = (menu.flags & PickMenu.FLAG_SHOP) != 0;
+        this.panel = arena && menu.entries.stream().anyMatch(e -> e.kind() != PickMenu.K_ROW);
         this.W = this.imageWidth;
         this.H = this.imageHeight;
     }
@@ -48,6 +59,10 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
     protected void init() {
         super.init();
         rows.clear();
+        if (panel) {
+            layoutPanel();
+            return;
+        }
         if (shop) {
             int gx = leftPos + (W - (COLS * CASE_W + (COLS - 1) * 6)) / 2;
             for (int r = 0; r < COLS * GRID_ROWS; r++) {
@@ -107,7 +122,94 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
         return Math.max(1, (menu.entries.size() + per() - 1) / per());
     }
 
+    /**
+     * 투기장 판: 위에서부터 팀 판 → 설정 줄(◀ 값 ▶) → 내 기록 → 큰 버튼, 맨 아래 줄에 작은 버튼.
+     * 좌표는 창 왼쪽 위 기준으로 기억했다가 배경 · 글씨를 그릴 때 쓴다.
+     */
+    private void layoutPanel() {
+        rects.clear();
+        txts.clear();
+        int x0 = 24, cw = W - 48, y = 38;
+        List<PickMenu.Entry> es = menu.entries;
+        // 팀 판 두 개 (나란히)
+        int pw = (cw - 6) / 2;
+        boolean teams = false;
+        for (int i = 0; i < es.size(); i++) {
+            PickMenu.Entry e = es.get(i);
+            if (e.kind() != PickMenu.K_TEAM_A && e.kind() != PickMenu.K_TEAM_B) continue;
+            teams = true;
+            boolean a = e.kind() == PickMenu.K_TEAM_A;
+            int px = x0 + (a ? 0 : pw + 6);
+            int band = a ? 0xFFC9262F : 0xFF2563D9;
+            rects.add(new Rect(px, y, pw, 66, 0xFFF7E6C0, 0xFFE6CC96, 0xFF6E4A1E));
+            rects.add(new Rect(px + 1, y + 1, pw - 2, 12, band, UiKit.darker(band, 0.25F), band));
+            txts.add(new Txt(px + pw / 2, y + 3, (a ? "🔴 " : "🔵 ") + e.title(), 0xFFFFFFFF, 1, true));
+            String sub = e.sub();
+            boolean mine = sub.startsWith("*");
+            if (mine) sub = sub.substring(1);
+            String[] names = sub.split(", ");
+            for (int k = 0; k < Math.min(4, names.length); k++)
+                txts.add(new Txt(px + 6, y + 16 + k * 8, names[k].equals("(비어 있음)") ? "· 빈자리" : "⚔ " + names[k],
+                        names[k].equals("(비어 있음)") ? 0xFF9A8060 : 0xFF3A2410, 0, false));
+            final int idx = i;
+            UiButton join = addRenderableWidget(UiButton.of(leftPos + px + (pw - 64) / 2, topPos + y + 49, 64, 14,
+                    mine ? "참가 중" : "참가하기", a ? ARENA_RED : ARENA_BLUE, () -> click(idx)));
+            join.active = !mine;
+        }
+        if (teams) y += 70;
+        // 설정 줄
+        for (int i = 0; i < es.size(); i++) {
+            PickMenu.Entry e = es.get(i);
+            if (e.kind() != PickMenu.K_OPTION) continue;
+            final int idx = i;
+            rects.add(new Rect(x0, y, cw, 19, 0xFFF7E6C0, 0xFFE6CC96, 0xFF6E4A1E));
+            txts.add(new Txt(x0 + 8, y + 6, e.title(), 0xFF3A2410, 0, true));
+            int vx = x0 + cw - 132;
+            rects.add(new Rect(vx + 18, y + 2, 92, 15, 0xFF3A2410, 0xFF2A180A, 0xFF8E6A32));
+            txts.add(new Txt(vx + 64, y + 6, e.sub(), 0xFFFFE9B0, 1, false));
+            addRenderableWidget(UiButton.of(leftPos + vx, topPos + y + 2, 16, 15, "◀", ARENA_KEY, () -> click(PickMenu.DEC + idx)));
+            addRenderableWidget(UiButton.of(leftPos + vx + 112, topPos + y + 2, 16, 15, "▶", ARENA_KEY, () -> click(idx)));
+            y += 21;
+        }
+        // 내 기록 (못 누름)
+        for (PickMenu.Entry e : es) {
+            if (e.kind() != PickMenu.K_INFO) continue;
+            y += 2;
+            rects.add(new Rect(x0, y, cw, 16, 0xFF5A3E1E, 0xFF3E2A10, 0xFF2A1A08));
+            txts.add(new Txt(x0 + 8, y + 4, e.title(), 0xFFFFD25A, 0, false));
+            txts.add(new Txt(x0 + cw - 8, y + 4, e.sub(), 0xFFF0DEC0, 2, false));
+            y += 20;
+        }
+        // 큰 버튼 (한 줄에 나란히)
+        List<Integer> big = new ArrayList<>();
+        for (int i = 0; i < es.size(); i++)
+            if (es.get(i).kind() == PickMenu.K_PRIMARY || es.get(i).kind() == PickMenu.K_DANGER) big.add(i);
+        if (!big.isEmpty()) {
+            int bw = (cw - (big.size() - 1) * 6) / big.size();
+            for (int k = 0; k < big.size(); k++) {
+                int idx = big.get(k);
+                PickMenu.Entry e = es.get(idx);
+                UiButton b = addRenderableWidget(UiButton.of(leftPos + x0 + k * (bw + 6), topPos + y + 2, bw, 22, e.title(),
+                        e.kind() == PickMenu.K_DANGER ? ARENA_STOP : ARENA_GO, () -> click(idx)));
+                if (!e.sub().isEmpty()) b.setTooltip(net.minecraft.client.gui.components.Tooltip.create(Component.literal(e.sub())));
+                if (!e.sub().isEmpty() && big.size() == 1) txts.add(new Txt(x0 + cw / 2, y + 27, e.sub(), 0xFF6E4A1E, 1, false));
+            }
+        }
+        // 아래 줄 작은 버튼 (횃불 사이)
+        List<Integer> small = new ArrayList<>();
+        for (int i = 0; i < es.size(); i++) if (es.get(i).kind() == PickMenu.K_SMALL) small.add(i);
+        if (!small.isEmpty()) {
+            int sw = Math.min(90, (cw - (small.size() - 1) * 6) / small.size());
+            int sx = x0 + (cw - (small.size() * sw + (small.size() - 1) * 6)) / 2;
+            for (int k = 0; k < small.size(); k++) {
+                int idx = small.get(k);
+                addRenderableWidget(UiButton.of(leftPos + sx + k * (sw + 6), topPos + H - 24, sw, 17, es.get(idx).title(), ARENA_KEY, () -> click(idx)));
+            }
+        }
+    }
+
     private void refresh() {
+        if (panel) return;
         page = Math.max(0, Math.min(page, pages() - 1));
         for (int r = 0; r < rows.size(); r++) {
             int idx = page * per() + r;
@@ -152,6 +254,11 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
         }
         if (arena) {
             colosseum(g, x, y);
+            for (Rect r : rects) {
+                UiKit.round(g, x + r.x(), y + r.y() + 1, r.w(), r.h(), 2, 0x40000000);
+                UiKit.round(g, x + r.x(), y + r.y(), r.w(), r.h(), 2, r.border());
+                g.fillGradient(x + r.x() + 1, y + r.y() + 1, x + r.x() + r.w() - 1, y + r.y() + r.h() - 1, r.top(), r.bottom());
+            }
             return;
         }
         // 키오스크 본체 (짙은 남색) + 흰 터치스크린
@@ -315,6 +422,17 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
         if (arena) {
             UiKit.bold(g, this.title.getString(), 10, 8, 0xFFFFE9B0);
             UiKit.text(g, menu.header, 10, 19, 0xFFF4C9C9);
+            if (panel) {
+                for (Txt t : txts) {
+                    if (t.align() == 1) {
+                        if (t.bold()) UiKit.bold(g, t.s(), t.x() - UiKit.font().width(t.s()) / 2, t.y(), t.c());
+                        else UiKit.center(g, t.s(), t.x(), t.y(), t.c());
+                    } else if (t.align() == 2) UiKit.right(g, t.s(), t.x(), t.y(), t.c());
+                    else if (t.bold()) UiKit.bold(g, t.s(), t.x(), t.y(), t.c());
+                    else UiKit.text(g, t.s(), t.x(), t.y(), t.c());
+                }
+                return;
+            }
             if (menu.entries.isEmpty()) UiKit.center(g, menu.empty, W / 2, 90, 0xFF5A3E1E);
             UiKit.text(g, (page + 1) + " / " + pages(), 74, H - 19, 0xFFFFE9B0);
             return;

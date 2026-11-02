@@ -26,7 +26,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 /**
  * 명품관: 큰돈을 쓰는 곳 (쓴 돈은 국고로 사라져서 물가를 잡는다).
- * 귀한 물건 · 행운 상자 · 경험치 · 몸 주변 오라(게임 속 7일) · 이름 앞 칭호(영구).
+ * 귀한 물건 · 행운 상자 · 승급 재료 · 몸 주변 오라(게임 속 7일) · 이름 앞 칭호(영구).
  */
 public final class Luxury {
     private Luxury() {}
@@ -72,7 +72,8 @@ public final class Luxury {
         g.add(new Good("✦ 불사의 토템", "죽음을 한 번 막아 줌", 500_000, pl -> item(pl, new ItemStack(Items.TOTEM_OF_UNDYING))));
         g.add(new Good("✦ 신호기", "", 1_500_000, pl -> item(pl, new ItemStack(Items.BEACON))));
         g.add(new Good("✦ 셜커 상자", "", 500_000, pl -> item(pl, new ItemStack(Items.SHULKER_BOX))));
-        g.add(new Good("✦ 경험치 30레벨", "", 500_000, pl -> pl.giveExperienceLevels(30)));
+        g.add(new Good("✦ 생명의 결정", "로열 에메랄드 승급 재료", 1_500_000,
+                pl -> item(pl, new ItemStack(com.snolred.wildplus.registry.ModItems12.LIFE_CRYSTAL.get()))));
         g.add(new Good("🎁 행운 상자", "루비·사파이어 블록 · 네더라이트 · 토템 · 가끔 네더의 별·겉날개", 500_000, Luxury::luckyBox));
         CompoundTag d = data(p.level().getServer(), p);
         for (int i = 0; i < AURA.length; i++) {
@@ -187,7 +188,7 @@ public final class Luxury {
         String[][] map = {
                 {"네더의 별", "minecraft:nether_star"}, {"겉날개", "minecraft:elytra"}, {"용의 깃털", "wildplus:dragon_plume"},
                 {"불사의 토템", "minecraft:totem_of_undying"}, {"신호기", "minecraft:beacon"}, {"셜커 상자", "minecraft:purple_shulker_box"},
-                {"경험치", "minecraft:experience_bottle"}, {"행운 상자", "minecraft:ender_chest"},
+                {"생명의 결정", "wildplus:life_crystal"}, {"행운 상자", "minecraft:ender_chest"},
                 {"오라: 불꽃", "minecraft:blaze_powder"}, {"오라: 눈꽃", "minecraft:snowball"}, {"오라: 하트", "minecraft:poppy"},
                 {"오라: 별빛", "minecraft:glowstone_dust"},
                 {"칭호 떼기", "minecraft:shears"}, {"칭호", "minecraft:name_tag"},
