@@ -206,7 +206,7 @@ public final class Arena {
         act.add(() -> shop(p));
         e.add(new PickMenu.Entry("🏆 랭킹 보기", ""));
         act.add(() -> ranking(p));
-        PickMenu.open(p, Component.literal("⚔ 투기장"), header, "", e, 0, i -> {
+        PickMenu.open(p, Component.literal("⚔ 투기장"), header, "", e, PickMenu.FLAG_ARENA, i -> {
             if (i < 0 || i >= act.size()) return;
             act.get(i).run();
             if (i != act.size() - 2 && i != act.size() - 1) open(p);
@@ -235,7 +235,7 @@ public final class Arena {
             int pt = Integer.parseInt(r[1]);
             e.add(new PickMenu.Entry((i == 0 ? "👑 " : "") + (i + 1) + "위 " + r[0], pt + "점 · " + TIER[tier(pt)] + " · " + r[2]));
         }
-        PickMenu.open(p, Component.literal("🏆 투기장 랭킹"), "누르면 돌아가기", "아직 경기 기록이 없어요", e, 0, i -> open(p), null, pl -> true);
+        PickMenu.open(p, Component.literal("🏆 투기장 랭킹"), "누르면 돌아가기", "아직 경기 기록이 없어요", e, PickMenu.FLAG_ARENA, i -> open(p), null, pl -> true);
     }
 
     // ───────── 메달 상점 ─────────
@@ -266,7 +266,7 @@ public final class Arena {
         List<Good> list = goods();
         List<PickMenu.Entry> e = new ArrayList<>();
         for (Good g : list) e.add(new PickMenu.Entry(g.name(), String.format("메달 %,d", g.price())));
-        PickMenu.open(p, Component.literal("🛒 메달 상점"), String.format("내 메달 %,d개", medals(s, p.getUUID())), "", e, 0, i -> {
+        PickMenu.open(p, Component.literal("🛒 메달 상점"), String.format("내 메달 %,d개", medals(s, p.getUUID())), "", e, PickMenu.FLAG_ARENA, i -> {
             Good g = list.get(i);
             if (g.name().contains("챔피언") && tier(stats(s, p.getUUID()).getIntOr("points", 0)) < 5) {
                 p.sendOverlayMessage(Component.literal("챔피언 등급(승점 1,200) 이상만 살 수 있어요").withStyle(ChatFormatting.RED));

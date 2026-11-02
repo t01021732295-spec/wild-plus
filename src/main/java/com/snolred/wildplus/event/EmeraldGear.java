@@ -30,15 +30,17 @@ import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 /**
- * 에메랄드 장비 (풍요 · 행운 · 생명). 로열 에메랄드는 같은 능력이 더 강하고 내구도 무한 · 불에 안 탐.
- *  - 검 "약탈": 처치하면 30%(로열 50%) 확률로 전리품 두 배, 경험치 1.3배(로열 1.6배)
- *  - 곡괭이 "행운의 손길": 광석 20%(35%) 확률로 전리품 하나 더
- *  - 도끼 "선제공격": 체력이 가득한 적에게 1.8배(2.2배)
- *  - 삽 "보물 찾기": 흙·모래·자갈에서 2%(4%) 확률로 에메랄드 · 금 조각 · 가끔 다이아몬드
- *  - 괭이 "풍작": 다 자란 작물 30%(50%) 확률로 수확량 두 배
- *  - 활 "생명의 화살": 맞히면 내 체력 1(로열 2 + 재생) 회복
+ * 에메랄드 장비 (풍요 · 행운 · 생명). 로열 에메랄드는 같은 능력이 훨씬 강하고 추가 능력이 붙으며 내구도 무한 · 불에 안 탐.
+ *  - 검 "약탈": 처치하면 30%(로열 70%) 확률로 전리품 두 배, 경험치 1.3배(로열 2배)
+ *        로열 추가 "생명 수확": 처치할 때마다 체력 2 회복 · 20% 확률로 에메랄드 1~2개
+ *  - 곡괭이 "행운의 손길": 광석 20%(로열 50%) 확률로 전리품 하나 더 · 로열 추가 "광맥의 축복": 광석 캐면 성급함 II 6초
+ *  - 도끼 "선제공격": 체력이 가득한 적에게 1.8배(로열 2.6배) · 로열 추가 "처형": 체력 30% 이하인 적에게 1.5배
+ *  - 삽 "보물 찾기": 흙·모래·자갈에서 2%(로열 7%) 확률로 에메랄드 · 금 조각 · 가끔 다이아몬드(로열은 다이아 확률 2배)
+ *  - 괭이 "풍작": 다 자란 작물 30%(로열 75%) 확률로 수확량 두 배 · 로열 추가 "대지의 축복": 손에 들면 주변 9×9 작물이 빨리 자람
+ *  - 활 "생명의 화살": 맞히면 내 체력 1(로열 3 + 재생 + 흡수) 회복
  *  - 갑옷 2부위: 행운 I · 마을의 영웅 I (로열: 행운 II · 마을의 영웅 II · 재생 I)
- *          4부위: 체력 증가 I(+2하트) · 받는 피해 10% 감소 (로열: 체력 증가 II(+4하트) · 저항 I)
+ *          4부위: 체력 증가 I(+2하트) · 받는 피해 10% 감소 (로열: 체력 증가 III(+6하트) · 저항 I)
+ *          로열 4부위 추가 "생명의 가호": 체력이 30% 아래로 떨어지면 흡수 III 10초 + 재생 III 5초 (40초마다)
  */
 public final class EmeraldGear {
     private EmeraldGear() {}
@@ -84,12 +86,42 @@ public final class EmeraldGear {
         if (n >= 4) {
             // 체력 증가는 효과가 끊겼다 다시 붙으면 체력이 깎이므로 길게 유지
             MobEffectInstance hb = p.getEffect(MobEffects.HEALTH_BOOST);
-            int amp = royal >= 4 ? 1 : 0;
+            int amp = royal >= 4 ? 2 : 0;
             if (hb == null || hb.getAmplifier() != amp || hb.getDuration() < 200) {
                 p.addEffect(new MobEffectInstance(MobEffects.HEALTH_BOOST, 400, amp, true, false, true));
             }
         }
         if (royal >= 4) p.addEffect(fx(MobEffects.RESISTANCE, 0));
+        // 대지의 축복: 로열 괭이를 들면 주변 작물이 빨리 자람
+        if (p.getMainHandItem().is(ROYAL_EMERALD_HOE.get()) || p.getOffhandItem().is(ROYAL_EMERALD_HOE.get())) {
+            ServerLevel sl = (ServerLevel) p.level();
+            BlockPos c = p.blockPosition();
+            for (BlockPos q : BlockPos.betweenClosed(c.offset(-4, -2, -4), c.offset(4, 2, 4))) {
+                BlockState st = sl.getBlockState(q);
+                if (st.getBlock() instanceof CropBlock crop && !crop.isMaxAge(st) && p.getRandom().nextFloat() < 0.35F) {
+                    st.randomTick(sl, q.immutable(), p.getRandom());
+                    if (p.getRandom().nextFloat() < 0.3F)
+                        sl.sendParticles(ParticleTypes.HAPPY_VILLAGER, q.getX() + 0.5, q.getY() + 0.6, q.getZ() + 0.5, 1, 0.2, 0.1, 0.2, 0);
+                }
+            }
+        }
+    }
+
+    /** 생명의 가호 (로열 4부위): 체력이 30% 아래로 떨어지면 */
+    private static final String GUARD_AT = "wildplus_royal_guard";
+
+    @SubscribeEvent
+    public static void onHurtPost(LivingDamageEvent.Post event) {
+        if (!(event.getEntity() instanceof Player p) || !(p.level() instanceof ServerLevel sl)) return;
+        if (p.getHealth() <= 0 || p.getHealth() > p.getMaxHealth() * 0.3F || royalPieces(p) < 4) return;
+        long now = sl.getGameTime();
+        var tag = p.getPersistentData();
+        if (now - tag.getLongOr(GUARD_AT, -10000L) < 800) return;
+        tag.putLong(GUARD_AT, now);
+        p.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 200, 2));
+        p.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 2));
+        sl.sendParticles(ParticleTypes.HAPPY_VILLAGER, p.getX(), p.getY() + 1, p.getZ(), 30, 0.5, 0.8, 0.5, 0);
+        sl.playSound(null, p.blockPosition(), net.minecraft.sounds.SoundEvents.AMETHYST_BLOCK_CHIME, net.minecraft.sounds.SoundSource.PLAYERS, 1.2F, 0.8F);
     }
 
     @SubscribeEvent
@@ -97,9 +129,16 @@ public final class EmeraldGear {
         LivingEntity target = event.getEntity();
         if (event.getSource().getEntity() instanceof Player p && event.getSource().getDirectEntity() == p
                 && is(p.getMainHandItem(), EMERALD_AXE, ROYAL_EMERALD_AXE) && target.getHealth() >= target.getMaxHealth()) {
-            event.setAmount(event.getAmount() * (p.getMainHandItem().is(ROYAL_EMERALD_AXE.get()) ? 2.2F : 1.8F));
+            event.setAmount(event.getAmount() * (p.getMainHandItem().is(ROYAL_EMERALD_AXE.get()) ? 2.6F : 1.8F));
             if (target.level() instanceof ServerLevel sl) {
                 sl.sendParticles(ParticleTypes.HAPPY_VILLAGER, target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), 8, 0.3, 0.3, 0.3, 0);
+            }
+        } else if (event.getSource().getEntity() instanceof Player p && event.getSource().getDirectEntity() == p
+                && p.getMainHandItem().is(ROYAL_EMERALD_AXE.get()) && target.getHealth() <= target.getMaxHealth() * 0.3F) {
+            // 처형
+            event.setAmount(event.getAmount() * 1.5F);
+            if (target.level() instanceof ServerLevel sl) {
+                sl.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), 12, 0.3, 0.3, 0.3, 0.2);
             }
         }
         if (target instanceof Player p && pieces(p) >= 4 && royalPieces(p) < 4) event.setAmount(event.getAmount() * 0.9F);
@@ -112,8 +151,9 @@ public final class EmeraldGear {
         String bow = a.getPersistentData().getStringOr(Bows.BOW_TAG, "");
         if (bow.equals("emerald")) owner.heal(1.0F);
         else if (bow.equals("royal_emerald")) {
-            owner.heal(2.0F);
+            owner.heal(3.0F);
             owner.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 0));
+            owner.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 0));
         } else return;
         if (owner.level() instanceof ServerLevel sl) sl.sendParticles(ParticleTypes.HEART, owner.getX(), owner.getY() + 2, owner.getZ(), 1, 0.2, 0.1, 0.2, 0);
     }
@@ -124,7 +164,16 @@ public final class EmeraldGear {
         if (!(event.getSource().getEntity() instanceof Player p) || event.getEntity() instanceof Player) return;
         ItemStack hand = p.getMainHandItem();
         if (!is(hand, EMERALD_SWORD, ROYAL_EMERALD_SWORD)) return;
-        float chance = hand.is(ROYAL_EMERALD_SWORD.get()) ? 0.5F : 0.3F;
+        boolean royalSword = hand.is(ROYAL_EMERALD_SWORD.get());
+        if (royalSword) {
+            // 생명 수확
+            p.heal(2.0F);
+            if (p.getRandom().nextFloat() < 0.2F) {
+                LivingEntity v = event.getEntity();
+                event.getDrops().add(new ItemEntity(v.level(), v.getX(), v.getY() + 0.5, v.getZ(), new ItemStack(Items.EMERALD, 1 + p.getRandom().nextInt(2))));
+            }
+        }
+        float chance = royalSword ? 0.7F : 0.3F;
         if (p.getRandom().nextFloat() >= chance) return;
         for (ItemEntity e : event.getDrops()) {
             ItemStack s = e.getItem();
@@ -142,7 +191,7 @@ public final class EmeraldGear {
         if (p == null) return;
         ItemStack hand = p.getMainHandItem();
         if (!is(hand, EMERALD_SWORD, ROYAL_EMERALD_SWORD)) return;
-        float mult = hand.is(ROYAL_EMERALD_SWORD.get()) ? 1.6F : 1.3F;
+        float mult = hand.is(ROYAL_EMERALD_SWORD.get()) ? 2.0F : 1.3F;
         event.setDroppedExperience(Math.round(event.getDroppedExperience() * mult));
     }
 
@@ -154,8 +203,11 @@ public final class EmeraldGear {
         BlockState state = event.getState();
         RandomSource r = event.getLevel().getRandom();
         BlockPos pos = event.getPos();
+        if (tool.is(ROYAL_EMERALD_PICKAXE.get()) && state.is(Tags.Blocks.ORES) && event.getBreaker() instanceof Player miner) {
+            miner.addEffect(new MobEffectInstance(MobEffects.HASTE, 120, 1, true, false, true)); // 광맥의 축복
+        }
         if (is(tool, EMERALD_PICKAXE, ROYAL_EMERALD_PICKAXE) && state.is(Tags.Blocks.ORES)
-                && r.nextFloat() < (tool.is(ROYAL_EMERALD_PICKAXE.get()) ? 0.35F : 0.2F)) {
+                && r.nextFloat() < (tool.is(ROYAL_EMERALD_PICKAXE.get()) ? 0.5F : 0.2F)) {
             for (ItemEntity e : event.getDrops()) {
                 if (!e.getItem().is(state.getBlock().asItem())) {
                     e.getItem().grow(1);
@@ -165,16 +217,17 @@ public final class EmeraldGear {
             event.getLevel().sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 6, 0.3, 0.3, 0.3, 0);
         } else if (is(tool, EMERALD_SHOVEL, ROYAL_EMERALD_SHOVEL)
                 && (state.is(BlockTags.DIRT) || state.is(BlockTags.SAND) || state.is(Blocks.GRAVEL))) {
-            float chance = tool.is(ROYAL_EMERALD_SHOVEL.get()) ? 0.04F : 0.02F;
+            boolean royalShovel = tool.is(ROYAL_EMERALD_SHOVEL.get());
+            float chance = royalShovel ? 0.07F : 0.02F;
             if (r.nextFloat() < chance) {
                 float k = r.nextFloat();
                 ItemStack t = k < 0.5F ? new ItemStack(Items.GOLD_NUGGET, 2 + r.nextInt(4))
-                        : k < 0.92F ? new ItemStack(Items.EMERALD) : new ItemStack(Items.DIAMOND);
+                        : k < (royalShovel ? 0.84F : 0.92F) ? new ItemStack(Items.EMERALD) : new ItemStack(Items.DIAMOND);
                 event.getDrops().add(new ItemEntity(event.getLevel(), pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, t));
                 event.getLevel().sendParticles(ParticleTypes.WAX_ON, pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5, 10, 0.3, 0.3, 0.3, 0.05);
             }
         } else if (is(tool, EMERALD_HOE, ROYAL_EMERALD_HOE) && state.getBlock() instanceof CropBlock crop && crop.isMaxAge(state)
-                && r.nextFloat() < (tool.is(ROYAL_EMERALD_HOE.get()) ? 0.5F : 0.3F)) {
+                && r.nextFloat() < (tool.is(ROYAL_EMERALD_HOE.get()) ? 0.75F : 0.3F)) {
             for (ItemEntity e : event.getDrops()) if (!e.getItem().is(crop.asItem())) e.getItem().grow(e.getItem().getCount());
             event.getLevel().sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 6, 0.3, 0.3, 0.3, 0);
         }

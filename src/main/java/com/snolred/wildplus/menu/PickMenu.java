@@ -22,8 +22,15 @@ import org.jspecify.annotations.Nullable;
 public class PickMenu extends AbstractContainerMenu {
     public static final int BTN_TOGGLE = 900;
     public static final int FLAG_CAN_TOGGLE = 1, FLAG_PUBLIC = 2, FLAG_CAN_RENAME = 4;
+    /** 화면 테마: 투기장(콜로세움) · 진열장(유리 케이스 격자) */
+    public static final int FLAG_ARENA = 8, FLAG_SHOP = 16;
 
-    public record Entry(String title, String sub) {}
+    /** 한 줄: 이름 · 부가 설명 · (진열장 화면용) 아이템 그림 */
+    public record Entry(String title, String sub, ItemStack icon) {
+        public Entry(String title, String sub) {
+            this(title, sub, ItemStack.EMPTY);
+        }
+    }
 
     public final String header;
     public final String empty;
@@ -43,7 +50,7 @@ public class PickMenu extends AbstractContainerMenu {
         int n = buf.readVarInt();
         List<Entry> list = new ArrayList<>(n);
         for (int i = 0; i < n; i++) {
-            list.add(new Entry(buf.readUtf(), buf.readUtf()));
+            list.add(new Entry(buf.readUtf(), buf.readUtf(), ItemStack.OPTIONAL_STREAM_CODEC.decode(buf)));
         }
         this.entries = list;
         this.onPick = null;
@@ -75,6 +82,7 @@ public class PickMenu extends AbstractContainerMenu {
             for (Entry e : entries) {
                 buf.writeUtf(e.title());
                 buf.writeUtf(e.sub());
+                ItemStack.OPTIONAL_STREAM_CODEC.encode(buf, e.icon());
             }
         });
     }

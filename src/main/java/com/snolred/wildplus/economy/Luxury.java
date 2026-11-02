@@ -167,9 +167,9 @@ public final class Luxury {
         List<PickMenu.Entry> entries = new ArrayList<>();
         for (Good g : list) {
             String price = g.price() > 0 ? String.format("%,d동", g.price()) : "";
-            entries.add(new PickMenu.Entry(g.name(), price));
+            entries.add(new PickMenu.Entry(g.name(), price.isEmpty() && g.price() == 0 ? "" : price, icon(g.name())));
         }
-        PickMenu.open(p, Component.literal("💎 명품관"), "고르면 바로 결제 · 통장에서 먼저", "", entries, 0, i -> {
+        PickMenu.open(p, Component.literal("💎 명품관"), "고르면 바로 결제 · 통장에서 먼저", "", entries, PickMenu.FLAG_SHOP, i -> {
             Good g = list.get(i);
             if (g.price() > 0 && !Honor.pay(p, g.price())) {
                 p.sendOverlayMessage(Component.literal(String.format("돈이 모자라요 (%,d동)", g.price())).withStyle(ChatFormatting.RED));
@@ -180,6 +180,29 @@ public final class Luxury {
             if (g.price() > 0) p.sendSystemMessage(Component.literal(String.format("💎 %s 구매 (%,d동)", g.name(), g.price())).withStyle(ChatFormatting.LIGHT_PURPLE));
             open(p, pos);
         }, null, pl -> pos == null || pl.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) < 64.0);
+    }
+
+    /** 진열장에 놓을 물건 그림 */
+    private static ItemStack icon(String name) {
+        String[][] map = {
+                {"네더의 별", "minecraft:nether_star"}, {"겉날개", "minecraft:elytra"}, {"용의 깃털", "wildplus:dragon_plume"},
+                {"불사의 토템", "minecraft:totem_of_undying"}, {"신호기", "minecraft:beacon"}, {"셜커 상자", "minecraft:purple_shulker_box"},
+                {"경험치", "minecraft:experience_bottle"}, {"행운 상자", "minecraft:ender_chest"},
+                {"오라: 불꽃", "minecraft:blaze_powder"}, {"오라: 눈꽃", "minecraft:snowball"}, {"오라: 하트", "minecraft:poppy"},
+                {"오라: 별빛", "minecraft:glowstone_dust"},
+                {"칭호 떼기", "minecraft:shears"}, {"칭호", "minecraft:name_tag"},
+                {"천사의 날개", "minecraft:feather"}, {"악마의 날개", "minecraft:phantom_membrane"}, {"용의 날개", "minecraft:dragon_breath"},
+                {"황금 링", "minecraft:gold_ingot"}, {"별빛 링", "minecraft:amethyst_shard"},
+                {"오리 탈", "minecraft:chicken_spawn_egg"}, {"토끼 탈", "minecraft:rabbit_spawn_egg"}, {"고양이 탈", "minecraft:cat_spawn_egg"},
+                {"곰 탈", "minecraft:polar_bear_spawn_egg"}, {"개구리 탈", "minecraft:frog_spawn_egg"},
+                {"황금 왕의 대검", "wildplus:display_greatsword"}, {"별빛 지팡이", "wildplus:display_staff"}, {"공허의 낫", "wildplus:display_scythe"}};
+        for (String[] m : map) {
+            if (name.contains(m[0])) {
+                var item = net.minecraft.core.registries.BuiltInRegistries.ITEM.getValue(net.minecraft.resources.Identifier.parse(m[1]));
+                if (item != null && item != Items.AIR) return new ItemStack(item);
+            }
+        }
+        return new ItemStack(Items.EMERALD);
     }
 
     /** 칭호: 스코어보드 팀 앞말로 이름 앞에 붙인다 (채팅 · 이름표 · 탭 목록) */
