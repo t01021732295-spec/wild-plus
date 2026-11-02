@@ -33,7 +33,8 @@ class Box:
         g = self.grow
         x0, y0, z0 = self.x0 - g, self.y0 - g, self.z0 - g
         W, H, D = self.w + 2 * g, self.h + 2 * g, self.d + 2 * g
-        nw, nh, nd = max(1, round(self.w)), max(1, round(self.h)), max(1, round(self.d))
+        r = getattr(self, "res", 1)
+        nw, nh, nd = max(1, round(self.w * r)), max(1, round(self.h * r)), max(1, round(self.d * r))
         out = []
 
         def add(face, origin, du, dv, nu, nv, normal):

@@ -301,3 +301,128 @@ def halo(kind):
         x, z = math.cos(a) * 5.2, math.sin(a) * 5.2
         out.append(Box(x - 0.7, 34.5, z - 0.7, 1.4, 0.9, 1.4, lambda face, u, v, W, H: hi if face == "top" else col))
     return out
+
+
+# ═════════ 2차 도안: 참고 이미지처럼 크고 화사한 날개 · 화려한 링 · 발밑 오라 · 층층 치마 ═════════
+def _grad(stops, t):
+    t = max(0.0, min(0.9999, t))
+    k = t * (len(stops) - 1)
+    i = int(k)
+    return mix(stops[i], stops[i + 1], k - i)
+
+
+WING_STYLES = {
+    # (뿌리 → 끝 그라데이션, 테두리 빛)
+    "angel": ([(255, 255, 255), (236, 244, 255), (214, 228, 250)], (255, 226, 140)),
+    "demon": ([(40, 6, 14), (120, 14, 30), (200, 30, 50)], (255, 90, 90)),
+    "dragon": ([(30, 10, 60), (60, 30, 130), (40, 200, 210)], (140, 255, 245)),
+    "nebula": ([(250, 250, 255), (150, 230, 255), (120, 120, 255), (170, 70, 230)], (230, 200, 255)),
+}
+
+
+def big_wings(kind):
+    """큰 날개: 위로 치솟는 날개 모양, 깃털 판 3겹(긴 깃 · 가운데 깃 · 덮깃), 2배 세밀, 빛나는 테두리"""
+    stops, glow = WING_STYLES[kind]
+    out = []
+
+    def shape(x, y, scale):
+        # x: 0 뿌리 → 1 끝, y: 0 위 → 1 아래 (판 안 좌표). 끝이 위로 치솟고 아래는 깃털 끝이 물결
+        top = 0.40 - 0.40 * x ** 0.85
+        lower = 0.80 + 0.2 * math.sin(math.pi * x) - 0.72 * x ** 3
+        lower = 1 - (1 - lower) * scale - (1 - scale) * 0.35
+        if kind == "demon":
+            lower -= 0.10 * abs(math.sin(x * math.pi * 4))  # 박쥐 날개 막 사이 홈
+        else:
+            lower -= 0.05 * ((x * 11) % 1.0)  # 깃털 끝
+        return top <= y <= lower, top, lower
+
+    for side in (-1, 1):
+        piv = (side * 1.0, 21, -2.4)
+        layers = [(28, 32, -3.0, 1.00, 1.0), (24, 28, -3.5, 0.92, 0.70), (17, 22, -4.0, 0.84, 0.45)]
+        for li, (W, H, z, br, sc) in enumerate(layers):
+            def paint(face, u, v, nu, nv, li=li, br=br, sc=sc):
+                x, y = u / nu, v / nv
+                if face == "front":
+                    x = 1 - x if side > 0 else x
+                elif face == "back":
+                    x = x if side > 0 else 1 - x
+                else:
+                    return None
+                ok, top, lower = shape(x, y, sc)
+                if not ok:
+                    return None
+                t = (y - top) / max(0.01, lower - top)
+                c = _grad(stops, 0.1 + 0.55 * x + 0.35 * t)
+                # 뿌리에서 퍼지는 깃털 결
+                ang = math.atan2(y - 0.35, x + 0.05)
+                if kind == "demon":
+                    if abs((ang * 4) % 1.0 - 0.5) < 0.06:
+                        c = (30, 6, 12)
+                elif int(ang * 14) % 2 == 0:
+                    c = shade(c, 0.92)
+                if lower - y < 0.05 or y - top < 0.035:
+                    c = mix(c, glow, 0.75)
+                return shade(c, br)
+            x0 = side * 1.2 if side > 0 else -1.2 - W
+            b = Box(x0, 21 - H * 0.4, z - 0.3, W, H, 0.3, paint, rot=("y", side * 0.4, piv))
+            b.res = 2
+            out.append(b)
+        out.append(Box(side * 1.0 - 1, 19.5, -3.0, 2, 3, 1, lambda *a: glow))
+    return out
+
+
+def ornate_halo(kind):
+    gold = (255, 214, 90) if kind == "gold" else (190, 236, 255)
+    hi = (255, 250, 220) if kind == "gold" else (255, 255, 255)
+    gem = (220, 40, 80) if kind == "gold" else (120, 120, 255)
+    out = []
+    n = 28
+    for i in range(n):
+        a = i / n * math.pi * 2
+        x, y = math.cos(a) * 7, math.sin(a) * 7
+        out.append(Box(x - 0.6, 37 + y - 0.6, -4.6, 1.2, 1.2, 0.8, lambda f, u, v, W, H: hi if f == "front" else gold))
+    for i in range(8):  # 바깥 가시 장식
+        a = i / 8 * math.pi * 2
+        for r in (8.2, 9.2):
+            x, y = math.cos(a) * r, math.sin(a) * r
+            s = 1.0 if r < 9 else 0.6
+            out.append(Box(x - s / 2, 37 + y - s / 2, -4.5, s, s, 0.6, lambda *a: gold))
+    out.append(Box(-1, 43.6, -4.8, 2, 2, 1, lambda *a: gem))  # 위쪽 보석
+    return out
+
+
+def petal_aura(kind="nebula"):
+    """발밑 꽃잎 오라: 바닥에 납작하게 펼쳐진 꽃잎 8장"""
+    stops = {"nebula": [(240, 250, 255), (140, 200, 255), (130, 90, 240)],
+             "sakura": [(255, 250, 252), (255, 190, 214), (240, 120, 170)]}[kind]
+    out = []
+    for i in range(8):
+        a = i / 8 * math.pi * 2
+
+        def petal(face, u, v, nu, nv):
+            x, y = u / nu - 0.5, v / nv
+            if abs(x) > 0.5 * math.sin(math.pi * min(1, y * 1.1)) + 0.02:
+                return None
+            return _grad(stops, y)
+        out.append(Box(-1.8, 0.05, 1.5, 3.6, 0.2, 7, petal, rot=("y", a, (0, 0, 0))))
+    return out
+
+
+def maid2(main=(30, 30, 38), sub=WHITE):
+    """참고 그림처럼: 흰 깃 프릴 · 단추 달린 앞판 · 퍼프 소매 · 층층이 넓어지는 흰 치마 + 검은 밑단"""
+    def bodice(face, u, v, W, H):
+        if face == "front" and 2 <= u <= 5 and v >= 1:
+            return (238, 238, 244) if not (u in (3, 4) and v in (2, 5, 8)) else (40, 40, 48)
+        return cloth(main, fold=0)(face, u, v, W, H)
+
+    crown = lambda f, u, v, W, H: sub if (v > 0 or u % 2 == 0) else None
+    out = body(bodice)
+    out += [Box(-4.6, 23.2, -2.6, 9.2, 2.2, 5.2, crown)]  # 높은 깃 프릴
+    out += [Box(-8.8, 18.5, -2.8, 5.6, 6, 5.6, cloth(main, fold=0)), Box(3.2, 18.5, -2.8, 5.6, 6, 5.6, cloth(main, fold=0))]  # 퍼프 소매
+    out += arms(cloth(main, fold=0, hem=sub, hem_rows=2), grow=0.3, y0=12, h=7)
+    tiers = [(10.5, 9.2, 6.4), (8.4, 10.6, 7.6), (6.0, 12.0, 8.8), (3.4, 13.4, 10.0)]
+    for y, w, d in tiers:
+        out += skirt(cloth(sub, fold=2), y, 2.6, w, d)
+    out += skirt(cloth(main, fold=3), 1.0, 2.6, 14.4, 11.0)  # 검은 밑단
+    out += [Box(-1.5, 15, -3.6, 3, 2, 0.8, lambda *a: sub)]
+    return out
