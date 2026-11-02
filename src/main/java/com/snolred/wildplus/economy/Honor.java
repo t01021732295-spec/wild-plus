@@ -28,18 +28,22 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 /**
  * 명예의 전당 (돈으로 하는 엔드 컨텐츠).
- * - 명예 등급 5단계: 브론즈 → 실버 → 골드 → 다이아 → 레전드. 영구 혜택: 최대 체력 +2하트/등급, 세금 10%/등급 감면,
- *   은행 이자 +0.2%p/등급(상한도 늘어남), 이름 앞 칭호. 레전드는 비행 허가증 반값.
+ * - 명예 등급 9단계: 브론즈 → 실버 → 골드 → 다이아 → 레전드 → 신화 → 초월 → 불멸 → 절대자.
+ *   영구 혜택: 최대 체력 +2하트/등급, 세금 10%/등급 감면, 은행 이자 +0.2%p/등급, 이름 앞 칭호, 등급별 효과(PERK).
  * - 비행 허가증: 30분 동안 서바이벌에서 날 수 있음 (끝나면 느린 낙하).
  * - 보스 소환권: 핏빛 군주를 바로 내 앞에 소환.
  * - 서버 축제 후원: 1시간 동안 접속한 모두에게 신속·성급함·행운.
  * 결제는 은행 통장에서 먼저, 모자라면 가진 동전으로. 쓴 돈은 국고로 들어간다.
  */
 public final class Honor {
-    public static final long[] RANK_COST = {2_000, 8_000, 25_000, 80_000, 250_000, 600_000};
-    public static final String[] RANK_NAME = {"없음", "브론즈", "실버", "골드", "다이아", "레전드", "신화"};
-    public static final int[] RANK_COLOR = {0xFFAAAAAA, 0xFFCD7F32, 0xFFC0C8D0, 0xFFFFC83D, 0xFF5FE3FF, 0xFFFF5AE0, 0xFFFF3B3B};
-    public static final int MAX_RANK = 6;
+    public static final long[] RANK_COST = {2_000, 8_000, 25_000, 80_000, 250_000, 600_000, 2_000_000, 5_000_000, 9_999_999};
+    public static final String[] RANK_NAME = {"없음", "브론즈", "실버", "골드", "다이아", "레전드", "신화", "초월", "불멸", "절대자"};
+    public static final int[] RANK_COLOR = {0xFFAAAAAA, 0xFFCD7F32, 0xFFC0C8D0, 0xFFFFC83D, 0xFF5FE3FF, 0xFFFF5AE0, 0xFFFF3B3B,
+            0xFF9D5CFF, 0xFF1ED6B4, 0xFFFF8A00};
+    public static final int MAX_RANK = 9;
+    /** 불멸: 죽음을 막는 간격 (게임 하루) */
+    public static final long REVIVE_TICKS = 24000L;
+    private static final String REVIVE_AT = "wildplus_honor_revive";
     public static final long FLIGHT_COST = 500, BOSS_COST = 3_000, FESTIVAL_COST = 5_000;
     public static final long FLIGHT_TICKS = 20L * 60 * 30, FESTIVAL_TICKS = 20L * 60 * 60;
     public static final int BTN_RANK = 0, BTN_FLIGHT = 1, BTN_BOSS = 2, BTN_FESTIVAL = 3;
@@ -48,7 +52,14 @@ public final class Honor {
     public static final int BTN_HEAL = 4, BTN_XP = 5, BTN_MERCHANT = 6, BTN_MAP = 7, BTN_GUARD = 8;
     /** 등급마다 새로 생기는 혜택 (누적) */
     public static final String[] PERK = {"", "1분마다 배고픔 회복", "낙하 피해 절반", "몬스터 처치 시 동전",
-            "상시 성급함 I", "상시 신속 I · 받는 피해 -10% · 비행 반값", "상시 힘 I · 재생 I · 비행 무료 · 출하 +10%"};
+            "상시 성급함 I", "상시 신속 I · 받는 피해 -10% · 비행 반값", "상시 힘 I · 재생 I · 비행 무료 · 출하 +10%",
+            "저항 I · 야간 투시 · 받는 피해 -20% · 출하 +20% · 처치 동전 2배",
+            "신속 II · 재생 II · 게임 하루 1번 죽음 무효 · 경험치 2배",
+            "힘 II · 저항 II · 화염·수중 면역 · 언제나 자유 비행 · 접속 공지"};
+    /** 명예의 전당 화면용 짧은 혜택 */
+    public static final String[] PERK_SHORT = {"", "배고픔 회복", "낙하 피해 절반", "처치 시 동전", "성급함 I",
+            "신속 I · 피해 -10%", "힘 I · 재생 I · 비행 무료 · 출하+10%", "저항 · 야간투시 · 피해-20% · 출하+20%",
+            "신속II · 재생II · 하루 1번 부활 · 경험치2배", "힘II · 저항II · 불·물 면역 · 자유 비행"};
     public static final net.minecraft.tags.TagKey<net.minecraft.world.level.levelgen.structure.Structure> TREASURE_SITES =
             net.minecraft.tags.TagKey.create(net.minecraft.core.registries.Registries.STRUCTURE, WildPlus.id("treasure_sites"));
     public static final String LEAVE_AT = "wildplus_leave_at";
@@ -242,17 +253,69 @@ public final class Honor {
         if (rank <= 0) return;
         float amount = event.getAmount();
         if (rank >= 2 && event.getSource().is(net.minecraft.tags.DamageTypeTags.IS_FALL)) amount *= 0.5F;
-        if (rank >= 5) amount *= 0.9F;
+        if (rank >= 7) amount *= 0.8F;
+        else if (rank >= 5) amount *= 0.9F;
         event.setAmount(amount);
     }
 
     @SubscribeEvent
     public static void onKillDrops(net.neoforged.neoforge.event.entity.living.LivingDropsEvent event) {
         if (!(event.getEntity() instanceof net.minecraft.world.entity.monster.Monster m) || !(event.getSource().getEntity() instanceof ServerPlayer p)) return;
-        if (WildData.get(p.level().getServer()).honor(p.getUUID()) < 3) return;
+        int rank = WildData.get(p.level().getServer()).honor(p.getUUID());
+        if (rank < 3) return;
+        int n = (1 + p.getRandom().nextInt(3)) * (rank >= 7 ? 2 : 1);
         var it = new net.minecraft.world.entity.item.ItemEntity(m.level(), m.getX(), m.getY() + 0.5, m.getZ(),
-                new net.minecraft.world.item.ItemStack(com.snolred.wildplus.registry.ModItems3.COPPER_COIN.get(), 1 + p.getRandom().nextInt(3)));
+                new net.minecraft.world.item.ItemStack(com.snolred.wildplus.registry.ModItems3.COPPER_COIN.get(), n));
         event.getDrops().add(it);
+    }
+
+    /** 불멸 이상: 경험치 2배 */
+    @SubscribeEvent
+    public static void onXp(net.neoforged.neoforge.event.entity.player.PlayerXpEvent.XpChange event) {
+        if (event.getAmount() > 0 && event.getEntity() instanceof ServerPlayer p && WildData.get(p.level().getServer()).honor(p.getUUID()) >= 8) {
+            event.setAmount(event.getAmount() * 2);
+        }
+    }
+
+    /** 불멸 이상: 게임 하루에 한 번 죽음을 막는다 (투기장 경기 중은 제외) */
+    @SubscribeEvent(priority = net.neoforged.bus.api.EventPriority.LOW)
+    public static void onDeath(net.neoforged.neoforge.event.entity.living.LivingDeathEvent event) {
+        if (event.isCanceled() || !(event.getEntity() instanceof ServerPlayer p)) return;
+        if (com.snolred.wildplus.content.Arena.inMatch(p.getUUID())) return;
+        MinecraftServer server = p.level().getServer();
+        if (WildData.get(server).honor(p.getUUID()) < 8) return;
+        long now = now(server);
+        var tag = p.getPersistentData();
+        long last = tag.getLongOr(REVIVE_AT, -REVIVE_TICKS);
+        if (now - last < REVIVE_TICKS) {
+            p.sendSystemMessage(Component.literal(String.format("☠ 불멸의 가호가 아직 돌아오지 않았어요 (%d분 남음)", (REVIVE_TICKS - (now - last)) / 1200 + 1))
+                    .withStyle(ChatFormatting.GRAY));
+            return;
+        }
+        event.setCanceled(true);
+        tag.putLong(REVIVE_AT, now);
+        p.setHealth(p.getMaxHealth() * 0.5F);
+        p.removeAllEffects();
+        p.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20 * 15, 2));
+        p.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 20 * 10, 2));
+        p.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 20 * 40, 0));
+        p.level().playSound(null, p.blockPosition(), SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 1.0F, 1.0F);
+        ((ServerLevel) p.level()).sendParticles(net.minecraft.core.particles.ParticleTypes.TOTEM_OF_UNDYING, p.getX(), p.getY() + 1, p.getZ(),
+                60, 0.6, 1.0, 0.6, 0.4);
+        server.getPlayerList().broadcastSystemMessage(Component.empty().append(title(WildData.get(server).honor(p.getUUID())))
+                .append(Component.literal(" " + p.getName().getString() + " 님이 불멸의 가호로 죽음을 이겨냈습니다!").withStyle(ChatFormatting.AQUA)), false);
+    }
+
+    /** 절대자: 접속하면 서버 전체에 알림 */
+    @SubscribeEvent
+    public static void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer p)) return;
+        MinecraftServer server = p.level().getServer();
+        if (WildData.get(server).honor(p.getUUID()) < 9) return;
+        server.getPlayerList().broadcastSystemMessage(Component.literal("👑 ").append(title(9))
+                .append(Component.literal(" " + p.getName().getString() + " 님이 강림하셨습니다").withStyle(ChatFormatting.GOLD)), false);
+        for (ServerPlayer o : server.getPlayerList().getPlayers())
+            o.level().playSound(null, o.blockPosition(), SoundEvents.RAID_HORN.value(), SoundSource.PLAYERS, 0.6F, 1.4F);
     }
 
     public static MutableComponent title(int rank) {
@@ -282,10 +345,26 @@ public final class Honor {
         if (rank >= 1 && p.tickCount % 1200 == 0 && p.getFoodData().getFoodLevel() < 20) p.getFoodData().eat(1, 0.3F);
         if (p.tickCount % 100 == 0) {
             if (rank >= 4) p.addEffect(new MobEffectInstance(MobEffects.HASTE, 140, 0, true, false, true));
-            if (rank >= 5) p.addEffect(new MobEffectInstance(MobEffects.SPEED, 140, 0, true, false, true));
+            if (rank >= 5) p.addEffect(new MobEffectInstance(MobEffects.SPEED, 140, rank >= 8 ? 1 : 0, true, false, true));
             if (rank >= 6) {
-                p.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 140, 0, true, false, true));
-                p.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 140, 0, true, false, true));
+                p.addEffect(new MobEffectInstance(MobEffects.STRENGTH, 140, rank >= 9 ? 1 : 0, true, false, true));
+                p.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 140, rank >= 8 ? 1 : 0, true, false, true));
+            }
+            if (rank >= 7) {
+                p.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 140, rank >= 9 ? 1 : 0, true, false, true));
+                p.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, 400, 0, true, false, true));
+            }
+            if (rank >= 9) {
+                p.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 140, 0, true, false, true));
+                p.addEffect(new MobEffectInstance(MobEffects.WATER_BREATHING, 140, 0, true, false, true));
+                // 절대자: 허가증 없이 언제나 비행
+                boolean fight = com.snolred.wildplus.content.Arena.inMatch(id);
+                if (!p.isCreative() && !p.isSpectator() && p.getAbilities().mayfly == fight) {
+                    // 투기장 경기 중에는 비행 끔
+                    p.getAbilities().mayfly = !fight;
+                    if (fight) p.getAbilities().flying = false;
+                    p.onUpdateAbilities();
+                }
             }
             applyHealth(p, data.honor(id));
             String name = p.getName().getString();
@@ -307,6 +386,9 @@ public final class Honor {
                 if (left / 10 == 60 * 2 || left / 10 == 10 * 2) {
                     p.sendOverlayMessage(Component.translatable("message.wildplus.honor.flight_left", left / 20).withStyle(ChatFormatting.YELLOW));
                 }
+            } else if (rank >= 9) {
+                data.flightUntil.remove(id); // 절대자는 허가증이 끝나도 계속 난다
+                data.setDirty();
             } else {
                 p.getAbilities().mayfly = false;
                 p.getAbilities().flying = false;

@@ -95,7 +95,7 @@ public class HallScreen extends AbstractContainerScreen<HallMenu> {
         g.fill(x + 28, y + 57, x + 32, y + 64, 0xFF1E4FB8);
         // 등급 단계 막대
         for (int i = 1; i <= Honor.MAX_RANK; i++) {
-            UiKit.round(g, x + 10 + (i - 1) * 30, y + 108, 28, 6, 2, i <= r ? Honor.RANK_COLOR[i] : 0xFFD8D2C6);
+            UiKit.round(g, x + 10 + (i - 1) * 20, y + 108, 18, 6, 2, i <= r ? Honor.RANK_COLOR[i] : 0xFFD8D2C6);
         }
         // 구분선
         UiKit.hline(g, x + 10, y + BOTTOM, W - 20, 0xFFCFC4AE);
@@ -113,18 +113,16 @@ public class HallScreen extends AbstractContainerScreen<HallMenu> {
         UiKit.text(g, String.format("통장+현금 %,d동", menu.wealth()), 46, 49, SOFT);
         // 지금 혜택
         UiKit.text(g, r == 0 ? "혜택 없음" : String.format("하트+%d · 세금-%d%% · 이자+%.1f%%", 2 * r, Honor.taxCut(r), 0.2 * r), 46, 61, 0xFF1E7A2E);
-        int ly = 69;
-        for (int i = 1; i <= r && i <= 5; i++) {
-            if (i <= 3) {
-                UiKit.text(g, "✔ " + Honor.PERK[i], 10 + ((i - 1) % 2) * 92, ly + ((i - 1) / 2) * 10, 0xFF1E7A2E);
-            }
+        // 가진 혜택: 높은 등급부터 3줄 (아래 등급 혜택은 모두 포함)
+        int ly = 70;
+        for (int i = r, line = 0; i >= 1 && line < 3; i--, line++) {
+            String t = (line == 2 && i > 1 ? "✔ … " : "✔ ") + Honor.PERK_SHORT[i];
+            if (UiKit.font().width(t) > SPLIT - 16) t = t.substring(0, Math.min(t.length(), 24)) + "…";
+            UiKit.text(g, t, 10, ly + line * 9, i >= 6 ? UiKit.darker(Honor.RANK_COLOR[i], 0.2F) : 0xFF1E7A2E);
         }
-        if (r >= 4) UiKit.text(g, "✔ " + Honor.PERK[4], 10, ly + 20, 0xFF1E7A2E);
-        if (r >= 5) UiKit.text(g, "✔ 신속 I · 피해-10%", 102, ly + 20, 0xFF1E7A2E);
-        if (r >= 6) UiKit.text(g, "✔ 힘 I · 재생 I · 비행 무료 · 출하+10%", 10, ly + 30, 0xFFC0182A);
         // 다음 등급
         if (r < Honor.MAX_RANK) {
-            String next = "다음 " + Honor.RANK_NAME[r + 1] + ": " + Honor.PERK[r + 1];
+            String next = "다음 " + Honor.RANK_NAME[r + 1] + ": " + Honor.PERK_SHORT[r + 1];
             if (UiKit.font().width(next) > SPLIT - 16) next = next.substring(0, Math.min(next.length(), 22)) + "…";
             UiKit.text(g, next, 10, 98, 0xFFB07A10);
         }
