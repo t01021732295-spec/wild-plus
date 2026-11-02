@@ -253,7 +253,7 @@ def _eyes(c=(24, 24, 30), hi=WHITE, y=27.5, z=4.95, gap=2.4, size=1.4):
             Box(-gap - size / 2 + 0.2, y + size * 0.7, z + 0.4, 0.5, 0.5, 0.2, C(hi)), Box(gap - size / 2 + 0.2, y + size * 0.7, z + 0.4, 0.5, 0.5, 0.2, C(hi))]
 
 
-def head_shell(c, g=1.0):
+def head_shell(c, g=1.12):  # 투구(1.0)보다 살짝 바깥
     return Box(-4, 24, -4, 8, 8, 8, tex(c, fold=0, dark=0.25), g)
 
 

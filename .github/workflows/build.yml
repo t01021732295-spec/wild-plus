@@ -918,6 +918,7 @@ jobs:
             xdotool key F5 || true; sleep 1; xdotool key F5 || true
             sleep 3
             import -window root shot-cosmetic-front.png || true
+            for a in 1 3 4 5; do cmd "/wildplus cosmetic 0 0 $a"; sleep 3; import -window root shot-hat-$a.png || true; done
             xdotool key F5 || true; sleep 1
             cmd "/wildplus cosmetic 3 2 1"
             sleep 3

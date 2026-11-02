@@ -1,4 +1,4 @@
-"""2.12 텍스처: 명품관 치장 — 날개 3 · 링 2 · 옷 4 · 관상용 무기 3 (직접 그림)."""
+"""2.12 텍스처: 명품관 치장 — 날개 3 · 링 2 · 동물 탈 바탕 · 관상용 무기 3 (직접 그림)."""
 import math
 import random
 
@@ -273,6 +273,18 @@ def scythe(px):
             put(px, x, y, c)
 
 
+def hat_base():
+    """동물 탈 바탕: 거의 흰 잡음 — 게임에서 부품마다 색을 곱해서 칠한다"""
+    im = Image.new("RGBA", (64, 64))
+    px = im.load()
+    r = random.Random(7)
+    for y in range(64):
+        for x in range(64):
+            v = r.randint(228, 255)
+            px[x, y] = (v, v, v, 255)
+    im.save(COS / "hat_base.png")
+
+
 def build():
     COS.mkdir(parents=True, exist_ok=True)
     paint_wing("angel", angel)
@@ -280,10 +292,7 @@ def build():
     paint_wing("dragon", dragon)
     halo("gold", (255, 236, 150), (220, 160, 40), False)
     halo("star", (230, 250, 255), (110, 190, 255), True)
-    outfit("knight", knight)
-    outfit("royal", royal)
-    outfit("ninja", ninja)
-    outfit("angel", angel_dress)
+    hat_base()
     weapon("greatsword", greatsword)
     weapon("staff", staff)
     weapon("scythe", scythe)

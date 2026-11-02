@@ -5,7 +5,6 @@ import com.snolred.wildplus.WildPlus;
 import com.snolred.wildplus.net.CosmeticSync;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -23,17 +22,19 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
 /**
- * 명품관 치장: 등 뒤 날개 · 머리 위 링 · 옷을 플레이어 몸에 그린다.
+ * 명품관 치장: 등 뒤 날개 · 머리 위 링 · 동물 탈을 플레이어 몸에 그린다.
  * 누가 무엇을 입었는지는 서버가 CosmeticSync 로 알려 준다.
  */
 public class CosmeticLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
     public static final String[] WINGS = {"", "angel", "demon", "dragon"};
     public static final String[] HALOS = {"", "gold", "star"};
-    public static final String[] OUTFITS = {"", "knight", "royal", "ninja", "angel"};
 
     private final Part wings;
     private final Part halo;
-    private final HumanoidModel<AvatarRenderState> outfit;
+    /** 동물 탈: 탈마다 부품 모델 목록과 그 색 */
+    private final Part[][] hats;
+    private final int[][] hatColors;
+    private static final Identifier HAT_TEX = WildPlus.id("textures/entity/cosmetic/hat_base.png");
 
     /** 단순한 모델 껍데기 */
     static final class Part extends EntityModel<AvatarRenderState> {
@@ -43,6 +44,13 @@ public class CosmeticLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
             super(root);
             this.left = pair ? root.getChild("left") : root.getChild("ring");
             this.right = pair ? root.getChild("right") : null;
+        }
+
+        /** 탈 부품 하나 */
+        Part(ModelPart root) {
+            super(root);
+            this.left = root;
+            this.right = null;
         }
     }
 
@@ -60,8 +68,24 @@ public class CosmeticLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
                 .addBox(-5F, -12F, -5F, 10, 1, 1).addBox(-5F, -12F, 4F, 10, 1, 1)
                 .addBox(-5F, -12F, -4F, 1, 1, 8).addBox(4F, -12F, -4F, 1, 1, 8), PartPose.ZERO);
         this.halo = new Part(LayerDefinition.create(hm, 32, 16).bakeRoot(), false);
-        // 옷: 갑옷보다 살짝 바깥에 그려지는 사람 모양 (머리 제외)
-        this.outfit = new HumanoidModel<>(LayerDefinition.create(HumanoidModel.createMesh(new CubeDeformation(1.1F), 0F), 64, 32).bakeRoot());
+        // 동물 탈: 도안 부품을 하나씩 상자로 (흰 바탕에 부품 색을 곱함)
+        int n = HatModels.PARTS.length;
+        this.hats = new Part[n][];
+        this.hatColors = new int[n][];
+        for (int h = 0; h < n; h++) {
+            float[][] ps = HatModels.PARTS[h];
+            hats[h] = new Part[ps.length];
+            hatColors[h] = new int[ps.length];
+            for (int i = 0; i < ps.length; i++) {
+                float[] q = ps[i];
+                MeshDefinition m = new MeshDefinition();
+                m.getRoot().addOrReplaceChild("p", CubeListBuilder.create().texOffs(0, 0)
+                        .addBox(q[1], q[2], q[3], q[4], q[5], q[6], new CubeDeformation(q[7])),
+                        PartPose.offsetAndRotation(q[8], q[9], q[10], 0F, 0F, q[11]));
+                hats[h][i] = new Part(LayerDefinition.create(m, 64, 64).bakeRoot());
+                hatColors[h][i] = 0xFF000000 | (int) q[0];
+            }
+        }
     }
 
     private static Identifier tex(String kind, String name) {
@@ -77,12 +101,14 @@ public class CosmeticLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
         if (e == null) return;
         int[] c = CosmeticSync.CLIENT.get(e.getUUID());
         if (c == null) return;
-        // 옷
-        if (c[2] > 0 && c[2] < OUTFITS.length) {
-            outfit.setupAnim(state);
-            outfit.head.visible = false;
-            outfit.hat.visible = false;
-            renderColoredCutoutModel(outfit, tex("outfit", OUTFITS[c[2]]), pose, collector, light, state, 0xFFFFFFFF, 1);
+        // 동물 탈: 머리를 따라 움직임
+        if (c[2] > 0 && c[2] <= hats.length) {
+            pose.pushPose();
+            getParentModel().head.translateAndRotate(pose);
+            Part[] ps = hats[c[2] - 1];
+            for (int i = 0; i < ps.length; i++)
+                renderColoredCutoutModel(ps[i], HAT_TEX, pose, collector, light, state, hatColors[c[2] - 1][i], 1);
+            pose.popPose();
         }
         // 날개: 천천히 퍼덕이고, 날 때는 활짝
         if (c[0] > 0 && c[0] < WINGS.length) {

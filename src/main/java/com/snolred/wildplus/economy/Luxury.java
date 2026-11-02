@@ -93,19 +93,32 @@ public final class Luxury {
                     pl -> grantTitle(pl, k)));
         }
         // ───────── 치장 (몸에 그려짐) ─────────
+        // 옛 옷(비트 5~8)은 없어졌으니 산 값을 통장으로 돌려준다
         int cos = d.getIntOr("cos", 0);
+        int oldOutfits = Integer.bitCount(cos & (0b1111 << 5));
+        if (oldOutfits > 0) {
+            WildData wd = WildData.get(p.level().getServer());
+            wd.addBalance(p.getUUID(), oldOutfits * 1_000_000L);
+            wd.setDirty();
+            cos &= ~(0b1111 << 5);
+            d.putInt("cos", cos);
+            d.remove("outfit");
+            ContentData.get(p.level().getServer()).dirty();
+            p.sendSystemMessage(Component.literal(String.format("💎 옷 치장이 없어져서 %,d동을 통장으로 돌려드렸어요", oldOutfits * 1_000_000L))
+                    .withStyle(ChatFormatting.LIGHT_PURPLE));
+        }
+        // {종류, 값, 이름, 가격, 보유 비트}
         String[][] items = {
-                {"wings", "1", "🪽 천사의 날개", "1500000"}, {"wings", "2", "🦇 악마의 날개", "1500000"}, {"wings", "3", "🐉 용의 날개", "2500000"},
-                {"halo", "1", "😇 황금 링", "1000000"}, {"halo", "2", "✨ 별빛 링", "1500000"},
-                {"outfit", "1", "🎖 기사단 정복", "1000000"}, {"outfit", "2", "👑 왕실 로브", "1000000"},
-                {"outfit", "3", "🥷 그림자 닌자복", "1000000"}, {"outfit", "4", "🤍 천사의 드레스", "1000000"}};
-        for (int i = 0; i < items.length; i++) {
-            String[] it = items[i];
-            int bit = 1 << i;
+                {"wings", "1", "🪽 천사의 날개", "1500000", "0"}, {"wings", "2", "🦇 악마의 날개", "1500000", "1"}, {"wings", "3", "🐉 용의 날개", "2500000", "2"},
+                {"halo", "1", "😇 황금 링", "1000000", "3"}, {"halo", "2", "✨ 별빛 링", "1500000", "4"},
+                {"hat", "1", "🐤 오리 탈", "700000", "9"}, {"hat", "2", "🐰 토끼 탈", "700000", "10"}, {"hat", "3", "🐱 고양이 탈", "700000", "11"},
+                {"hat", "4", "🐻 곰 탈", "700000", "12"}, {"hat", "5", "🐸 개구리 탈", "700000", "13"}};
+        for (String[] it : items) {
+            int bit = 1 << Integer.parseInt(it[4]);
             boolean have = (cos & bit) != 0;
             int val = Integer.parseInt(it[1]);
             boolean worn = d.getIntOr(it[0], 0) == val;
-            String label = it[2] + (worn ? " (착용 중 · 누르면 벗기)" : have ? " (보유 · 누르면 입기)" : "");
+            String label = it[2] + (worn ? " (착용 중 · 누르면 벗기)" : have ? " (보유 · 누르면 쓰기)" : "");
             g.add(new Good(label, "치장", have ? 0 : Long.parseLong(it[3]), pl -> {
                 CompoundTag dd = data(pl.level().getServer(), pl);
                 dd.putInt("cos", dd.getIntOr("cos", 0) | bit);

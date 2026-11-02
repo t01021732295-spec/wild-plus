@@ -75,12 +75,12 @@ public final class WildCommands {
                 .then(weekendCommand())
                 .then(Commands.literal("cosmetic").then(Commands.argument("w", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 3))
                         .then(Commands.argument("h", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 2))
-                        .then(Commands.argument("o", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 4)).executes(ctx -> {
+                        .then(Commands.argument("a", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 5)).executes(ctx -> {
                             var p = ctx.getSource().getPlayerOrException();
                             var d = com.snolred.wildplus.content.ContentData.get(p.level().getServer()).player("luxury", p.getUUID());
                             d.putInt("wings", com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "w"));
                             d.putInt("halo", com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "h"));
-                            d.putInt("outfit", com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "o"));
+                            d.putInt("hat", com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "a"));
                             com.snolred.wildplus.content.ContentData.get(p.level().getServer()).dirty();
                             com.snolred.wildplus.net.CosmeticSync.broadcast(p.level().getServer());
                             return 1;
