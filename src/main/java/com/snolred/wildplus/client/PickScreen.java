@@ -17,7 +17,7 @@ import net.minecraft.world.entity.player.Inventory;
  */
 public class PickScreen extends AbstractContainerScreen<PickMenu> {
     private static final int ROWS = 7;
-    private static final int COLS = 5, GRID_ROWS = 2, CASE_W = 58, CASE_H = 92;
+    private static final int COLS = 5, GRID_ROWS = 2, CASE_W = 58, CASE_H = 76;
     /** 투기장 줄: 낡은 양피지 + 청동 테 */
     private static final UiButton.Style ARENA_ROW = new UiButton.Style(0xFFF7E6C0, 0xFFE6CC96, 0xFF6E4A1E, 0xFF3A2410, false,
             UiButton.Shape.PAPER);
@@ -35,8 +35,8 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
     private UiButton prev, next;
 
     public PickScreen(PickMenu menu, Inventory inv, Component title) {
-        super(menu, inv, title, (menu.flags & PickMenu.FLAG_SHOP) != 0 ? 330 : (menu.flags & PickMenu.FLAG_ARENA) != 0 ? 262 : 240,
-                (menu.flags & PickMenu.FLAG_SHOP) != 0 ? 36 + GRID_ROWS * (CASE_H + 6) + 26
+        super(menu, inv, title, (menu.flags & PickMenu.FLAG_SHOP) != 0 ? 330 : (menu.flags & PickMenu.FLAG_ARENA) != 0 ? 284 : 240,
+                (menu.flags & PickMenu.FLAG_SHOP) != 0 ? 32 + GRID_ROWS * (CASE_H + 4) + 24
                         : (menu.flags & PickMenu.FLAG_CAN_TOGGLE) != 0 ? 222 : (menu.flags & PickMenu.FLAG_ARENA) != 0 ? 206 : 200);
         this.arena = (menu.flags & PickMenu.FLAG_ARENA) != 0;
         this.shop = (menu.flags & PickMenu.FLAG_SHOP) != 0;
@@ -52,7 +52,7 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
             int gx = leftPos + (W - (COLS * CASE_W + (COLS - 1) * 6)) / 2;
             for (int r = 0; r < COLS * GRID_ROWS; r++) {
                 final int row = r;
-                rows.add(addRenderableWidget(new CaseButton(gx + (r % COLS) * (CASE_W + 6), topPos + 36 + (r / COLS) * (CASE_H + 6), () -> pick(row))));
+                rows.add(addRenderableWidget(new CaseButton(gx + (r % COLS) * (CASE_W + 6), topPos + 32 + (r / COLS) * (CASE_H + 4), () -> pick(row))));
             }
         } else {
             int inset = arena ? 24 : 10;
@@ -221,7 +221,7 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
         UiKit.device(g, x, y, W, H, 0xFF6A3E22, 0xFF2E1A0E);
         g.fillGradient(x + 4, y + 4, x + W - 4, y + H - 4, 0xFF2B1D2E, 0xFF140C16);
         // 벽지 다마스크 무늬
-        for (int py = y + 34; py < y + H - 28; py += 12)
+        for (int py = y + 32; py < y + H - 26; py += 12)
             for (int px = x + 8 + ((py / 12) % 2) * 6; px < x + W - 8; px += 12) {
                 g.fill(px + 2, py, px + 3, py + 3, 0x22D9A22E);
                 g.fill(px + 1, py + 1, px + 4, py + 2, 0x22D9A22E);
@@ -234,13 +234,13 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
         int gx = x + (W - (COLS * CASE_W + (COLS - 1) * 6)) / 2;
         for (int r = 0; r < GRID_ROWS; r++)
             for (int c = 0; c < COLS; c++) {
-                int cx = gx + c * (CASE_W + 6) + CASE_W / 2, cy = y + 36 + r * (CASE_H + 6);
+                int cx = gx + c * (CASE_W + 6) + CASE_W / 2, cy = y + 32 + r * (CASE_H + 4);
                 for (int k = 0; k < 8; k++) g.fill(cx - 6 - k * 2, cy - 2 + k * 6, cx + 6 + k * 2, cy + 4 + k * 6, 0x08FFF2C8);
                 g.fill(cx - 5, cy - 3, cx + 5, cy - 1, 0xFFFFF2C8);
             }
         // 아래 바닥 띠
-        g.fillGradient(x + 4, y + H - 28, x + W - 4, y + H - 4, 0xFF3A2414, 0xFF1E120A);
-        g.fill(x + 4, y + H - 28, x + W - 4, y + H - 27, 0xFFD9A22E);
+        g.fillGradient(x + 4, y + H - 26, x + W - 4, y + H - 4, 0xFF3A2414, 0xFF1E120A);
+        g.fill(x + 4, y + H - 26, x + W - 4, y + H - 25, 0xFFD9A22E);
     }
 
     /** 유리 진열장 한 칸: 벨벳 받침 위 물건, 앞 유리 반사, 아래 이름표 · 가격 */
@@ -256,7 +256,7 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
             if (entry == null) return;
             int x = getX(), y = getY(), w = getWidth();
             boolean hover = isHoveredOrFocused();
-            int gh = 52; // 유리 높이
+            int gh = 46; // 유리 높이
             // 그림자 + 금 받침대
             g.fill(x + 1, y + gh + 9, x + w + 1, y + gh + 12, 0x66000000);
             g.fillGradient(x, y + gh, x + w, y + gh + 10, 0xFFE8C060, 0xFF8E6416);
@@ -267,7 +267,7 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
             // 물건 (2배, 마우스 올리면 살짝 떠오름)
             int bob = hover ? -2 : 0;
             g.pose().pushMatrix();
-            g.pose().translate(x + w / 2F - 16, y + 12 + bob);
+            g.pose().translate(x + w / 2F - 16, y + 8 + bob);
             g.pose().scale(2F, 2F);
             g.item(entry.icon(), 0, 0);
             g.pose().popMatrix();
@@ -291,21 +291,14 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
             int sp = name.indexOf(' ');
             if (sp > 0 && sp <= 2 && !Character.isLetterOrDigit(name.charAt(0))) name = name.substring(sp + 1).trim();
             var font = UiKit.font();
-            String l1 = name, l2 = "";
-            if (font.width(name) > w - 2) {
-                int cut = name.lastIndexOf(' ', name.length() / 2 + 3);
-                if (cut <= 0) cut = Math.min(name.length(), 6);
-                l1 = name.substring(0, cut).trim();
-                l2 = name.substring(cut).trim();
-                while (font.width(l2) > w - 2 && l2.length() > 1) l2 = l2.substring(0, l2.length() - 2) + "…";
-            }
+            String l1 = name;
+            while (font.width(l1) > w - 2 && l1.length() > 1) l1 = l1.substring(0, l1.length() - 2) + "…";
             int ty = y + gh + 13;
             g.text(font, l1, x + (w - font.width(l1)) / 2, ty, 0xFFF4E9D8, false);
-            if (!l2.isEmpty()) g.text(font, l2, x + (w - font.width(l2)) / 2, ty + 9, 0xFFF4E9D8, false);
             // 가격 (보유 · 착용이면 초록 글씨)
             String price = !state.isEmpty() ? state : entry.sub().isEmpty() ? "무료" : entry.sub();
             int pc = !state.isEmpty() ? 0xFF7CE08A : 0xFFFFD25A;
-            g.text(font, price, x + (w - font.width(price)) / 2, ty + (l2.isEmpty() ? 11 : 19), pc, true);
+            g.text(font, price, x + (w - font.width(price)) / 2, ty + 9, pc, true);
         }
     }
 
