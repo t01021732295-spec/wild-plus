@@ -1,0 +1,2 @@
+net/minecraft/world/item/FishingRodItem.java	public InteractionResult use	30
+net/minecraft/world/entity/projectile/FishingHook.java	lureSpeed|timeUntilLured = 	4
