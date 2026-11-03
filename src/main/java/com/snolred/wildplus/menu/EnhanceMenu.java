@@ -2,6 +2,7 @@ package com.snolred.wildplus.menu;
 
 import com.snolred.wildplus.economy.Coins;
 import com.snolred.wildplus.economy.Enhance;
+import com.snolred.wildplus.economy.Trials;
 import com.snolred.wildplus.registry.ModMenus;
 import java.util.List;
 import net.minecraft.ChatFormatting;
@@ -202,12 +203,53 @@ public class EnhanceMenu extends AbstractContainerMenu {
         List<Enhance.Option> opts = Enhance.options(stack);
         if (id < 0 || id >= opts.size()) return false;
         Enhance.Option o = opts.get(id);
+        int target = o.level() + 1;
+        String ench = Enhance.path(o.enchant());
+        if (target >= Trials.FIRST) {
+            // X 이상: 시련 → 재료 + 돈
+            net.minecraft.nbt.CompoundTag t = Trials.get(stack);
+            if (t.isEmpty()) {
+                Trials.start(stack, ench, target);
+                input.setChanged();
+                Trials.Kind k = Trials.kindFor(stack, ench);
+                sp.sendSystemMessage(Component.literal("⚔ 강화 시련을 받았어요 (" + Trials.roman(target) + "): ").withStyle(ChatFormatting.GOLD)
+                        .append(Component.literal(Trials.describe(k, target)).withStyle(ChatFormatting.YELLOW))
+                        .append(Component.literal(String.format("\n   끝나면 재료 %s ×%d + %,d동", Trials.material(target).getDefaultInstance().getHoverName().getString(),
+                                Trials.materialCount(target), Trials.cost(target))).withStyle(ChatFormatting.GRAY)));
+                sp.level().playSound(null, sp.blockPosition(), SoundEvents.BOOK_PAGE_TURN, SoundSource.BLOCKS, 1.0F, 1.0F);
+                return true;
+            }
+            if (!t.getStringOr("e", "").equals(ench) || t.getIntOr("lv", 0) != target) {
+                sp.sendOverlayMessage(Component.literal("이 장비는 다른 시련 진행 중이에요: " + Trials.status(stack)).withStyle(ChatFormatting.RED));
+                return true;
+            }
+            if (!Trials.done(stack)) {
+                sp.sendOverlayMessage(Component.literal(Trials.status(stack)).withStyle(ChatFormatting.YELLOW));
+                return true;
+            }
+            ItemStack mat = input.getItem(1);
+            if (!mat.is(Trials.material(target)) || mat.getCount() < Trials.materialCount(target)) {
+                sp.sendOverlayMessage(Component.literal(String.format("재료 칸에 %s ×%d 가 필요해요",
+                        Trials.material(target).getDefaultInstance().getHoverName().getString(), Trials.materialCount(target))).withStyle(ChatFormatting.RED));
+                return true;
+            }
+        }
         if (!Coins.pay(sp, o.cost())) {
             sp.sendOverlayMessage(Component.translatable("message.wildplus.enhance.no_money", o.cost()).withStyle(ChatFormatting.RED));
             return true;
         }
+        if (target >= Trials.FIRST) {
+            input.getItem(1).shrink(Trials.materialCount(target));
+            Trials.clear(stack);
+        }
         Enhance.apply(stack, o);
         input.setChanged();
+        if (target >= 13) {
+            sp.level().getServer().getPlayerList().broadcastSystemMessage(Component.literal("✦ " + sp.getName().getString() + " 님의 ")
+                    .withStyle(ChatFormatting.LIGHT_PURPLE).append(stack.getHoverName().copy().withStyle(ChatFormatting.AQUA))
+                    .append(Component.literal(" — ").withStyle(ChatFormatting.GRAY)).append(Enchantment.getFullname(o.enchant(), target))
+                    .append(Component.literal(" 달성!").withStyle(ChatFormatting.LIGHT_PURPLE)), false);
+        }
         sp.level().playSound(null, sp.blockPosition(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
         sp.sendSystemMessage(Component.translatable("message.wildplus.enhance.done", Enchantment.getFullname(o.enchant(), o.level() + 1), o.cost())
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
@@ -222,7 +264,8 @@ public class EnhanceMenu extends AbstractContainerMenu {
         ItemStack copy = s.copy();
         if (index <= 1) {
             if (!moveItemStackTo(s, 2, this.slots.size(), true)) return ItemStack.EMPTY;
-        } else if (s.is(com.snolred.wildplus.registry.ModItems13.STELLAR_CORE.get()) || s.is(com.snolred.wildplus.registry.ModItems11.DRAGON_PLUME.get())
+        } else if (s.is(net.minecraft.world.item.Items.DIAMOND_BLOCK) || s.is(net.minecraft.world.item.Items.NETHERITE_INGOT)
+                || s.is(net.minecraft.world.item.Items.NETHER_STAR) || s.is(com.snolred.wildplus.registry.ModItems13.STELLAR_CORE.get()) || s.is(com.snolred.wildplus.registry.ModItems11.DRAGON_PLUME.get())
                 || s.is(com.snolred.wildplus.registry.ModItems7.RUBY_BLOCK.get()) || s.is(com.snolred.wildplus.registry.ModItems11.SAPPHIRE_BLOCK.get())
                 || s.is(com.snolred.wildplus.registry.ModItems2.MYTHRIL_BLOCK.get()) || s.is(com.snolred.wildplus.registry.ModItems5.DRAGON_KING_FISH.get()) || s.is(com.snolred.wildplus.registry.ModItems12.LIFE_CRYSTAL.get())
                 || s.is(com.snolred.wildplus.registry.ModItems.BLOODSTEEL_INGOT.get()) || !engraveKind(s).isEmpty()) {

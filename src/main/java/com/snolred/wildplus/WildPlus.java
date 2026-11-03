@@ -82,6 +82,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Soil.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.FishingPlus.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.Jobs.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.Trials.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.BossSkills.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Land.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Arena.class);

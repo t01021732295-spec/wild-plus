@@ -72,9 +72,44 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
                 b.active = star ? menu.material().is(com.snolred.wildplus.registry.ModItems9.upgradeMaterial(menu.item().getItem()))
                         : !engrave || !EnhanceMenu.engraveKind(menu.material()).isEmpty();
             } else {
-                b.setMessage(Component.literal(String.format("%,d동", opts.get(i - sp.size()).cost())));
-                b.style(UiButton.GOLD);
-                b.active = true;
+                Enhance.Option o = opts.get(i - sp.size());
+                int target = o.level() + 1;
+                b.setTooltip(null);
+                if (target < com.snolred.wildplus.economy.Trials.FIRST) {
+                    b.setMessage(Component.literal(String.format("%,d동", o.cost())));
+                    b.style(UiButton.GOLD);
+                    b.active = true;
+                    continue;
+                }
+                // X 이상: 시련 받기 → 진행 중 → 재료 + 돈
+                ItemStack it = menu.item();
+                net.minecraft.nbt.CompoundTag t = com.snolred.wildplus.economy.Trials.get(it);
+                String ench = Enhance.path(o.enchant());
+                var k = com.snolred.wildplus.economy.Trials.kindFor(it, ench);
+                String quest = com.snolred.wildplus.economy.Trials.describe(k, target);
+                String mat = String.format("%s ×%d", com.snolred.wildplus.economy.Trials.material(target).getDefaultInstance().getHoverName().getString(),
+                        com.snolred.wildplus.economy.Trials.materialCount(target));
+                b.setTooltip(net.minecraft.client.gui.components.Tooltip.create(Component.literal("⚔ " + com.snolred.wildplus.economy.Trials.roman(target)
+                        + " 강화 시련\n" + quest + "\n끝나면: " + mat + " + " + String.format("%,d동", o.cost()))));
+                if (t.isEmpty()) {
+                    b.setMessage(Component.literal("시련 받기"));
+                    b.style(UiButton.TEAL);
+                    b.active = true;
+                } else if (!t.getStringOr("e", "").equals(ench) || t.getIntOr("lv", 0) != target) {
+                    b.setMessage(Component.literal("다른 시련 중"));
+                    b.style(UiButton.DARK);
+                    b.active = false;
+                } else if (!com.snolred.wildplus.economy.Trials.done(it)) {
+                    b.setMessage(Component.literal(t.getIntOr("have", 0) + "/" + t.getIntOr("need", 1)));
+                    b.style(UiButton.DARK);
+                    b.active = true;
+                } else {
+                    boolean has = menu.material().is(com.snolred.wildplus.economy.Trials.material(target))
+                            && menu.material().getCount() >= com.snolred.wildplus.economy.Trials.materialCount(target);
+                    b.setMessage(Component.literal(String.format("%,d동", o.cost())));
+                    b.style(UiButton.RED);
+                    b.active = has;
+                }
             }
         }
         long rc = Enhance.repairCost(menu.item());
@@ -160,7 +195,7 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
         }
         if (item.isEmpty()) {
             UiKit.text(g, "장비를 모루에 올려놓으세요", 68, 22, ink);
-            UiKit.text(g, "인챈트를 IX(9)까지", 68, 36, soft);
+            UiKit.text(g, "인챈트를 XV(15)까지 · X부터는 시련", 68, 36, soft);
             UiKit.text(g, "동전으로 강화할 수 있어요", 68, 48, soft);
         } else if (opts.isEmpty() && shift == 0) {
             UiKit.text(g, "강화할 수 있는 인챈트가 없어요", 68, 22, ink);
@@ -179,7 +214,7 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
     }
 
     private static String roman(int n) {
-        String[] r = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
+        String[] r = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X", "XI", "XII", "XIII", "XIV", "XV"};
         return n >= 0 && n < r.length ? r[n] : String.valueOf(n);
     }
 

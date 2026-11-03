@@ -16,17 +16,17 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
  * 비용 = 200동 × 3^(바닐라 최대를 넘은 단계) → 200, 600, 1,800 …
  */
 public final class Enhance {
-    /** 인챈트별 강화 최대 레벨: 레벨이 있는 인챈트는 모두 IX 까지 */
+    /** 인챈트별 강화 최대 레벨: 레벨이 있는 인챈트는 모두 XV 까지 (X 부터는 시련 + 재료가 필요, Trials) */
     public static final Map<String, Integer> CAP = Map.ofEntries(
-            Map.entry("sharpness", 9), Map.entry("smite", 9), Map.entry("bane_of_arthropods", 9), Map.entry("efficiency", 9),
-            Map.entry("power", 9), Map.entry("impaling", 9), Map.entry("density", 9),
-            Map.entry("unbreaking", 9), Map.entry("fortune", 9), Map.entry("looting", 9), Map.entry("luck_of_the_sea", 9),
-            Map.entry("respiration", 9), Map.entry("sweeping_edge", 9), Map.entry("thorns", 9), Map.entry("swift_sneak", 9),
-            Map.entry("soul_speed", 9), Map.entry("loyalty", 9),
-            Map.entry("protection", 9), Map.entry("fire_protection", 9), Map.entry("blast_protection", 9),
-            Map.entry("projectile_protection", 9), Map.entry("feather_falling", 9), Map.entry("piercing", 9), Map.entry("breach", 9),
-            Map.entry("fire_aspect", 9), Map.entry("punch", 9), Map.entry("knockback", 9),
-            Map.entry("armor_piercing", 9));
+            Map.entry("sharpness", 15), Map.entry("smite", 15), Map.entry("bane_of_arthropods", 15), Map.entry("efficiency", 15),
+            Map.entry("power", 15), Map.entry("impaling", 15), Map.entry("density", 15),
+            Map.entry("unbreaking", 15), Map.entry("fortune", 15), Map.entry("looting", 15), Map.entry("luck_of_the_sea", 15),
+            Map.entry("respiration", 15), Map.entry("sweeping_edge", 15), Map.entry("thorns", 15), Map.entry("swift_sneak", 15),
+            Map.entry("soul_speed", 15), Map.entry("loyalty", 15),
+            Map.entry("protection", 15), Map.entry("fire_protection", 15), Map.entry("blast_protection", 15),
+            Map.entry("projectile_protection", 15), Map.entry("feather_falling", 15), Map.entry("piercing", 15), Map.entry("breach", 15),
+            Map.entry("fire_aspect", 15), Map.entry("punch", 15), Map.entry("knockback", 15),
+            Map.entry("armor_piercing", 15));
 
     public static final long BASE_COST = 200;
 
@@ -59,6 +59,7 @@ public final class Enhance {
     }
 
     public static long cost(int level, int vanillaMax) {
+        if (level + 1 >= Trials.FIRST) return Trials.cost(level + 1); // X 이상: 고정 가격
         long c = BASE_COST;
         for (int i = vanillaMax; i < level; i++) c *= 3;
         return c;

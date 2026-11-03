@@ -53,7 +53,10 @@ LANG_KO.update({
     "item.wildplus.stellar_core": "스텔라 코어",
     "tooltip.wildplus.stellar_core": "네더의 별 + 루비 블록 4 + 블레이즈 막대 2 + 마그마 크림 2\n강화대에서 루비 장비를 스텔라 루비로 승급하는 재료",
 })
+for n, r in [(11, "XI"), (12, "XII"), (13, "XIII"), (14, "XIV"), (15, "XV")]:
+    LANG_KO[f"enchantment.level.{n}"] = r
 LANG_EN = {
+    "enchantment.level.11": "XI", "enchantment.level.12": "XII", "enchantment.level.13": "XIII", "enchantment.level.14": "XIV", "enchantment.level.15": "XV",
     "item.wildplus.lucky_box": "Lucky Box", "item.wildplus.emerald_coin": "Emerald Coin", "item.wildplus.emerald_backpack": "Emerald Backpack",
     "gui.wildplus.backpack.tier4": "Emerald Backpack", "item.wildplus.stellar_core": "Stellar Core",
     "item.wildplus.worm": "Worm", "item.wildplus.shrimp_bait": "Shrimp Bait", "item.wildplus.golden_bait": "Golden Bait",
