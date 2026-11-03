@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/bbq_grill"
+    },
+    "facing=east": {
+      "model": "wildplus:block/bbq_grill",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/bbq_grill",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/bbq_grill",
+      "y": 270
+    }
+  }
+}

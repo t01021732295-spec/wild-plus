@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BBB",
+    "ICI",
+    "I I"
+  ],
+  "key": {
+    "B": "minecraft:iron_bars",
+    "I": "minecraft:iron_ingot",
+    "C": "minecraft:campfire"
+  },
+  "result": {
+    "id": "wildplus:bbq_grill",
+    "count": 1
+  }
+}

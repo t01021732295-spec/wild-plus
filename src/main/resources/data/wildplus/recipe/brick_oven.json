@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BBB",
+    "BFB",
+    "BSB"
+  ],
+  "key": {
+    "B": "minecraft:bricks",
+    "F": "minecraft:furnace",
+    "S": "minecraft:smooth_stone"
+  },
+  "result": {
+    "id": "wildplus:brick_oven",
+    "count": 1
+  }
+}

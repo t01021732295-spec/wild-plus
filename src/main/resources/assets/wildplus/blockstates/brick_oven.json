@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/brick_oven"
+    },
+    "facing=east": {
+      "model": "wildplus:block/brick_oven",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/brick_oven",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/brick_oven",
+      "y": 270
+    }
+  }
+}

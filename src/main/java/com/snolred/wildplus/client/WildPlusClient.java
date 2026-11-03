@@ -45,6 +45,7 @@ public class WildPlusClient {
         event.register(com.snolred.wildplus.registry.ModMenus.MAIL.get(), MailScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.FILTER_HOPPER.get(), FilterHopperScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.AUTO_CRAFTER.get(), AutoCrafterScreen::new);
+        event.register(com.snolred.wildplus.registry.ModMenus.COOKING.get(), CookingScreen::new);
     }
 
     /** 몬스터(또는 다친 생물) 머리 위 이름표 자리에 체력바를 그린다 */

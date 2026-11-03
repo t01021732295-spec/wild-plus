@@ -10,6 +10,8 @@
     "wildplus:sorting_chest",
     "wildplus:feeder",
     "wildplus:realty",
-    "wildplus:job_board"
+    "wildplus:job_board",
+    "wildplus:prep_table",
+    "wildplus:aging_rack"
   ]
 }

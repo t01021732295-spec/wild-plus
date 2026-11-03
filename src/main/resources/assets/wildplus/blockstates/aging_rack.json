@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/aging_rack"
+    },
+    "facing=east": {
+      "model": "wildplus:block/aging_rack",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/aging_rack",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/aging_rack",
+      "y": 270
+    }
+  }
+}

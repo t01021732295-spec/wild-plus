@@ -55,6 +55,10 @@ public final class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.TrashCanBlockEntity>> TRASH_CAN =
             BLOCK_ENTITIES.register("trash_can", () -> new BlockEntityType<>(com.snolred.wildplus.block.TrashCanBlockEntity::new,
                     com.snolred.wildplus.registry.ModBlocks2.TRASH_CAN.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.CookingStationBlockEntity>> COOKING =
+            BLOCK_ENTITIES.register("cooking_station", () -> new BlockEntityType<>(com.snolred.wildplus.block.CookingStationBlockEntity::new,
+                    ModBlocks4.COOKING_POT.get(), ModBlocks4.BRICK_OVEN.get(), ModBlocks4.BBQ_GRILL.get(), ModBlocks4.PREP_TABLE.get(),
+                    ModBlocks4.KITCHEN_STOVE.get(), ModBlocks4.AGING_RACK.get()));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.AutoCrafterBlockEntity>> AUTO_CRAFTER =
             BLOCK_ENTITIES.register("auto_crafter", () -> new BlockEntityType<>(com.snolred.wildplus.block.AutoCrafterBlockEntity::new,
                     com.snolred.wildplus.registry.ModBlocks2.AUTO_CRAFTER.get()));

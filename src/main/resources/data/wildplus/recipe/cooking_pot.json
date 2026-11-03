@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "I I",
+    "ICI",
+    "BFB"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "C": "minecraft:cauldron",
+    "B": "minecraft:bricks",
+    "F": "minecraft:campfire"
+  },
+  "result": {
+    "id": "wildplus:cooking_pot",
+    "count": 1
+  }
+}

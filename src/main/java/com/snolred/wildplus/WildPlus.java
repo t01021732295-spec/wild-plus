@@ -44,6 +44,8 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModItems12.init();
         com.snolred.wildplus.registry.ModItems13.init();
         com.snolred.wildplus.registry.ModBlocks3.init();
+        com.snolred.wildplus.registry.ModBlocks4.init();
+        com.snolred.wildplus.registry.ModItems14.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
@@ -85,6 +87,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.Jobs.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.Trials.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.net.DoubleJump.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.cooking.Cooking.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.BossSkills.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Land.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Arena.class);

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "wildplus:item/hoe_rice_bowl"
+  }
+}

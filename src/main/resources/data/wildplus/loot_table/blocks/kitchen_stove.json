@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:kitchen_stove"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "wildplus:blocks/kitchen_stove"
+}

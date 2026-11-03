@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/cooking_pot"
+    },
+    "facing=east": {
+      "model": "wildplus:block/cooking_pot",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/cooking_pot",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/cooking_pot",
+      "y": 270
+    }
+  }
+}

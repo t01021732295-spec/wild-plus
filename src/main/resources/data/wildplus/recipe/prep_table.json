@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SKS",
+    "PPP",
+    "L L"
+  ],
+  "key": {
+    "S": "#minecraft:wooden_slabs",
+    "K": "minecraft:iron_sword",
+    "P": "#minecraft:planks",
+    "L": "#minecraft:logs"
+  },
+  "result": {
+    "id": "wildplus:prep_table",
+    "count": 1
+  }
+}

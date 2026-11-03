@@ -86,6 +86,7 @@ public final class ShipPrices {
         put(m, com.snolred.wildplus.registry.ModItems11.SAPPHIRE_ORE.get(), 3500);
         put(m, com.snolred.wildplus.registry.ModItems11.DEEPSLATE_SAPPHIRE_ORE.get(), 3500);
         put(m, Items.POTION, 20); put(m, Items.GLASS_BOTTLE, 5); put(m, Items.KELP, 2); put(m, Items.DRIED_KELP, 5); put(m, Items.SEA_PICKLE, 20);
+        com.snolred.wildplus.cooking.Cooking.prices(m); // 요리: 재료값 × 2.5
         table = m;
         return m;
     }

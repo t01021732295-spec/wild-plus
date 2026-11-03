@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:bbq_grill"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "wildplus:blocks/bbq_grill"
+}

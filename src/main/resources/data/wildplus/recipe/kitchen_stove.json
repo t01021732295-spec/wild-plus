@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "III",
+    "IFI",
+    "QQQ"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "F": "minecraft:blast_furnace",
+    "Q": "minecraft:quartz_block"
+  },
+  "result": {
+    "id": "wildplus:kitchen_stove",
+    "count": 1
+  }
+}

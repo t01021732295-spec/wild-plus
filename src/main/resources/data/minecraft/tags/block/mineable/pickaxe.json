@@ -36,6 +36,10 @@
     "wildplus:sapphire_block",
     "wildplus:luxury_shop",
     "wildplus:arena_desk",
-    "wildplus:fertilizer_spreader"
+    "wildplus:fertilizer_spreader",
+    "wildplus:cooking_pot",
+    "wildplus:brick_oven",
+    "wildplus:bbq_grill",
+    "wildplus:kitchen_stove"
   ]
 }
