@@ -53,6 +53,7 @@ LANG_KO.update({
     "item.wildplus.stellar_core": "스텔라 코어",
     "tooltip.wildplus.stellar_core": "네더의 별 + 루비 블록 4 + 블레이즈 막대 2 + 마그마 크림 2\n강화대에서 루비 장비를 스텔라 루비로 승급하는 재료",
 })
+LANG_KO["tooltip.wildplus.sky_sapphire_boots"] = None  # 아래에서 기존 툴팁 뒤에 덧붙임
 for n, r in [(11, "XI"), (12, "XII"), (13, "XIII"), (14, "XIV"), (15, "XV")]:
     LANG_KO[f"enchantment.level.{n}"] = r
 LANG_EN = {
@@ -166,6 +167,8 @@ def data():
 
 
 def build(lang_ko, lang_en):
+    old = lang_ko.get("tooltip.wildplus.sky_sapphire_boots", "")
+    LANG_KO["tooltip.wildplus.sky_sapphire_boots"] = (old.split("\n더블 점프")[0] + "\n더블 점프: 공중에서 점프 키를 한 번 더 누르면 한 번 더 뜀").lstrip("\n")
     # 스텔라 루비 승급 재료가 네더의 별 → 스텔라 코어로 바뀜
     for k, v in list(lang_ko.items()):
         if isinstance(v, str) and "네더의 별 + 1,000동" in v:
