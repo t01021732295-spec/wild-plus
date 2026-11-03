@@ -19,12 +19,13 @@ import net.minecraft.world.level.storage.ValueOutput;
  *   (값싼 광물은 최소 15초에 하나 — 돈보다는 재료용).
  * - 강화 단계: 0단계 석탄~석영 / 1단계(다이아 블록 4개) 다이아 · 에메랄드 / 2단계(루비 블록 8개) 미스릴 · 비취 · 루비.
  *   채굴기를 그 블록을 들고 우클릭하면 강화된다.
- * 청크가 꺼져 있던 동안의 시간도 다시 켜질 때 몰아서 계산한다 (최대 8시간, 결과 칸이 차면 멈춤).
+ * 서버와 청크가 켜져 있을 때만 캔다 (꺼져 있던 시간은 계산하지 않음). 결과 칸이 차면 멈춘다.
  * 칸: 0~17 결과. 호퍼로 뺄 수 있다.
  */
 public class OreMinerBlockEntity extends MachineBlockEntity {
     public static final int OUTPUT = 18;
-    private static final long MAX_CATCHUP_MS = 8L * 60 * 60 * 1000;
+    /** 오프라인 보충 없음: 1초마다 도는 틱 사이 시간만 센다 (서버 렉 대비로 최대 5초) */
+    private static final long MAX_CATCHUP_MS = 5_000L;
 
     /** 광물: 이름 · 아이템 · 한 번에 개수 · 필요한 강화 단계 · 하나 캐는 데 걸리는 초 */
     public record Ore(String name, Supplier<Item> item, int count, int tier, int seconds) {}
