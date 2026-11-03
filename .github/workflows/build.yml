@@ -930,10 +930,12 @@ jobs:
             import -window root shot-jobs.png || true
             xdotool key Escape; sleep 1
             # ── 3.1: 조리 기구 ──
+            cmd "/fill 496 120 -18 528 128 4 air"
+            cmd "/fill 496 119 -18 528 119 4 minecraft:polished_andesite"
             kx=500; for b in cooking_pot brick_oven bbq_grill prep_table kitchen_stove aging_rack; do cmd "/setblock $kx 120 -12 wildplus:$b[facing=south]"; kx=$((kx+4)); done
             cmd "/time set 6000"
-            cmd "/tp @s 510.5 123 -1.5 180 22"
-            sleep 4
+            cmd "/tp @s 510.5 123 -3.5 180 25"
+            sleep 6
             import -window root shot-kitchen.png || true
             cmd "/item replace block 500 120 -12 container.0 with wildplus:kimchi"
             cmd "/item replace block 500 120 -12 container.1 with minecraft:porkchop"
@@ -943,6 +945,8 @@ jobs:
             cmd "/tp @s 500.5 120 -9.3 180 30"
             sleep 3; xdotool click 3; sleep 4
             import -window root shot-cook-pot.png || true
+            sleep 8
+            import -window root shot-cook-pot2.png || true
             xdotool key Escape; sleep 1
             cmd "/tp @s 504.5 120 -9.3 180 25"
             sleep 2; xdotool click 3; sleep 2

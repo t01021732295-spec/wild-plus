@@ -101,73 +101,87 @@ public class CookingScreen extends AbstractContainerScreen<CookingMenu> {
         boolean cooking = menu.progress() > 0;
         long t = Util.getMillis() / 120;
         UiKit.device(g, x, y, W, H, 0xFF6A4630, 0xFF3A2414);
-        int cx = x + W / 2, top = y + 20, bot = y + 112;
+        int cx = x + W / 2, top = y + 20, bot = y + 86;
+        boolean lit = menu.burn() > 0;
         switch (st()) {
             case POT -> {
-                bricks(g, x + 4, y + 4, x + W - 4, bot, 0xFFA84A34, 0xFF96402E, 0xFF5A463C);
-                UiKit.circle(g, cx - 38, top + 8, 76, 0xFF1E1E24);
-                g.fill(cx - 36, top + 14, cx + 36, top + 24, 0xFF3C3C44);
-                UiKit.round(g, cx - 32, top + 10, 64, 14, 6, 0xFFD6783C);
-                for (int k = 0; k < 4; k++) {
-                    int bx = cx - 22 + k * 14, by = top + 14 + (int) ((t + k * 5) % 6) / 3;
-                    if (cooking) UiKit.circle(g, bx, by, 5, 0xFFF0AA64);
-                }
+                bricks(g, x + 4, y + 4, x + W - 4, y + 90, 0xFFA84A34, 0xFF96402E, 0xFF5A463C);
+                g.fill(cx - 30, bot - 8, cx + 30, bot, 0xFF1E1410);
+                UiKit.circle(g, cx - 25, top + 12, 50, 0xFF1E1E24);
+                UiKit.circle(g, cx - 21, top + 16, 20, 0xFF2E2E36);
+                UiKit.round(g, cx - 31, top + 12, 62, 9, 4, 0xFF46464E);
+                UiKit.round(g, cx - 27, top + 13, 54, 6, 3, cooking ? 0xFFE0702E : 0xFF8A5A3A);
+                g.fill(cx - 36, top + 14, cx - 31, top + 18, 0xFF46464E);
+                g.fill(cx + 31, top + 14, cx + 36, top + 18, 0xFF46464E);
+                if (cooking) for (int k = 0; k < 4; k++) UiKit.circle(g, cx - 20 + k * 11, top + 13 + (int) ((t + k * 5) % 4) / 2, 4, 0xFFF6B070);
                 for (int k = 0; k < 3; k++) {
-                    int sy = top + 2 - (int) ((t + k * 7) % 14);
-                    UiKit.circle(g, cx - 14 + k * 12, sy, 8, 0x99EBEBF0);
+                    int sy = top + 6 - (int) ((t + k * 5) % 12);
+                    if (cooking) UiKit.circle(g, cx - 14 + k * 11, sy, 7, 0x88F0F0F4);
                 }
-                g.fill(cx - 28, bot - 10, cx + 28, bot, 0xFF1E1410);
-                flames(g, cx - 26, cx + 26, bot, 9, menu.burn() > 0);
+                flames(g, cx - 26, cx + 26, bot, 8, lit);
             }
             case OVEN -> {
-                bricks(g, x + 4, y + 4, x + W - 4, bot, 0xFFC47E54, 0xFFB06E48, 0xFF786054);
-                UiKit.circle(g, cx - 42, top + 4, 84, 0xFF28180E);
-                g.fill(cx - 42, top + 46, cx + 42, bot - 4, 0xFF28180E);
-                g.fill(cx - 30, top + 34, cx + 30, top + 38, 0xFF46464A);
-                flames(g, cx - 36, cx + 36, bot - 6, 20, menu.burn() > 0);
-                // 온도계
-                UiKit.round(g, x + W - 32, top + 6, 10, 70, 5, 0xFFF0F0EC);
-                int lv = menu.burn() > 0 ? 60 : 12;
-                UiKit.round(g, x + W - 30, top + 74 - lv, 6, lv, 3, 0xFFE63C28);
+                bricks(g, x + 4, y + 4, x + W - 4, y + 90, 0xFFC47E54, 0xFFB06E48, 0xFF786054);
+                UiKit.circle(g, cx - 38, top, 76, 0xFF8A5A40);
+                g.fill(cx - 38, top + 38, cx + 38, bot, 0xFF8A5A40);
+                UiKit.circle(g, cx - 34, top + 4, 68, 0xFF28180E);
+                g.fill(cx - 34, top + 38, cx + 34, bot, 0xFF28180E);
+                g.fill(cx - 26, top + 34, cx + 26, top + 37, 0xFF55555A);
+                if (cooking) UiKit.round(g, cx - 14, top + 26, 28, 8, 4, 0xFFE8B060);
+                flames(g, cx - 30, cx + 30, bot, 16, lit);
+                UiKit.round(g, cx + 44, top + 8, 8, 52, 4, 0xFFF0F0EC);
+                int lv = lit ? 44 : 8;
+                UiKit.round(g, cx + 46, top + 58 - lv, 4, lv, 2, 0xFFE63C28);
             }
             case GRILL -> {
-                g.fillGradient(x + 4, y + 4, x + W - 4, bot, 0xFF2A2A30, 0xFF16161A);
-                UiKit.round(g, cx - 50, top + 18, 100, 54, 4, 0xFFB42824);
-                g.fill(cx - 46, top + 24, cx + 46, top + 66, menu.burn() > 0 ? 0xFFFF7A28 : 0xFF3A2020);
-                for (int k = 0; k < 10; k++) g.fill(cx - 46, top + 26 + k * 4, cx + 46, top + 27 + k * 4, 0xFF28282C);
-                for (int k = 0; k < 6; k++) {
-                    int sy = top + 14 - (int) ((t + k * 4) % 12);
-                    if (cooking) UiKit.circle(g, cx - 40 + k * 15, sy, 6, 0x66C8C8C8);
+                g.fillGradient(x + 4, y + 4, x + W - 4, y + 90, 0xFF2A2A30, 0xFF16161A);
+                UiKit.round(g, cx - 52, top + 14, 104, 50, 5, 0xFFB42824);
+                UiKit.round(g, cx - 52, top + 14, 104, 6, 3, 0xFFD23A30);
+                g.fill(cx - 46, top + 22, cx + 46, top + 58, lit ? 0xFFFF7A28 : 0xFF3A2020);
+                if (lit) for (int k = 0; k < 9; k++) UiKit.circle(g, cx - 42 + k * 10, top + 44 + (k % 2) * 4, 8, (t + k) % 3 == 0 ? 0xFFFFC040 : 0xFFE0501C);
+                for (int k = 0; k < 9; k++) g.fill(cx - 46, top + 24 + k * 4, cx + 46, top + 25 + k * 4, 0xFF28282C);
+                if (cooking) {
+                    UiKit.round(g, cx - 30, top + 26, 24, 10, 3, 0xFF8A3A26);
+                    UiKit.round(g, cx + 6, top + 28, 24, 10, 3, 0xFF8A3A26);
+                    for (int k = 0; k < 5; k++) UiKit.circle(g, cx - 36 + k * 16, top + 8 - (int) ((t + k * 4) % 10), 6, 0x66D0D0D0);
                 }
             }
             case STOVE -> {
-                for (int ty = y + 4; ty < bot; ty += 10)
+                for (int ty = y + 4; ty < y + 90; ty += 10)
                     for (int tx = x + 4; tx < x + W - 4; tx += 10)
-                        g.fill(tx, ty, Math.min(tx + 9, x + W - 4), Math.min(ty + 9, bot), ((tx + ty) / 10) % 2 == 0 ? 0xFFEEF0EC : 0xFFE2E6E4);
-                UiKit.round(g, cx - 44, top + 20, 88, 60, 4, 0xFF1E1E22);
-                UiKit.circle(g, cx - 26, top + 32, 36, menu.burn() > 0 ? 0xFF3C6CF0 : 0xFF33333A);
-                UiKit.circle(g, cx - 22, top + 36, 28, 0xFF1E1E22);
-                UiKit.circle(g, cx - 30, top + 28, 44, 0xFF3A3A40); // 프라이팬
-                UiKit.circle(g, cx - 26, top + 32, 36, 0xFF55555C);
-                g.fill(cx + 12, top + 46, cx + 40, top + 51, 0xFF2A1E18);
-                if (cooking) UiKit.circle(g, cx - 14, top + 44, 12, 0xFFFFF8F0);
+                        g.fill(tx, ty, Math.min(tx + 9, x + W - 4), Math.min(ty + 9, y + 90), ((tx + ty) / 10) % 2 == 0 ? 0xFFEEF0EC : 0xFFE2E6E4);
+                UiKit.round(g, cx - 48, top + 8, 96, 56, 4, 0xFF1E1E22);
+                UiKit.circle(g, cx - 26, top + 16, 40, lit ? 0xFF3C6CF0 : 0xFF33333A);
+                UiKit.circle(g, cx - 22, top + 20, 32, 0xFF1E1E22);
+                UiKit.circle(g, cx - 23, top + 19, 34, 0xFF3A3A40);
+                UiKit.circle(g, cx - 20, top + 22, 28, 0xFF55555C);
+                g.fill(cx + 11, top + 34, cx + 40, top + 39, 0xFF2A1E18);
+                if (cooking) {
+                    UiKit.circle(g, cx - 14, top + 28, 16, 0xFFFFF8F0);
+                    UiKit.circle(g, cx - 10, top + 32, 8, 0xFFFFC030);
+                }
+                UiKit.circle(g, cx + 26, top + 14, 10, 0xFF46464C);
+                UiKit.circle(g, cx + 36, top + 14, 10, 0xFF46464C);
             }
             case PREP -> {
-                planks(g, x + 4, y + 4, x + W - 4, bot, 0xFFB98A52);
-                UiKit.round(g, cx - 48, top + 14, 96, 64, 6, 0xFF8A5A30);
-                UiKit.round(g, cx - 46, top + 16, 92, 60, 6, 0xFFDCB070);
-                for (int k = 0; k < 5; k++) g.fill(cx - 42, top + 22 + k * 11, cx + 42, top + 23 + k * 11, 0x22000000);
-                g.fill(cx + 8, top + 30, cx + 40, top + 34, 0xFFD2D7DE); // 칼
-                g.fill(cx + 40, top + 30, cx + 52, top + 34, 0xFF2A1E18);
+                planks(g, x + 4, y + 4, x + W - 4, y + 90, 0xFFB98A52);
+                UiKit.round(g, cx - 50, top + 6, 100, 58, 6, 0xFF8A5A30);
+                UiKit.round(g, cx - 48, top + 8, 96, 54, 6, 0xFFDCB070);
+                for (int k = 0; k < 5; k++) g.fill(cx - 44, top + 14 + k * 10, cx + 44, top + 15 + k * 10, 0x22000000);
+                g.fill(cx + 4, top + 20, cx + 36, top + 24, 0xFFD2D7DE);
+                g.fill(cx + 36, top + 20, cx + 48, top + 24, 0xFF2A1E18);
+                if (cooking) for (int k = 0; k < 4; k++) UiKit.round(g, cx - 38 + k * 9, top + 34, 7, 12, 2, k % 2 == 0 ? 0xFF4CAF50 : 0xFFF2F2F2);
             }
             case AGING -> {
-                planks(g, x + 4, y + 4, x + W - 4, bot, 0xFF5A3A20);
+                planks(g, x + 4, y + 4, x + W - 4, y + 90, 0xFF5A3A20);
                 for (int k = 0; k < 2; k++) {
-                    int by = top + 8 + k * 42;
-                    UiKit.round(g, cx - 50, by, 100, 34, 10, 0xFF9A5E32);
-                    for (int r = 0; r < 3; r++) g.fill(cx - 36 + r * 34, by, cx - 32 + r * 34, by + 34, 0xFF46464C);
-                    g.fill(cx - 3, by + 14, cx + 3, by + 20, 0xFFC8AA3C);
+                    int by = top + 2 + k * 32;
+                    g.fill(cx - 54, by + 28, cx + 54, by + 31, 0xFF3A2410);
+                    UiKit.round(g, cx - 48, by, 96, 28, 10, 0xFF9A5E32);
+                    for (int r = 0; r < 3; r++) g.fill(cx - 34 + r * 32, by, cx - 30 + r * 32, by + 28, 0xFF46464C);
+                    g.fill(cx - 3, by + 11, cx + 3, by + 17, 0xFFC8AA3C);
                 }
+                if (cooking) g.fill(cx - 1, top + 19, cx + 1, top + 22 + (int) (t % 6), 0xFFB03050);
             }
         }
         // 제목판
@@ -187,10 +201,11 @@ public class CookingScreen extends AbstractContainerScreen<CookingMenu> {
             if (s.index >= 8) break;
             int c = s.index == 7 ? 0xFFFFD25A : s.index == 6 ? 0xFFE08A3A : 0xFFF4E4C0;
             UiKit.outline(g, x + s.x - 2, y + s.y - 2, 20, 20, c);
-            g.fill(x + s.x - 1, y + s.y - 1, x + s.x + 17, y + s.y + 17, 0xFF8B8B8B);
+            UiKit.slot(g, x + s.x, y + s.y, UiKit.SlotStyle.LIGHT);
         }
         // 가방 쟁반
         UiKit.inventoryTray(g, x + 4, y + CookingMenu.INV_Y - 14, W - 8, H - CookingMenu.INV_Y + 10);
+        for (Slot s : menu.slots) if (s.index >= 8) UiKit.slot(g, x + s.x, y + s.y);
     }
 
     private void recipeBook(GuiGraphicsExtractor g, int x, int y) {
