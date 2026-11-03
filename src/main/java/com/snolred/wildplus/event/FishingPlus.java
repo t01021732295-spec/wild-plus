@@ -41,14 +41,22 @@ public final class FishingPlus {
 
     private static final Rod VANILLA = new Rod(0, 0.25F, 0.02F, 0F, 0.01F, 1F);
     private static final Rod JADE = new Rod(40, 0.5F, 0.05F, 0.2F, 0.02F, 1.2F);
-    private static final Rod[] TIERS = {VANILLA,
-            new Rod(100, 0.5F, 0.04F, 0.15F, 0.02F, 1.3F),  // 미스릴
-            new Rod(140, 0.6F, 0.05F, 0.2F, 0.03F, 1.6F),   // 루비
-            new Rod(180, 0.65F, 0.08F, 0.35F, 0.03F, 2.0F), // 사파이어
-            new Rod(220, 0.75F, 0.1F, 0.5F, 0.06F, 3.0F)};  // 용왕
+    /** 낚싯대별 능력: 입질 · 희귀 · 보물상자 · 두 마리 · 용왕어 · 등급 배율. 루비=희귀, 사파이어=보물·두 마리, 에메랄드=등급 */
+    private static final java.util.Map<String, Rod> RODS = java.util.Map.of(
+            "mythril_fishing_rod", new Rod(100, 0.5F, 0.04F, 0.15F, 0.02F, 1.3F),
+            "ruby_fishing_rod", new Rod(130, 0.65F, 0.04F, 0.15F, 0.03F, 1.4F),
+            "sapphire_fishing_rod", new Rod(130, 0.5F, 0.08F, 0.3F, 0.02F, 1.4F),
+            "emerald_fishing_rod", new Rod(130, 0.5F, 0.05F, 0.15F, 0.02F, 1.9F),
+            "stellar_ruby_fishing_rod", new Rod(180, 0.8F, 0.05F, 0.25F, 0.05F, 2.0F),
+            "sky_sapphire_fishing_rod", new Rod(180, 0.6F, 0.14F, 0.5F, 0.04F, 2.0F),
+            "royal_emerald_fishing_rod", new Rod(180, 0.6F, 0.07F, 0.25F, 0.04F, 3.2F),
+            "dragon_fishing_rod", new Rod(220, 0.85F, 0.12F, 0.55F, 0.08F, 3.5F));
 
     public static Rod rod(ItemStack s) {
-        if (s.getItem() instanceof TieredRodItem t) return TIERS[Math.min(4, t.tier)];
+        if (s.getItem() instanceof TieredRodItem) {
+            Rod r = RODS.get(BuiltInRegistries.ITEM.getKey(s.getItem()).getPath());
+            if (r != null) return r;
+        }
         if (s.is(ModItems2.JADE_FISHING_ROD.get())) return JADE;
         return VANILLA;
     }

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "  X",
+    " RX",
+    "  X"
+  ],
+  "key": {
+    "X": "minecraft:emerald",
+    "R": "wildplus:mythril_fishing_rod"
+  },
+  "result": {
+    "id": "wildplus:emerald_fishing_rod",
+    "count": 1
+  }
+}

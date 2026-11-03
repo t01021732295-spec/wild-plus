@@ -19,6 +19,15 @@ public final class ModItems13 {
             p -> new TieredRodItem(p.durability(1200).enchantable(18).rarity(Rarity.RARE).fireResistant(), 2));
     public static final DeferredItem<TieredRodItem> SAPPHIRE_FISHING_ROD = ITEMS.registerItem("sapphire_fishing_rod",
             p -> new TieredRodItem(p.durability(1600).enchantable(20).rarity(Rarity.RARE), 3));
+    public static final DeferredItem<TieredRodItem> EMERALD_FISHING_ROD = ITEMS.registerItem("emerald_fishing_rod",
+            p -> new TieredRodItem(p.durability(1400).enchantable(25).rarity(Rarity.RARE), 2));
+    // 강화형 (강화대 승급, 인챈트 유지): 스텔라 루비 · 스카이 사파이어 · 로열 에메랄드
+    public static final DeferredItem<TieredRodItem> STELLAR_RUBY_FISHING_ROD = ITEMS.registerItem("stellar_ruby_fishing_rod",
+            p -> new TieredRodItem(p.durability(3000).enchantable(22).rarity(Rarity.EPIC).fireResistant(), 3));
+    public static final DeferredItem<TieredRodItem> SKY_SAPPHIRE_FISHING_ROD = ITEMS.registerItem("sky_sapphire_fishing_rod",
+            p -> new TieredRodItem(p.durability(3000).enchantable(22).rarity(Rarity.EPIC), 3));
+    public static final DeferredItem<TieredRodItem> ROYAL_EMERALD_FISHING_ROD = ITEMS.registerItem("royal_emerald_fishing_rod",
+            p -> new TieredRodItem(p.durability(3000).enchantable(28).rarity(Rarity.EPIC).fireResistant(), 3));
     public static final DeferredItem<TieredRodItem> DRAGON_FISHING_ROD = ITEMS.registerItem("dragon_fishing_rod",
             p -> new TieredRodItem(p.durability(4000).enchantable(22).rarity(Rarity.EPIC).fireResistant(), 4));
 
@@ -68,22 +77,30 @@ public final class ModItems13 {
         return ITEMS.registerSimpleItem(name, p -> p.food(new FoodProperties.Builder().nutrition(nutrition).saturationModifier(sat).build()));
     }
 
-    /** 낚싯대 승급 (강화대, 인챈트 유지): 비취 → 미스릴 → 루비 → 사파이어 → 용왕 */
+    /**
+     * 낚싯대 승급 (강화대, 인챈트 유지): 비취 → 미스릴 / 루비 → 스텔라 루비 · 사파이어 → 스카이 사파이어 · 에메랄드 → 로열 에메랄드
+     * → (셋 중 무엇이든) 용왕. 루비 · 사파이어 · 에메랄드 낚싯대는 미스릴 낚싯대 + 광물로 조합.
+     */
     public static java.util.Map<Item, Item> rodUpgrades() {
         java.util.Map<Item, Item> m = new java.util.LinkedHashMap<>();
         m.put(ModItems2.JADE_FISHING_ROD.get(), MYTHRIL_FISHING_ROD.get());
-        m.put(MYTHRIL_FISHING_ROD.get(), RUBY_FISHING_ROD.get());
-        m.put(RUBY_FISHING_ROD.get(), SAPPHIRE_FISHING_ROD.get());
-        m.put(SAPPHIRE_FISHING_ROD.get(), DRAGON_FISHING_ROD.get());
+        m.put(RUBY_FISHING_ROD.get(), STELLAR_RUBY_FISHING_ROD.get());
+        m.put(SAPPHIRE_FISHING_ROD.get(), SKY_SAPPHIRE_FISHING_ROD.get());
+        m.put(EMERALD_FISHING_ROD.get(), ROYAL_EMERALD_FISHING_ROD.get());
+        m.put(STELLAR_RUBY_FISHING_ROD.get(), DRAGON_FISHING_ROD.get());
+        m.put(SKY_SAPPHIRE_FISHING_ROD.get(), DRAGON_FISHING_ROD.get());
+        m.put(ROYAL_EMERALD_FISHING_ROD.get(), DRAGON_FISHING_ROD.get());
         return m;
     }
 
     /** 낚싯대 승급 재료 (낚싯대가 아니면 null) */
     public static Item rodMaterial(Item from) {
         if (from == ModItems2.JADE_FISHING_ROD.get()) return ModItems2.MYTHRIL_BLOCK.get();
-        if (from == MYTHRIL_FISHING_ROD.get()) return ModItems7.RUBY_BLOCK.get();
-        if (from == RUBY_FISHING_ROD.get()) return ModItems11.SAPPHIRE_BLOCK.get();
-        if (from == SAPPHIRE_FISHING_ROD.get()) return ModItems5.DRAGON_KING_FISH.get();
+        if (from == RUBY_FISHING_ROD.get()) return STELLAR_CORE.get();
+        if (from == SAPPHIRE_FISHING_ROD.get()) return ModItems11.DRAGON_PLUME.get();
+        if (from == EMERALD_FISHING_ROD.get()) return ModItems12.LIFE_CRYSTAL.get();
+        if (from == STELLAR_RUBY_FISHING_ROD.get() || from == SKY_SAPPHIRE_FISHING_ROD.get() || from == ROYAL_EMERALD_FISHING_ROD.get())
+            return ModItems5.DRAGON_KING_FISH.get();
         return null;
     }
 

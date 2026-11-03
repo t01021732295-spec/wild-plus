@@ -52,7 +52,9 @@ def sprite(rows, pal):
 
 
 # ───────── 낚싯대: 비취 낚싯대의 초록 부분을 재질 색으로 ─────────
-RODS = {"mythril": (200, 0.55, 1.1), "ruby": (350, 0.75, 1.0), "sapphire": (220, 0.8, 1.0), "dragon": (45, 0.9, 1.15)}
+RODS = {"mythril": (200, 0.55, 1.1), "ruby": (350, 0.75, 1.0), "sapphire": (220, 0.8, 1.0), "dragon": (45, 0.9, 1.15),
+        "emerald": (140, 0.7, 1.0), "stellar_ruby": (330, 0.95, 1.2), "sky_sapphire": (195, 0.95, 1.25), "royal_emerald": (150, 0.9, 1.2)}
+SPARKLE = {"stellar_ruby": (255, 220, 120), "sky_sapphire": (230, 250, 255), "royal_emerald": (255, 235, 140)}
 
 
 def rods():
@@ -61,6 +63,11 @@ def rods():
             im = hue_map(load(f"item/jade_fishing_rod{cast}.png"), green, hue, sat, light)
             if name == "dragon":  # 용왕: 손잡이 끝에 붉은 보석
                 im.putpixel((1, 14) if not cast else (1, 14), (230, 40, 60, 255))
+            if name in SPARKLE:  # 강화형: 반짝이 + 손잡이 금테
+                for p_ in [(12, 2), (14, 5), (9, 1)]:
+                    if im.getpixel(p_)[3] == 0:
+                        im.putpixel(p_, SPARKLE[name] + (255,))
+                im.putpixel((2, 13), (240, 200, 80, 255))
             save(im, f"item/{name}_fishing_rod{cast}.png")
 
 
@@ -265,7 +272,18 @@ def sky_wings():
     save(im, "entity/equipment/wings/sky_sapphire.png")
 
 
+CHESTS = [("bronze", 25, 0.75, 0.95), ("silver", 0, 0.0, 1.15), ("gold", 48, 0.9, 1.15), ("diamond", 185, 0.8, 1.15), ("ruby", 350, 0.9, 1.0)]
+
+
+def chests():
+    base = load("item/sunken_chest.png")
+    for k, (name, hue, sat, light) in enumerate(CHESTS):
+        im = hue_map(base, lambda h, s_, l: s_ > 0.12, hue, sat, light)
+        save(im, f"item/sunken_chest_{name}.png")
+
+
 def build():
+    chests()
     extras()
     sky_wings()
     rods()

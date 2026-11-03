@@ -58,7 +58,8 @@ public class FishingLootModifier extends LootModifier {
         // 침몰한 보물상자 (탁 트인 물에서만)
         if (openWater && random.nextFloat() < rod.chest()) {
             loot.clear();
-            loot.add(new ItemStack(ModItems2.SUNKEN_CHEST.get()));
+            loot.add(com.snolred.wildplus.item.SunkenChestItem.make(com.snolred.wildplus.item.SunkenChestItem.roll(random,
+                    rod.grade() * (angler == null ? 0.5F : 1F))));
             return loot;
         }
 
