@@ -490,6 +490,8 @@ public final class RandomEvents {
     @SubscribeEvent
     public static void onBlockDrops(BlockDropsEvent event) {
         if (active != Type.ORE_BLESSING || !event.getState().is(Tags.Blocks.ORES) || event.getDrops().isEmpty()) return;
+        // 광석 블록 자체(섬세한 손길)는 복사하지 않음 — 놓고 다시 캐는 무한 복사 방지
+        if (event.getDrops().get(0).getItem().is(event.getState().getBlock().asItem())) return;
         if (event.getLevel().getRandom().nextFloat() < 0.5F) {
             ItemEntity first = event.getDrops().get(0);
             event.getDrops().add(new ItemEntity(event.getLevel(), first.getX(), first.getY(), first.getZ(), first.getItem().copy()));

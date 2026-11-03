@@ -158,7 +158,9 @@ public final class GearEffects {
                 if (smelted != null) e.setItem(new ItemStack(smelted, s.getCount()));
             }
         } else if (tool.is(ModItems4.JADE_PICKAXE.get())) {
-            if (state.is(Tags.Blocks.ORES) && !drops.isEmpty() && rnd.nextFloat() < 0.25F) {
+            // 섬세한 손길로 광석 블록 자체가 나올 땐 복사하지 않음 (놓고 다시 캐는 무한 복사 방지)
+            if (state.is(Tags.Blocks.ORES) && !drops.isEmpty() && !drops.get(0).getItem().is(state.getBlock().asItem())
+                    && rnd.nextFloat() < 0.25F) {
                 add(level, pos, drops, drops.get(0).getItem().copy());
             }
         } else if (tool.is(ModItems4.JADE_AXE.get())) {
