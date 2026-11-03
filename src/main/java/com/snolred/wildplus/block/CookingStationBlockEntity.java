@@ -141,11 +141,13 @@ public class CookingStationBlockEntity extends BlockEntity implements WorldlyCon
             if (take[i] <= 0) continue;
             ItemStack s = items.get(i);
             used.add(s.copyWithCount(take[i]));
-            ItemStack remainder = s.getItem().getCraftingRemainder(s);
+            ItemStack remainder = s.is(net.minecraft.world.item.Items.MILK_BUCKET) || s.is(net.minecraft.world.item.Items.WATER_BUCKET)
+                    ? new ItemStack(net.minecraft.world.item.Items.BUCKET)
+                    : s.is(net.minecraft.world.item.Items.HONEY_BOTTLE) ? new ItemStack(net.minecraft.world.item.Items.GLASS_BOTTLE) : ItemStack.EMPTY;
             s.shrink(take[i]);
             if (!remainder.isEmpty()) {
                 if (s.isEmpty()) items.set(i, remainder.copyWithCount(take[i]));
-                else Containers.dropItemStack(level, worldPosition.getX() + 0.5, worldPosition.getY() + 1.2, worldPosition.getZ() + 0.5, remainder);
+                else Containers.dropItemStack(level, worldPosition.getX() + 0.5, worldPosition.getY() + 1.2, worldPosition.getZ() + 0.5, remainder.copyWithCount(take[i]));
             }
         }
         ItemStack result = new ItemStack(ModItems14.dish(d.id()), d.count());
