@@ -121,7 +121,8 @@ public class BackpackMenu extends AbstractContainerMenu {
         }
         save(bag);
         Item next = tier == 0 ? ModItems4.SILVER_BACKPACK.get() : tier == 1 ? ModItems4.GOLD_BACKPACK.get()
-                : com.snolred.wildplus.registry.ModItems9.DIAMOND_BACKPACK.get();
+                : tier == 2 ? com.snolred.wildplus.registry.ModItems9.DIAMOND_BACKPACK.get()
+                : com.snolred.wildplus.registry.ModItems13.EMERALD_BACKPACK.get();
         ItemStack upgraded = stack.transmuteCopy(next, 1);
         sp.getInventory().setItem(bagSlot, upgraded);
         sp.level().playSound(null, sp.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.7F, 1.4F);

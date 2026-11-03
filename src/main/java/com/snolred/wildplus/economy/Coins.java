@@ -23,6 +23,7 @@ public final class Coins {
     public static final int SILVER = 10;
     public static final int GOLD = 100;
     public static final int DIAMOND = 1000;
+    public static final int EMERALD = 10000;
     public static final String POUCH_KEY = "wildplus_coins";
 
     private Coins() {}
@@ -33,6 +34,7 @@ public final class Coins {
         if (stack.is(ModItems3.SILVER_COIN.get())) return SILVER;
         if (stack.is(ModItems3.GOLD_COIN.get())) return GOLD;
         if (stack.is(ModItems3.DIAMOND_COIN.get())) return DIAMOND;
+        if (stack.is(com.snolred.wildplus.registry.ModItems13.EMERALD_COIN.get())) return EMERALD;
         return 0;
     }
 
@@ -158,10 +160,12 @@ public final class Coins {
     /** 금액을 가장 적은 개수의 동전으로 */
     public static List<ItemStack> toCoins(long amount) {
         List<ItemStack> out = new ArrayList<>();
-        long diamond = amount / DIAMOND;
+        long emerald = amount / EMERALD;
+        long diamond = (amount % EMERALD) / DIAMOND;
         long gold = (amount % DIAMOND) / GOLD;
         long silver = (amount % GOLD) / SILVER;
         long copper = amount % SILVER;
+        addStacks(out, new ItemStack(com.snolred.wildplus.registry.ModItems13.EMERALD_COIN.get()), emerald);
         addStacks(out, new ItemStack(ModItems3.DIAMOND_COIN.get()), diamond);
         addStacks(out, new ItemStack(ModItems3.GOLD_COIN.get()), gold);
         addStacks(out, new ItemStack(ModItems3.SILVER_COIN.get()), silver);

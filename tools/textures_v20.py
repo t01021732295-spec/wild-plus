@@ -188,7 +188,86 @@ def blocks():
     save(board, "block/job_board_front.png")
 
 
+# ───────── 2.18 추가: 행운 상자 · 에메랄드화 · 에메랄드 배낭 · 스텔라 코어 · 스카이 사파이어 날개 ─────────
+BOX = ["................", "................", "...aaaaaaaaaa...", "..abbbbcbbbbba..",
+       "..abbbbcbbbbba..", "..aaaaacaaaaaa..", "..adddgggdddda..", "..adddgegddddа..".replace("а", "a"),
+       "..adddgggdddda..", "..addddcdddddа..".replace("а", "a"), "..addddcdddddа..".replace("а", "a"), "..addddcdddddа..".replace("а", "a"),
+       "..aaaaacaaaaaa..", "................", "................", "................"]
+
+
+def extras():
+    pal = {"a": (60, 20, 70), "b": (150, 60, 190), "c": (255, 210, 80), "d": (120, 40, 160), "g": (240, 190, 60), "e": (255, 255, 200)}
+    box = sprite(BOX, pal)
+    for p_ in [(2, 1), (13, 1), (14, 12)]:
+        box.putpixel(p_, (255, 255, 220, 255))
+    save(box, "item/lucky_box.png")
+    green = lambda h, s_, l: s_ > 0.08
+    save(hue_map(load("item/diamond_coin.png"), green, 140, 0.75, 0.95), "item/emerald_coin.png")
+    save(hue_map(load("item/diamond_backpack.png"), lambda h, s_, l: 150 <= h <= 220 and s_ > 0.1, 140, 0.7), "item/emerald_backpack.png")
+    # 스텔라 코어: 붉은 보석 핵 + 금빛 테 + 별빛
+    core = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    cp = core.load()
+    for y in range(16):
+        for x in range(16):
+            d = abs(x - 7.5) + abs(y - 7.5)
+            if d <= 6.5:
+                t = d / 6.5
+                cp[x, y] = (int(255 - 60 * t), int(90 - 70 * t), int(120 - 80 * t), 255) if d < 5 else (240, 190, 70, 255)
+    for (x, y) in [(6, 5), (7, 5), (6, 6), (9, 9)]:
+        cp[x, y] = (255, 230, 240, 255)
+    for (x, y) in [(1, 1), (14, 2), (13, 14), (2, 13)]:
+        cp[x, y] = (255, 250, 200, 255)
+    save(core, "item/stellar_core.png")
+
+
+def sky_wings():
+    """스카이 사파이어 날개 (겉날개 그림 자리, 4배 해상도 256×128). 날개 판 10×20 ×4 = 40×80 픽셀"""
+    S = 4
+    im = Image.new("RGBA", (64 * S, 32 * S), (0, 0, 0, 0))
+    px = im.load()
+    deep, mid, light, rim = (18, 44, 140), (40, 110, 220), (120, 210, 255), (235, 245, 255)
+
+    def wing_face(u0, v0, w, h, outer_left):
+        for v in range(h * S):
+            for u in range(w * S):
+                # 날개 모양: 바깥쪽 아래로 깃털 끝이 길게, 안쪽 아래는 사선으로 잘림
+                uu = (w * S - 1 - u) if outer_left else u          # 0 = 몸쪽, 끝 = 바깥
+                fu = uu / (w * S)                                  # 0~1
+                feather = (uu // (S * 2)) % 2
+                bottom = h * S * (0.55 + 0.45 * fu) - feather * S * 1.5
+                if v > bottom:
+                    continue
+                t = v / (h * S)
+                c = tuple(int(deep[i] + (mid[i] - deep[i]) * t * 1.2) for i in range(3))
+                # 깃털 줄 (가로 띠) + 깃털 가장자리 밝게
+                band = (v // (S * 3)) % 2
+                if band:
+                    c = tuple(min(255, int(x * 1.12)) for x in c)
+                if v > bottom - S * 1.2:
+                    c = light
+                if uu % (S * 2) == 0 and v > h * S * 0.35:
+                    c = tuple(int(x * 0.75) for x in c)
+                # 윗날 (날개 뼈): 은빛 테
+                if v < S * 1.5:
+                    c = rim if v < S else (200, 220, 240)
+                # 별빛 점
+                if (u * 7 + v * 13) % 97 == 0 and v > S * 2:
+                    c = (255, 255, 255)
+                px[u0 * S + u, v0 * S + v] = c + (255,)
+
+    # 겉날개 UV (64×32 기준): 앞 (24,2) 뒤 (36,2) 크기 10×20, 옆 (22,2)/(34,2) 2×20, 위 (24,0) 아래 (34,0) 10×2
+    wing_face(24, 2, 10, 20, False)
+    wing_face(36, 2, 10, 20, True)
+    for (u0, v0, w, h) in [(22, 2, 2, 20), (34, 2, 2, 20), (24, 0, 10, 2), (34, 0, 10, 2)]:
+        for v in range(h * S):
+            for u in range(w * S):
+                px[u0 * S + u, v0 * S + v] = (200, 220, 240, 255) if v < S * 2 else mid + (255,)
+    save(im, "entity/equipment/wings/sky_sapphire.png")
+
+
 def build():
+    extras()
+    sky_wings()
     rods()
     baits()
     fertilizers()

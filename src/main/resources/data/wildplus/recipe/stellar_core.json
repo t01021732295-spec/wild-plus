@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BMB",
+    "RNR",
+    "BMB"
+  ],
+  "key": {
+    "B": "minecraft:blaze_rod",
+    "M": "minecraft:magma_cream",
+    "R": "wildplus:ruby_block",
+    "N": "minecraft:nether_star"
+  },
+  "result": {
+    "id": "wildplus:stellar_core",
+    "count": 1
+  }
+}

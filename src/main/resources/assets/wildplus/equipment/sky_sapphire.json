@@ -12,8 +12,7 @@
     ],
     "wings": [
       {
-        "texture": "minecraft:elytra",
-        "use_player_texture": true
+        "texture": "wildplus:sky_sapphire"
       }
     ]
   }

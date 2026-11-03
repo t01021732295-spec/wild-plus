@@ -47,6 +47,20 @@ public final class ModItems13 {
     public static final DeferredItem<Item> GINSENG = ITEMS.registerSimpleItem("ginseng", p -> p.rarity(Rarity.RARE)
             .food(new FoodProperties.Builder().nutrition(4).saturationModifier(1.2F).alwaysEdible().build()));
 
+    /** 에메랄드화: 10,000동 (다이아화 10개) */
+    public static final DeferredItem<Item> EMERALD_COIN = ITEMS.registerSimpleItem("emerald_coin",
+            p -> p.rarity(Rarity.EPIC).component(net.minecraft.core.component.DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true));
+    /** 에메랄드 배낭 (128칸, 16×8) — 다이아 배낭에서 30,000동으로 업그레이드 */
+    public static final DeferredItem<com.snolred.wildplus.item.BackpackItem> EMERALD_BACKPACK = ITEMS.registerItem("emerald_backpack",
+            p -> new com.snolred.wildplus.item.BackpackItem(p, 4), p -> p.stacksTo(1).rarity(Rarity.EPIC).fireResistant());
+    /** 스텔라 코어: 네더의 별 + 루비 블록 4 + 블레이즈 막대 2 + 마그마 크림 2 → 스텔라 루비 승급 재료 */
+    public static final DeferredItem<Item> STELLAR_CORE = ITEMS.registerSimpleItem("stellar_core",
+            p -> p.rarity(Rarity.EPIC).fireResistant().component(net.minecraft.core.component.DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true));
+
+    /** 행운 상자 (명품관): 우클릭으로 열기 */
+    public static final DeferredItem<com.snolred.wildplus.item.LuckyBoxItem> LUCKY_BOX = ITEMS.registerItem("lucky_box",
+            p -> new com.snolred.wildplus.item.LuckyBoxItem(p.rarity(Rarity.EPIC).stacksTo(16)));
+
     public static final DeferredItem<BlockItem> SPREADER = ITEMS.registerSimpleBlockItem("fertilizer_spreader", ModBlocks3.SPREADER);
     public static final DeferredItem<BlockItem> JOB_BOARD = ITEMS.registerSimpleBlockItem("job_board", ModBlocks3.JOB_BOARD);
 

@@ -78,6 +78,18 @@ public final class SapphireGear {
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         Player p = event.getEntity();
+        // 스카이 사파이어 날개: 활공 중 푸른 별빛 꼬리
+        if (p.level() instanceof ServerLevel sl0 && p.isFallFlying() && p.tickCount % 2 == 0
+                && p.getItemBySlot(net.minecraft.world.entity.EquipmentSlot.CHEST).is(SKY_SAPPHIRE_CHESTPLATE.get())) {
+            var look = p.getLookAngle();
+            double bx = p.getX() - look.x * 0.8, by = p.getY() + 0.6 - look.y * 0.8, bz = p.getZ() - look.z * 0.8;
+            double sx = -look.z * 0.9, sz = look.x * 0.9; // 양 날개 끝
+            sl0.sendParticles(net.minecraft.core.particles.ParticleTypes.END_ROD, bx + sx, by, bz + sz, 1, 0.05, 0.05, 0.05, 0.0);
+            sl0.sendParticles(net.minecraft.core.particles.ParticleTypes.END_ROD, bx - sx, by, bz - sz, 1, 0.05, 0.05, 0.05, 0.0);
+            sl0.sendParticles(net.minecraft.core.particles.ParticleTypes.SNOWFLAKE, bx, by, bz, 2, 0.3, 0.2, 0.3, 0.01);
+            if (p.tickCount % 6 == 0)
+                sl0.sendParticles(new net.minecraft.core.particles.DustParticleOptions(0x3AA8FF, 1.6F), bx, by, bz, 4, 0.4, 0.2, 0.4, 0.0);
+        }
         if (!(p.level() instanceof ServerLevel level) || p.tickCount % 40 != 0) return;
         int n = pieces(p), sky = skyPieces(p);
         if (n >= 2) {

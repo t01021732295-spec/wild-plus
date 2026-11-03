@@ -20,7 +20,7 @@ import net.minecraft.world.item.equipment.EquipmentAssets;
 import net.neoforged.neoforge.registries.DeferredItem;
 
 /**
- * 16차: 스텔라 루비 장비 (네더라이트 위 최종 장비). 강화대에서 루비 장비 + 네더의 별 + 1,000동으로 승급.
+ * 16차: 스텔라 루비 장비 (네더라이트 위 최종 장비). 강화대에서 루비 장비 + 스텔라 코어 + 1,000동으로 승급.
  * 모두 불·용암에 타지 않고, 내구도가 닳지 않는다.
  * 검: 공격력 9 · 공격 속도 1.6 · 고정 피해 4 (강화대에서 0.5씩 최대 6)
  */
@@ -98,12 +98,12 @@ public final class ModItems9 {
         return m;
     }
 
-    /** 승급에 필요한 재료: 루비 → 네더의 별, 사파이어 → 용의 깃털 */
+    /** 승급에 필요한 재료: 루비 → 스텔라 코어, 사파이어 → 용의 깃털, 에메랄드 → 생명의 결정, 낚싯대 → 블록 */
     public static Item upgradeMaterial(Item from) {
         Item rod = ModItems13.rodMaterial(from);
         if (rod != null) return rod;
         if (ModItems12.upgrades().containsKey(from)) return ModItems12.LIFE_CRYSTAL.get();
-        return ModItems11.upgrades().containsKey(from) ? ModItems11.DRAGON_PLUME.get() : net.minecraft.world.item.Items.NETHER_STAR;
+        return ModItems11.upgrades().containsKey(from) ? ModItems11.DRAGON_PLUME.get() : ModItems13.STELLAR_CORE.get();
     }
 
     public static void init() {}

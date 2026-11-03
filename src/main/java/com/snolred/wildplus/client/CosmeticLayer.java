@@ -62,11 +62,14 @@ public class CosmeticLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
         wr.addOrReplaceChild("left", CubeListBuilder.create().texOffs(0, 0).addBox(0F, -4F, 0F, 16, 20, 1), PartPose.offset(1F, 1F, 2.5F));
         wr.addOrReplaceChild("right", CubeListBuilder.create().texOffs(0, 0).mirror().addBox(-16F, -4F, 0F, 16, 20, 1), PartPose.offset(-1F, 1F, 2.5F));
         this.wings = new Part(LayerDefinition.create(wm, 64, 32).bakeRoot(), true);
-        // 링: 머리 위에 뜬 네모난 고리
+        // 링: 머리 위에 뜬 둥근 고리 (16조각 원, 지름 약 16픽셀) — 천천히 돈다
         MeshDefinition hm = new MeshDefinition();
-        hm.getRoot().addOrReplaceChild("ring", CubeListBuilder.create().texOffs(0, 0)
-                .addBox(-5F, -12F, -5F, 10, 1, 1).addBox(-5F, -12F, 4F, 10, 1, 1)
-                .addBox(-5F, -12F, -4F, 1, 1, 8).addBox(4F, -12F, -4F, 1, 1, 8), PartPose.ZERO);
+        PartDefinition ring = hm.getRoot().addOrReplaceChild("ring", CubeListBuilder.create(), PartPose.offset(0F, -13F, 0F));
+        for (int k = 0; k < 16; k++) {
+            float a = (float) (k * Math.PI * 2 / 16);
+            ring.addOrReplaceChild("s" + k, CubeListBuilder.create().texOffs(0, 0).addBox(-1.6F, -0.6F, -0.6F, 3.2F, 1.2F, 1.4F),
+                    PartPose.offsetAndRotation(Mth.cos(a) * 8F, 0F, Mth.sin(a) * 8F, 0F, -a + (float) Math.PI / 2, 0F));
+        }
         this.halo = new Part(LayerDefinition.create(hm, 32, 16).bakeRoot(), false);
         // 동물 탈: 도안 부품을 하나씩 상자로 (흰 바탕에 부품 색을 곱함)
         int n = HatModels.PARTS.length;
@@ -110,24 +113,30 @@ public class CosmeticLayer extends RenderLayer<AvatarRenderState, PlayerModel> {
                 renderColoredCutoutModel(ps[i], HAT_TEX, pose, collector, light, state, hatColors[c[2] - 1][i], 1);
             pose.popPose();
         }
-        // 날개: 천천히 퍼덕이고, 날 때는 활짝
+        // 날개: 1.7배 크기 · 스스로 빛남(밝기 최대) · 크게 퍼덕이고, 날 때는 활짝
         if (c[0] > 0 && c[0] < WINGS.length) {
             pose.pushPose();
             getParentModel().body.translateAndRotate(pose);
+            pose.translate(0F, 0.05F, 0.1F);
+            pose.scale(1.7F, 1.7F, 1.7F);
             float t = state.ageInTicks;
-            float open = state.fallFlyingTimeInTicks > 0 ? 1.15F : 0.45F + Mth.sin(t * 0.12F) * 0.08F;
+            boolean flying = state.fallFlyingTimeInTicks > 0;
+            float flap = Mth.sin(t * (flying ? 0.35F : 0.16F));
+            float open = flying ? 1.25F + flap * 0.1F : 0.5F + flap * 0.22F;
             wings.left.yRot = open;
             wings.right.yRot = -open;
-            wings.left.zRot = -0.12F;
-            wings.right.zRot = 0.12F;
-            renderColoredCutoutModel(wings, tex("wings", WINGS[c[0]]), pose, collector, light, state, 0xFFFFFFFF, 1);
+            wings.left.zRot = -0.18F - flap * 0.08F;
+            wings.right.zRot = 0.18F + flap * 0.08F;
+            renderColoredCutoutModel(wings, tex("wings", WINGS[c[0]]), pose, collector, 0xF000F0, state, 0xFFFFFFFF, 1);
             pose.popPose();
         }
-        // 링: 머리 위에서 살짝 위아래로 뜸
+        // 링: 머리 위에서 둥실 · 천천히 돌고 빛남
         if (c[1] > 0 && c[1] < HALOS.length) {
             pose.pushPose();
             getParentModel().head.translateAndRotate(pose);
-            pose.translate(0F, Mth.sin(state.ageInTicks * 0.1F) * 0.03F, 0F);
+            pose.translate(0F, Mth.sin(state.ageInTicks * 0.1F) * 0.04F, 0F);
+            halo.root().getChild("ring").yRot = state.ageInTicks * 0.04F;
+            halo.root().getChild("ring").zRot = 0.12F;
             renderColoredCutoutModel(halo, tex("halo", HALOS[c[1]]), pose, collector, 0xF000F0, state, 0xFFFFFFFF, 1);
             pose.popPose();
         }

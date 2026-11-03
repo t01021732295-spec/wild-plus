@@ -288,7 +288,7 @@ public final class Arena {
         g.add(new Good("불사의 토템", 40, p -> give(p, new ItemStack(Items.TOTEM_OF_UNDYING))));
         g.add(new Good("마법이 부여된 황금 사과", 60, p -> give(p, new ItemStack(Items.ENCHANTED_GOLDEN_APPLE))));
         g.add(new Good("네더라이트 주괴", 80, p -> give(p, new ItemStack(Items.NETHERITE_INGOT))));
-        g.add(new Good("네더의 별 (스텔라 루비 승급)", 200, p -> give(p, new ItemStack(Items.NETHER_STAR))));
+        g.add(new Good("스텔라 코어 (스텔라 루비 승급)", 250, p -> give(p, new ItemStack(com.snolred.wildplus.registry.ModItems13.STELLAR_CORE.get()))));
         g.add(new Good("용의 깃털 (스카이 사파이어 승급)", 200, p -> give(p, new ItemStack(com.snolred.wildplus.registry.ModItems11.DRAGON_PLUME.get()))));
         g.add(new Good("생명의 결정 (로열 에메랄드 승급)", 200, p -> give(p, new ItemStack(com.snolred.wildplus.registry.ModItems12.LIFE_CRYSTAL.get()))));
         g.add(new Good("👑 칭호 [검투사]", 300, p -> com.snolred.wildplus.economy.Luxury.grantTitle(p, 3)));

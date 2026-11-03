@@ -74,6 +74,44 @@ public final class CosmeticSync {
 
     @SubscribeEvent
     public static void onTick(ServerTickEvent.Post event) {
-        if (event.getServer().getTickCount() % 40 == 11) broadcast(event.getServer());
+        MinecraftServer s = event.getServer();
+        if (s.getTickCount() % 40 == 11) broadcast(s);
+        if (s.getTickCount() % 3 == 0) sparkle(s);
+    }
+
+    /** 치장 입자: 날개 종류마다 다른 빛 · 링 위 반짝임 (모두가 봄) */
+    private static void sparkle(MinecraftServer s) {
+        for (ServerPlayer p : s.getPlayerList().getPlayers()) {
+            if (p.isSpectator() || p.isInvisible()) continue;
+            int[] c = of(s, p.getUUID());
+            if (c[0] == 0 && c[1] == 0) continue;
+            net.minecraft.server.level.ServerLevel l = p.level();
+            net.minecraft.util.RandomSource r = p.getRandom();
+            double yaw = Math.toRadians(p.yBodyRot);
+            double bx = p.getX() + Math.sin(yaw) * 0.45, bz = p.getZ() - Math.cos(yaw) * 0.45; // 등 뒤
+            double side = (r.nextBoolean() ? 1 : -1) * (0.6 + r.nextDouble() * 0.9);
+            double wx = bx + Math.cos(yaw) * side, wz = bz + Math.sin(yaw) * side, wy = p.getY() + 1.0 + r.nextDouble() * 1.2;
+            switch (c[0]) {
+                case 1 -> { // 천사: 하얀 빛 + 깃털처럼 내려오는 눈송이
+                    l.sendParticles(net.minecraft.core.particles.ParticleTypes.END_ROD, wx, wy, wz, 1, 0.05, 0.05, 0.05, 0.005);
+                    if (r.nextInt(3) == 0) l.sendParticles(net.minecraft.core.particles.ParticleTypes.SNOWFLAKE, wx, wy, wz, 1, 0.1, 0.1, 0.1, 0.0);
+                }
+                case 2 -> { // 악마: 영혼 불꽃 + 연기
+                    l.sendParticles(net.minecraft.core.particles.ParticleTypes.SOUL_FIRE_FLAME, wx, wy, wz, 1, 0.05, 0.05, 0.05, 0.01);
+                    if (r.nextInt(3) == 0) l.sendParticles(net.minecraft.core.particles.ParticleTypes.LARGE_SMOKE, wx, wy, wz, 1, 0.05, 0.05, 0.05, 0.0);
+                }
+                case 3 -> { // 용: 불꽃 + 용의 숨결
+                    l.sendParticles(net.minecraft.core.particles.ParticleTypes.FLAME, wx, wy, wz, 1, 0.05, 0.05, 0.05, 0.01);
+                    if (r.nextInt(2) == 0) l.sendParticles(new net.minecraft.core.particles.DustParticleOptions(0xFF5A1E, 1.4F), wx, wy, wz, 1, 0.1, 0.1, 0.1, 0.0);
+                }
+                default -> {}
+            }
+            if (c[1] > 0 && r.nextInt(2) == 0) {
+                double a = r.nextDouble() * Math.PI * 2;
+                double hx = p.getX() + Math.cos(a) * 0.5, hz = p.getZ() + Math.sin(a) * 0.5, hy = p.getEyeY() + 0.75;
+                if (c[1] == 1) l.sendParticles(net.minecraft.core.particles.ParticleTypes.WAX_ON, hx, hy, hz, 1, 0, 0, 0, 0.0);
+                else l.sendParticles(net.minecraft.core.particles.ParticleTypes.ELECTRIC_SPARK, hx, hy, hz, 1, 0, 0, 0, 0.0);
+            }
+        }
     }
 }

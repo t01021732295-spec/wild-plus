@@ -36,7 +36,20 @@ LANG_KO = {
     "tooltip.wildplus.onion_seeds": "잔디에서 가끔 나옴 · 양파로도 만들 수 있음",
     "tooltip.wildplus.ginseng": "먹으면 재생 · 흡수 · 비싸게 팔리는 약초",
 }
+LANG_KO.update({
+    "item.wildplus.lucky_box": "행운 상자",
+    "tooltip.wildplus.lucky_box": "들고 우클릭하면 열림 · 무엇이 나왔는지 알려 줌\n루비·사파이어 블록 · 네더라이트 · 토템 · 가끔 네더의 별 · 겉날개",
+    "item.wildplus.emerald_coin": "에메랄드화",
+    "tooltip.wildplus.emerald_coin": "10,000동 · 다이아화 10개와 환전소에서 바꿀 수 있음",
+    "item.wildplus.emerald_backpack": "에메랄드 배낭",
+    "tooltip.wildplus.emerald_backpack": "128칸 (16×8) · 불에 타지 않음\n다이아 배낭 창에서 30,000동으로 업그레이드",
+    "gui.wildplus.backpack.tier4": "에메랄드 배낭",
+    "item.wildplus.stellar_core": "스텔라 코어",
+    "tooltip.wildplus.stellar_core": "네더의 별 + 루비 블록 4 + 블레이즈 막대 2 + 마그마 크림 2\n강화대에서 루비 장비를 스텔라 루비로 승급하는 재료",
+})
 LANG_EN = {
+    "item.wildplus.lucky_box": "Lucky Box", "item.wildplus.emerald_coin": "Emerald Coin", "item.wildplus.emerald_backpack": "Emerald Backpack",
+    "gui.wildplus.backpack.tier4": "Emerald Backpack", "item.wildplus.stellar_core": "Stellar Core",
     "item.wildplus.worm": "Worm", "item.wildplus.shrimp_bait": "Shrimp Bait", "item.wildplus.golden_bait": "Golden Bait",
     "item.wildplus.rich_fertilizer": "Rich Fertilizer", "item.wildplus.golden_fertilizer": "Golden Fertilizer",
     "block.wildplus.fertilizer_spreader": "Fertilizer Spreader", "block.wildplus.job_board": "Job Board",
@@ -63,7 +76,8 @@ def assets():
             "type": "minecraft:condition", "property": "minecraft:fishing_rod/cast",
             "on_false": {"type": "minecraft:model", "model": i(f"item/{r}_fishing_rod")},
             "on_true": {"type": "minecraft:model", "model": i(f"item/{r}_fishing_rod_cast")}}})
-    for n in ["worm", "shrimp_bait", "golden_bait", "rich_fertilizer", "golden_fertilizer"]:
+    for n in ["worm", "shrimp_bait", "golden_bait", "rich_fertilizer", "golden_fertilizer", "lucky_box", "emerald_coin",
+              "emerald_backpack", "stellar_core"]:
         simple(n)
     stage = {0: 0, 1: 0, 2: 1, 3: 1, 4: 2, 5: 2, 6: 2, 7: 3}
     for c in CROPS:
@@ -111,6 +125,8 @@ def data():
         "golden_fertilizer": shapeless([i("rich_fertilizer"), i("rich_fertilizer"), "minecraft:gold_ingot"], i("golden_fertilizer"), 2),
         "fertilizer_spreader": shaped(["IDI", "IFI", "IHI"], {"I": "minecraft:iron_ingot", "D": "minecraft:dispenser",
                                                                "F": i("fertilizer"), "H": "minecraft:hopper"}, i("fertilizer_spreader"), category="misc"),
+        "stellar_core": shaped(["BMB", "RNR", "BMB"], {"B": "minecraft:blaze_rod", "M": "minecraft:magma_cream",
+                                                      "R": i("ruby_block"), "N": "minecraft:nether_star"}, i("stellar_core"), category="misc"),
         "job_board": shaped(["PPP", "WWW", "S S"], {"P": "minecraft:paper", "W": "#minecraft:planks", "S": "minecraft:stick"},
                             i("job_board"), category="misc"),
     }
@@ -129,6 +145,10 @@ def data():
 
 
 def build(lang_ko, lang_en):
+    # 스텔라 루비 승급 재료가 네더의 별 → 스텔라 코어로 바뀜
+    for k, v in list(lang_ko.items()):
+        if isinstance(v, str) and "네더의 별 + 1,000동" in v:
+            lang_ko[k] = v.replace("네더의 별 + 1,000동", "스텔라 코어 + 1,000동")
     write(ASSETS / "lang/ko_kr.json", {**lang_ko, **LANG_KO})
     write(ASSETS / "lang/en_us.json", {**lang_en, **LANG_EN})
     assets()

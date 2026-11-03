@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 /** 배낭 화면 (10열, 다이아는 14열). 등급별 색: 동 · 은 · 금 · 다이아 */
 public class BackpackScreen extends AbstractContainerScreen<BackpackMenu> {
-    private static final int[][] COLORS = {{0xFF6B3A1E, 0xFFB87333}, {0xFF5A5F66, 0xFFB8BEC6}, {0xFF7A5A10, 0xFFE0B840}, {0xFF1B6E78, 0xFF6FE8F0}};
+    private static final int[][] COLORS = {{0xFF6B3A1E, 0xFFB87333}, {0xFF5A5F66, 0xFFB8BEC6}, {0xFF7A5A10, 0xFFE0B840}, {0xFF1B6E78, 0xFF6FE8F0}, {0xFF0E5A2E, 0xFF4CE08A}};
 
     public BackpackScreen(BackpackMenu menu, Inventory inv, Component title) {
         super(menu, inv, title, menu.cols * 18 + 16, menu.rows * 18 + 114);

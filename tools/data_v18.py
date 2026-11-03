@@ -170,7 +170,7 @@ def assets():
     # 스카이 사파이어: 흉갑에 겉날개 날개도 그림
     write(ASSETS / "equipment/sky_sapphire.json", {"layers": {
         "humanoid": [{"texture": i("sky_sapphire")}], "humanoid_leggings": [{"texture": i("sky_sapphire")}],
-        "wings": [{"texture": "minecraft:elytra", "use_player_texture": True}]}})
+        "wings": [{"texture": i("sky_sapphire")}]}})
 
 
 def data():

@@ -13,12 +13,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-/** 배낭: 동(30칸) · 은(50칸) · 금(70칸) · 다이아(98칸). 들고 우클릭하면 열린다. 내용물은 아이템 자체에 저장. */
+/** 배낭: 동(30칸) · 은(50칸) · 금(70칸) · 다이아(98칸) · 에메랄드(128칸). 들고 우클릭하면 열린다. 내용물은 아이템 자체에 저장. */
 public class BackpackItem extends Item {
-    public static final int[] COLS = {10, 10, 10, 14};
-    public static final int[] ROWS = {3, 5, 7, 7};
-    public static final long[] UPGRADE_COST = {200, 800, 3000};
-    public static final int MAX_TIER = 3;
+    public static final int[] COLS = {10, 10, 10, 14, 16};
+    public static final int[] ROWS = {3, 5, 7, 7, 8};
+    public static final long[] UPGRADE_COST = {200, 800, 3000, 30000};
+    public static final int MAX_TIER = 4;
 
     public final int tier;
 

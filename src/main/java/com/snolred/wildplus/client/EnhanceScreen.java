@@ -140,7 +140,7 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
                             emer ? 0xFF0E7A3A : sapph ? 0xFF1D4ED8 : 0xFFB0103A);
                 }
                 boolean has = menu.material().is(com.snolred.wildplus.registry.ModItems9.upgradeMaterial(item.getItem()));
-                String what = rodTo != null ? "재료" : emer ? "결정" : sapph ? "깃털" : "별";
+                String what = rodTo != null ? "재료" : emer ? "결정" : sapph ? "깃털" : "코어";
                 UiKit.text(g, what + (has ? " ✔" : " 필요"), 158, ry, 0xFF7A5A30);
             } else if (sp.get(i) == EnhanceMenu.BTN_LIFESTEAL) {
                 int lv = com.snolred.wildplus.event.RubyGear.lifesteal(item);

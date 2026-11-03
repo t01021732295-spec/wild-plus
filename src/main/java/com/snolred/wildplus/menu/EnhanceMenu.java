@@ -128,8 +128,9 @@ public class EnhanceMenu extends AbstractContainerMenu {
             input.setChanged();
             sp.level().playSound(null, sp.blockPosition(), SoundEvents.BEACON_POWER_SELECT, SoundSource.BLOCKS, 1.0F, 1.2F);
             sp.level().playSound(null, sp.blockPosition(), SoundEvents.SMITHING_TABLE_USE, SoundSource.BLOCKS, 1.0F, 0.8F);
-            sp.sendSystemMessage(Component.literal(need == net.minecraft.world.item.Items.NETHER_STAR ? "✦ 스텔라 루비로 승급했어요! "
-                    : need == com.snolred.wildplus.registry.ModItems12.LIFE_CRYSTAL.get() ? "✦ 로열 에메랄드로 승급했어요! " : "✦ 스카이 사파이어로 승급했어요! ").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD)
+            sp.sendSystemMessage(Component.literal(need == com.snolred.wildplus.registry.ModItems13.STELLAR_CORE.get() ? "✦ 스텔라 루비로 승급했어요! "
+                    : need == com.snolred.wildplus.registry.ModItems12.LIFE_CRYSTAL.get() ? "✦ 로열 에메랄드로 승급했어요! "
+                    : need == com.snolred.wildplus.registry.ModItems11.DRAGON_PLUME.get() ? "✦ 스카이 사파이어로 승급했어요! " : "✦ 승급했어요! ").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD)
                     .append(star.getHoverName().copy().withStyle(ChatFormatting.GOLD)));
             return true;
         }
@@ -221,7 +222,9 @@ public class EnhanceMenu extends AbstractContainerMenu {
         ItemStack copy = s.copy();
         if (index <= 1) {
             if (!moveItemStackTo(s, 2, this.slots.size(), true)) return ItemStack.EMPTY;
-        } else if (s.is(net.minecraft.world.item.Items.NETHER_STAR) || s.is(com.snolred.wildplus.registry.ModItems11.DRAGON_PLUME.get()) || s.is(com.snolred.wildplus.registry.ModItems12.LIFE_CRYSTAL.get())
+        } else if (s.is(com.snolred.wildplus.registry.ModItems13.STELLAR_CORE.get()) || s.is(com.snolred.wildplus.registry.ModItems11.DRAGON_PLUME.get())
+                || s.is(com.snolred.wildplus.registry.ModItems7.RUBY_BLOCK.get()) || s.is(com.snolred.wildplus.registry.ModItems11.SAPPHIRE_BLOCK.get())
+                || s.is(com.snolred.wildplus.registry.ModItems2.MYTHRIL_BLOCK.get()) || s.is(com.snolred.wildplus.registry.ModItems5.DRAGON_KING_FISH.get()) || s.is(com.snolred.wildplus.registry.ModItems12.LIFE_CRYSTAL.get())
                 || s.is(com.snolred.wildplus.registry.ModItems.BLOODSTEEL_INGOT.get()) || !engraveKind(s).isEmpty()) {
             if (!moveItemStackTo(s, 1, 2, false)) return ItemStack.EMPTY;
         } else {
