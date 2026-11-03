@@ -17,7 +17,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * 광석 채굴기: 화면에서 광물 하나를 고르면 현실 시간 기준으로 캐서 결과 칸에 쌓는다.
  * - 광물마다 속도가 다르다: 비쌀수록 느림. 어떤 광물이든 1대가 시간당 출하가 약 1,000동이 되게 맞췄다
  *   (값싼 광물은 최소 15초에 하나 — 돈보다는 재료용).
- * - 강화 단계: 0단계 석탄~석영 / 1단계(다이아 블록 4개) 다이아 · 에메랄드 / 2단계(루비 블록 8개) 미스릴 · 비취 · 루비.
+ * - 강화 단계: 0단계 석탄~석영 / 1단계(다이아 블록 4개) 다이아 · 에메랄드 / 2단계(루비 블록 8개) 미스릴 · 비취 · 루비 · 사파이어.
  *   채굴기를 그 블록을 들고 우클릭하면 강화된다.
  * 서버와 청크가 켜져 있을 때만 캔다 (꺼져 있던 시간은 계산하지 않음). 결과 칸이 차면 멈춘다.
  * 칸: 0~17 결과. 호퍼로 뺄 수 있다.
@@ -43,7 +43,8 @@ public class OreMinerBlockEntity extends MachineBlockEntity {
             new Ore("에메랄드", () -> Items.EMERALD, 1, 1, 36),
             new Ore("미스릴 원석", () -> ModItems2.RAW_MYTHRIL.get(), 1, 2, 18),
             new Ore("비취", () -> ModItems2.JADE.get(), 1, 2, 18),
-            new Ore("루비", () -> com.snolred.wildplus.registry.ModItems7.RUBY.get(), 1, 2, 144));
+            new Ore("루비", () -> com.snolred.wildplus.registry.ModItems7.RUBY.get(), 1, 2, 144),
+            new Ore("사파이어", () -> com.snolred.wildplus.registry.ModItems11.SAPPHIRE.get(), 1, 2, 126));
 
     public static final int MAX_TIER = 2;
     /** 강화 재료: 1단계 다이아 블록 4개, 2단계 루비 블록 8개 */
@@ -92,7 +93,7 @@ public class OreMinerBlockEntity extends MachineBlockEntity {
         tier++;
         setChanged();
         p.sendSystemMessage(net.minecraft.network.chat.Component.literal("⛏ 채굴기 " + TIER_NAME[tier] + " 강화 완료! "
-                + (tier == 1 ? "다이아몬드 · 에메랄드" : "미스릴 · 비취 · 루비") + "를 캘 수 있어요").withStyle(net.minecraft.ChatFormatting.AQUA));
+                + (tier == 1 ? "다이아몬드 · 에메랄드" : "미스릴 · 비취 · 루비 · 사파이어") + "를 캘 수 있어요").withStyle(net.minecraft.ChatFormatting.AQUA));
         return true;
     }
 
