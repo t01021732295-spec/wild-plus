@@ -328,7 +328,7 @@
   "tooltip.wildplus.dragon_king_fish": "1% anywhere (2% with the jade rod)\nStrength II, Resistance II for 2 min, Regeneration II",
   "tooltip.wildplus.drill": "Pickaxe + shovel, mines 3x3 (sneak for one block)\nDiamond tier, very fast",
   "tooltip.wildplus.auto_harvester": "Place directly under a sprinkler\nSeeds in the seed slots, crops in the crop slots (hopper out)\nHarvested seeds refill the seed slots · auto-plant on/off",
-  "tooltip.wildplus.ore_miner": "Pick one ore in the window\nMines 1-2 per real-time minute (offline time counts up to 8h)\nHopper out",
+  "tooltip.wildplus.ore_miner": "Pick one ore in the window; pricier ores are slower\nUpgrade with 4 diamond blocks / 8 ruby blocks (right-click)\nHopper out",
   "tooltip.wildplus.auto_fisher": "Works with water within 2 blocks\nInsert a rod: Lure and Luck of the Sea apply\nHopper out",
   "tooltip.wildplus.casino_table": "Coin flip · dice · slots\nBets up to 10,000, winnings are taxed",
   "message.wildplus.blood_moon.clear": "Blood moon cleared! (%s elites, no deaths) Lifesteal, Regeneration I, Strength II for 30 min",

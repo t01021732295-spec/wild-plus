@@ -69,9 +69,10 @@ public class MachineMenu extends AbstractContainerMenu {
             case FISHER -> 1;
         };
         this.playerY = playerY(kind);
-        this.data = be == null ? new SimpleContainerData(3) : new ContainerData() {
+        this.data = be == null ? new SimpleContainerData(4) : new ContainerData() {
             @Override
             public int get(int index) {
+                if (index == 3) return be instanceof OreMinerBlockEntity m ? m.tier() : 0;
                 if (index == 2) return be instanceof AutoHarvesterBlockEntity h && h.autoPlant() ? 1 : 0;
                 if (index == 1) {
                     return be instanceof OreMinerBlockEntity m ? m.secondsLeft() : be instanceof AutoFisherBlockEntity f ? f.secondsLeft() : 0;
@@ -87,7 +88,7 @@ public class MachineMenu extends AbstractContainerMenu {
 
             @Override
             public int getCount() {
-                return 3;
+                return 4;
             }
         };
         switch (kind) {
@@ -121,6 +122,7 @@ public class MachineMenu extends AbstractContainerMenu {
     public int status() { return data.get(0); }
     public int secondsLeft() { return data.get(1); }
     public boolean autoPlant() { return data.get(2) == 1; }
+    public int minerTier() { return data.get(3); }
 
     @Override
     public boolean clickMenuButton(Player player, int id) {

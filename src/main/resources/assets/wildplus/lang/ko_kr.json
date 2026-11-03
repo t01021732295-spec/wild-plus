@@ -329,7 +329,7 @@
   "tooltip.wildplus.dragon_king_fish": "어디서든 1% (비취 낚싯대 2%)\n먹으면 힘 II · 저항 II 2분, 재생 II",
   "tooltip.wildplus.drill": "곡괭이 + 삽, 3×3 채굴 (웅크리면 한 칸)\n다이아몬드 곡괭이급 · 아주 빠름",
   "tooltip.wildplus.auto_harvester": "스프링클러 바로 아래에 놓기\n씨앗은 씨앗 칸, 작물은 작물 칸 (호퍼로 빼기)\n수확한 씨앗은 씨앗 칸에 자동 보충 · 자동 심기 켜고 끄기",
-  "tooltip.wildplus.ore_miner": "창에서 광물 하나를 고르면\n현실 시간 기준 분당 1~2개 채굴\n(서버가 꺼져 있던 시간도 최대 8시간 계산) · 호퍼로 빼기",
+  "tooltip.wildplus.ore_miner": "창에서 광물 하나를 고르면 현실 시간 기준으로 채굴 (비싼 광물일수록 느림)\n강화: 다이아 블록 4개 → 다이아·에메랄드 / 루비 블록 8개 → 미스릴·비취·루비\n(블록을 들고 우클릭 · 꺼져 있던 시간도 최대 8시간 계산) · 호퍼로 빼기",
   "tooltip.wildplus.auto_fisher": "반경 2칸 안에 물이 있으면 작동\n낚싯대를 넣으면 미끼·바다의 행운이 그대로 적용\n잡은 물고기는 호퍼로 빼기",
   "tooltip.wildplus.casino_table": "동전 던지기 · 주사위 · 슬롯머신\n판돈 최대 10,000동, 딴 돈에는 세금",
   "message.wildplus.blood_moon.clear": "블러드문 클리어! (정예 %s마리, 노데스) 30분간 흡혈·재생 I·힘 II",

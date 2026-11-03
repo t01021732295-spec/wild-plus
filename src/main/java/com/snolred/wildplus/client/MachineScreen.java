@@ -67,10 +67,18 @@ public class MachineScreen extends AbstractContainerScreen<MachineMenu> {
         super.containerTick();
         updatePlant();
         int sel = menu.status() - 1;
+        int tier = menu.minerTier();
         for (int i = 0; i < oreButtons.size(); i++) {
             UiButton b = oreButtons.get(i);
+            OreMinerBlockEntity.Ore ore = OreMinerBlockEntity.ORES.get(i);
+            boolean locked = ore.tier() > tier;
+            b.active = !locked;
             b.setSelected(i == sel);
             b.style(i == sel ? UiButton.GREEN : UiButton.STEEL);
+            b.setTooltip(net.minecraft.client.gui.components.Tooltip.create(Component.literal(locked
+                    ? "🔒 채굴기 " + OreMinerBlockEntity.TIER_NAME[ore.tier()] + " 강화 필요\n"
+                            + (ore.tier() == 1 ? "다이아 블록 4개" : "루비 블록 8개") + "를 들고 채굴기 우클릭"
+                    : String.format("%d초에 %d개", ore.seconds(), ore.count()))));
         }
     }
 
@@ -143,7 +151,7 @@ public class MachineScreen extends AbstractContainerScreen<MachineMenu> {
             }
             case MINER -> {
                 int sel = ok - 1;
-                String text = sel < 0 ? "● 캘 광물을 고르세요 (분당 1~2개)"
+                String text = sel < 0 ? "● 캘 광물을 고르세요 · " + OreMinerBlockEntity.TIER_NAME[Math.min(2, menu.minerTier())]
                         : "● " + OreMinerBlockEntity.ORES.get(sel).name() + " 채굴 중 · 다음 " + menu.secondsLeft() + "초";
                 UiKit.text(g, text, 11, 74, sel < 0 ? 0xFFFFC34D : on);
             }

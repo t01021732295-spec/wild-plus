@@ -56,6 +56,14 @@ public class MachineBlock extends BaseEntityBlock {
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
                                           InteractionHand hand, BlockHitResult hit) {
+        // 채굴기 강화: 다이아 블록 / 루비 블록을 들고 우클릭
+        if (kind == Kind.MINER && (stack.is(net.minecraft.world.item.Items.DIAMOND_BLOCK)
+                || stack.is(com.snolred.wildplus.registry.ModItems7.RUBY_BLOCK.get()))) {
+            if (!level.isClientSide() && level.getBlockEntity(pos) instanceof OreMinerBlockEntity m && m.upgrade(stack, player)) {
+                level.playSound(null, pos, net.minecraft.sounds.SoundEvents.ANVIL_USE, net.minecraft.sounds.SoundSource.BLOCKS, 0.8F, 1.2F);
+            }
+            return InteractionResult.SUCCESS;
+        }
         return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
