@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:rich_fertilizer",
+    "wildplus:rich_fertilizer",
+    "minecraft:gold_ingot"
+  ],
+  "result": {
+    "id": "wildplus:golden_fertilizer",
+    "count": 2
+  }
+}

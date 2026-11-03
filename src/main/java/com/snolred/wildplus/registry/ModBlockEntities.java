@@ -39,6 +39,9 @@ public final class ModBlockEntities {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.SortingChestBlockEntity>> SORTING_CHEST =
             BLOCK_ENTITIES.register("sorting_chest", () -> new BlockEntityType<>(com.snolred.wildplus.block.SortingChestBlockEntity::new,
                     com.snolred.wildplus.registry.ModBlocks2.SORTING_CHEST.get()));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.SpreaderBlockEntity>> SPREADER =
+            BLOCK_ENTITIES.register("fertilizer_spreader", () -> new BlockEntityType<>(com.snolred.wildplus.block.SpreaderBlockEntity::new,
+                    com.snolred.wildplus.registry.ModBlocks3.SPREADER.get()));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.FeederBlockEntity>> FEEDER =
             BLOCK_ENTITIES.register("feeder", () -> new BlockEntityType<>(com.snolred.wildplus.block.FeederBlockEntity::new,
                     com.snolred.wildplus.registry.ModBlocks2.FEEDER.get()));

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/fertilizer_spreader"
+    },
+    "facing=south": {
+      "model": "wildplus:block/fertilizer_spreader"
+    },
+    "facing=east": {
+      "model": "wildplus:block/fertilizer_spreader"
+    },
+    "facing=west": {
+      "model": "wildplus:block/fertilizer_spreader"
+    }
+  }
+}

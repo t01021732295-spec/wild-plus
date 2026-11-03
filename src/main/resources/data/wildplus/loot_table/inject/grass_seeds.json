@@ -8,7 +8,7 @@
         "terms": [
           {
             "type": "minecraft:random_chance",
-            "chance": 0.16
+            "chance": 0.18
           },
           {
             "type": "minecraft:inverted",
@@ -46,6 +46,26 @@
           "type": "minecraft:item",
           "name": "wildplus:blueberry",
           "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:grape_seeds",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:rice_seeds",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:onion_seeds",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:ginseng_seeds",
+          "weight": 1
         }
       ]
     }

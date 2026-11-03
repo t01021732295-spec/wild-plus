@@ -1,6 +1,10 @@
 {
   "replace": false,
   "values": [
-    "wildplus:jade_fishing_rod"
+    "wildplus:jade_fishing_rod",
+    "wildplus:mythril_fishing_rod",
+    "wildplus:ruby_fishing_rod",
+    "wildplus:sapphire_fishing_rod",
+    "wildplus:dragon_fishing_rod"
   ]
 }

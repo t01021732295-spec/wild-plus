@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "IDI",
+    "IFI",
+    "IHI"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "D": "minecraft:dispenser",
+    "F": "wildplus:fertilizer",
+    "H": "minecraft:hopper"
+  },
+  "result": {
+    "id": "wildplus:fertilizer_spreader",
+    "count": 1
+  }
+}

@@ -94,11 +94,14 @@ public final class ModItems9 {
                 ModItems7.RUBY_BOOTS.get(), STAR_RUBY_BOOTS.get(), ModItems10.RUBY_BOW.get(), ModItems10.STAR_RUBY_BOW.get()));
         m.putAll(ModItems11.upgrades());
         m.putAll(ModItems12.upgrades());
+        m.putAll(ModItems13.rodUpgrades());
         return m;
     }
 
     /** 승급에 필요한 재료: 루비 → 네더의 별, 사파이어 → 용의 깃털 */
     public static Item upgradeMaterial(Item from) {
+        Item rod = ModItems13.rodMaterial(from);
+        if (rod != null) return rod;
         if (ModItems12.upgrades().containsKey(from)) return ModItems12.LIFE_CRYSTAL.get();
         return ModItems11.upgrades().containsKey(from) ? ModItems11.DRAGON_PLUME.get() : net.minecraft.world.item.Items.NETHER_STAR;
     }

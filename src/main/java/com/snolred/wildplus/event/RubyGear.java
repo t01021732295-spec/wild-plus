@@ -73,7 +73,7 @@ public final class RubyGear {
     }
 
     public static boolean isStar(ItemStack s) {
-        return com.snolred.wildplus.registry.ModItems9.upgrades().containsValue(s.getItem());
+        return !(s.getItem() instanceof net.minecraft.world.item.FishingRodItem) && com.snolred.wildplus.registry.ModItems9.upgrades().containsValue(s.getItem());
     }
 
     /** 손에 든 무기·입은 갑옷 중 하나라도 그 각인이 있으면 */

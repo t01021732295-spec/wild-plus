@@ -9,6 +9,7 @@
     "wildplus:goal_board",
     "wildplus:sorting_chest",
     "wildplus:feeder",
-    "wildplus:realty"
+    "wildplus:realty",
+    "wildplus:job_board"
   ]
 }

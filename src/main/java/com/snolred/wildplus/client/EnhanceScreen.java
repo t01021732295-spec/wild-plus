@@ -132,10 +132,15 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
             if (sp.get(i) == EnhanceMenu.BTN_STAR) {
                 boolean sapph = com.snolred.wildplus.registry.ModItems11.upgrades().containsKey(item.getItem());
                 boolean emer = com.snolred.wildplus.registry.ModItems12.upgrades().containsKey(item.getItem());
-                UiKit.bold(g, emer ? "✦ 로열 에메랄드" : sapph ? "✦ 스카이 사파이어" : "✦ 스텔라 루비", 68, ry,
-                        emer ? 0xFF0E7A3A : sapph ? 0xFF1D4ED8 : 0xFFB0103A);
+                net.minecraft.world.item.Item rodTo = com.snolred.wildplus.registry.ModItems13.rodUpgrades().get(item.getItem());
+                if (rodTo != null) {
+                    UiKit.bold(g, "✦ " + rodTo.getDefaultInstance().getHoverName().getString(), 68, ry, 0xFF0E5A9A);
+                } else {
+                    UiKit.bold(g, emer ? "✦ 로열 에메랄드" : sapph ? "✦ 스카이 사파이어" : "✦ 스텔라 루비", 68, ry,
+                            emer ? 0xFF0E7A3A : sapph ? 0xFF1D4ED8 : 0xFFB0103A);
+                }
                 boolean has = menu.material().is(com.snolred.wildplus.registry.ModItems9.upgradeMaterial(item.getItem()));
-                String what = emer ? "결정" : sapph ? "깃털" : "별";
+                String what = rodTo != null ? "재료" : emer ? "결정" : sapph ? "깃털" : "별";
                 UiKit.text(g, what + (has ? " ✔" : " 필요"), 158, ry, 0xFF7A5A30);
             } else if (sp.get(i) == EnhanceMenu.BTN_LIFESTEAL) {
                 int lv = com.snolred.wildplus.event.RubyGear.lifesteal(item);

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:grape"
+  ],
+  "result": {
+    "id": "wildplus:grape_seeds",
+    "count": 2
+  }
+}

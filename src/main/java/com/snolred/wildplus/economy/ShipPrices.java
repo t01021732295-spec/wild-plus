@@ -23,10 +23,10 @@ public final class ShipPrices {
         if (table != null) return table;
         Map<Item, Integer> m = new HashMap<>();
         // 농사
-        put(m, Items.WHEAT, 20); put(m, Items.CARROT, 20); put(m, Items.POTATO, 20); put(m, Items.BEETROOT, 25);
-        put(m, Items.PUMPKIN, 120); put(m, Items.MELON_SLICE, 10); put(m, Items.SUGAR_CANE, 10); put(m, Items.COCOA_BEANS, 30);
-        put(m, Items.SWEET_BERRIES, 10); put(m, Items.APPLE, 50); put(m, Items.EGG, 10); put(m, Items.HONEY_BOTTLE, 150);
-        put(m, ModItems.CHILI.get(), 50); put(m, ModItems2.TOMATO.get(), 50); put(m, ModItems2.STRAWBERRY.get(), 50);
+        put(m, Items.WHEAT, 40); put(m, Items.CARROT, 40); put(m, Items.POTATO, 40); put(m, Items.BEETROOT, 50);
+        put(m, Items.PUMPKIN, 240); put(m, Items.MELON_SLICE, 20); put(m, Items.SUGAR_CANE, 20); put(m, Items.COCOA_BEANS, 60);
+        put(m, Items.SWEET_BERRIES, 20); put(m, Items.APPLE, 80); put(m, Items.EGG, 10); put(m, Items.HONEY_BOTTLE, 150);
+        put(m, ModItems.CHILI.get(), 100); put(m, ModItems2.TOMATO.get(), 100); put(m, ModItems2.STRAWBERRY.get(), 100);
         // 요리
         put(m, Items.BREAD, 80); put(m, Items.BAKED_POTATO, 30); put(m, Items.PUMPKIN_PIE, 200); put(m, Items.CAKE, 600);
         put(m, Items.COOKED_BEEF, 60); put(m, Items.COOKED_PORKCHOP, 60); put(m, Items.COOKED_CHICKEN, 40); put(m, Items.COOKED_MUTTON, 50);
@@ -34,9 +34,9 @@ public final class ShipPrices {
         put(m, ModItems.SPICY_STEW.get(), 300); put(m, ModItems.HONEY_TOAST.get(), 200); put(m, ModItems.SPICY_SKEWER.get(), 150);
         put(m, ModItems2.FISH_STEW.get(), 400); put(m, ModItems2.SASHIMI_PLATTER.get(), 350);
         // 물고기
-        put(m, Items.COD, 100); put(m, Items.SALMON, 120); put(m, Items.TROPICAL_FISH, 200); put(m, Items.PUFFERFISH, 150);
-        put(m, ModItems2.RAINBOW_TROUT.get(), 150); put(m, ModItems2.ICE_SMELT.get(), 150); put(m, ModItems2.MOONLIGHT_FISH.get(), 500);
-        put(m, ModItems2.STORM_EEL.get(), 500); put(m, ModItems2.ANGLERFISH.get(), 1000); put(m, ModItems2.GOLDEN_CARP.get(), 10000);
+        put(m, Items.COD, 300); put(m, Items.SALMON, 360); put(m, Items.TROPICAL_FISH, 600); put(m, Items.PUFFERFISH, 450);
+        put(m, ModItems2.RAINBOW_TROUT.get(), 450); put(m, ModItems2.ICE_SMELT.get(), 450); put(m, ModItems2.MOONLIGHT_FISH.get(), 1500);
+        put(m, ModItems2.STORM_EEL.get(), 1500); put(m, ModItems2.ANGLERFISH.get(), 3000); put(m, ModItems2.GOLDEN_CARP.get(), 30000);
         // 광물
         put(m, Items.COAL, 20); put(m, Items.IRON_INGOT, 125); put(m, Items.GOLD_INGOT, 300); put(m, Items.COPPER_INGOT, 30);
         put(m, Items.REDSTONE, 20); put(m, Items.LAPIS_LAZULI, 50); put(m, Items.DIAMOND, 3000); put(m, Items.EMERALD, 1000);
@@ -49,11 +49,11 @@ public final class ShipPrices {
         put(m, Items.FEATHER, 5); put(m, Items.SLIME_BALL, 30); put(m, Items.PHANTOM_MEMBRANE, 100);
         // 8차
         put(m, com.snolred.wildplus.registry.ModItems6.LORD_HEART.get(), 200000);
-        put(m, com.snolred.wildplus.registry.ModItems5.CORN.get(), 40); put(m, com.snolred.wildplus.registry.ModItems5.CABBAGE.get(), 60);
-        put(m, com.snolred.wildplus.registry.ModItems5.BLUEBERRY.get(), 40); put(m, com.snolred.wildplus.registry.ModItems5.GRILLED_CORN.get(), 100);
+        put(m, com.snolred.wildplus.registry.ModItems5.CORN.get(), 80); put(m, com.snolred.wildplus.registry.ModItems5.CABBAGE.get(), 120);
+        put(m, com.snolred.wildplus.registry.ModItems5.BLUEBERRY.get(), 80); put(m, com.snolred.wildplus.registry.ModItems5.GRILLED_CORN.get(), 100);
         put(m, com.snolred.wildplus.registry.ModItems5.SALAD.get(), 350); put(m, com.snolred.wildplus.registry.ModItems5.BLUEBERRY_MUFFIN.get(), 200);
-        put(m, com.snolred.wildplus.registry.ModItems5.CATFISH.get(), 200); put(m, com.snolred.wildplus.registry.ModItems5.TUNA.get(), 300);
-        put(m, com.snolred.wildplus.registry.ModItems5.SWEETFISH.get(), 200); put(m, com.snolred.wildplus.registry.ModItems5.DRAGON_KING_FISH.get(), 20000);
+        put(m, com.snolred.wildplus.registry.ModItems5.CATFISH.get(), 600); put(m, com.snolred.wildplus.registry.ModItems5.TUNA.get(), 900);
+        put(m, com.snolred.wildplus.registry.ModItems5.SWEETFISH.get(), 600); put(m, com.snolred.wildplus.registry.ModItems5.DRAGON_KING_FISH.get(), 60000);
         put(m, com.snolred.wildplus.registry.ModItems5.TUNA_STEAK.get(), 450);
         // 16차: 루비 · 광물 블록 · 원석 · 낚시 잡동사니
         put(m, com.snolred.wildplus.registry.ModItems7.RUBY.get(), 4000);
@@ -78,6 +78,9 @@ public final class ShipPrices {
         put(m, Items.TRIPWIRE_HOOK, 10); put(m, Items.BAMBOO, 5); put(m, Items.GLOW_INK_SAC, 60); put(m, Items.PRISMARINE_SHARD, 30);
         put(m, Items.PRISMARINE_CRYSTALS, 40);
         // 19차: 물병 (물약도 같은 아이템이라 같은 값) · 빈 병
+        // 2.18 새 작물
+        put(m, com.snolred.wildplus.registry.ModItems13.GRAPE.get(), 200); put(m, com.snolred.wildplus.registry.ModItems13.RICE.get(), 60);
+        put(m, com.snolred.wildplus.registry.ModItems13.ONION.get(), 70); put(m, com.snolred.wildplus.registry.ModItems13.GINSENG.get(), 6000);
         put(m, com.snolred.wildplus.registry.ModItems11.SAPPHIRE.get(), 3500);
         put(m, com.snolred.wildplus.registry.ModItems11.SAPPHIRE_BLOCK.get(), 31500);
         put(m, com.snolred.wildplus.registry.ModItems11.SAPPHIRE_ORE.get(), 3500);
@@ -89,7 +92,9 @@ public final class ShipPrices {
 
     /** 1개 가격 (동 × 100), 팔 수 없으면 0 */
     public static int centi(ItemStack stack) {
-        return stack.isEmpty() ? 0 : table().getOrDefault(stack.getItem(), 0);
+        if (stack.isEmpty()) return 0;
+        int base = table().getOrDefault(stack.getItem(), 0);
+        return base == 0 ? 0 : (int) ((long) base * Grade.priceX100(stack) / 100); // 등급 배율
     }
 
     /** "0.2동" 형식 */

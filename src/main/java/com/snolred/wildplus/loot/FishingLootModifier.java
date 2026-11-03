@@ -28,7 +28,7 @@ import net.neoforged.neoforge.common.loot.LootModifier;
 /**
  * 낚시 시스템: 바닐라 낚시 결과에 새 어종을 섞는다.
  * 잡히는 물고기는 장소(강·바다·추운 곳), 시간(낮·밤), 날씨(비·뇌우)에 따라 달라진다.
- * 비취 낚싯대를 쓰면 확률이 2배, 가끔 두 마리.
+ * 낚싯대 단계 · 미끼에 따라 희귀 어종 · 보물상자 · 두 마리 · 등급 확률이 달라진다 (FishingPlus).
  */
 public class FishingLootModifier extends LootModifier {
     public static final MapCodec<FishingLootModifier> CODEC = RecordCodecBuilder.mapCodec(
@@ -46,14 +46,17 @@ public class FishingLootModifier extends LootModifier {
         }
         ServerLevel level = ctx.getLevel();
         RandomSource random = ctx.getRandom();
-        boolean jade = ctx.getOptional(LootContextParams.TOOL) instanceof ItemStack rod
-                && rod.is(ModItems2.JADE_FISHING_ROD.get());
+        ItemStack rodStack = ctx.getOptional(LootContextParams.TOOL) instanceof ItemStack rs ? rs : ItemStack.EMPTY;
+        com.snolred.wildplus.event.FishingPlus.Rod rod = com.snolred.wildplus.event.FishingPlus.rod(rodStack);
         Entity hook = ctx.getOptional(LootContextParams.THIS_ENTITY);
         boolean openWater = !(hook instanceof FishingHook fh) || fh.isOpenWaterFishing();
+        // 사람이 낚았나 (자동 낚시 장치는 찌가 없음) · 미끼
+        net.minecraft.server.level.ServerPlayer angler = hook instanceof FishingHook fh2 && fh2.getPlayerOwner() instanceof net.minecraft.server.level.ServerPlayer sp
+                ? sp : null;
+        int bait = angler != null ? com.snolred.wildplus.event.FishingPlus.bait(angler.getOffhandItem()) : 0;
 
         // 침몰한 보물상자 (탁 트인 물에서만)
-        float chestChance = jade ? 0.05F : 0.02F;
-        if (openWater && random.nextFloat() < chestChance) {
+        if (openWater && random.nextFloat() < rod.chest()) {
             loot.clear();
             loot.add(new ItemStack(ModItems2.SUNKEN_CHEST.get()));
             return loot;
@@ -69,15 +72,24 @@ public class FishingLootModifier extends LootModifier {
         if (fishIndex < 0) {
             return loot; // 쓰레기·보물은 그대로
         }
-        if (random.nextFloat() < (jade ? 0.5F : 0.25F)) {
-            Item fish = random.nextFloat() < (jade ? 0.02F : 0.01F) ? com.snolred.wildplus.registry.ModItems5.DRAGON_KING_FISH.get()
+        if (random.nextFloat() < rod.rare() + (bait == 2 ? 0.15F : 0F)) {
+            Item fish = random.nextFloat() < rod.king() ? com.snolred.wildplus.registry.ModItems5.DRAGON_KING_FISH.get()
                     : pickFish(level, BlockPos.containing(origin), random);
             if (fish != null) {
                 loot.set(fishIndex, new ItemStack(fish));
             }
         }
-        if (jade && random.nextFloat() < 0.2F) {
-            loot.add(loot.get(fishIndex).copy());
+        // 등급: 낚싯대 × 미끼, 자동 낚시는 절반
+        float m = rod.grade() * (bait == 1 ? 1.3F : bait == 2 ? 1.5F : bait == 3 ? 3F : 1F) * (angler == null ? 0.5F : 1F);
+        int g = com.snolred.wildplus.event.FishingPlus.rollGrade(random, m);
+        ItemStack caught = loot.get(fishIndex);
+        com.snolred.wildplus.economy.Grade.apply(caught, g);
+        if (random.nextFloat() < rod.twin()) {
+            loot.add(caught.copy());
+        }
+        if (angler != null) {
+            if (bait > 0 && !angler.getAbilities().instabuild) angler.getOffhandItem().shrink(1);
+            com.snolred.wildplus.event.FishingPlus.announce(angler, caught, g);
         }
         return loot;
     }

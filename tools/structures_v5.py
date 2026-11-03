@@ -106,6 +106,59 @@ def house(t, x0, z0, door, idx, rnd):
         t.set(dx + ox * k, 0, dz + oz * k, "minecraft:dirt_path")
 
 
+# 2.18: 새 시스템 건물 (주민 집 4채 자리를 바꿔 지음) — 명품관 · 부동산 · 알바 센터 · 투기장 접수처
+SERVICE = {
+    "luxury": ("minecraft:quartz_block", "minecraft:gold_block", "minecraft:quartz_pillar", "minecraft:red_carpet", "wildplus:luxury_shop"),
+    "realty": ("minecraft:stripped_oak_log", "minecraft:dark_oak_planks", "minecraft:oak_log", "minecraft:green_carpet", "wildplus:realty"),
+    "jobs": ("minecraft:spruce_planks", "minecraft:spruce_planks", "minecraft:stripped_spruce_log", "minecraft:yellow_carpet", "wildplus:job_board"),
+    "arena": ("minecraft:polished_blackstone_bricks", "minecraft:red_nether_bricks", "minecraft:chiseled_polished_blackstone",
+              "minecraft:red_carpet", "wildplus:arena_desk"),
+}
+
+
+def service(t, x0, z0, door, kind):
+    """7×7 가게. 벽 · 지붕 · 기둥 재질이 가게마다 달라서 멀리서도 알아보게. 가운데 안쪽에 서비스 블록, 문 옆 바깥에 하나 더."""
+    wall, roof, pillar, carpet, block = SERVICE[kind]
+    x1, z1 = x0 + 6, z0 + 6
+    t.fill(x0, 0, z0, x1, 0, z1, "minecraft:polished_andesite")
+    t.fill(x0 + 1, 0, z0 + 1, x1 - 1, 0, z1 - 1, "minecraft:smooth_stone")
+    for y in range(1, 5):
+        for x in range(x0, x1 + 1):
+            for z in range(z0, z1 + 1):
+                if x in (x0, x1) and z in (z0, z1):
+                    t.set(x, y, z, pillar, {"axis": "y"} if "log" in pillar or "pillar" in pillar else None)
+                elif x in (x0, x1) or z in (z0, z1):
+                    t.set(x, y, z, wall, {"axis": "y"} if "log" in wall else None)
+    # 큰 유리창 (양옆 3칸)
+    for (x, z) in [(x0, z0 + 2), (x0, z0 + 3), (x0, z0 + 4), (x1, z0 + 2), (x1, z0 + 3), (x1, z0 + 4)]:
+        for y in (2, 3):
+            t.set(x, y, z, "minecraft:glass_pane", {"east": "false", "west": "false", "north": "true", "south": "true", "waterlogged": "false"})
+    # 문 (2칸 너비 입구)
+    dz = z1 if door == "south" else z0
+    for x in (x0 + 3,):
+        for y, half in ((1, "lower"), (2, "upper")):
+            t.set(x, y, dz, "minecraft:spruce_door", {"facing": OPP[door], "half": half, "hinge": "left", "open": "false", "powered": "false"})
+    # 지붕: 평지붕 + 테두리 + 가운데 등
+    t.fill(x0 - 1, 5, z0 - 1, x1 + 1, 5, z1 + 1, roof)
+    t.fill(x0, 6, z0, x1, 6, z1, roof)
+    t.set(x0 + 3, 7, z0 + 3, "minecraft:lantern", LANTERN)
+    # 안: 카펫 · 등 · 서비스 블록 (문 반대쪽 벽 앞) · 화분
+    t.fill(x0 + 1, 1, z0 + 1, x1 - 1, 1, z1 - 1, carpet)
+    back_z = z0 + 1 if door == "south" else z1 - 1
+    face = door  # 문 쪽을 바라봄
+    t.set(x0 + 3, 1, back_z, block, {"facing": face})
+    t.set(x0 + 1, 1, back_z, "minecraft:potted_azure_bluet")
+    t.set(x1 - 1, 1, back_z, "minecraft:potted_azure_bluet")
+    t.set(x0 + 3, 4, z0 + 3, "minecraft:lantern", {"hanging": "true", "waterlogged": "false"})
+    # 문 옆 바깥에도 하나 (지나가다 바로 쓰게) + 입구 등
+    out_z = z1 + 1 if door == "south" else z0 - 1
+    t.set(x0 + 5, 1, out_z, block, {"facing": door})
+    t.set(x0 + 1, 1, out_z, "minecraft:spruce_fence", FENCE)
+    t.set(x0 + 1, 2, out_z, "minecraft:lantern", LANTERN)
+    for k in range(1, 3):
+        t.set(x0 + 3, 0, dz + (k if door == "south" else -k), "minecraft:dirt_path")
+
+
 def farm(t, x0, z0, w, d, crop, rnd):
     """밭: 경작지 + 가운데 물길 + 작물 (다 자란 것 섞임) + 울타리"""
     for x in range(x0 - 1, x0 + w + 1):
@@ -145,11 +198,14 @@ def big_town():
                 t.set(x, 1, z, "minecraft:oak_fence", FENCE)
     # 주민 집 16채 (문은 골목 쪽)
     idx = 0
+    shops = {(22, 6): "luxury", (45, 6): "realty", (22, 67): "jobs", (45, 67): "arena"}
     for x0 in (3, 12, 22, 45, 55, 66):
-        house(t, x0, 6, "south", idx, rnd)
-        idx += 1
-        house(t, x0, 67, "north", idx, rnd)
-        idx += 1
+        for (z0, door) in ((6, "south"), (67, "north")):
+            if (x0, z0) in shops:
+                service(t, x0, z0, door, shops[(x0, z0)])
+            else:
+                house(t, x0, z0, door, idx, rnd)
+            idx += 1
     for z0 in (22, 49):
         house(t, 6, z0, "east", idx, rnd)
         idx += 1
@@ -157,6 +213,11 @@ def big_town():
         idx += 1
     # 밭 4곳 (서쪽·동쪽 띠)
     farm(t, 3, 31, 9, 5, "minecraft:wheat", rnd)
+    # 2.18: 밭 가장자리 비료 살포기 (비료 16개 넣어 둠)
+    for (sx, sz) in ((7, 30), (72, 30)):
+        t.set(sx, 1, sz, "wildplus:fertilizer_spreader", {"facing": "south"},
+              Compound({"id": String("wildplus:fertilizer_spreader"),
+                        "items": List[Compound]([Compound({"id": String("wildplus:fertilizer"), "count": Int(16)})])}))
     farm(t, 68, 31, 9, 5, "minecraft:carrots", rnd)
     farm(t, 3, 44, 9, 3, "minecraft:potatoes", rnd)
     farm(t, 68, 44, 9, 3, "minecraft:beetroots", rnd)

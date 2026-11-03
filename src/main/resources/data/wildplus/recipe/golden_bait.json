@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "NNN",
+    "NWN",
+    "NNN"
+  ],
+  "key": {
+    "N": "minecraft:gold_nugget",
+    "W": "wildplus:worm"
+  },
+  "result": {
+    "id": "wildplus:golden_bait",
+    "count": 2
+  }
+}

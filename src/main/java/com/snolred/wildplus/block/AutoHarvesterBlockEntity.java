@@ -123,6 +123,7 @@ public class AutoHarvesterBlockEntity extends MachineBlockEntity {
     private void harvest(ServerLevel level, BlockPos p, BlockState s, CropBlock crop) {
         List<ItemStack> drops = new ArrayList<>(Block.getDrops(s, level, p, null));
         if (!hasRoomFor(drops)) return;
+        com.snolred.wildplus.content.Soil.gradeHarvest(level, p, s, drops); // 비료 · 품질
         Item seed = s.getBlock().asItem();
         // 씨앗은 씨앗 칸으로 먼저
         for (ItemStack d : drops) {

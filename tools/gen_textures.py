@@ -542,6 +542,8 @@ def main():
         textures_v18.build(Path(van))
         import textures_v19
         textures_v19.build()
+        import textures_v20
+        textures_v20.build()
         bv = os.environ.get("WILDPLUS_BOSSVAN")
         if bv:
             import textures_v17

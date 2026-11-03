@@ -6,6 +6,10 @@
     "wildplus:strawberry",
     "wildplus:corn_seeds",
     "wildplus:cabbage_seeds",
-    "wildplus:blueberry"
+    "wildplus:blueberry",
+    "wildplus:grape_seeds",
+    "wildplus:rice_seeds",
+    "wildplus:onion_seeds",
+    "wildplus:ginseng_seeds"
   ]
 }

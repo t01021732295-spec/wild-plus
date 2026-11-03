@@ -28,9 +28,9 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jspecify.annotations.Nullable;
 
-/** 정렬 상자(27칸, 상자 창) · 자동 사료통(9칸, 발사기 창) */
+/** 정렬 상자(27칸, 상자 창) · 자동 사료통 · 비료 살포기(9칸, 발사기 창) */
 public class BoxBlock extends BaseEntityBlock {
-    public enum Kind { SORTING, FEEDER }
+    public enum Kind { SORTING, FEEDER, SPREADER }
 
     public static final net.minecraft.world.level.block.state.properties.EnumProperty<Direction> FACING = HorizontalDirectionalBlock.FACING;
     private static final VoxelShape FEEDER_SHAPE = Block.box(0, 0, 2, 16, 8, 14);
@@ -65,15 +65,21 @@ public class BoxBlock extends BaseEntityBlock {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return kind == Kind.SORTING ? new SortingChestBlockEntity(pos, state) : new FeederBlockEntity(pos, state);
+        return switch (kind) {
+            case SORTING -> new SortingChestBlockEntity(pos, state);
+            case FEEDER -> new FeederBlockEntity(pos, state);
+            case SPREADER -> new SpreaderBlockEntity(pos, state);
+        };
     }
 
     @Override
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
         if (level.isClientSide()) return null;
-        return kind == Kind.SORTING
-                ? createTickerHelper(type, ModBlockEntities.SORTING_CHEST.get(), SortingChestBlockEntity::serverTick)
-                : createTickerHelper(type, ModBlockEntities.FEEDER.get(), FeederBlockEntity::serverTick);
+        return switch (kind) {
+            case SORTING -> createTickerHelper(type, ModBlockEntities.SORTING_CHEST.get(), SortingChestBlockEntity::serverTick);
+            case FEEDER -> createTickerHelper(type, ModBlockEntities.FEEDER.get(), FeederBlockEntity::serverTick);
+            case SPREADER -> createTickerHelper(type, ModBlockEntities.SPREADER.get(), SpreaderBlockEntity::serverTick);
+        };
     }
 
     @Override
@@ -90,7 +96,7 @@ public class BoxBlock extends BaseEntityBlock {
                         Component.translatable("block.wildplus.sorting_chest")));
             } else {
                 player.openMenu(new SimpleMenuProvider((id, inv, p) -> new DispenserMenu(id, inv, be),
-                        Component.translatable("block.wildplus.feeder")));
+                        Component.translatable(kind == Kind.SPREADER ? "block.wildplus.fertilizer_spreader" : "block.wildplus.feeder")));
             }
         }
         return InteractionResult.SUCCESS;

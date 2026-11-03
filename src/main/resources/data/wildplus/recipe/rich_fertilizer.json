@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:fertilizer",
+    "wildplus:fertilizer",
+    "minecraft:bone_block"
+  ],
+  "result": {
+    "id": "wildplus:rich_fertilizer",
+    "count": 2
+  }
+}

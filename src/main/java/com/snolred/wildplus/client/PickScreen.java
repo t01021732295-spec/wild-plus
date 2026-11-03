@@ -23,7 +23,9 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
             UiButton.Shape.PAPER);
     private static final UiButton.Style ARENA_KEY = new UiButton.Style(0xFFC9A86A, 0xFF8E6A32, 0xFF3E2A10, 0xFFFFF4DA, true,
             UiButton.Shape.SOFT);
-    private final boolean arena, shop;
+    private final boolean arena, shop, job;
+    /** 알바 게시판: 코르크판에 꽂힌 메모지 */
+    private static final UiButton.Style JOB_NOTE = new UiButton.Style(0xFFFFF6D8, 0xFFF4E4B0, 0xFFB8925A, 0xFF3A2A14, false, UiButton.Shape.PAPER);
     /** 투기장 판 화면 (설정 ◀▶ · 팀 판 · 큰 버튼): 칸 모양이 하나라도 있으면 */
     private final boolean panel;
     private record Rect(int x, int y, int w, int h, int top, int bottom, int border) {}
@@ -45,11 +47,14 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
     private UiButton prev, next;
 
     public PickScreen(PickMenu menu, Inventory inv, Component title) {
-        super(menu, inv, title, (menu.flags & PickMenu.FLAG_SHOP) != 0 ? 330 : (menu.flags & PickMenu.FLAG_ARENA) != 0 ? 284 : 240,
+        super(menu, inv, title, (menu.flags & PickMenu.FLAG_SHOP) != 0 ? 330 : (menu.flags & PickMenu.FLAG_ARENA) != 0 ? 284
+                : (menu.flags & PickMenu.FLAG_JOB) != 0 ? 300 : 240,
                 (menu.flags & PickMenu.FLAG_SHOP) != 0 ? 32 + GRID_ROWS * (CASE_H + 4) + 24
+                        : (menu.flags & PickMenu.FLAG_JOB) != 0 ? 170
                         : (menu.flags & PickMenu.FLAG_CAN_TOGGLE) != 0 ? 222 : (menu.flags & PickMenu.FLAG_ARENA) != 0 ? 206 : 200);
         this.arena = (menu.flags & PickMenu.FLAG_ARENA) != 0;
         this.shop = (menu.flags & PickMenu.FLAG_SHOP) != 0;
+        this.job = (menu.flags & PickMenu.FLAG_JOB) != 0;
         this.panel = arena && menu.entries.stream().anyMatch(e -> e.kind() != PickMenu.K_ROW);
         this.W = this.imageWidth;
         this.H = this.imageHeight;
@@ -68,6 +73,15 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
             for (int r = 0; r < COLS * GRID_ROWS; r++) {
                 final int row = r;
                 rows.add(addRenderableWidget(new CaseButton(gx + (r % COLS) * (CASE_W + 6), topPos + 32 + (r / COLS) * (CASE_H + 4), () -> pick(row))));
+            }
+        } else if (job) {
+            // 메모지 3장: 큼직하게, 살짝 엇갈려 꽂힘
+            for (int r = 0; r < 3; r++) {
+                final int row = r;
+                UiButton b = addRenderableWidget(new UiButton(leftPos + 18 + (r % 2) * 6, topPos + 40 + r * 36, W - 42, 30, Component.empty(),
+                        JOB_NOTE, () -> pick(row)).left());
+                b.visible = false;
+                rows.add(b);
             }
         } else {
             int inset = arena ? 24 : 10;
@@ -115,7 +129,7 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
     }
 
     private int per() {
-        return shop ? COLS * GRID_ROWS : ROWS;
+        return shop ? COLS * GRID_ROWS : job ? 3 : ROWS;
     }
 
     private int pages() {
@@ -221,6 +235,9 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
                     c.entry = e;
                     b.setTooltip(net.minecraft.client.gui.components.Tooltip.create(Component.literal(e.title())
                             .append(e.sub().isEmpty() ? Component.empty() : Component.literal("\n" + e.sub()).withStyle(ChatFormatting.GOLD))));
+                } else if (job) {
+                    b.setMessage(Component.empty());
+                    b.setTooltip(net.minecraft.client.gui.components.Tooltip.create(Component.literal(e.sub())));
                 } else {
                     b.setMessage(Component.literal(e.title()).append(Component.literal("   " + e.sub())
                             .withStyle(arena ? ChatFormatting.DARK_RED : ChatFormatting.GRAY)));
@@ -231,6 +248,7 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
         }
         prev.active = page > 0;
         next.active = page < pages() - 1;
+        prev.visible = next.visible = !job;
     }
 
     private void pick(int row) {
@@ -250,6 +268,10 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
         int x = leftPos, y = topPos;
         if (shop) {
             showroom(g, x, y);
+            return;
+        }
+        if (job) {
+            corkboard(g, x, y);
             return;
         }
         if (arena) {
@@ -321,6 +343,20 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
             g.fill(tx + 2, ty - 3 + f, tx + 6, ty + 3, 0xFFFFC340);
             g.fill(tx + 3, ty - 5 + f, tx + 5, ty + 1, 0xFFFFF0A0);
         }
+    }
+
+    /** 알바 게시판: 원목 테 + 코르크판 + 위 나무 간판 */
+    private void corkboard(GuiGraphicsExtractor g, int x, int y) {
+        UiKit.device(g, x, y, W, H, 0xFF8A5A30, 0xFF5A3618);
+        for (int k = 0; k < 6; k++) g.fill(x + 3, y + 6 + k * 27, x + W - 3, y + 7 + k * 27, 0x18000000); // 나뭇결
+        g.fillGradient(x + 8, y + 32, x + W - 8, y + H - 8, 0xFFC8955A, 0xFFB07A42);
+        UiKit.speckle(g, x + 8, y + 32, W - 16, H - 40, 23, 520, 0x40603A18, 0x30E8C090);
+        UiKit.outline(g, x + 7, y + 31, W - 14, H - 38, 0xFF4A2A10);
+        // 간판
+        g.fillGradient(x + 40, y + 5, x + W - 40, y + 27, 0xFF6A4020, 0xFF4A2A12);
+        UiKit.outline(g, x + 40, y + 5, W - 80, 22, 0xFF2A180A);
+        g.fill(x + 44, y + 8, x + 46, y + 10, 0xFFB0B0B0);
+        g.fill(x + W - 46, y + 8, x + W - 44, y + 10, 0xFFB0B0B0);
     }
 
     /** 명품관: 짙은 원목 테 · 어두운 벽지 · 위에서 비추는 조명 · 금 간판 */
@@ -411,6 +447,31 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
 
     @Override
     protected void extractLabels(GuiGraphicsExtractor g, int mouseX, int mouseY) {
+        if (job) {
+            String t = this.title.getString();
+            UiKit.bold(g, t, (W - UiKit.font().width(t)) / 2, 9, 0xFFFFE9B0);
+            UiKit.center(g, menu.header, W / 2, 19, 0xFFE8CFA0);
+            // 메모지 글씨 + 압정
+            for (int r = 0; r < rows.size(); r++) {
+                UiButton b = rows.get(r);
+                if (!b.visible) continue;
+                int idx = page * per() + r;
+                if (idx >= menu.entries.size()) continue;
+                PickMenu.Entry e = menu.entries.get(idx);
+                int bx = b.getX() - leftPos, by = b.getY() - topPos;
+                g.fill(bx + b.getWidth() / 2 - 2, by - 3, bx + b.getWidth() / 2 + 2, by + 1, 0xFFD0303A);
+                g.fill(bx + b.getWidth() / 2 - 1, by - 2, bx + b.getWidth() / 2, by - 1, 0xFFFF9090);
+                UiKit.bold(g, e.title(), bx + 8, by + 6, 0xFF3A2A14);
+                boolean done = e.sub().startsWith("✔"), on = e.sub().startsWith("▶");
+                UiKit.text(g, e.sub(), bx + 8, by + 18, done ? 0xFF2E8A3E : on ? 0xFFC0501A : 0xFF8A6A3A);
+                if (done) { // 완료 도장
+                    int sx = bx + b.getWidth() - 40, sy = by + 6;
+                    UiKit.outline(g, sx, sy, 32, 18, 0xCC2E8A3E);
+                    UiKit.center(g, "완료", sx + 16, sy + 5, 0xFF2E8A3E);
+                }
+            }
+            return;
+        }
         if (shop) {
             UiKit.bold(g, "✦ " + this.title.getString().replace("💎", "").trim() + " ✦", 10, 8, 0xFFF2C14E);
             UiKit.text(g, menu.header, 10, 19, 0xFFB8A98A);

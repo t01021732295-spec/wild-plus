@@ -99,7 +99,7 @@ jobs:
             run "execute as @e[type=minecraft:item] run data get entity @s Item"
             run "kill @e[type=minecraft:item]"
             # ── 2차: 낚시 (일반 낚싯대 / 비취 낚싯대 / 비 오는 날) ──
-            for rod in minecraft:fishing_rod wildplus:jade_fishing_rod; do
+            for rod in minecraft:fishing_rod wildplus:jade_fishing_rod wildplus:dragon_fishing_rod; do
               for k in $(seq 1 80); do echo "loot spawn 0 125 0 fish minecraft:gameplay/fishing 0 121 0 $rod"; sleep 0.15; done
               echo "say TEST fishing $rod"; sleep 1
               run "execute as @e[type=minecraft:item] run data get entity @s Item"
@@ -922,6 +922,12 @@ jobs:
             cmd "/land"
             sleep 2
             import -window root shot-land.png || true
+            xdotool key Escape; sleep 1
+            # ── 2.18: 알바 게시판 ──
+            cmd "/setblock 474 120 -12 wildplus:job_board"
+            cmd "/tp @s 474.5 120 -9.8 180 35"
+            sleep 2; xdotool click 3; sleep 2
+            import -window root shot-jobs.png || true
             xdotool key Escape; sleep 1
             # ── 2.12: 치장 · 에메랄드 · 투기장 ──
             cmd "/clear @s"

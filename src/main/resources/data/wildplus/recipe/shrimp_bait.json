@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#minecraft:fishes",
+    "minecraft:kelp"
+  ],
+  "result": {
+    "id": "wildplus:shrimp_bait",
+    "count": 4
+  }
+}

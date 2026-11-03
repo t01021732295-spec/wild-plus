@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:rice"
+  ],
+  "result": {
+    "id": "wildplus:rice_seeds",
+    "count": 1
+  }
+}

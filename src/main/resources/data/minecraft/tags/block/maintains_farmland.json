@@ -6,6 +6,10 @@
     "wildplus:strawberry_crop",
     "wildplus:corn_crop",
     "wildplus:cabbage_crop",
-    "wildplus:blueberry_crop"
+    "wildplus:blueberry_crop",
+    "wildplus:grape_crop",
+    "wildplus:rice_crop",
+    "wildplus:onion_crop",
+    "wildplus:ginseng_crop"
   ]
 }
