@@ -322,6 +322,20 @@ jobs:
             run "data get block 54 120 34 items"
             run "data get block 50 120 30 items"
             run "data get block 58 120 38 items"
+            # 채굴기 일렬 시험: 붙여 놓은 6대(밑에 호퍼+상자) vs 따로 1대, 석탄(15초) 45초 → 대당 2~4개가 정상
+            run "fill 70 118 50 80 123 58 minecraft:air"
+            for x in 70 71 72 73 74 75; do
+              run "setblock $x 120 50 wildplus:ore_miner{selected:0,tier:0}"
+              run "setblock $x 119 50 minecraft:hopper[facing=down]"
+              run "setblock $x 118 50 minecraft:chest"
+            done
+            for x in 70 71 72 73 74 75; do run "setblock $x 120 52 wildplus:ore_miner{selected:11,tier:2}"; done
+            run "setblock 70 120 56 wildplus:ore_miner{selected:0,tier:0}"
+            sleep 45
+            echo "say TEST miner line"; sleep 1
+            for x in 70 71 72 73 74 75; do run "data get block $x 118 50 Items"; run "data get block $x 120 52 items"; done
+            run "data get block 70 120 56 items"
+            run "data get block 72 120 52"
             # 편의 기능 시험장: 나무 기둥(x=395), 다 자란 밀(x=398)
             run "fill 395 120 3 395 125 3 minecraft:oak_log"
             run "fill 394 126 2 396 127 4 minecraft:oak_leaves[persistent=true]"
