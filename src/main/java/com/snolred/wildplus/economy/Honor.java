@@ -250,7 +250,7 @@ public final class Honor {
     public static void onHurt(net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer p)) return;
         int rank = WildData.get(p.level().getServer()).honor(p.getUUID());
-        if (rank <= 0) return;
+        if (rank <= 0 || com.snolred.wildplus.content.Arena.fairMatch(p.getUUID())) return; // 공평 경기: 명예 효과 없음
         float amount = event.getAmount();
         if (rank >= 2 && event.getSource().is(net.minecraft.tags.DamageTypeTags.IS_FALL)) amount *= 0.5F;
         if (rank >= 7) amount *= 0.8F;
@@ -341,7 +341,14 @@ public final class Honor {
         MinecraftServer server = p.level().getServer();
         WildData data = WildData.get(server);
         UUID id = p.getUUID();
-        int rank = data.honor(id);
+        // 투기장 지급 장비(공평) 경기 중에는 명예 등급 효과를 모두 끔 (체력 보너스 포함)
+        int rank = com.snolred.wildplus.content.Arena.fairMatch(id) ? 0 : data.honor(id);
+        // 투기장 경기 중에는 (등급 비행 · 비행 허가증 모두) 비행 금지
+        if (com.snolred.wildplus.content.Arena.inMatch(id) && !p.isCreative() && !p.isSpectator() && p.getAbilities().mayfly) {
+            p.getAbilities().mayfly = false;
+            p.getAbilities().flying = false;
+            p.onUpdateAbilities();
+        }
         if (rank >= 1 && p.tickCount % 1200 == 0 && p.getFoodData().getFoodLevel() < 20) p.getFoodData().eat(1, 0.3F);
         if (p.tickCount % 100 == 0) {
             if (rank >= 4) p.addEffect(new MobEffectInstance(MobEffects.HASTE, 140, 0, true, false, true));
@@ -366,7 +373,7 @@ public final class Honor {
                     p.onUpdateAbilities();
                 }
             }
-            applyHealth(p, data.honor(id));
+            applyHealth(p, rank);
             String name = p.getName().getString();
             if (!name.equals(data.names.get(id))) {
                 data.names.put(id, name);
@@ -379,7 +386,7 @@ public final class Honor {
         if (until != null && !p.isCreative() && !p.isSpectator()) {
             long left = until - now;
             if (left > 0) {
-                if (!p.getAbilities().mayfly) {
+                if (!p.getAbilities().mayfly && !com.snolred.wildplus.content.Arena.inMatch(id)) {
                     p.getAbilities().mayfly = true;
                     p.onUpdateAbilities();
                 }

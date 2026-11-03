@@ -96,6 +96,11 @@ public final class Arena {
         return (phase == Phase.COUNTDOWN || phase == Phase.FIGHT || phase == Phase.END) && (TEAM_A.contains(id) || TEAM_B.contains(id));
     }
 
+    /** 지급 장비(공평) 모드 경기 중인가 — 명예 등급 효과를 모두 끈다 */
+    public static boolean fairMatch(UUID id) {
+        return kit && inMatch(id);
+    }
+
     /** 투기장 안에서 서로 다른 팀으로 싸우는 중인가 (파티원끼리라도 피해가 들어감) */
     public static boolean opponents(UUID a, UUID b) {
         return phase == Phase.FIGHT && ((TEAM_A.contains(a) && TEAM_B.contains(b)) || (TEAM_B.contains(a) && TEAM_A.contains(b)));
