@@ -22,7 +22,7 @@ public final class JumpClient {
     static void onTick(ClientTickEvent.Post event) {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer p = mc.player;
-        if (p == null || mc.screen != null) return;
+        if (p == null) return;
         boolean down = mc.options.keyJump.isDown();
         if (p.onGround() || p.isInWater() || p.onClimbable()) used = false;
         if (down && !wasDown && !p.onGround() && !used && !p.isInWater() && !p.isFallFlying() && !p.getAbilities().flying
