@@ -967,7 +967,7 @@ jobs:
             sleep 3
             import -window root shot-house-preview.png || true
             cmd "/setblock 576 119 -54 air"
-            cmd "/tp @s 576.5 119 -54.5 0 40"
+            cmd "/tp @s 576.5 119 -54.5 180 40"
             sleep 1; xdotool click 3; sleep 3
             import -window root shot-home-store.png || true
             xdotool key Escape; sleep 1
@@ -1009,7 +1009,7 @@ jobs:
             import -window root shot-aquarium.png || true
             cmd "/contest start"
             sleep 3
-            cmd "/tp @s 684.5 119 -50.2 180 15"
+            cmd "/tp @s 701.5 119 -50.2 180 15"
             sleep 1; xdotool click 3; sleep 2
             import -window root shot-contest-board.png || true
             xdotool key Escape; sleep 1
@@ -1027,8 +1027,10 @@ jobs:
             xdotool mousemove 640 300; sleep 0.5; xdotool click 1; sleep 1
             import -window root shot-realty-ui2.png || true
             xdotool key Escape; sleep 1
-            # 3인칭으로 앉은 모습 (소파 높이 확인)
-            cmd "/tp @s 564.5 119 -50.5 180 30"
+            # 3인칭으로 앉은 모습 (안락의자 · 소파 높이 확인): 트인 곳에 놓고 앉아서 앞에서 봄
+            cmd "/setblock 722 119 -40 wildplus:armchair[facing=south]"
+            cmd "/setblock 723 119 -40 wildplus:sofa_red[facing=south]"
+            cmd "/tp @s 722.5 119 -38.7 180 30"
             sleep 1; xdotool click 3; sleep 2
             xdotool key F5; sleep 1; xdotool key F5; sleep 2
             import -window root shot-sit-third.png || true
