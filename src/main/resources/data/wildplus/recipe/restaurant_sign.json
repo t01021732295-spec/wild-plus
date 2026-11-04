@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GPG",
+    "PSP",
+    "GPG"
+  ],
+  "key": {
+    "G": "minecraft:gold_nugget",
+    "P": "#minecraft:planks",
+    "S": "#minecraft:signs"
+  },
+  "result": {
+    "id": "wildplus:restaurant_sign",
+    "count": 1
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/restaurant_entrance"
+    },
+    "facing=east": {
+      "model": "wildplus:block/restaurant_entrance",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/restaurant_entrance",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/restaurant_entrance",
+      "y": 270
+    }
+  }
+}

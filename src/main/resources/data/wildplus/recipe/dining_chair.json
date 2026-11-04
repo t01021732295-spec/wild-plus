@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "P  ",
+    "PWP",
+    "S S"
+  ],
+  "key": {
+    "P": "#minecraft:planks",
+    "W": "minecraft:red_wool",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "wildplus:dining_chair",
+    "count": 2
+  }
+}

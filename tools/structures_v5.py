@@ -159,6 +159,62 @@ def service(t, x0, z0, door, kind):
         t.set(x0 + 3, 0, dz + (k if door == "south" else -k), "minecraft:dirt_path")
 
 
+# 3.2: 마을 식당 (주민 집 2채 자리 · 18×10): 체크 바닥 · 카운터(무한 재고) · 식탁 2개 · 의자 8개 · 입구 · 간판 · 요리사
+DISHES_VILLAGE = ["kimchi_stew", "bulgogi", "fried_rice", "gimbap", "cheese_pizza", "steak", "seafood_pancake", "apple_pie", "tteokbokki", "beer"]
+
+
+def restaurant(t, x0, z0):
+    x1, z1 = x0 + 17, z0 + 9
+    t.fill(x0, 0, z0, x1, 0, z1, "minecraft:polished_andesite")
+    for x in range(x0 + 1, x1):
+        for z in range(z0 + 1, z1):
+            t.set(x, 0, z, "minecraft:white_glazed_terracotta" if False else ("minecraft:white_concrete" if (x + z) % 2 else "minecraft:black_concrete"))
+    for y in range(1, 5):
+        for x in range(x0, x1 + 1):
+            for z in range(z0, z1 + 1):
+                if x in (x0, x1) and z in (z0, z1):
+                    t.set(x, y, z, "minecraft:stripped_dark_oak_log", {"axis": "y"})
+                elif x in (x0, x1) or z in (z0, z1):
+                    t.set(x, y, z, "minecraft:red_terracotta" if y == 4 else "minecraft:spruce_planks")
+    # 창문 (앞뒤 벽)
+    for x in list(range(x0 + 2, x0 + 6)) + list(range(x1 - 5, x1 - 1)):
+        for y in (2, 3):
+            t.set(x, y, z0, "minecraft:glass_pane", {"east": "true", "west": "true", "north": "false", "south": "false", "waterlogged": "false"})
+    # 입구 (2칸 트임) + 입구 매트
+    dx = x0 + 8
+    for x in (dx, dx + 1):
+        for y in (1, 2, 3):
+            t.set(x, y, z0, "minecraft:air")
+    t.set(dx, 1, z0 + 1, "wildplus:restaurant_entrance", {"facing": "north"})
+    for k in range(1, 3):
+        t.set(dx, 0, z0 - k, "minecraft:dirt_path")
+        t.set(dx + 1, 0, z0 - k, "minecraft:dirt_path")
+    # 지붕
+    t.fill(x0 - 1, 5, z0 - 1, x1 + 1, 5, z1 + 1, "minecraft:dark_oak_planks")
+    t.fill(x0, 6, z0, x1, 6, z1, "minecraft:dark_oak_slab", {"type": "bottom", "waterlogged": "false"})
+    # 간판 (문 위 바깥)
+    t.set(dx, 3, z0 - 1, "wildplus:restaurant_sign", {"facing": "north"})
+    # 카운터 (안쪽 벽 앞, 문을 봄) + 요리사
+    items = List[Compound]([Compound({"id": String("wildplus:" + d), "count": Int(1)}) for d in DISHES_VILLAGE])
+    t.set(dx, 1, z1 - 2, "wildplus:restaurant_counter", {"facing": "north"},
+          Compound({"id": String("wildplus:restaurant_counter"), "village": Byte(1), "name": String("마을 식당"), "items": items}))
+    t.entity(dx + 0.5, 1.0, z1 - 0.5, mob("wildplus:customer", 180.0, {"wp_kind": Int(4)}))
+    # 조리 기구 장식 (뒤 벽 양쪽)
+    t.set(x0 + 2, 1, z1 - 1, "wildplus:kitchen_stove", {"facing": "north"})
+    t.set(x1 - 3, 1, z1 - 1, "wildplus:cooking_pot", {"facing": "north"})
+    # 식탁 2개 + 의자 (양쪽)
+    for tx in (x0 + 2, x1 - 4):
+        t.set(tx, 1, z0 + 4, "wildplus:dining_table", {"facing": "north"})
+        for cx in (tx, tx + 1):
+            t.set(cx, 1, z0 + 3, "wildplus:dining_chair", {"facing": "south"})
+            t.set(cx, 1, z0 + 5, "wildplus:dining_chair", {"facing": "north"})
+    # 등
+    for x in (x0 + 4, x0 + 9, x1 - 4):
+        t.set(x, 4, z0 + 4, "minecraft:lantern", {"hanging": "true", "waterlogged": "false"})
+    t.set(x0 + 1, 1, z0 + 1, "minecraft:potted_red_tulip")
+    t.set(x1 - 1, 1, z0 + 1, "minecraft:potted_red_tulip")
+
+
 def farm(t, x0, z0, w, d, crop, rnd):
     """밭: 경작지 + 가운데 물길 + 작물 (다 자란 것 섞임) + 울타리"""
     for x in range(x0 - 1, x0 + w + 1):
@@ -201,7 +257,11 @@ def big_town():
     shops = {(22, 6): "luxury", (45, 6): "realty", (22, 67): "jobs", (45, 67): "arena"}
     for x0 in (3, 12, 22, 45, 55, 66):
         for (z0, door) in ((6, "south"), (67, "north")):
-            if (x0, z0) in shops:
+            if (x0, z0) == (55, 67):
+                restaurant(t, 55, 67)
+            elif (x0, z0) == (66, 67):
+                pass  # 식당 자리
+            elif (x0, z0) in shops:
                 service(t, x0, z0, door, shops[(x0, z0)])
             else:
                 house(t, x0, z0, door, idx, rnd)

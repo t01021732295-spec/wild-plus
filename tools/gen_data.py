@@ -365,6 +365,8 @@ def main():
     data_v20.build(json.loads((_A / "lang/ko_kr.json").read_text()), json.loads((_A / "lang/en_us.json").read_text()))
     import data_v21
     data_v21.build(json.loads((_A / "lang/ko_kr.json").read_text()), json.loads((_A / "lang/en_us.json").read_text()))
+    import data_v22
+    data_v22.build(json.loads((_A / "lang/ko_kr.json").read_text()), json.loads((_A / "lang/en_us.json").read_text()))
     n = sum(1 for _ in RES.rglob("*.json"))
     print("ok", n, "json files")
 

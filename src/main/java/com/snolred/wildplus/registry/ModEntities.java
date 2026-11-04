@@ -39,6 +39,9 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<GoldenSlimeEntity>> GOLDEN_SLIME = ENTITIES.registerEntityType("golden_slime",
             GoldenSlimeEntity::new, MobCategory.MONSTER, b -> b.sized(0.52F, 0.52F).eyeHeight(0.325F).clientTrackingRange(10));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.CustomerEntity>> CUSTOMER = ENTITIES.registerEntityType("customer",
+            com.snolred.wildplus.entity.CustomerEntity::new, MobCategory.MISC, b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
+
     // ───────── 보스 (레이드 3 · 하늘의 탑 6) ─────────
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.BossMobs.Titan>> TITAN_BOSS = ENTITIES.registerEntityType("titan_boss",
             com.snolred.wildplus.entity.BossMobs.Titan::new, MobCategory.MONSTER, b -> b.sized(1.95F, 2.2F).fireImmune().clientTrackingRange(10));
@@ -77,6 +80,8 @@ public final class ModEntities {
         event.put(BANKER_MERCHANT.get(), merchant);
         event.put(BANDIT.get(), BanditEntity.createAttributes().build());
         event.put(GOLDEN_SLIME.get(), Monster.createMonsterAttributes().build());
+        event.put(CUSTOMER.get(), Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.32).add(Attributes.MAX_HEALTH, 20.0)
+                .add(Attributes.FOLLOW_RANGE, 32.0).build());
     }
 
     public static void onSpawnPlacements(RegisterSpawnPlacementsEvent event) {

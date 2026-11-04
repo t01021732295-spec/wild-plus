@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "QQQ",
+    "PBP",
+    "PCP"
+  ],
+  "key": {
+    "Q": "minecraft:quartz_slab",
+    "P": "#minecraft:planks",
+    "B": "minecraft:bell",
+    "C": "minecraft:chest"
+  },
+  "result": {
+    "id": "wildplus:restaurant_counter",
+    "count": 1
+  }
+}

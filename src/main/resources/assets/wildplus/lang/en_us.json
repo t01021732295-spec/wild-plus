@@ -777,5 +777,11 @@
   "block.wildplus.bbq_grill": "Bbq Grill",
   "block.wildplus.kitchen_stove": "Kitchen Stove",
   "block.wildplus.prep_table": "Prep Table",
-  "block.wildplus.aging_rack": "Aging Rack"
+  "block.wildplus.aging_rack": "Aging Rack",
+  "block.wildplus.restaurant_counter": "Restaurant Counter",
+  "block.wildplus.restaurant_entrance": "Restaurant Entrance",
+  "block.wildplus.dining_table": "Dining Table",
+  "block.wildplus.dining_chair": "Dining Chair",
+  "block.wildplus.restaurant_sign": "Restaurant Sign",
+  "entity.wildplus.customer": "Restaurant Guest"
 }

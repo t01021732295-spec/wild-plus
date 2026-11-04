@@ -33,6 +33,29 @@ public final class WildCommands {
                     ctx.getSource().sendFailure(Component.translatable("commands.wildplus.warp_rename_fail"));
                     return 0;
                 })));
+        // 식당: 이름 바꾸기 · 평점 (카운터 화면의 입력칸이 이 명령을 보냄)
+        event.getDispatcher().register(Commands.literal("restaurant")
+                .then(Commands.literal("name").then(Commands.argument("name", com.mojang.brigadier.arguments.StringArgumentType.greedyString()).executes(ctx -> {
+                    net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
+                    if (!(sp.containerMenu instanceof com.snolred.wildplus.menu.RestaurantMenu m) || m.blockEntity() == null
+                            || m.blockEntity().role(sp) != com.snolred.wildplus.block.RestaurantCounterBlockEntity.ROLE_OWNER) {
+                        ctx.getSource().sendFailure(Component.literal("자기 식당 카운터 화면에서만 이름을 바꿀 수 있어요"));
+                        return 0;
+                    }
+                    String name = com.mojang.brigadier.arguments.StringArgumentType.getString(ctx, "name").trim();
+                    if (name.length() > 20) name = name.substring(0, 20);
+                    var be = m.blockEntity();
+                    be.name = name;
+                    be.setChanged();
+                    final String n = name;
+                    ctx.getSource().sendSuccess(() -> Component.literal("🍽 식당 이름: " + n), false);
+                    com.snolred.wildplus.menu.RestaurantMenu.open(sp, be.getBlockPos());
+                    return 1;
+                })))
+                .then(Commands.literal("review").then(Commands.argument("stars", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1, 5))
+                        .executes(ctx -> review(ctx, ""))
+                        .then(Commands.argument("text", com.mojang.brigadier.arguments.StringArgumentType.greedyString())
+                                .executes(ctx -> review(ctx, com.mojang.brigadier.arguments.StringArgumentType.getString(ctx, "text")))))));
         event.getDispatcher().register(Commands.literal("wildplus")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
                 .then(Commands.literal("bloodmoon")
@@ -180,5 +203,19 @@ public final class WildCommands {
             }));
         }
         return root;
+    }
+
+    private static int review(com.mojang.brigadier.context.CommandContext<net.minecraft.commands.CommandSourceStack> ctx, String text)
+            throws com.mojang.brigadier.exceptions.CommandSyntaxException {
+        net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
+        if (!(sp.containerMenu instanceof com.snolred.wildplus.menu.RestaurantMenu m) || m.blockEntity() == null) {
+            ctx.getSource().sendFailure(Component.literal("식당 카운터 화면에서 평점을 남겨 주세요"));
+            return 0;
+        }
+        int stars = com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "stars");
+        if (!m.blockEntity().rate(sp, stars, text)) return 0;
+        ctx.getSource().sendSuccess(() -> Component.literal("⭐ 평점 " + "★".repeat(stars) + " 남김 · 고마워요!"), false);
+        com.snolred.wildplus.menu.RestaurantMenu.open(sp, m.blockEntity().getBlockPos());
+        return 1;
     }
 }

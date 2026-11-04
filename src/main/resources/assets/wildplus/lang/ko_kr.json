@@ -897,5 +897,16 @@
   "block.wildplus.prep_table": "도마 작업대",
   "tooltip.wildplus.prep_table": "여러 칸 조리 기구 · 재료를 넣으면 자동으로 조리\n김밥 · 초밥 세트 · 회덮밥 · 비빔밥 · 과일 샐러드 · 김치",
   "block.wildplus.aging_rack": "숙성통 선반",
-  "tooltip.wildplus.aging_rack": "여러 칸 조리 기구 · 재료를 넣으면 자동으로 조리\n치즈 · 와인 · 맥주 · 막걸리 · 인삼주"
+  "tooltip.wildplus.aging_rack": "여러 칸 조리 기구 · 재료를 넣으면 자동으로 조리\n치즈 · 와인 · 맥주 · 막걸리 · 인삼주",
+  "block.wildplus.restaurant_counter": "식당 카운터",
+  "tooltip.wildplus.restaurant_counter": "가로 3칸 · 진열대에 요리를 채우면 손님이 입구로 들어와 주문 → [내주기]로 서빙\n근처 16칸에 식당 입구 · 의자가 있어야 함 · 모루로 이름 붙이면 식당 이름 · 알바 · 직원 · 평점",
+  "block.wildplus.restaurant_entrance": "식당 입구",
+  "tooltip.wildplus.restaurant_entrance": "손님이 여기서 나타나 들어오고 여기로 나감 (카운터 16칸 안) · 밟고 지나갈 수 있음",
+  "block.wildplus.dining_table": "식탁",
+  "tooltip.wildplus.dining_table": "가로 2칸 · 체크 식탁보와 꽃병 · 옆에 의자를 놓아 주세요",
+  "block.wildplus.dining_chair": "식당 의자",
+  "tooltip.wildplus.dining_chair": "요리를 받은 손님이 앉아서 먹음 (♥ · 평판 +1) · 의자가 없으면 포장해 감",
+  "block.wildplus.restaurant_sign": "식당 간판",
+  "tooltip.wildplus.restaurant_sign": "벽에 거는 가로 2칸 간판 (장식)",
+  "entity.wildplus.customer": "식당 손님"
 }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "RWR",
+    "PPP",
+    "S S"
+  ],
+  "key": {
+    "R": "minecraft:red_carpet",
+    "W": "minecraft:white_carpet",
+    "P": "#minecraft:planks",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "wildplus:dining_table",
+    "count": 1
+  }
+}

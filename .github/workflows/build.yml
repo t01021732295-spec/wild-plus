@@ -929,6 +929,25 @@ jobs:
             sleep 2; xdotool click 3; sleep 2
             import -window root shot-jobs.png || true
             xdotool key Escape; sleep 1
+            # ── 3.2: 식당 ──
+            cmd "/fill 530 120 -30 548 126 -14 air"
+            cmd "/fill 530 119 -30 548 119 -14 minecraft:white_concrete"
+            cmd "/setblock 539 120 -26 wildplus:restaurant_counter[facing=south]{village:1b,name:\"테스트 식당\",items:[{id:\"wildplus:kimchi_stew\",count:5},{id:\"wildplus:steak\",count:5},{id:\"wildplus:bulgogi\",count:5},{id:\"wildplus:gimbap\",count:5},{id:\"wildplus:beer\",count:5}]}"
+            cmd "/setblock 539 120 -16 wildplus:restaurant_entrance[facing=south]"
+            cmd "/setblock 533 120 -21 wildplus:dining_table[facing=south]"
+            cmd "/setblock 533 120 -22 wildplus:dining_chair[facing=south]"
+            cmd "/setblock 534 120 -22 wildplus:dining_chair[facing=south]"
+            cmd "/setblock 533 120 -20 wildplus:dining_chair[facing=north]"
+            cmd "/setblock 534 120 -20 wildplus:dining_chair[facing=north]"
+            cmd "/setblock 544 121 -27 wildplus:restaurant_sign[facing=south]"
+            cmd "/time set 6000"
+            cmd "/tp @s 539.5 123 -13.5 180 25"
+            sleep 25
+            import -window root shot-restaurant.png || true
+            cmd "/tp @s 539.5 120 -23.2 180 25"
+            sleep 2; xdotool click 3; sleep 3
+            import -window root shot-restaurant-ui.png || true
+            xdotool key Escape; sleep 1
             # ── 3.1: 조리 기구 ──
             cmd "/fill 496 120 -18 528 128 4 air"
             cmd "/fill 496 119 -18 528 119 4 minecraft:polished_andesite"

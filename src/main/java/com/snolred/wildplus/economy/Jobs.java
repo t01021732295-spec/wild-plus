@@ -46,7 +46,8 @@ public final class Jobs {
         GUARD("🗡 마을 경비", "몬스터 %d마리 처치", 10, 20, 45),
         RANCH("🐄 목장 도우미", "동물 %d쌍 번식시키기", 4, 8, 110),
         KITCHEN("🍳 주방 보조", "음식 %d개 만들기 (굽기·조합)", 16, 32, 25),
-        DIG("🚜 땅 고르기", "흙·모래·자갈 %d개 파기", 64, 128, 5);
+        DIG("🚜 땅 고르기", "흙·모래·자갈 %d개 파기", 64, 128, 5),
+        SERVE("🍽 식당 서빙", "식당 손님 %d명 서빙 (마을 식당 알바 가능)", 4, 8, 90);
 
         public final String title, task;
         public final int min, max, payEach;
@@ -144,6 +145,11 @@ public final class Jobs {
     }
 
     // ───────── 진행 ─────────
+    /** 식당에서 손님 1명 서빙 */
+    public static void served(ServerPlayer p) {
+        add(p, Kind.SERVE, 1);
+    }
+
     private static void add(ServerPlayer p, Kind kind, int n) {
         if (n <= 0) return;
         MinecraftServer s = p.level().getServer();

@@ -12,6 +12,11 @@
     "wildplus:realty",
     "wildplus:job_board",
     "wildplus:prep_table",
-    "wildplus:aging_rack"
+    "wildplus:aging_rack",
+    "wildplus:restaurant_counter",
+    "wildplus:restaurant_entrance",
+    "wildplus:dining_table",
+    "wildplus:dining_chair",
+    "wildplus:restaurant_sign"
   ]
 }
