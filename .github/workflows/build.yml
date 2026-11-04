@@ -929,6 +929,48 @@ jobs:
             sleep 2; xdotool click 3; sleep 2
             import -window root shot-jobs.png || true
             xdotool key Escape; sleep 1
+            # ── 3.3: 집 꾸미기 ──
+            cmd "/fill 560 119 -60 640 140 -20 air"
+            cmd "/fill 560 118 -60 640 118 -20 minecraft:grass_block"
+            cmd "/place template wildplus:house/cabin 562 118 -40"
+            cmd "/place template wildplus:house/brick_house 575 118 -40"
+            cmd "/place template wildplus:house/hanok 590 118 -40"
+            cmd "/place template wildplus:house/modern 606 118 -40"
+            cmd "/place template wildplus:house/mansion 622 118 -42"
+            cmd "/time set 6000"
+            cmd "/tp @s 600 132 -5 155 28"
+            sleep 8
+            import -window root shot-houses.png || true
+            cmd "/tp @s 640 128 -10 120 25"
+            sleep 4
+            import -window root shot-houses2.png || true
+            fx=564; for b in sofa_teal sofa_red sofa_pink armchair coffee_table fireplace tv_stand floor_lamp monstera wardrobe vanity nightstand fridge sink bookshelf desk grandfather_clock piano aquarium bathtub; do cmd "/setblock $fx 119 -52 wildplus:$b[facing=south]"; fx=$((fx+3)); done
+            cmd "/setblock 564 119 -56 wildplus:rug[facing=south]"
+            cmd "/setblock 570 119 -56 wildplus:canopy_bed[facing=north,part=foot]"
+            cmd "/setblock 570 119 -57 wildplus:canopy_bed[facing=north,part=head]"
+            cmd "/setblock 573 119 -56 wildplus:bunk_bed[facing=north,part=foot]"
+            cmd "/setblock 573 119 -57 wildplus:bunk_bed[facing=north,part=head]"
+            cmd "/setblock 576 119 -56 wildplus:home_store[facing=south]"
+            cmd "/tp @s 575 122 -46 170 22"
+            sleep 5
+            import -window root shot-furniture.png || true
+            cmd "/tp @s 600 122 -46 190 22"
+            sleep 4
+            import -window root shot-furniture2.png || true
+            cmd "/tp @s 564.5 119 -50.5 180 30"
+            sleep 1; xdotool click 3; sleep 2
+            import -window root shot-sit.png || true
+            xdotool key shift; sleep 1
+            cmd "/clear @s"
+            cmd "/give @s wildplus:house_log_house"
+            cmd "/tp @s 600 119 -25 0 60"
+            sleep 3
+            import -window root shot-house-preview.png || true
+            cmd "/setblock 576 119 -54 air"
+            cmd "/tp @s 576.5 119 -54.5 0 40"
+            sleep 1; xdotool click 3; sleep 3
+            import -window root shot-home-store.png || true
+            xdotool key Escape; sleep 1
             # ── 3.2: 식당 ──
             cmd "/fill 530 120 -30 548 126 -14 air"
             cmd "/fill 530 119 -30 548 119 -14 minecraft:white_concrete"

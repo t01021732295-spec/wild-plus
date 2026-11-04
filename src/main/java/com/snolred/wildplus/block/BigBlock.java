@@ -81,9 +81,14 @@ public class BigBlock extends HorizontalDirectionalBlock {
         Direction f = state.getValue(FACING);
         BlockPos top = pos.above(height - 1);
         for (BlockPos p : parts(pos, f)) {
-            BigPartBlock.Part part = topPart != null && p.equals(top) ? topPart : BigPartBlock.Part.HIDDEN;
+            BigPartBlock.Part part = partAt(pos, p, top);
             level.setBlock(p, ModBlocks2.BIG_PART.get().defaultBlockState().setValue(BigPartBlock.FACING, f).setValue(BigPartBlock.PART, part), 3);
         }
+    }
+
+    /** 부속 칸 종류 (가구는 낮은 칸 · 납작한 칸) */
+    protected BigPartBlock.Part partAt(BlockPos master, BlockPos p, BlockPos top) {
+        return topPart != null && p.equals(top) ? topPart : BigPartBlock.Part.HIDDEN;
     }
 
     public void removeParts(Level level, BlockPos pos, BlockState state) {

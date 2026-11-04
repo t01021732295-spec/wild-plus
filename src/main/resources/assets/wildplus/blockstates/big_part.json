@@ -26,6 +26,30 @@
     "facing=west,part=gate_top": {
       "model": "wildplus:block/tower_gate_top",
       "y": 270
+    },
+    "facing=north,part=low": {
+      "model": "wildplus:block/big_part_hidden"
+    },
+    "facing=north,part=flat": {
+      "model": "wildplus:block/big_part_hidden"
+    },
+    "facing=east,part=low": {
+      "model": "wildplus:block/big_part_hidden"
+    },
+    "facing=east,part=flat": {
+      "model": "wildplus:block/big_part_hidden"
+    },
+    "facing=south,part=low": {
+      "model": "wildplus:block/big_part_hidden"
+    },
+    "facing=south,part=flat": {
+      "model": "wildplus:block/big_part_hidden"
+    },
+    "facing=west,part=low": {
+      "model": "wildplus:block/big_part_hidden"
+    },
+    "facing=west,part=flat": {
+      "model": "wildplus:block/big_part_hidden"
     }
   }
 }

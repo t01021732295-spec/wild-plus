@@ -37,6 +37,7 @@ public final class ModRenderers {
         event.registerEntityRenderer(ModEntities.BANDIT.get(), BanditRenderer::new);
         event.registerEntityRenderer(ModEntities.GOLDEN_SLIME.get(), GoldenSlimeRenderer::new);
         event.registerEntityRenderer(ModEntities.CUSTOMER.get(), CustomerRenderer::new);
+        event.registerEntityRenderer(ModEntities.SEAT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
         // 보스: 바닐라 모델 + 전용 텍스처
         event.registerEntityRenderer(ModEntities.TITAN_BOSS.get(), ctx -> new net.minecraft.client.renderer.entity.RavagerRenderer(ctx) {
             @Override

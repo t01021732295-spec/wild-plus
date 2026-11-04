@@ -257,7 +257,10 @@ def big_town():
     shops = {(22, 6): "luxury", (45, 6): "realty", (22, 67): "jobs", (45, 67): "arena"}
     for x0 in (3, 12, 22, 45, 55, 66):
         for (z0, door) in ((6, "south"), (67, "north")):
-            if (x0, z0) == (55, 67):
+            if (x0, z0) == (45, 6):
+                service(t, x0, z0, door, shops[(x0, z0)])
+                t.set(x0 + 1, 1, z0 + 7, "wildplus:home_store", {"facing": "south"})  # 부동산 옆 가구점
+            elif (x0, z0) == (55, 67):
                 restaurant(t, 55, 67)
             elif (x0, z0) == (66, 67):
                 pass  # 식당 자리

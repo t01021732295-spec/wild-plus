@@ -42,6 +42,9 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.CustomerEntity>> CUSTOMER = ENTITIES.registerEntityType("customer",
             com.snolred.wildplus.entity.CustomerEntity::new, MobCategory.MISC, b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.SeatEntity>> SEAT = ENTITIES.registerEntityType("seat",
+            com.snolred.wildplus.entity.SeatEntity::new, MobCategory.MISC, b -> b.sized(0.01F, 0.01F).noSummon().clientTrackingRange(8));
+
     // ───────── 보스 (레이드 3 · 하늘의 탑 6) ─────────
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.BossMobs.Titan>> TITAN_BOSS = ENTITIES.registerEntityType("titan_boss",
             com.snolred.wildplus.entity.BossMobs.Titan::new, MobCategory.MONSTER, b -> b.sized(1.95F, 2.2F).fireImmune().clientTrackingRange(10));

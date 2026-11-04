@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PEP",
+    "PCP",
+    "PPP"
+  ],
+  "key": {
+    "P": "#minecraft:planks",
+    "E": "minecraft:emerald",
+    "C": "minecraft:chest"
+  },
+  "result": {
+    "id": "wildplus:home_store",
+    "count": 1
+  }
+}
