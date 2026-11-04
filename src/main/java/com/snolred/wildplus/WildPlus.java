@@ -50,6 +50,8 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModItems15.init();
         com.snolred.wildplus.registry.ModBlocks6.init();
         com.snolred.wildplus.registry.ModItems16.init();
+        com.snolred.wildplus.registry.ModBlocks7.init();
+        com.snolred.wildplus.registry.ModItems17.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
@@ -100,6 +102,9 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.net.CosmeticSync.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.Luxury.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.ContentEvents.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Contest.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Ranch.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.home.HouseVisit.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Raid.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Tower.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Social.class);

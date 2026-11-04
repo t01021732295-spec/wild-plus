@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "P P",
+    "PHP"
+  ],
+  "key": {
+    "P": "#minecraft:planks",
+    "H": "minecraft:hay_block"
+  },
+  "result": {
+    "id": "wildplus:hay_trough",
+    "count": 1
+  }
+}

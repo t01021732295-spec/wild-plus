@@ -3,7 +3,10 @@ from cosmetic_design import Box, mix, shade
 from kitchen_design import C, DARKWOOD, FIRE, bricks, glow, marble, metal, planks, stone
 import anim_fx as AF
 
+
 LIT = True  # 켜짐/꺼짐 모델 (data 생성 때 바꿔 가며 내보냄)
+TV_CH = 0  # TV 채널 (0 자연 · 1 뉴스 · 2 주식 · 3 스포츠 · 4 만화)
+TV_CHANNELS = [AF.tv_screen, AF.tv_news, AF.tv_stocks, AF.tv_sports, AF.tv_cartoon]
 WHITE = (245, 245, 242)
 GOLD = (232, 190, 70)
 
@@ -144,7 +147,7 @@ def tv_stand():
             return (255, 230, 120)
         return sky
     out += [Box(-2, 8, -2, 4, 2, 3, C((30, 30, 34))), Box(-0.8, 10, -1, 1.6, 2, 1, C((30, 30, 34))),
-            Box(-13, 12, -1.5, 26, 15, 1.5, AF.tv_screen() if LIT else screen)]
+            Box(-13, 12, -1.5, 26, 15, 1.5, TV_CHANNELS[TV_CH]() if LIT else screen)]
     out += [Box(-15, 8, -3, 3, 8, 3, C((40, 40, 44))), Box(-14.2, 13, 0.1, 1.4, 1.4, 0.3, C((90, 90, 96))),
             Box(12, 8, -3, 3, 8, 3, C((40, 40, 44))), Box(12.8, 13, 0.1, 1.4, 1.4, 0.3, C((90, 90, 96)))]
     return out

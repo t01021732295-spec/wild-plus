@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "I I",
+    "PBP",
+    "PIP"
+  ],
+  "key": {
+    "I": "minecraft:iron_nugget",
+    "P": "#minecraft:planks",
+    "B": "minecraft:barrel"
+  },
+  "result": {
+    "id": "wildplus:cheese_barrel",
+    "count": 1
+  }
+}

@@ -558,11 +558,122 @@ def mansion():
     return t.save("house/mansion")
 
 
+
+# ═══════════ 3.4 목장: 큰 축사 (13×15) · 닭장 (7×9) ═══════════
+FENCE_X = {"east": "true", "west": "true", "north": "false", "south": "false", "waterlogged": "false"}
+FENCE_Z = {"east": "false", "west": "false", "north": "true", "south": "true", "waterlogged": "false"}
+
+
+def gate(t, x, y, z, facing="south"):
+    t.set(x, y, z, "minecraft:spruce_fence_gate", {"facing": facing, "in_wall": "false", "open": "false", "powered": "false"})
+
+
+def barn():
+    t = Template(13, 11, 15)
+    t.fill(0, 0, 0, 12, 0, 14, "minecraft:grass_block", {"snowy": "false"})
+    t.fill(1, 0, 1, 11, 0, 9, "minecraft:coarse_dirt")
+    t.fill(5, 0, 2, 7, 0, 9, "minecraft:spruce_planks")  # 가운데 통로
+    walls(t, 1, 1, 11, 9, 1, 4, "minecraft:red_terracotta", "minecraft:stripped_birch_log")
+    for x in (1, 11):  # 흰 테두리 띠
+        for z in range(1, 10):
+            t.set(x, 4, z, "minecraft:white_terracotta")
+    for x in range(1, 12):
+        for z in (1, 9):
+            t.set(x, 4, z, "minecraft:white_terracotta")
+    for z in (1, 9):
+        for x in (1, 11):
+            t.fill(x, 1, z, x, 4, z, "minecraft:stripped_birch_log", {"axis": "y"})
+    for x in (5, 6, 7):  # 큰 출입구 (3칸)
+        for y in (1, 2, 3):
+            t.set(x, y, 9, "minecraft:air")
+    for z in (3, 7):
+        pane(t, 1, 2, z, "z")
+        pane(t, 11, 2, z, "z")
+    # 우리 두 칸 (울타리 · 문) + 여물통
+    for z in range(2, 9):
+        t.set(4, 1, z, "minecraft:spruce_fence", FENCE_Z)
+        t.set(8, 1, z, "minecraft:spruce_fence", FENCE_Z)
+    gate(t, 4, 1, 6, "east")
+    gate(t, 8, 1, 6, "west")
+    t.set(2, 1, 3, "wildplus:hay_trough", {"facing": "east"})
+    t.set(10, 1, 3, "wildplus:hay_trough", {"facing": "west"})
+    for (x, z) in ((2, 8), (10, 8)):
+        t.set(x, 1, z, "minecraft:hay_block", {"axis": "y"})
+    t.set(6, 1, 2, "minecraft:water_cauldron", {"level": "3"})
+    # 건초 다락 (사다리) + 건초 더미
+    t.fill(2, 5, 2, 10, 5, 8, "minecraft:spruce_planks")
+    t.fill(1, 5, 1, 11, 5, 1, "minecraft:red_terracotta")
+    t.fill(1, 5, 9, 11, 5, 9, "minecraft:red_terracotta")
+    t.fill(1, 5, 2, 1, 5, 8, "minecraft:red_terracotta")
+    t.fill(11, 5, 2, 11, 5, 8, "minecraft:red_terracotta")
+    t.fill(6, 1, 2, 6, 5, 2, "minecraft:ladder", {"facing": "south", "waterlogged": "false"})
+    t.set(6, 1, 2, "minecraft:ladder", {"facing": "south", "waterlogged": "false"})
+    for (x, z) in ((2, 3), (3, 3), (2, 4), (9, 7), (10, 7), (10, 6), (2, 7), (3, 8)):
+        t.set(x, 6, z, "minecraft:hay_block", {"axis": "y"})
+    t.set(3, 7, 3, "minecraft:hay_block", {"axis": "y"})
+    pane(t, 6, 6, 9)
+    gable(t, 1, 11, 1, 9, 5, "minecraft:dark_oak_stairs", "minecraft:dark_oak_slab", "minecraft:red_terracotta", over=0)
+    for (x, y, z) in ((3, 4, 5), (9, 4, 5), (6, 4, 7)):
+        t.set(x, y, z, "minecraft:lantern", LANTERN_H)
+    # 앞마당 울타리 + 문
+    for x in range(1, 12):
+        if x != 6:
+            t.set(x, 1, 14, "minecraft:spruce_fence", FENCE_X)
+    gate(t, 6, 1, 14, "south")
+    for z in range(10, 14):
+        t.set(1, 1, z, "minecraft:spruce_fence", FENCE_Z)
+        t.set(11, 1, z, "minecraft:spruce_fence", FENCE_Z)
+    t.set(1, 1, 14, "minecraft:spruce_fence", {"east": "true", "west": "false", "north": "true", "south": "false", "waterlogged": "false"})
+    t.set(11, 1, 14, "minecraft:spruce_fence", {"east": "false", "west": "true", "north": "true", "south": "false", "waterlogged": "false"})
+    t.set(2, 1, 12, "minecraft:hay_block", {"axis": "y"})
+    t.set(10, 1, 11, "minecraft:composter", {"level": "0"})
+    return t.save("house/barn")
+
+
+def coop():
+    t = Template(7, 6, 9)
+    t.fill(0, 0, 0, 6, 0, 8, "minecraft:grass_block", {"snowy": "false"})
+    t.fill(1, 0, 1, 5, 0, 4, "minecraft:hay_block", {"axis": "y"})
+    walls(t, 1, 1, 5, 4, 1, 3, "minecraft:birch_planks", "minecraft:stripped_birch_log")
+    for (x, z) in ((1, 1), (5, 1), (1, 4), (5, 4)):
+        t.fill(x, 1, z, x, 3, z, "minecraft:stripped_birch_log", {"axis": "y"})
+    t.set(3, 1, 4, "minecraft:air")  # 닭 출입구
+    t.set(3, 2, 4, "minecraft:air")
+    pane(t, 1, 2, 2, "z")
+    pane(t, 5, 2, 2, "z")
+    t.set(2, 1, 2, "wildplus:nest_box", {"facing": "south"})
+    t.set(4, 1, 2, "wildplus:nest_box", {"facing": "south"})
+    t.set(3, 3, 3, "minecraft:lantern", LANTERN_H)
+    for x in range(0, 7):  # 경사 지붕
+        t.set(x, 4, 0, "minecraft:mangrove_slab", {"type": "bottom", "waterlogged": "false"})
+        for z in (1, 2):
+            t.set(x, 4, z, "minecraft:mangrove_planks")
+        for z in (3, 4, 5):
+            t.set(x, 4, z, "minecraft:mangrove_slab", {"type": "bottom", "waterlogged": "false"})
+    for x in range(1, 6):
+        t.set(x, 5, 1, "minecraft:mangrove_slab", {"type": "bottom", "waterlogged": "false"})
+        t.set(x, 5, 2, "minecraft:mangrove_slab", {"type": "bottom", "waterlogged": "false"})
+    # 철망 마당 (울타리) + 문 + 물그릇
+    for z in range(5, 9):
+        t.set(0, 1, z, "minecraft:birch_fence", FENCE_Z)
+        t.set(6, 1, z, "minecraft:birch_fence", FENCE_Z)
+    for x in range(0, 7):
+        if x != 3:
+            t.set(x, 1, 8, "minecraft:birch_fence", FENCE_X)
+    gate(t, 3, 1, 8, "south")
+    t.set(5, 1, 6, "minecraft:water_cauldron", {"level": "3"})
+    t.set(1, 1, 6, "minecraft:hay_block", {"axis": "y"})
+    return t.save("house/coop")
+
+
+BARNS = {"barn": barn, "coop": coop}
+
+
 HOUSES = {"cabin": cabin, "log_house": log_house, "brick_house": brick_house, "hanok": hanok, "modern": modern, "mansion": mansion}
 
 
 def build():
-    return {k: fn() for k, fn in HOUSES.items()}
+    return {k: fn() for k, fn in {**HOUSES, **BARNS}.items()}
 
 
 if __name__ == "__main__":

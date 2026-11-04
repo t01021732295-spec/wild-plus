@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/contest_board"
+    },
+    "facing=east": {
+      "model": "wildplus:block/contest_board",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/contest_board",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/contest_board",
+      "y": 270
+    }
+  }
+}

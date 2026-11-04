@@ -69,8 +69,8 @@ public final class ModBlocks2 {
             p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.economy.Luxury::open),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.GOLD_BLOCK).strength(3.0F, 1200.0F).lightLevel(s -> 8));
     public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> REALTY = BLOCKS.registerBlock("realty",
-            p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.content.Land::open),
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).strength(2.5F, 1200.0F));
+            p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.home.Realty::open),
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).strength(2.5F, 1200.0F).noOcclusion().lightLevel(s -> 5));
 
     // ───────── 2.12: 투기장 접수처 ─────────
     public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> ARENA_DESK = BLOCKS.registerBlock("arena_desk",

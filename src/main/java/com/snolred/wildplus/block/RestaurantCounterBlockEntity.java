@@ -289,6 +289,7 @@ public class RestaurantCounterBlockEntity extends BlockEntity implements Worldly
             grade += Grade.of(s);
         }
         grade /= Math.max(1, used.size());
+        com.snolred.wildplus.content.Contest.add(p, com.snolred.wildplus.content.Contest.Kind.COOKING, used.size() * 2 + Math.round(grade * used.size()));
         price = price * c.kind().payX100 / 100;
         int tipPct = 5 + Math.round(grade * 6) + Math.round(c.patienceFrac() * 10) + c.kind().tipBonus;
         long tip = price * tipPct / 100;

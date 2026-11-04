@@ -47,6 +47,15 @@
     "wildplus:bathtub",
     "wildplus:home_store",
     "wildplus:canopy_bed",
-    "wildplus:bunk_bed"
+    "wildplus:bunk_bed",
+    "wildplus:hay_trough",
+    "wildplus:nest_box",
+    "wildplus:cheese_barrel",
+    "wildplus:butter_churn",
+    "wildplus:spinning_wheel",
+    "wildplus:ranch_market",
+    "wildplus:guestbook",
+    "wildplus:house_plaque",
+    "wildplus:contest_board"
   ]
 }

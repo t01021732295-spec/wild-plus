@@ -4,6 +4,8 @@ from cosmetic_design import Box, mix, shade
 from kitchen_design import C, DARKWOOD, glow, marble, metal, planks, stone
 from furniture_design import GOLD, WHITE, fabric
 import house_design as H
+import anim_fx as AF
+import math
 
 HAY = (222, 190, 90)
 WOOD = (176, 128, 78)
@@ -84,13 +86,13 @@ def spinning_wheel():
         out.append(Box(x, 0, z, 1.2, 3, 1.2, planks(DARKWOOD)))
     # 바퀴 (z 축 둘레 살 8개)
     rim = planks((150, 100, 55))
-    import math
     cx, cy = -1, 13
     for k in range(16):
         a = k * math.pi / 8
-        out.append(Box(cx + 8 * math.cos(a) - 1, cy + 8 * math.sin(a) - 1, -0.6, 2, 2, 1.2, rim))
-    for k in range(4):
-        out.append(Box(cx - 8, cy - 0.4, -0.3, 16, 0.8, 0.6, planks(DARKWOOD), rot=("z", k * math.pi / 4, (cx, cy, 0))))
+        out.append(Box(cx + 8 * math.cos(a) - 1, cy + 8 * math.sin(a) - 1, -0.6, 2, 2, 1.2, AF.chase((150, 100, 55), (230, 190, 120), k, 16, n=16, ticks=1)))
+    out += [Box(cx - 8, cy - 0.4, -0.3, 16, 0.8, 0.6, planks(DARKWOOD)), Box(cx - 0.4, cy - 8, -0.3, 0.8, 16, 0.6, planks(DARKWOOD)),
+            Box(cx - 8, cy - 0.4, -0.3, 16, 0.8, 0.6, planks(DARKWOOD), rot=("z", math.pi / 4, (cx, cy, 0))),
+            Box(cx - 8, cy - 0.4, -0.3, 16, 0.8, 0.6, planks(DARKWOOD), rot=("z", -math.pi / 4, (cx, cy, 0)))]
     out += [Box(cx - 1, cy - 1, -1, 2, 2, 2, C(GOLD)), Box(cx - 0.5, 4.5, -0.3, 1, cy - 5, 0.6, planks(DARKWOOD))]
     # 실패 + 양털 뭉치
     out += [Box(4, 4.5, -1, 2, 7, 2, planks(DARKWOOD)), Box(3.5, 8, -1.5, 3, 3, 3, fabric((240, 238, 230)))]
@@ -213,15 +215,17 @@ def guestbook():
 
 
 def house_plaque():
-    """우리 집 문패 (벽걸이 1칸): 집 이름 + 평균 별점 · 이번 주 '예쁜 집'이면 금 리본."""
-    out = [Box(-7, 3, 6, 14, 10, 1.5, planks((150, 100, 55))), Box(-7.5, 2.5, 5.6, 15, 11, 0.5, planks(DARKWOOD))]
+    """우리 집 문패 (벽걸이 1칸 · 뒤 벽에 붙음): 집 이름판 + 별 다섯 + 금 리본 · 앞쪽 끝에 보이지 않는 점 (가운데 맞춤용)."""
+    z = -8
+    out = [Box(-7, 3, z + 0.5, 14, 10, 1.5, planks((150, 100, 55))), Box(-7.5, 2.5, z, 15, 11, 0.5, planks(DARKWOOD))]
     name = lambda f, u, v, W, Hh: (60, 40, 25) if f == "front" and v in (1, 3) and 1 < u < W - 2 and u % 3 != 0 else (240, 228, 200)
-    out += [Box(-5.5, 8, 7.5, 11, 4, 0.4, name)]
+    out += [Box(-5.5, 8, z + 2, 11, 4, 0.4, name)]
     for k in range(5):
-        out.append(Box(-5 + k * 2.2, 4.3, 7.5, 1.6, 1.6, 0.5, C(GOLD if k < 5 else (120, 110, 90))))
-    out += [Box(4.5, 9, 7.8, 3, 3, 0.4, C((220, 60, 60))), Box(4.8, 6, 7.8, 1, 3, 0.3, C((200, 50, 50))), Box(6.2, 6, 7.8, 1, 3, 0.3, C((200, 50, 50))),
-            Box(5.3, 9.6, 8.1, 1.4, 1.4, 0.3, C(GOLD))]
-    out += [Box(-0.5, 13, 6.5, 1, 2, 0.5, metal(IRON))]
+        out.append(Box(-5 + k * 2.2, 4.3, z + 2, 1.6, 1.6, 0.5, AF.glint(GOLD, n=24, ticks=2, pause=12)))
+    out += [Box(4.5, 9, z + 2.3, 3, 3, 0.4, C((220, 60, 60))), Box(4.8, 6, z + 2.3, 1, 3, 0.3, C((200, 50, 50))), Box(6.2, 6, z + 2.3, 1, 3, 0.3, C((200, 50, 50))),
+            Box(5.3, 9.6, z + 2.6, 1.4, 1.4, 0.3, C(GOLD))]
+    out += [Box(-0.5, 13, z + 1, 1, 2, 0.5, metal(IRON))]
+    out += [Box(-0.05, 0, 7.9, 0.1, 0.1, 0.1, lambda *a: None)]
     return out
 
 
@@ -242,10 +246,10 @@ def contest_board():
         if u < 4:
             return [(255, 210, 60), (200, 205, 215), (205, 130, 70), (150, 160, 150)][row]
         return (230, 235, 225) if u < W - 4 - row * 3 and u % 5 != 0 else (40, 60, 45)
-    out += [Box(-12.5, 10, 0, 25, 16, 0.4, board)]
+    out += [Box(-12.5, 10, 0, 25, 16, 0.4, AF.Anim(16, 3, lambda t, f, u, v, W, Hh: (255, 240, 150) if f == "front" and 4 <= v <= 5 and u < 4 and t % 4 < 2 else board(f, u, v, W, Hh)))]
     out += [Box(-16, 28, -2.5, 32, 2, 3, planks(DARKWOOD))]
     for k, c in enumerate([(220, 60, 60), (250, 200, 60), (70, 140, 220), (90, 180, 90), (220, 60, 60), (250, 200, 60), (70, 140, 220)]):
-        out.append(Box(-13 + k * 4, 25, 0.6, 3, 3, 0.3, C(c)))
+        out.append(Box(-13 + k * 4, 25, 0.6, 3, 3, 0.3, AF.chase(shade(c, 0.6), c, k, 7, n=14, ticks=2)))
     # 시계 (남은 시간)
     out += [Box(-3, 30, -1.5, 6, 6, 1.5, C(WHITE)), Box(-0.3, 32.5, 0.1, 0.6, 3, 0.3, C((40, 40, 40))), Box(-0.3, 32.7, 0.1, 2.3, 0.6, 0.3, C((40, 40, 40)))]
     return out
@@ -266,7 +270,7 @@ def podium():
 
 def trophy(cup, base=(60, 50, 45), tag="1"):
     def f():
-        g = metal(cup)
+        g = AF.glint(cup, n=24, ticks=2, pause=10)
         out = [Box(-5, 0, -5, 10, 3, 10, planks(base)), Box(-4, 3, -4, 8, 2, 8, planks(shade(base, 1.2)))]
         out += [Box(-3.5, 1, 5, 7, 1.5, 0.3, C(cup))]
         out += [Box(-1, 5, -1, 2, 4, 2, g), Box(-2.5, 9, -2.5, 5, 1, 5, g)]
@@ -282,7 +286,7 @@ def trophy(cup, base=(60, 50, 45), tag="1"):
 RANCH = {
     "hay_trough": ("건초 여물통", hay_trough, -1, 0, 0, 0, 1, "건초 → 근처 동물 애정도 +"),
     "nest_box": ("둥지 상자", nest_box, 0, 0, 0, 0, 1, "닭이 여기 알을 낳음 · 좋은 알/황금 알"),
-    "cheese_barrel": ("치즈 숙성통", cheese_barrel, 0, 0, 0, 0, 2, "우유 → 치즈 (게임 하루)"),
+    "cheese_barrel": ("치즈 숙성통", cheese_barrel, 0, 0, 0, 0, 1, "우유 → 치즈 (게임 하루)"),
     "butter_churn": ("버터 교반기", butter_churn, 0, 0, 0, 0, 2, "우유 → 버터 · 생크림"),
     "spinning_wheel": ("물레", spinning_wheel, 0, 0, 0, 0, 2, "양털 → 실 → 천"),
     "ranch_market": ("가축 상점", ranch_market, 0, 0, 0, 0, 2, "가축 · 사료 · 브러시 · 축사 상자"),

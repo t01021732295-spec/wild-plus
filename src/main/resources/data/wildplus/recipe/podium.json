@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "   ",
+    " Q ",
+    "QQQ"
+  ],
+  "key": {
+    "Q": "minecraft:quartz_block"
+  },
+  "result": {
+    "id": "wildplus:podium",
+    "count": 1
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "PHP"
+  ],
+  "key": {
+    "S": "#minecraft:wooden_slabs",
+    "P": "#minecraft:planks",
+    "H": "minecraft:hay_block"
+  },
+  "result": {
+    "id": "wildplus:nest_box",
+    "count": 1
+  }
+}

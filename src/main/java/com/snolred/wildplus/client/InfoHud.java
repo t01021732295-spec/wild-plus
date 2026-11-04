@@ -37,7 +37,8 @@ public final class InfoHud {
         boolean night = tod >= 13000 && tod < 23000;
         String ampm = hour < 12 ? "오전" : "오후";
         int h12 = hour % 12 == 0 ? 12 : hour % 12;
-        Component line1 = Component.translatable("hud.wildplus.time", day, ampm, h12, String.format("%02d", minute));
+        Component line1 = Component.translatable("hud.wildplus.time_wd", day, Component.translatable("hud.wildplus.wd." + Math.floorMod(day - 1, 7)),
+                ampm, h12, String.format("%02d", minute));
         int x = 4, y = 4;
         int w = mc.font.width(line1);
         Component line2 = null;

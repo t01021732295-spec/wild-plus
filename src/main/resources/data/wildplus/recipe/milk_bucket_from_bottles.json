@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:milk_bottle",
+    "wildplus:milk_bottle",
+    "wildplus:milk_bottle",
+    "minecraft:bucket"
+  ],
+  "result": {
+    "id": "minecraft:milk_bucket",
+    "count": 1
+  }
+}

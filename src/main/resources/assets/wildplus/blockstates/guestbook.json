@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/guestbook"
+    },
+    "facing=east": {
+      "model": "wildplus:block/guestbook",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/guestbook",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/guestbook",
+      "y": 270
+    }
+  }
+}

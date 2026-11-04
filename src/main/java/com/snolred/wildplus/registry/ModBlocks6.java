@@ -36,7 +36,8 @@ public final class ModBlocks6 {
                 for (String c : SOFA_COLORS) FURNITURE.put("sofa_" + c, BLOCKS.registerBlock("sofa_" + c, p -> new FurnitureBlock(p, Kind.SOFA), () -> props(Kind.SOFA)));
             } else {
                 String n = k.name().toLowerCase(Locale.ROOT);
-                FURNITURE.put(n, BLOCKS.registerBlock(n, p -> new FurnitureBlock(p, k), () -> props(k)));
+                if (k == Kind.TV_STAND) FURNITURE.put(n, BLOCKS.registerBlock(n, p -> (FurnitureBlock) new com.snolred.wildplus.block.TvBlock(p), () -> props(k)));
+                else FURNITURE.put(n, BLOCKS.registerBlock(n, p -> new FurnitureBlock(p, k), () -> props(k)));
             }
         }
     }

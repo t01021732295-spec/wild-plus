@@ -109,6 +109,19 @@ DISHES = {
                   [("regeneration", 60, 0), ("absorption", 300, 0)], ("bottle", (240, 236, 220), [])),
     "ginseng_wine": ("인삼주", "AGING", [W + "ginseng", M + "sugar", BOTTLE], 1, "bottle",
                      [("health_boost", 600, 1), ("regeneration", 60, 0)], ("bottle", (220, 180, 90), [(200, 150, 90)])),
+    # ───── 3.4 목장 요리 (버터 · 생크림 · 우유 · 달걀) ─────
+    "butter_cookie": ("버터 쿠키", "OVEN", [M + "wheat", W + "butter", M + "sugar", M + "egg"], 4, None,
+                      [("speed", 120, 0)], ("bread", (230, 180, 100), [(250, 220, 150)])),
+    "cheesecake": ("치즈케이크", "OVEN", [W + "cheese", W + "cream", M + "sugar", M + "egg", M + "wheat"], 1, None,
+                   [("absorption", 240, 1), ("regeneration", 20, 0)], ("cake", (250, 230, 170), [(240, 200, 110)])),
+    "custard_pudding": ("커스터드 푸딩", "STOVE", [W + "milk_bottle", M + "egg", M + "sugar"], 2, None,
+                        [("jump_boost", 180, 0)], ("jar", (250, 220, 120), [(150, 90, 40)])),
+    "carbonara": ("까르보나라", "STOVE", [M + "wheat", M + "wheat", W + "cream", M + "egg", M + "porkchop"], 1, None,
+                  [("strength", 240, 0), ("absorption", 120, 0)], ("plate", (245, 230, 190), [(200, 140, 90)])),
+    "cream_stew": ("크림 스튜", "POT", [W + "cream", M + "chicken", M + "potato", M + "carrot", BOWL], 1, "bowl",
+                   [("resistance", 240, 0), ("regeneration", 30, 0)], ("bowl", (245, 240, 225), [(240, 130, 40), (200, 160, 110)])),
+    "egg_toast": ("에그 토스트", "STOVE", [M + "bread", M + "egg", W + "butter", W + "cheese"], 1, None,
+                  [("haste", 240, 0)], ("bread", (230, 180, 100), [(250, 220, 80)])),
 }
 INGREDIENT_ONLY = {"kimchi", "cheese"}  # 먹을 수는 있지만 주로 재료
 

@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
       "model": "wildplus:block/realty"
+    },
+    "facing=east": {
+      "model": "wildplus:block/realty",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/realty",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/realty",
+      "y": 270
     }
   }
 }

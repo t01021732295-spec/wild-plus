@@ -68,6 +68,12 @@ public final class CookingData {
         new Dish("wine", "와인", Station.AGING, new String[]{"wildplus:grape", "wildplus:grape", "wildplus:grape", "wildplus:grape", "minecraft:glass_bottle"}, 1, "bottle", new Eff[]{new Eff("resistance", 300, 0), new Eff("strength", 300, 0)}, 9, 0.8F),
         new Dish("beer", "맥주", Station.AGING, new String[]{"minecraft:wheat", "minecraft:wheat", "minecraft:wheat", "minecraft:glass_bottle"}, 1, "bottle", new Eff[]{new Eff("haste", 180, 1)}, 8, 0.7F),
         new Dish("makgeolli", "막걸리", Station.AGING, new String[]{"wildplus:rice", "wildplus:rice", "wildplus:rice", "minecraft:glass_bottle"}, 1, "bottle", new Eff[]{new Eff("regeneration", 60, 0), new Eff("absorption", 300, 0)}, 8, 0.8F),
-        new Dish("ginseng_wine", "인삼주", Station.AGING, new String[]{"wildplus:ginseng", "minecraft:sugar", "minecraft:glass_bottle"}, 1, "bottle", new Eff[]{new Eff("health_boost", 600, 1), new Eff("regeneration", 60, 0)}, 7, 0.8F)
+        new Dish("ginseng_wine", "인삼주", Station.AGING, new String[]{"wildplus:ginseng", "minecraft:sugar", "minecraft:glass_bottle"}, 1, "bottle", new Eff[]{new Eff("health_boost", 600, 1), new Eff("regeneration", 60, 0)}, 7, 0.8F),
+        new Dish("butter_cookie", "버터 쿠키", Station.OVEN, new String[]{"minecraft:wheat", "wildplus:butter", "minecraft:sugar", "minecraft:egg"}, 4, "", new Eff[]{new Eff("speed", 120, 0)}, 8, 0.7F),
+        new Dish("cheesecake", "치즈케이크", Station.OVEN, new String[]{"wildplus:cheese", "wildplus:cream", "minecraft:sugar", "minecraft:egg", "minecraft:wheat"}, 1, "", new Eff[]{new Eff("absorption", 240, 1), new Eff("regeneration", 20, 0)}, 9, 0.8F),
+        new Dish("custard_pudding", "커스터드 푸딩", Station.STOVE, new String[]{"wildplus:milk_bottle", "minecraft:egg", "minecraft:sugar"}, 2, "", new Eff[]{new Eff("jump_boost", 180, 0)}, 7, 0.7F),
+        new Dish("carbonara", "까르보나라", Station.STOVE, new String[]{"minecraft:wheat", "minecraft:wheat", "wildplus:cream", "minecraft:egg", "minecraft:porkchop"}, 1, "", new Eff[]{new Eff("strength", 240, 0), new Eff("absorption", 120, 0)}, 9, 0.8F),
+        new Dish("cream_stew", "크림 스튜", Station.POT, new String[]{"wildplus:cream", "minecraft:chicken", "minecraft:potato", "minecraft:carrot", "minecraft:bowl"}, 1, "bowl", new Eff[]{new Eff("resistance", 240, 0), new Eff("regeneration", 30, 0)}, 9, 0.8F),
+        new Dish("egg_toast", "에그 토스트", Station.STOVE, new String[]{"minecraft:bread", "minecraft:egg", "wildplus:butter", "wildplus:cheese"}, 1, "", new Eff[]{new Eff("haste", 240, 0)}, 8, 0.7F)
     };
 }

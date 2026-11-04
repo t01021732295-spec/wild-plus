@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " BF",
+    " S ",
+    "PPP"
+  ],
+  "key": {
+    "B": "minecraft:writable_book",
+    "F": "minecraft:feather",
+    "S": "minecraft:stick",
+    "P": "#minecraft:planks"
+  },
+  "result": {
+    "id": "wildplus:guestbook",
+    "count": 1
+  }
+}

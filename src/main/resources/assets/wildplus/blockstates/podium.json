@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/podium"
+    },
+    "facing=east": {
+      "model": "wildplus:block/podium",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/podium",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/podium",
+      "y": 270
+    }
+  }
+}

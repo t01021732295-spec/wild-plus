@@ -287,3 +287,104 @@ def mirror_shine(c=(200, 225, 240), n=32, ticks=2, offset=0):
             return mix(g, (255, 255, 255), 0.7)
         return g
     return Anim(n, ticks, f)
+
+
+# ═══════════ TV 채널 (3.4) ═══════════
+def _frame(face, u, v, W, H):
+    if face != "front":
+        return (30, 30, 34) if (u - v) % 9 else (55, 55, 62)
+    if u in (0, W - 1) or v in (0, H - 1):
+        return (20, 20, 24)
+    return None
+
+
+def tv_news(n=24, ticks=3):
+    """뉴스: 스튜디오 · 앵커 · 아래 자막이 흘러감"""
+    def f(t, face, u, v, W, H):
+        fr = _frame(face, u, v, W, H)
+        if fr:
+            return fr
+        if v >= H - 4:  # 자막 띠
+            if v == H - 4:
+                return (200, 40, 40)
+            x = (u + t) % 12
+            return (250, 250, 250) if v == H - 3 and x in (1, 2, 4, 5, 6, 8, 9) else (30, 50, 120)
+        if u < 5 and v < 4:  # 방송사 로고
+            return (240, 200, 60) if (u + v) % 2 else (200, 40, 40)
+        cx = W * 0.6
+        if abs(u - cx) <= 1 and 2 <= v <= 3:  # 머리
+            return (70, 50, 40) if v == 2 else (240, 200, 170)
+        if abs(u - cx) <= 2 and 4 <= v <= 6:  # 양복
+            return (40, 50, 80) if abs(u - cx) > 0.5 else (240, 240, 240)
+        if v == 7 and 2 < u < W - 3:  # 책상
+            return (120, 80, 50)
+        return mix((40, 70, 130), (90, 130, 200), v / H)
+    return Anim(n, ticks, f)
+
+
+def tv_stocks(n=24, ticks=4):
+    """주식: 초록 · 빨강 봉 차트가 왼쪽으로 흐름"""
+    def f(t, face, u, v, W, H):
+        fr = _frame(face, u, v, W, H)
+        if fr:
+            return fr
+        if v == 1:
+            return (240, 200, 60) if (u + t // 2) % 5 < 3 else (20, 24, 34)
+        i = (u + t) // 2
+        mid = H * 0.55 + math.sin(i * 0.7) * 2.5 + math.sin(i * 0.23) * 2
+        up = _h(i) % 3 != 0
+        top, bot = mid - 1 - _h(i, 2) % 2, mid + 1 + _h(i, 3) % 2
+        if (u + t) % 2 == 0 and top <= v <= bot:
+            return (60, 210, 110) if up else (230, 70, 70)
+        if v % 3 == 0:
+            return (28, 34, 48)
+        return (20, 24, 34)
+    return Anim(n, ticks, f)
+
+
+def tv_sports(n=24, ticks=2):
+    """스포츠 중계: 잔디 구장 · 선수 둘 · 공이 오감"""
+    def f(t, face, u, v, W, H):
+        fr = _frame(face, u, v, W, H)
+        if fr:
+            return fr
+        if v <= 2:  # 점수판
+            return (250, 250, 250) if u in (W // 2 - 2, W // 2 + 2) and v == 1 else (20, 20, 30)
+        q = t / n
+        bx = 2 + (W - 5) * (0.5 - 0.5 * math.cos(TAU * q))
+        by = H * 0.6 - abs(math.sin(TAU * q * 2)) * 3
+        if math.hypot(u - bx, v - by) < 0.8:
+            return (250, 250, 250)
+        for px, c in ((2 + (W - 5) * (0.5 - 0.5 * math.cos(TAU * q)) - 1.5, (220, 50, 50)), (W - 4 - (W - 6) * (0.5 + 0.5 * math.cos(TAU * q)) + 1, (50, 90, 220))):
+            if abs(u - px) < 1 and H * 0.5 <= v <= H * 0.5 + 2:
+                return c
+        if u == W // 2:
+            return (230, 240, 230)
+        return (70, 160, 70) if (u // 3) % 2 else (60, 145, 60)
+    return Anim(n, ticks, f)
+
+
+def tv_cartoon(n=16, ticks=2):
+    """만화: 무지개 하늘 · 통통 튀는 슬라임"""
+    rain = [(230, 70, 70), (240, 160, 50), (240, 220, 70), (80, 190, 90), (70, 140, 230), (150, 90, 200)]
+
+    def f(t, face, u, v, W, H):
+        fr = _frame(face, u, v, W, H)
+        if fr:
+            return fr
+        q = t / n
+        sy = H - 4 - abs(math.sin(TAU * q)) * (H - 7)
+        sx = W / 2 + math.sin(TAU * q) * (W / 4)
+        squash = 1.4 if sy > H - 5 else 1.0
+        if abs(u - sx) <= 1.5 * squash and sy - 2 / squash <= v <= sy + 1:
+            if v == round(sy - 1) and abs(u - sx) in (0.5, 1.0, 0.0) and u in (round(sx) - 1, round(sx) + 1):
+                return (20, 20, 20)
+            return (110, 210, 90)
+        if v >= H - 3:
+            return (120, 200, 90)
+        d = math.hypot(u - W / 2, v - H)
+        k = int((d - H * 0.45) // 1)
+        if 0 <= k < len(rain):
+            return rain[k]
+        return (170, 220, 250)
+    return Anim(n, ticks, f)

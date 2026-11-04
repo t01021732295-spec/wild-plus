@@ -292,45 +292,60 @@ public final class Land {
 
     // ───────── 사고팔기 ─────────
     private static void buy(ServerPlayer p) {
+        buyAt(p, p.blockPosition());
+    }
+
+    /** 3.4 부동산 중개소: 서 있는 곳이 아니어도 그 청크를 산다 */
+    public static boolean buyAt(ServerPlayer p, BlockPos at) {
         MinecraftServer s = p.level().getServer();
-        String k = key(p.level(), p.blockPosition());
+        String k = key(p.level(), at);
         UUID o = CHUNKS.get(k);
         if (o != null) {
             p.sendSystemMessage(Component.literal(o.equals(p.getUUID()) ? "이미 내 땅이에요" : "이미 " + ownerName(s, o) + "의 땅이에요").withStyle(ChatFormatting.RED));
-            return;
+            return false;
         }
         CompoundTag me = owner(s, p.getUUID());
         if (me.getIntOr("debt", 0) > 0) {
             p.sendSystemMessage(Component.literal("밀린 재산세가 있으면 땅을 더 살 수 없어요").withStyle(ChatFormatting.RED));
-            return;
+            return false;
         }
         long price = nextPrice(p.getUUID());
         if (!Honor.pay(p, price)) {
             p.sendSystemMessage(Component.literal(String.format("돈이 모자라요 (%,d동 필요 · 통장에서 먼저 빠져요)", price)).withStyle(ChatFormatting.RED));
-            return;
+            return false;
         }
         CHUNKS.put(k, p.getUUID());
         chunks(s).putString(k, p.getUUID().toString());
         me.putString("name", p.getGameProfile().name());
         ContentData.get(s).dirty();
-        showBorder(p);
+        if ((at.getX() >> 4) == (p.getBlockX() >> 4) && (at.getZ() >> 4) == (p.getBlockZ() >> 4)) showBorder(p);
         p.level().playSound(null, p.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.8F, 1.2F);
         p.sendSystemMessage(Component.literal(String.format("🏠 땅을 샀어요! (%,d동 · 이제 땅 %d칸 · 재산세 하루 %,d동)",
                 price, owned(p.getUUID()), UPKEEP * owned(p.getUUID()))).withStyle(ChatFormatting.GREEN));
+        return true;
     }
 
     private static void sell(ServerPlayer p) {
+        sellAt(p, p.blockPosition());
+    }
+
+    public static boolean sellAt(ServerPlayer p, BlockPos at) {
         MinecraftServer s = p.level().getServer();
-        String k = key(p.level(), p.blockPosition());
+        String k = key(p.level(), at);
         if (!p.getUUID().equals(CHUNKS.get(k))) {
-            p.sendSystemMessage(Component.literal("지금 서 있는 곳이 내 땅이 아니에요").withStyle(ChatFormatting.RED));
-            return;
+            p.sendSystemMessage(Component.literal("그곳은 내 땅이 아니에요").withStyle(ChatFormatting.RED));
+            return false;
         }
         CHUNKS.remove(k);
         chunks(s).remove(k);
         ContentData.get(s).dirty();
         com.snolred.wildplus.economy.WildData.get(s).addBalance(p.getUUID(), REFUND);
         p.sendSystemMessage(Component.literal(String.format("🏠 땅을 팔았어요 (%,d동은 통장으로)", REFUND)).withStyle(ChatFormatting.YELLOW));
+        return true;
+    }
+
+    public static String ownerNameOf(MinecraftServer s, UUID id) {
+        return ownerName(s, id);
     }
 
     /** 지금 청크 테두리를 잠깐 표시 */

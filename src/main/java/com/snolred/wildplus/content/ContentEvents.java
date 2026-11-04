@@ -13,7 +13,11 @@ public final class ContentEvents {
 
     @SubscribeEvent
     public static void onTick(net.neoforged.neoforge.event.tick.ServerTickEvent.Post event) {
-        if (event.getServer().getTickCount() % 20 == 0) ContentData.updateDay(event.getServer());
+        if (event.getServer().getTickCount() % 20 == 0) {
+            ContentData.updateDay(event.getServer());
+            Contest.tick(event.getServer());
+            com.snolred.wildplus.home.HouseVisit.tick(event.getServer());
+        }
     }
 
     @SubscribeEvent
@@ -25,13 +29,26 @@ public final class ContentEvents {
 
     @SubscribeEvent
     public static void onBreak(BreakBlockEvent event) {
-        if (event.getPlayer() instanceof ServerPlayer p) WeeklyGoals.onBreak(p, event.getState());
+        if (event.getPlayer() instanceof ServerPlayer p) {
+            WeeklyGoals.onBreak(p, event.getState());
+            if (event.getState().is(net.neoforged.neoforge.common.Tags.Blocks.ORES)) {
+                boolean rare = event.getState().is(net.neoforged.neoforge.common.Tags.Blocks.ORES_DIAMOND)
+                        || event.getState().is(net.neoforged.neoforge.common.Tags.Blocks.ORES_EMERALD)
+                        || net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(event.getState().getBlock()).getNamespace().equals("wildplus");
+                Contest.add(p, Contest.Kind.MINING, rare ? 3 : 1);
+            }
+        }
     }
 
     @SubscribeEvent
     public static void onFish(ItemFishedEvent event) {
         if (event.getHookEntity().getPlayerOwner() instanceof ServerPlayer p) {
             WeeklyGoals.add(p.level().getServer(), WeeklyGoals.Kind.FISH, 1);
+            int pts = 0;
+            for (net.minecraft.world.item.ItemStack s : event.getDrops()) {
+                if (com.snolred.wildplus.economy.Grade.isFish(s)) pts += 1 + com.snolred.wildplus.economy.Grade.of(s);
+            }
+            Contest.add(p, Contest.Kind.FISHING, pts);
         }
     }
 

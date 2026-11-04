@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:yarn",
+    "wildplus:yarn",
+    "wildplus:yarn",
+    "wildplus:yarn"
+  ],
+  "result": {
+    "id": "wildplus:cloth",
+    "count": 1
+  }
+}

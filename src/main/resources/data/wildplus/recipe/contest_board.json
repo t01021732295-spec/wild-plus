@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SBS",
+    "SBS",
+    "P P"
+  ],
+  "key": {
+    "S": "minecraft:stick",
+    "B": "minecraft:black_concrete",
+    "P": "#minecraft:planks"
+  },
+  "result": {
+    "id": "wildplus:contest_board",
+    "count": 1
+  }
+}

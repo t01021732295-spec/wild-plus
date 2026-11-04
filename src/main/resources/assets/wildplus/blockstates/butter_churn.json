@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/butter_churn"
+    },
+    "facing=east": {
+      "model": "wildplus:block/butter_churn",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/butter_churn",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/butter_churn",
+      "y": 270
+    }
+  }
+}

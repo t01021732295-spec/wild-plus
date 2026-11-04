@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "PBP",
+    " P "
+  ],
+  "key": {
+    "S": "minecraft:stick",
+    "P": "#minecraft:planks",
+    "B": "minecraft:bucket"
+  },
+  "result": {
+    "id": "wildplus:butter_churn",
+    "count": 1
+  }
+}

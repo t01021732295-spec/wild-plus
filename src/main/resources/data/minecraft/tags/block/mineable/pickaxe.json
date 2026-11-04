@@ -40,6 +40,10 @@
     "wildplus:cooking_pot",
     "wildplus:brick_oven",
     "wildplus:bbq_grill",
-    "wildplus:kitchen_stove"
+    "wildplus:kitchen_stove",
+    "wildplus:podium",
+    "wildplus:trophy_gold",
+    "wildplus:trophy_silver",
+    "wildplus:trophy_bronze"
   ]
 }

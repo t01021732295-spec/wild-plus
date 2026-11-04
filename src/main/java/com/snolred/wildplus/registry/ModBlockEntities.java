@@ -69,5 +69,12 @@ public final class ModBlockEntities {
             BLOCK_ENTITIES.register("auto_crafter", () -> new BlockEntityType<>(com.snolred.wildplus.block.AutoCrafterBlockEntity::new,
                     com.snolred.wildplus.registry.ModBlocks2.AUTO_CRAFTER.get()));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.RanchBlockEntity>> RANCH =
+            BLOCK_ENTITIES.register("ranch", () -> new BlockEntityType<>(com.snolred.wildplus.block.RanchBlockEntity::new,
+                    ModBlocks7.RANCH.values().stream().map(b -> (net.minecraft.world.level.block.Block) b.get()).toArray(net.minecraft.world.level.block.Block[]::new)));
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.snolred.wildplus.block.GuestbookBlockEntity>> GUESTBOOK =
+            BLOCK_ENTITIES.register("guestbook", () -> new BlockEntityType<>(com.snolred.wildplus.block.GuestbookBlockEntity::new,
+                    ModBlocks7.GUESTBOOK.get()));
+
     private ModBlockEntities() {}
 }

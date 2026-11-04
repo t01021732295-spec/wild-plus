@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/spinning_wheel"
+    },
+    "facing=east": {
+      "model": "wildplus:block/spinning_wheel",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/spinning_wheel",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/spinning_wheel",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GGG",
+    "PSP"
+  ],
+  "key": {
+    "G": "minecraft:gold_nugget",
+    "P": "#minecraft:planks",
+    "S": "#minecraft:signs"
+  },
+  "result": {
+    "id": "wildplus:house_plaque",
+    "count": 1
+  }
+}
