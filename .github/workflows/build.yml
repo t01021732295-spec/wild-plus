@@ -1039,8 +1039,8 @@ jobs:
             xdotool key Escape; sleep 1
             # 3인칭으로 앉은 모습 (안락의자 · 소파 높이 확인): 트인 곳에 놓고 앉아서 앞에서 봄
             cmd "/setblock 722 119 -40 wildplus:armchair[facing=south]"
-            cmd "/setblock 723 119 -40 wildplus:sofa_red[facing=south]"
-            cmd "/tp @s 722.5 119 -38.7 180 30"
+            cmd "/setblock 718 119 -40 wildplus:sofa_red[facing=south]"
+            cmd "/tp @s 722.5 119 -38.8 180 55"
             sleep 1; xdotool click 3; sleep 2
             xdotool key F5; sleep 1; xdotool key F5; sleep 2
             import -window root shot-sit-third.png || true

@@ -176,7 +176,13 @@ public final class HouseVisit {
 
     // ───────── 방명록 · 문패 화면 ─────────
     public static void openGuestbook(ServerPlayer p, BlockPos pos) {
-        if (!(p.level() instanceof ServerLevel level) || !(level.getBlockEntity(pos) instanceof GuestbookBlockEntity be) || be.owner == null) return;
+        if (!(p.level() instanceof ServerLevel level) || !(level.getBlockEntity(pos) instanceof GuestbookBlockEntity be)) return;
+        if (be.owner == null) { // 주인 없는 방명록 (구조물 · 명령어로 놓임): 처음 누른 사람이 주인
+            be.owner = p.getUUID();
+            be.ownerName = p.getName().getString();
+            be.setChanged();
+            register(p, pos);
+        }
         MinecraftServer server = level.getServer();
         UUID owner = be.owner;
         CompoundTag h = house(server, owner);
