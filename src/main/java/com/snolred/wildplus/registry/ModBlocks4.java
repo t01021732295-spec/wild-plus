@@ -12,7 +12,8 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 /** 요리 2차: 조리 기구 6종 (여러 칸 큰 블록) */
 public final class ModBlocks4 {
     private static DeferredBlock<CookingStationBlock> station(String name, Station st, int lat1, int dep1, BlockBehaviour.Properties base) {
-        return BLOCKS.registerBlock(name, p -> new CookingStationBlock(p, st, 0, lat1, 0, dep1, 2), () -> base.noOcclusion().strength(2.5F, 6.0F));
+        return BLOCKS.registerBlock(name, p -> new CookingStationBlock(p, st, 0, lat1, 0, dep1, 2), () -> base.noOcclusion().strength(2.5F, 6.0F)
+                .lightLevel(s -> s.hasProperty(com.snolred.wildplus.block.CookingStationBlock.LIT) && s.getValue(com.snolred.wildplus.block.CookingStationBlock.LIT) ? 9 : 0));
     }
 
     public static final DeferredBlock<CookingStationBlock> COOKING_POT = station("cooking_pot", Station.POT, 1, 0,

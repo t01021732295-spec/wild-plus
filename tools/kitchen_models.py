@@ -8,6 +8,7 @@ from pathlib import Path
 from PIL import Image
 
 import kitchen_design as K
+from cosmetic_design import Anim
 
 ROOT = Path(__file__).resolve().parent.parent / "src/main/resources/assets/wildplus"
 
@@ -51,6 +52,45 @@ def export(name, fn, lat0, lat1, dep0, dep1, height):
     span = max(max(xs) - min(xs), max(zs) - min(zs))
     k = min(1.0, 48 / span) if span > 48 else 1.0  # 너무 크면 줄임
 
+    # 움직이는 면: 따로 모아 프레임 텍스처 (가로 · 세로 2의 거듭제곱 → 밉맵 안 깨짐)
+    anim_faces = {}
+    anims = [b.paint for b in boxes if isinstance(b.paint, Anim)]
+    if anims:
+        n, ticks = anims[0].n, anims[0].ticks
+        for a in anims:
+            n = n * a.n // math.gcd(n, a.n)  # 프레임 수 최소공배수
+        n = min(n, 64)
+        sizes = [(id(b), f, fw, fh) for b in boxes if isinstance(b.paint, Anim) for f, fw, fh in faces_of(b)]
+        aw = 1 << (max(64, max(fw for _, _, fw, _ in sizes)) - 1).bit_length()
+        x = y = rh = 0
+        for key, f, fw, fh in sizes:
+            if x + fw > aw:
+                x, y, rh = 0, y + rh, 0
+            anim_faces[(key, f)] = (x, y, fw, fh)
+            x += fw
+            rh = max(rh, fh)
+        ah = 1 << (max(16, y + rh) - 1).bit_length()
+        sheet_img = Image.new("RGBA", (aw, ah * n), (0, 0, 0, 0))
+        spx = sheet_img.load()
+        for b in boxes:
+            if not isinstance(b.paint, Anim):
+                continue
+            for f, fw, fh in faces_of(b):
+                fx, fy, _, _ = anim_faces[(id(b), f)]
+                for t in range(n):
+                    paint = b.paint.at(t)
+                    for u in range(fw):
+                        for v in range(fh):
+                            c = paint(f, u, v, fw, fh)
+                            if c is not None:
+                                spx[fx + u, t * ah + fy + v] = tuple(int(q) for q in c[:3]) + (255,)
+        sheet_img.save(ROOT / f"textures/block/{name}_anim.png")
+        (ROOT / f"textures/block/{name}_anim.png.mcmeta").write_text(json.dumps(
+            {"animation": {"frametime": ticks, "width": aw, "height": ah, "interpolate": any(a.interpolate for a in anims)}}))
+    else:
+        (ROOT / f"textures/block/{name}_anim.png").unlink(missing_ok=True)
+        (ROOT / f"textures/block/{name}_anim.png.mcmeta").unlink(missing_ok=True)
+
     # 아틀라스 (선반 쌓기)
     A = 512
     atlas = Image.new("RGBA", (A, A), (0, 0, 0, 0))
@@ -70,6 +110,12 @@ def export(name, fn, lat0, lat1, dep0, dep1, height):
             to = [max(to[i], frm[i] + 0.05) for i in range(3)]
         el = {"from": frm, "to": to, "faces": {}}
         for face, fw, fh in faces_of(b):
+            if (id(b), face) in anim_faces:
+                fx, fy, _, _ = anim_faces[(id(b), face)]
+                aw, ah = sheet_img.width, sheet_img.height // n
+                el["faces"][FACE[face]] = {"texture": "#anim", "uv": [round(fx * 16 / aw, 4), round(fy * 16 / ah, 4),
+                                                                       round((fx + fw) * 16 / aw, 4), round((fy + fh) * 16 / ah, 4)]}
+                continue
             if cur_x + fw > A:
                 cur_x, cur_y, row_h = 0, cur_y + row_h, 0
             if cur_y + fh > A:
@@ -98,7 +144,10 @@ def export(name, fn, lat0, lat1, dep0, dep1, height):
             elements.append(el)
     atlas.save(ROOT / f"textures/block/{name}.png")
     raid = json.loads((ROOT / "models/block/raid_altar.json").read_text())
-    model = {"textures": {"atlas": f"wildplus:block/{name}", "particle": f"wildplus:block/{name}"},
+    tex = {"atlas": f"wildplus:block/{name}", "particle": f"wildplus:block/{name}"}
+    if anim_faces:
+        tex["anim"] = f"wildplus:block/{name}_anim"
+    model = {"textures": tex,
              "render_type": "minecraft:cutout", "elements": elements, "display": raid["display"]}
     (ROOT / f"models/block/{name}.json").write_text(json.dumps(model, ensure_ascii=False))
     rot = {"north": 0, "east": 90, "south": 180, "west": 270}

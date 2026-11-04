@@ -10,16 +10,29 @@ import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import org.jspecify.annotations.Nullable;
 
 /** 조리 기구: 여러 칸 큰 블록(BigBlock) + 보관함 · 조리(CookingStationBlockEntity). 우클릭하면 조리 화면 */
 public class CookingStationBlock extends BigBlock implements EntityBlock {
+    /** 조리 중: 불이 일렁이고 국물이 끓는 모델 (3.4) */
+    public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public final Station station;
 
     public CookingStationBlock(Properties properties, Station station, int lat0, int lat1, int dep0, int dep1, int height) {
         super(properties, com.snolred.wildplus.menu.CookingMenu::open, lat0, lat1, dep0, dep1, height, null);
         this.station = station;
+        this.registerDefaultState(this.defaultBlockState().setValue(LIT, false));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(LIT);
     }
 
     @Override

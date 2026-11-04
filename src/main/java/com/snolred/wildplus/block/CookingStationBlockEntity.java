@@ -92,6 +92,17 @@ public class CookingStationBlockEntity extends BlockEntity implements WorldlyCon
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, CookingStationBlockEntity be) {
         if (!(level instanceof ServerLevel sl)) return;
+        int before = be.progress;
+        tick(sl, pos, state, be);
+        // 3.4: 조리가 진행되는 동안 '작동 중' 모델 (불꽃 · 끓는 국물)
+        boolean on = be.progress > before || (be.progress == 0 && before > 0 && before + 1 >= be.total);
+        if (state.hasProperty(CookingStationBlock.LIT) && state.getValue(CookingStationBlock.LIT) != on) {
+            if (on || level.getGameTime() % 10 == 0) level.setBlock(pos, state.setValue(CookingStationBlock.LIT, on), 3);
+        }
+    }
+
+    private static void tick(ServerLevel sl, BlockPos pos, BlockState state, CookingStationBlockEntity be) {
+        Level level = sl;
         CookingData.Station st = be.station();
         boolean changed = false;
         if (be.burn > 0) be.burn--;

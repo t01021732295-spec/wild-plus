@@ -1,4 +1,5 @@
 """3.2 식당 도안 (3D 상자): 카운터 · 식탁 · 의자 · 입구 · 간판. 좌표는 kitchen_design 과 같음 (+z 정면, 16 = 1칸)."""
+import anim_fx
 from cosmetic_design import Box, shade
 from kitchen_design import C, planks, metal, marble, DARKWOOD
 
@@ -74,7 +75,7 @@ def entrance():
     sign = lambda f, u, v, W, H: (60, 170, 90) if f in ("front", "back", "left", "right") and 1 <= v <= H - 2 and 1 <= u <= W - 2 else (245, 240, 220)
     out += [Box(-7.8, 12, 1.5, 0.3, 7, 0.3, C((60, 60, 60))), Box(-7.8, 12, 5, 0.3, 7, 0.3, C((60, 60, 60))),
             Box(-8.2, 8, 0.5, 1, 5, 6, sign)]
-    out += [Box(-8.5, 21.5, 0.5, 3, 3, 3, C((255, 220, 120))), Box(-8.8, 24.5, 0.2, 3.6, 0.8, 3.6, C((60, 60, 60)))]
+    out += [Box(-8.5, 21.5, 0.5, 3, 3, 3, anim_fx.flicker((255, 220, 120))), Box(-8.8, 24.5, 0.2, 3.6, 0.8, 3.6, C((60, 60, 60)))]
     return out
 
 
@@ -90,5 +91,9 @@ def sign():
             Box(-1, 8, z + 2.2, 2, 12, 0.6, silver, rot=("z", -0.785, (0, 14, z + 2)))]
     out += [Box(-12, 18, z + 2, 2, 2, 0.6, gold), Box(10, 18, z + 2, 2, 2, 0.6, gold), Box(-12, 8, z + 2, 2, 2, 0.6, gold), Box(10, 8, z + 2, 2, 2, 0.6, gold)]
     out += [Box(-16, 26, z, 32, 2, 3, planks(DARKWOOD)), Box(-10, 22, z + 1, 0.6, 4, 0.6, C((60, 60, 60))),
-            Box(9.4, 22, z + 1, 0.6, 4, 0.6, C((60, 60, 60))), Box(-1.5, 28, z, 3, 3, 3, C((255, 220, 120)))]
+            Box(9.4, 22, z + 1, 0.6, 4, 0.6, C((60, 60, 60))), Box(-1.5, 28, z, 3, 3, 3, anim_fx.flicker((255, 220, 120), n=12))]
+    # 테두리 전구가 차례로 반짝 (가게 간판 느낌)
+    for k in range(12):
+        x = -14 + k * (28 / 11)
+        out.append(Box(x - 0.5, 23.2, z + 2.1, 1, 1, 0.4, anim_fx.chase((150, 120, 60), (255, 240, 170), k, 12, n=12, ticks=2)))
     return out

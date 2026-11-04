@@ -21,6 +21,20 @@ def mix(a, b, t):
     return tuple(int(a[i] + (b[i] - a[i]) * t) for i in range(3))
 
 
+class Anim:
+    """움직이는 칠하기: fn(t, face, u, v, W, H), t = 0..n-1 프레임. 게임에서는 움직이는 텍스처(.mcmeta), 미리보기는 Anim.T 프레임."""
+    T = 0
+
+    def __init__(self, n, ticks, fn, interpolate=False):
+        self.n, self.ticks, self.fn, self.interpolate = n, ticks, fn, interpolate
+
+    def __call__(self, face, u, v, W, H):
+        return self.fn(Anim.T % self.n, face, u, v, W, H)
+
+    def at(self, t):
+        return lambda face, u, v, W, H: self.fn(t % self.n, face, u, v, W, H)
+
+
 class Box:
     """(x0,y0,z0) 아래·왼·뒤 모서리, 크기 (w,h,d). paint(face, u, v, W, H) -> (r,g,b) 또는 None(투명)"""
 
