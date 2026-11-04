@@ -201,7 +201,14 @@ public class CustomerEntity extends PathfinderMob {
         super.tick();
         if (this.level().isClientSide()) return;
         ServerLevel sl = (ServerLevel) this.level();
-        if (phase == Phase.IDLE) return;
+        if (phase == Phase.IDLE) {
+            // 요리사가 아닌데 할 일이 없는 손님(다시 불러온 경우 등)은 바로 사라짐
+            if (kind() != Kind.CHEF) {
+                sl.sendParticles(ParticleTypes.POOF, getX(), getY() + 0.8, getZ(), 6, 0.2, 0.4, 0.2, 0.01);
+                this.discard();
+            }
+            return;
+        }
         timer++;
         switch (phase) {
             case ARRIVE, WAIT -> {
@@ -274,7 +281,8 @@ public class CustomerEntity extends PathfinderMob {
             }
             case LEAVE -> {
                 Vec3 target = Vec3.atBottomCenterOf(door);
-                if (position().distanceToSqr(target) < 1.5 || timer > 600) {
+                // 입구에 닿거나 12초가 지나면 (막혔어도) 사라짐
+                if (position().distanceToSqr(target) < 2.5 || timer > 240) {
                     sl.sendParticles(ParticleTypes.POOF, getX(), getY() + 0.8, getZ(), 6, 0.2, 0.4, 0.2, 0.01);
                     this.discard();
                     return;
@@ -330,7 +338,7 @@ public class CustomerEntity extends PathfinderMob {
     @Override
     protected void readAdditionalSaveData(ValueInput in) {
         super.readAdditionalSaveData(in);
-        int k = in.getIntOr("wp_kind", Kind.CHEF.ordinal());
+        int k = in.getIntOr("wp_kind", Kind.VILLAGER.ordinal());
         this.entityData.set(KIND, k);
         if (k == Kind.CHEF.ordinal()) setupChef();
     }
