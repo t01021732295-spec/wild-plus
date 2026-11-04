@@ -5,13 +5,11 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BedPart;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jspecify.annotations.Nullable;
 
 /**
  * 가구 침대 (캐노피 침대 · 이층 침대): 바닐라 침대와 똑같이 잠자기 · 리스폰 지점 (1×2칸).
@@ -28,11 +26,6 @@ public class FurnitureBedBlock extends BedBlock {
     @Override
     protected RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
-    }
-
-    @Override
-    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return null;
     }
 
     private static final VoxelShape LOW = Block_box(0, 0, 0, 16, 9, 16), TALL = Block_box(0, 0, 0, 16, 16, 16);

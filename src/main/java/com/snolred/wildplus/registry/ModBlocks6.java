@@ -23,7 +23,7 @@ public final class ModBlocks6 {
         BlockBehaviour.Properties p = switch (k) {
             case FRIDGE, SINK -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).sound(SoundType.METAL);
             case FIREPLACE -> BlockBehaviour.Properties.ofFullCopy(Blocks.STONE_BRICKS);
-            case SOFA, ARMCHAIR, RUG -> BlockBehaviour.Properties.ofFullCopy(Blocks.WHITE_WOOL);
+            case SOFA, ARMCHAIR, RUG -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).sound(SoundType.WOOL);
             case AQUARIUM, CHANDELIER -> BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS);
             default -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS);
         };
@@ -42,9 +42,9 @@ public final class ModBlocks6 {
     }
 
     public static final DeferredBlock<FurnitureBedBlock> CANOPY_BED = BLOCKS.registerBlock("canopy_bed", p -> new FurnitureBedBlock(p, false),
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.RED_BED).noOcclusion().strength(1.0F));
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion().strength(1.0F));
     public static final DeferredBlock<FurnitureBedBlock> BUNK_BED = BLOCKS.registerBlock("bunk_bed", p -> new FurnitureBedBlock(p, true),
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.RED_BED).noOcclusion().strength(1.0F));
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion().strength(1.0F));
     public static final DeferredBlock<com.snolred.wildplus.block.ServiceBlock> HOME_STORE = BLOCKS.registerBlock("home_store",
             p -> new com.snolred.wildplus.block.ServiceBlock(p, com.snolred.wildplus.home.HomeShop::open),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).strength(2.0F, 6.0F).lightLevel(s -> 8).noOcclusion());

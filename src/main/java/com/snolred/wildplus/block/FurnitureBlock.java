@@ -175,7 +175,7 @@ public class FurnitureBlock extends BigBlock implements EntityBlock {
                 level.playSound(null, m, SoundEvents.BUCKET_FILL, SoundSource.BLOCKS, 0.6F, 1.2F);
                 if (!fill.isEmpty()) {
                     hand.shrink(1);
-                    if (!sp.getInventory().add(fill)) sp.drop(fill, false);
+                    if (!sp.getInventory().add(fill)) net.minecraft.world.Containers.dropItemStack(level, sp.getX(), sp.getY(), sp.getZ(), fill);
                 }
             }
             case PIANO -> {

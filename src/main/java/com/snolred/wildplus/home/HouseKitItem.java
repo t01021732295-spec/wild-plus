@@ -71,7 +71,7 @@ public class HouseKitItem extends Item {
         BlockPos target = ctx.getClickedPos();
         if (level.getBlockState(target).canBeReplaced()) target = target.below();
         Direction look = p.getDirection();
-        StructureTemplate t = level.getServer().getStructureManager().get(WildPlus.id("house/" + house)).orElse(null);
+        StructureTemplate t = level.getStructureManager().get(WildPlus.id("house/" + house)).orElse(null);
         if (t == null) {
             p.sendSystemMessage(Component.literal("집 설계도를 찾을 수 없어요: " + house).withStyle(ChatFormatting.RED));
             return InteractionResult.FAIL;
