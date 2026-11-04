@@ -351,11 +351,16 @@ public class RestaurantCounterBlockEntity extends BlockEntity implements Worldly
         int price = menuPrice(s);
         MinecraftServer server = p.level().getServer();
         WildData wd = WildData.get(server);
-        if (wd.balance(p.getUUID()) < price) {
-            p.sendSystemMessage(Component.literal("통장 잔액이 모자라요 (" + price + "동)").withStyle(ChatFormatting.RED));
+        // 지닌 동전(주머니 · 배낭 포함)으로 먼저, 모자라면 통장에서
+        boolean paid = com.snolred.wildplus.economy.Coins.pay(p, price);
+        if (!paid && wd.balance(p.getUUID()) >= price) {
+            wd.addBalance(p.getUUID(), -price);
+            paid = true;
+        }
+        if (!paid) {
+            p.sendSystemMessage(Component.literal("돈이 모자라요 (" + price + "동 · 지닌 동전 + 통장)").withStyle(ChatFormatting.RED));
             return;
         }
-        wd.addBalance(p.getUUID(), -price);
         ItemStack got = s.copyWithCount(1);
         if (!village) {
             s.shrink(1);
@@ -487,7 +492,12 @@ public class RestaurantCounterBlockEntity extends BlockEntity implements Worldly
             case 43 -> staffPct;
             case 44 -> role(viewer);
             case 45 -> village ? 1 : 0;
-            case 46 -> Math.min(32000, (int) (WildData.get(((ServerLevel) level).getServer()).balance(viewer.getUUID()) / 10));
+            case 46, 47 -> {
+                long money = WildData.get(((ServerLevel) level).getServer()).balance(viewer.getUUID())
+                        + com.snolred.wildplus.economy.Coins.totalValue(viewer);
+                money = Math.min(money, 30000L * 30000L - 1);
+                yield (int) (i == 46 ? money % 30000 : money / 30000);
+            }
             default -> 0;
         };
     }

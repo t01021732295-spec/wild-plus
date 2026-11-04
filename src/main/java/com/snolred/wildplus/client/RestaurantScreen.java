@@ -321,7 +321,7 @@ public class RestaurantScreen extends AbstractContainerScreen<RestaurantMenu> {
             UiKit.right(g, won(RestaurantCounterBlockEntity.price(s, st)), ex + 89, ey + 3, 0xFF1E7832);
         }
         if (!any) UiKit.center(g, "진열대에 요리가 없어요", W / 2, TOP + 36, 0xFF8A6A4A);
-        UiKit.right(g, "내 통장 " + won(menu.get(46) * 10L), W - 8, TOP + CH - 9 + 0, 0xFF6A4A2A);
+        UiKit.right(g, "소지금 " + won(menu.get(46) + menu.get(47) * 30000L), W - 8, TOP + CH - 9 + 0, 0xFF6A4A2A);
     }
 
     private void ratingLabels(GuiGraphicsExtractor g) {
