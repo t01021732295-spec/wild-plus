@@ -30,9 +30,24 @@ def export_stations():
         (ROOT / f"blockstates/{name}.json").write_text(json.dumps({"variants": variants}, indent=1))
 
 
+def export_ore_miner():
+    """광석 채굴기 3D (멈춤 · 작동 중)"""
+    import machine_design as M
+    M.ON = False
+    kitchen_models.export("ore_miner", M.ore_miner, 0, 0, 0, 0, 2)
+    M.ON = True
+    kitchen_models.export("ore_miner_on", M.ore_miner, 0, 0, 0, 0, 2)
+    M.ON = False
+    (ROOT / "blockstates/ore_miner_on.json").unlink(missing_ok=True)
+    (ROOT / "items/ore_miner_on.json").unlink(missing_ok=True)
+    (ROOT / "blockstates/ore_miner.json").write_text(json.dumps({"variants": {
+        "lit=false": {"model": "wildplus:block/ore_miner"}, "lit=true": {"model": "wildplus:block/ore_miner_on"}}}, indent=1))
+
+
 def build(lang_ko, lang_en):
     ko, en = {}, {}
     export_stations()
+    export_ore_miner()
     anim_textures.build()
     write(ASSETS / "lang/ko_kr.json", {**lang_ko, **ko})
     write(ASSETS / "lang/en_us.json", {**lang_en, **en})

@@ -1,7 +1,10 @@
 {
-  "variants": {
-    "": {
-      "model": "wildplus:block/ore_miner"
-    }
+ "variants": {
+  "lit=false": {
+   "model": "wildplus:block/ore_miner"
+  },
+  "lit=true": {
+   "model": "wildplus:block/ore_miner_on"
   }
+ }
 }

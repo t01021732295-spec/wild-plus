@@ -118,6 +118,9 @@ public class OreMinerBlockEntity extends MachineBlockEntity {
         if (be.lastMillis == 0) be.lastMillis = now;
         long elapsed = Math.min(MAX_CATCHUP_MS, Math.max(0, now - be.lastMillis));
         be.lastMillis = now;
+        // 3.4: 작동 중 모델 (광물을 골랐고 보관함이 차지 않았을 때)
+        boolean on = be.selected >= 0 && !be.outputFull();
+        if (state.hasProperty(OreMinerBlock.LIT) && state.getValue(OreMinerBlock.LIT) != on) level.setBlock(pos, state.setValue(OreMinerBlock.LIT, on), 3);
         if (be.selected < 0) return;
         be.progressMs += elapsed;
         Ore ore = ORES.get(be.selected);

@@ -98,8 +98,9 @@ public final class ModBlocks {
             p -> new com.snolred.wildplus.block.MachineBlock(p, com.snolred.wildplus.block.MachineBlock.Kind.HARVESTER),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.0F, 6.0F));
     public static final DeferredBlock<com.snolred.wildplus.block.MachineBlock> ORE_MINER = BLOCKS.registerBlock("ore_miner",
-            p -> new com.snolred.wildplus.block.MachineBlock(p, com.snolred.wildplus.block.MachineBlock.Kind.MINER),
-            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(4.0F, 6.0F).noOcclusion());
+            com.snolred.wildplus.block.OreMinerBlock::new,
+            () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(4.0F, 6.0F).noOcclusion()
+                    .lightLevel(s -> s.hasProperty(com.snolred.wildplus.block.OreMinerBlock.LIT) && s.getValue(com.snolred.wildplus.block.OreMinerBlock.LIT) ? 6 : 0));
     public static final DeferredBlock<com.snolred.wildplus.block.MachineBlock> AUTO_FISHER = BLOCKS.registerBlock("auto_fisher",
             p -> new com.snolred.wildplus.block.MachineBlock(p, com.snolred.wildplus.block.MachineBlock.Kind.FISHER),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.BARREL).noOcclusion());

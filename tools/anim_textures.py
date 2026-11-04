@@ -116,9 +116,6 @@ EFFECTS = {
     "atm_front": (16, 3, pulse(blue, 0.8, 1.2)),                            # ATM 화면 빛
     "gacha_machine_front": (24, 2, twinkle(sat, 0.55, 1.35)),               # 뽑기 공들 반짝
     "enhance_forge_front": (12, 2, twinkle(orange, 0.65, 1.3)),             # 강화 화로 불빛 일렁
-    "ore_miner_motor": (8, 1, scroll(dy=1)),                                # 채굴기 모터 회전
-    "ore_miner_bit": (8, 1, scroll(dy=2)),                                  # 드릴 날 회전
-    "ore_miner_side": (16, 3, twinkle(sat)),                                # 계기판 불빛
     "raid_altar_top": (20, 3, pulse(red, 0.6, 1.35)),                       # 레이드 제단 문양 맥동
     "dungeon_seal": (20, 3, twinkle(purple, 0.5, 1.4)),                     # 봉인 돌 보라 조각
     "dungeon_seal_gate": (20, 3, pulse(cyan, 0.6, 1.3)),                    # 봉인 문 문양 맥동
