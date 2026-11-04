@@ -1,8 +1,8 @@
-net.minecraft.world.entity.Entity
-net.minecraft.world.entity.Mob
-net.minecraft.network.syncher.SynchedEntityData$Builder
-net.minecraft.network.syncher.EntityDataSerializers
-net.minecraft.client.renderer.item.ItemModelResolver
-net.minecraft.world.entity.ai.navigation.PathNavigation
-net.minecraft.world.entity.ai.control.LookControl
-net.minecraft.world.entity.Display$ItemDisplay
+net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate
+net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager
+net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings
+net.neoforged.neoforge.common.extensions.IBlockExtension
+net.minecraft.client.renderer.entity.NoopRenderer
+net.minecraft.world.inventory.ChestMenu
+net.minecraft.world.item.alchemy.PotionContents
+net.minecraft.world.entity.player.Player
