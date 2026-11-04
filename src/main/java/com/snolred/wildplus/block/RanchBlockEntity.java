@@ -175,7 +175,7 @@ public class RanchBlockEntity extends BlockEntity {
                 if (level.getGameTime() % 1200 != 53 || be.output.getCount() >= MAX_OUT) return;
                 long today = Ranch.today(sl);
                 for (Animal a : level.getEntitiesOfClass(Animal.class, new AABB(pos).inflate(6, 2, 6))) {
-                    if (a.getType() != EntityType.CHICKEN || a.isBaby() || a.getPersistentData().getLongOr(Ranch.LAID_DAY, -1L) == today) continue;
+                    if (a.getType() != net.minecraft.world.entity.EntityTypes.CHICKEN || a.isBaby() || a.getPersistentData().getLongOr(Ranch.LAID_DAY, -1L) == today) continue;
                     ItemStack egg = Ranch.product(a, sl);
                     if (!be.output.isEmpty() && !ItemStack.isSameItemSameComponents(be.output, egg)) {
                         Containers.dropItemStack(level, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, egg); // 다른 등급은 옆에 떨어뜨림

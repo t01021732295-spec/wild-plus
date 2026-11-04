@@ -52,9 +52,9 @@ public final class Ranch {
     }
 
     public static boolean isRanchAnimal(LivingEntity e) {
-        return e instanceof Animal && (e.getType() == net.minecraft.world.entity.EntityType.COW || e.getType() == net.minecraft.world.entity.EntityType.MOOSHROOM
-                || e.getType() == net.minecraft.world.entity.EntityType.CHICKEN || e.getType() == net.minecraft.world.entity.EntityType.SHEEP
-                || e.getType() == net.minecraft.world.entity.EntityType.GOAT || e.getType() == net.minecraft.world.entity.EntityType.PIG);
+        return e instanceof Animal && (e.getType() == net.minecraft.world.entity.EntityTypes.COW || e.getType() == net.minecraft.world.entity.EntityTypes.MOOSHROOM
+                || e.getType() == net.minecraft.world.entity.EntityTypes.CHICKEN || e.getType() == net.minecraft.world.entity.EntityTypes.SHEEP
+                || e.getType() == net.minecraft.world.entity.EntityTypes.GOAT || e.getType() == net.minecraft.world.entity.EntityTypes.PIG);
     }
 
     /** 오늘의 생산물 (등급 붙음) */
@@ -62,12 +62,12 @@ public final class Ranch {
         int g = grade(e);
         var type = e.getType();
         ItemStack s;
-        if (type == net.minecraft.world.entity.EntityType.CHICKEN) {
+        if (type == net.minecraft.world.entity.EntityTypes.CHICKEN) {
             if (hearts(e) >= 450 && level.getRandom().nextInt(8) == 0) return new ItemStack(ModItems17.GOLDEN_EGG.get());
             s = new ItemStack(Items.EGG, 1 + (g >= 2 ? 1 : 0));
-        } else if (type == net.minecraft.world.entity.EntityType.SHEEP) {
+        } else if (type == net.minecraft.world.entity.EntityTypes.SHEEP) {
             s = new ItemStack(ModItems17.WOOL_TUFT.get(), 1 + g / 2);
-        } else if (type == net.minecraft.world.entity.EntityType.PIG) {
+        } else if (type == net.minecraft.world.entity.EntityTypes.PIG) {
             s = new ItemStack(Items.BROWN_MUSHROOM, 1); // 돼지는 버섯을 찾아 옴 (송로 대신)
         } else {
             s = new ItemStack(ModItems17.MILK_BOTTLE.get(), 1 + (g >= 2 ? 1 : 0));
