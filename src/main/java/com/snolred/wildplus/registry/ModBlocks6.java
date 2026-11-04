@@ -27,7 +27,7 @@ public final class ModBlocks6 {
             case AQUARIUM, CHANDELIER -> BlockBehaviour.Properties.ofFullCopy(Blocks.GLASS);
             default -> BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS);
         };
-        return p.noOcclusion().strength(1.5F, 3.0F).lightLevel(FurnitureBlock::lightOf);
+        return p.noOcclusion().strength(1.5F, 3.0F).lightLevel(s -> s.hasProperty(FurnitureBlock.LIT) && s.getValue(FurnitureBlock.LIT) ? k.light : 0);
     }
 
     static {
