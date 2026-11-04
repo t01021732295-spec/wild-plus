@@ -66,6 +66,7 @@ def export_tv():
 def build(lang_ko, lang_en):
     ko, en = {}, {}
     export_tv()
+    ko["tooltip.wildplus.piano"] = "가로 2칸 · 우클릭: 건반 화면 — 마우스나 키보드로 직접 연주\n악기 7가지 (피아노 · 벨 · 플루트 · 기타 · 베이스 · 실로폰 · 8비트) · '작은 별' 자동 연주 · 근처 친구들도 들어요"
     ko["tooltip.wildplus.tv_stand"] = "가로 2칸 · 우클릭: 켜기 → 누를 때마다 채널 (자연 · 뉴스 · 주식 · 스포츠 · 만화)\n뉴스 · 주식 · 대회 중계는 서버의 진짜 정보 · 웅크리고 누르면 끄기"
     export_stations()
     export_ore_miner()

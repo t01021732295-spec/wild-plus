@@ -971,7 +971,7 @@
   "tooltip.wildplus.bookshelf": "가로 2칸 · 높이 2 · 마법 부여대 근처에 두면 책장 2개 효과",
   "tooltip.wildplus.desk": "가로 2칸 · 우클릭: 컴퓨터로 주식 보기",
   "tooltip.wildplus.grandfather_clock": "높이 2 · 우클릭: 지금 시각 알려 줌",
-  "tooltip.wildplus.piano": "가로 2칸 · 우클릭할 때마다 음이 울림",
+  "tooltip.wildplus.piano": "가로 2칸 · 우클릭: 건반 화면 — 마우스나 키보드로 직접 연주\n악기 7가지 (피아노 · 벨 · 플루트 · 기타 · 베이스 · 실로폰 · 8비트) · '작은 별' 자동 연주 · 근처 친구들도 들어요",
   "tooltip.wildplus.aquarium": "가로 2칸 · 빛 · 우클릭: 먹이 주기 (행운 5분 · 5분마다)",
   "tooltip.wildplus.chandelier": "천장 아래 칸에 설치 · 우클릭으로 켜기/끄기 · 밝은 빛",
   "tooltip.wildplus.bathtub": "가로 2칸 · 우클릭하면 몸 담그기 (재생)",

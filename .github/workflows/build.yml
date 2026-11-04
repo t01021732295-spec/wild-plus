@@ -1027,6 +1027,13 @@ jobs:
             xdotool mousemove 640 300; sleep 0.5; xdotool click 1; sleep 1
             import -window root shot-realty-ui2.png || true
             xdotool key Escape; sleep 1
+            # 피아노 연주 화면 (건반 몇 개 치고 찍기)
+            cmd "/setblock 726 119 -40 wildplus:piano[facing=south]"
+            cmd "/tp @s 726.5 119 -38.6 180 20"
+            sleep 1; xdotool click 3; sleep 2
+            xdotool key z; sleep 0.3; xdotool key c; sleep 0.3; xdotool key b
+            import -window root shot-piano.png || true
+            xdotool key Escape; sleep 1
             # 3인칭으로 앉은 모습 (안락의자 · 소파 높이 확인): 트인 곳에 놓고 앉아서 앞에서 봄
             cmd "/setblock 722 119 -40 wildplus:armchair[facing=south]"
             cmd "/setblock 723 119 -40 wildplus:sofa_red[facing=south]"

@@ -178,14 +178,7 @@ public class FurnitureBlock extends BigBlock implements EntityBlock {
                     if (!sp.getInventory().add(fill)) net.minecraft.world.Containers.dropItemStack(level, sp.getX(), sp.getY(), sp.getZ(), fill);
                 }
             }
-            case PIANO -> {
-                int[] scale = {0, 2, 4, 7, 9, 12, 14, 16, 19, 21, 24};
-                int n = scale[level.getRandom().nextInt(scale.length)];
-                float pitch = (float) Math.pow(2.0, (n - 12) / 12.0);
-                level.playSound(null, m, SoundEvents.NOTE_BLOCK_HARP.value(), SoundSource.RECORDS, 1.0F, pitch);
-                level.playSound(null, m, SoundEvents.NOTE_BLOCK_BELL.value(), SoundSource.RECORDS, 0.25F, pitch);
-                level.sendParticles(ParticleTypes.NOTE, c.x, m.getY() + 2.1, c.z, 1, n / 24.0, 0, 0, 1);
-            }
+            case PIANO -> openPiano(sp, level, m);
             case GRANDFATHER_CLOCK -> {
                 long t = level.getOverworldClockTime();
                 long day = t / 24000L + 1;
@@ -224,6 +217,23 @@ public class FurnitureBlock extends BigBlock implements EntityBlock {
             case VANITY -> com.snolred.wildplus.economy.Luxury.open(sp, null);
             default -> {}
         }
+    }
+
+    /** 3.4 피아노 연주 화면: 버튼 번호 = 악기 × 25 + 음 (0~24, 소리 블록 음역) → 피아노 자리에서 울림 (근처 모두 들음) */
+    private static void openPiano(ServerPlayer sp, ServerLevel level, BlockPos m) {
+        java.util.List<com.snolred.wildplus.menu.PickMenu.Entry> slots = new java.util.ArrayList<>();
+        for (int i = 0; i < 7 * 25; i++) slots.add(new com.snolred.wildplus.menu.PickMenu.Entry("", ""));
+        var sounds = java.util.List.of(SoundEvents.NOTE_BLOCK_HARP, SoundEvents.NOTE_BLOCK_BELL, SoundEvents.NOTE_BLOCK_FLUTE, SoundEvents.NOTE_BLOCK_GUITAR,
+                SoundEvents.NOTE_BLOCK_BASS, SoundEvents.NOTE_BLOCK_XYLOPHONE, SoundEvents.NOTE_BLOCK_BIT);
+        Vec3 c = Vec3.atBottomCenterOf(m);
+        com.snolred.wildplus.menu.PickMenu.open(sp, Component.literal("🎹 피아노"), "", "", slots, com.snolred.wildplus.menu.PickMenu.FLAG_PIANO, id -> {
+            if (id < 0 || id >= 7 * 25 || !(level.getBlockState(m).getBlock() instanceof FurnitureBlock)) return;
+            int inst = id / 25, note = id % 25;
+            float pitch = (float) Math.pow(2.0, (note - 12) / 12.0);
+            level.playSound(null, m, sounds.get(inst).value(), SoundSource.RECORDS, 1.0F, pitch);
+            if (inst == 0) level.playSound(null, m, SoundEvents.NOTE_BLOCK_BELL.value(), SoundSource.RECORDS, 0.18F, pitch);
+            level.sendParticles(ParticleTypes.NOTE, c.x + (level.getRandom().nextDouble() - 0.5), m.getY() + 2.1, c.z, 0, note / 24.0, 0, 0, 1);
+        }, null, pl -> pl.distanceToSqr(c.x, c.y + 0.5, c.z) < 64.0);
     }
 
     /** 책장: 인챈트 책장 2개만큼 */
