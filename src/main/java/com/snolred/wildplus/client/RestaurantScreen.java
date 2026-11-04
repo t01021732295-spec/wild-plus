@@ -188,7 +188,7 @@ public class RestaurantScreen extends AbstractContainerScreen<RestaurantMenu> {
             }
         }
         if (tab == 2) {
-            boolean own = owner();
+
             for (var w : guestRate) w.visible = !own;
             for (var w : ownerRate) w.visible = own;
             for (int s = 0; s < 5; s++) starBtn[s].setMessage(Component.literal(s < pickStars ? "★" : "☆"));
