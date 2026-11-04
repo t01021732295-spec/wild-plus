@@ -392,9 +392,21 @@ public class RestaurantCounterBlockEntity extends BlockEntity implements Worldly
         ratingSum += stars;
         ratingCount++;
         reviews.add(0, stars + "\t" + p.getName().getString() + "\t" + text.replace('\t', ' '));
-        while (reviews.size() > 6) reviews.remove(reviews.size() - 1);
+        while (reviews.size() > 9) reviews.remove(reviews.size() - 1);
         if (stars >= 4) xp += 5;
         else if (stars <= 2) xp = Math.max(0, xp - 5);
+        setChanged();
+        return true;
+    }
+
+    /** 주인 답글 (후기 i 번째, 최신 = 0) */
+    public boolean reply(ServerPlayer p, int i, String text) {
+        if (role(p) != ROLE_OWNER || i < 0 || i >= reviews.size()) return false;
+        text = text.replace('\t', ' ').trim();
+        if (text.length() > 40) text = text.substring(0, 40);
+        String[] f = reviews.get(i).split("\t", -1);
+        String base = (f.length > 0 ? f[0] : "0") + "\t" + (f.length > 1 ? f[1] : "?") + "\t" + (f.length > 2 ? f[2] : "");
+        reviews.set(i, text.isEmpty() ? base : base + "\t" + text);
         setChanged();
         return true;
     }

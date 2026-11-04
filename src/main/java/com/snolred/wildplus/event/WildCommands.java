@@ -52,6 +52,19 @@ public final class WildCommands {
                     com.snolred.wildplus.menu.RestaurantMenu.open(sp, be.getBlockPos());
                     return 1;
                 })))
+                .then(Commands.literal("reply").then(Commands.argument("index", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 20))
+                        .then(Commands.argument("text", com.mojang.brigadier.arguments.StringArgumentType.greedyString()).executes(ctx -> {
+                            net.minecraft.server.level.ServerPlayer sp = ctx.getSource().getPlayerOrException();
+                            if (!(sp.containerMenu instanceof com.snolred.wildplus.menu.RestaurantMenu m) || m.blockEntity() == null
+                                    || !m.blockEntity().reply(sp, com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "index"),
+                                    com.mojang.brigadier.arguments.StringArgumentType.getString(ctx, "text"))) {
+                                ctx.getSource().sendFailure(Component.literal("자기 식당 카운터 화면에서만 답글을 달 수 있어요"));
+                                return 0;
+                            }
+                            ctx.getSource().sendSuccess(() -> Component.literal("💬 답글을 달았어요"), false);
+                            com.snolred.wildplus.menu.RestaurantMenu.open(sp, m.blockEntity().getBlockPos());
+                            return 1;
+                        }))))
                 .then(Commands.literal("review").then(Commands.argument("stars", com.mojang.brigadier.arguments.IntegerArgumentType.integer(1, 5))
                         .executes(ctx -> review(ctx, ""))
                         .then(Commands.argument("text", com.mojang.brigadier.arguments.StringArgumentType.greedyString())

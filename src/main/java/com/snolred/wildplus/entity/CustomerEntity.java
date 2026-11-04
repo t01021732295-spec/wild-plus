@@ -295,13 +295,7 @@ public class CustomerEntity extends PathfinderMob {
 
     @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
-        // 손님을 눌러도 카운터 화면을 엶 (서빙하기 편하게)
-        if (!this.level().isClientSide() && waiting() && player instanceof net.minecraft.server.level.ServerPlayer sp
-                && sp.level().getBlockState(counter).getBlock() instanceof com.snolred.wildplus.block.RestaurantCounterBlock b) {
-            b.open(sp, counter);
-            return InteractionResult.SUCCESS;
-        }
-        return InteractionResult.PASS;
+        return InteractionResult.PASS; // 손님을 눌러도 아무 창도 열지 않음 (서빙은 카운터에서)
     }
 
     @Override

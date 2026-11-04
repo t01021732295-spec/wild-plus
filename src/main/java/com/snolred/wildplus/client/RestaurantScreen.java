@@ -32,7 +32,12 @@ public class RestaurantScreen extends AbstractContainerScreen<RestaurantMenu> {
     private final UiButton[] tabBtn = new UiButton[4];
     private final UiButton[] starBtn = new UiButton[5];
     private UiButton openBtn, hireBtn, albaBtn, applyBtn, quitBtn;
-    private EditBox nameBox, reviewBox;
+    private EditBox nameBox, reviewBox, replyBox;
+    private int reviewPage, replyPick = -1;
+    private final List<net.minecraft.client.gui.components.AbstractWidget> guestRate = new ArrayList<>();
+    private final List<net.minecraft.client.gui.components.AbstractWidget> ownerRate = new ArrayList<>();
+    private final UiButton[] replyBtn = new UiButton[3];
+    private UiButton revPrev, revNext;
 
     public RestaurantScreen(RestaurantMenu menu, Inventory inv, Component title) {
         super(menu, inv, title, W, H);
@@ -71,20 +76,38 @@ public class RestaurantScreen extends AbstractContainerScreen<RestaurantMenu> {
             int col = i / 5, row = i % 5;
             buy[i] = on(1, UiButton.of(x + 98 + col * 122, y + TOP + 2 + row * 16, 26, 13, "주문", UiButton.ORANGE, () -> click(RestaurantMenu.BTN_BUY + ii)));
         }
-        // 평점: 별 고르기 + 후기 + 남기기
+        // 평점: 별 고르기 + 후기 + 남기기 (손님) / 답글 (주인)
         for (int s = 0; s < 5; s++) {
             final int ss = s + 1;
             starBtn[s] = on(2, UiButton.of(x + 10 + s * 18, y + TOP + 32, 16, 14, "★", UiButton.GOLD, () -> pickStars = ss));
+            guestRate.add(starBtn[s]);
         }
         reviewBox = on(2, new EditBox(this.font, x + 10, y + TOP + 50, 96, 14, Component.literal("후기")));
         reviewBox.setMaxLength(40);
         reviewBox.setHint(Component.literal("한 줄 후기 (선택)"));
-        on(2, UiButton.of(x + 10, y + TOP + 67, 96, 13, "평점 남기기", UiButton.BLUE, () -> {
+        guestRate.add(reviewBox);
+        guestRate.add(on(2, UiButton.of(x + 10, y + TOP + 67, 96, 13, "평점 남기기", UiButton.BLUE, () -> {
             if (this.minecraft != null && this.minecraft.player != null) {
                 String t = reviewBox.getValue().trim();
                 this.minecraft.player.connection.sendCommand("restaurant review " + pickStars + (t.isEmpty() ? "" : " " + t));
             }
-        }));
+        })));
+        replyBox = on(2, new EditBox(this.font, x + 10, y + TOP + 50, 96, 14, Component.literal("답글")));
+        replyBox.setMaxLength(40);
+        replyBox.setHint(Component.literal("사장님 답글"));
+        ownerRate.add(replyBox);
+        ownerRate.add(on(2, UiButton.of(x + 10, y + TOP + 67, 96, 13, "답글 달기", UiButton.TEAL, () -> {
+            String t = replyBox.getValue().trim();
+            if (replyPick >= 0 && !t.isEmpty() && this.minecraft != null && this.minecraft.player != null) {
+                this.minecraft.player.connection.sendCommand("restaurant reply " + replyPick + " " + t);
+            }
+        })));
+        for (int r = 0; r < 3; r++) {
+            final int rr = r;
+            replyBtn[r] = on(2, UiButton.of(x + W - 40, y + TOP + 5 + r * 21, 30, 10, "답글", UiButton.STEEL, () -> replyPick = reviewPage * 3 + rr));
+        }
+        revPrev = on(2, UiButton.of(x + W - 40, y + TOP + 68, 14, 10, "◀", UiButton.STEEL, () -> reviewPage--));
+        revNext = on(2, UiButton.of(x + W - 24, y + TOP + 68, 14, 10, "▶", UiButton.STEEL, () -> reviewPage++));
         // 관리 (주인)
         nameBox = on(3, new EditBox(this.font, x + 8, y + TOP + 2, 82, 14, Component.literal("식당 이름")));
         nameBox.setMaxLength(20);
@@ -165,13 +188,26 @@ public class RestaurantScreen extends AbstractContainerScreen<RestaurantMenu> {
             }
         }
         if (tab == 2) {
+            boolean own = owner();
+            for (var w : guestRate) w.visible = !own;
+            for (var w : ownerRate) w.visible = own;
             for (int s = 0; s < 5; s++) starBtn[s].setMessage(Component.literal(s < pickStars ? "★" : "☆"));
+            int n = menu.extra.reviews().size(), pages = Math.max(1, (n + 2) / 3);
+            reviewPage = Math.max(0, Math.min(reviewPage, pages - 1));
+            revPrev.visible = revNext.visible = pages > 1;
+            revPrev.active = reviewPage > 0;
+            revNext.active = reviewPage < pages - 1;
+            for (int r = 0; r < 3; r++) {
+                int idx = reviewPage * 3 + r;
+                replyBtn[r].visible = own && idx < n;
+                replyBtn[r].setMessage(Component.literal(idx == replyPick ? "선택" : "답글"));
+            }
         }
     }
 
     @Override
     public boolean keyPressed(net.minecraft.client.input.KeyEvent event) {
-        for (EditBox b : new EditBox[]{nameBox, reviewBox}) {
+        for (EditBox b : new EditBox[]{nameBox, reviewBox, replyBox}) {
             if (b != null && b.visible && b.isFocused() && !event.isEscape()) {
                 b.keyPressed(event);
                 return true;
@@ -330,14 +366,27 @@ public class RestaurantScreen extends AbstractContainerScreen<RestaurantMenu> {
         UiKit.text(g, stars(Math.round(avg10 / 10f)), 48, TOP + 6, 0xFFFFB400);
         UiKit.text(g, "평점 " + n + "개", 48, TOP + 17, 0xFF8A6A4A);
         List<String> rv = menu.extra.reviews();
+        if (owner()) {
+            UiKit.text(g, replyPick >= 0 ? "후기 " + (replyPick + 1) + "번에 답글" : "오른쪽 [답글]로 후기 고르기", 10, TOP + 36, 0xFF2A6A6A);
+        }
         if (rv.isEmpty()) UiKit.center(g, "아직 후기가 없어요", 112 + (W - 120) / 2, TOP + 36, 0xFFA08A6A);
-        for (int i = 0; i < Math.min(6, rv.size()); i++) {
-            String[] p = rv.get(i).split("\t", 3);
+        for (int r = 0; r < 3; r++) {
+            int i = reviewPage * 3 + r;
+            if (i >= rv.size()) break;
+            String[] p = rv.get(i).split("\t", 4);
             int s = p.length > 0 ? parse(p[0]) : 0;
+            int ry = TOP + 6 + r * 21;
+            if (i == replyPick) g.fill(113, ry - 2, W - 9, ry + 19, 0x2232A0A0);
             String line = (p.length > 1 ? p[1] : "?") + (p.length > 2 && !p[2].isBlank() ? ": " + p[2] : "");
-            while (UiKit.font().width(line) > W - 160 && line.length() > 3) line = line.substring(0, line.length() - 1);
-            UiKit.text(g, "★".repeat(s), 116, TOP + 6 + i * 12, 0xFFFFB400);
-            UiKit.text(g, line, 150, TOP + 6 + i * 12, 0xFF4A3420);
+            int maxW = owner() ? W - 196 : W - 162;
+            while (UiKit.font().width(line) > maxW && line.length() > 3) line = line.substring(0, line.length() - 1);
+            UiKit.text(g, "★".repeat(s), 116, ry, 0xFFFFB400);
+            UiKit.text(g, line, 150, ry, 0xFF4A3420);
+            if (p.length > 3 && !p[3].isBlank()) {
+                String rep = "↳ 사장님: " + p[3];
+                while (UiKit.font().width(rep) > W - 136 && rep.length() > 3) rep = rep.substring(0, rep.length() - 1);
+                UiKit.text(g, rep, 122, ry + 10, 0xFF2A5A9A);
+            }
         }
     }
 
