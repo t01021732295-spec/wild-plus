@@ -944,9 +944,16 @@ jobs:
             cmd "/tp @s 539.5 123 -13.5 180 25"
             sleep 25
             import -window root shot-restaurant.png || true
+            cmd "/tp @s 542.5 120.5 -21.5 135 12"
+            sleep 3
+            import -window root shot-restaurant-guest.png || true
             cmd "/tp @s 539.5 120 -23.2 180 25"
             sleep 2; xdotool click 3; sleep 3
             import -window root shot-restaurant-ui.png || true
+            xdotool key Escape; sleep 1
+            cmd "/tp @s 539.5 120 -22.6 180 20"
+            sleep 1; xdotool click 3; sleep 2
+            import -window root shot-restaurant-ui2.png || true
             xdotool key Escape; sleep 1
             # ── 3.1: 조리 기구 ──
             cmd "/fill 496 120 -18 528 128 4 air"
