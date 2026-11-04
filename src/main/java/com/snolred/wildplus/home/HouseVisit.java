@@ -193,8 +193,8 @@ public final class HouseVisit {
         ContentData.get(server).dirty();
         String name = h.getStringOr("name", be.ownerName + "네 집");
         ListTag l = reviews(h);
-        String header = String.format("%s · 주인 %s · %s %.1f (%d개) · 집 점수 %d/100%s", name, h.getStringOr("owner_name", be.ownerName),
-                stars((int) Math.round(average(h))), average(h), l.size(), sc.total(), h.getLongOr("best_week", -99) >= ContentData.week() - 1 ? " · 🎀 이번 주 예쁜 집" : "");
+        String header = String.format("%s · %s %.1f (%d개)%s", name, stars((int) Math.round(average(h))), average(h), l.size(),
+                h.getLongOr("best_week", -99) >= ContentData.week() - 1 ? " · 🎀 예쁜 집" : "");
         List<PickMenu.Entry> rows = new ArrayList<>();
         boolean mine = owner.equals(p.getUUID());
         if (!mine) {
