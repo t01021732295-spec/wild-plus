@@ -66,8 +66,8 @@ public class CustomerRenderer extends HumanoidMobRenderer<CustomerEntity, Custom
         if (s.count <= 0) return;
         ps.pushPose();
         ps.translate(0.0F, s.boundingBoxHeight + 0.85F + (float) Math.sin(s.ageInTicks * 0.1F) * 0.04F, 0.0F);
-        ps.mulPose(cam.orientation);
-        ps.mulPose(Axis.YP.rotationDegrees(180.0F));
+        ps.rotate(cam.orientation);
+        ps.rotate(Axis.YP.rotationDegrees(180.0F));
         ps.scale(0.42F, 0.42F, 0.42F);
         for (int i = 0; i < s.count; i++) {
             ps.pushPose();

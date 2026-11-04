@@ -362,7 +362,7 @@ public class RestaurantCounterBlockEntity extends BlockEntity implements Worldly
             if (owner != null) wd.addBalance(owner, Tax.collect(server, owner, price));
         }
         wd.setDirty();
-        if (!p.getInventory().add(got)) p.drop(got, false);
+        if (!p.getInventory().add(got)) net.minecraft.world.Containers.dropItemStack(level, p.getX(), p.getY(), p.getZ(), got);
         salesToday += price;
         p.sendSystemMessage(Component.literal("🍴 " + got.getHoverName().getString() + " 주문 · -" + price + "동").withStyle(ChatFormatting.AQUA));
         level.playSound(null, worldPosition, SoundEvents.NOTE_BLOCK_BELL.value(), SoundSource.BLOCKS, 0.6F, 1.8F);
