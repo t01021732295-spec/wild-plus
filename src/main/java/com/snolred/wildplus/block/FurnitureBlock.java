@@ -43,8 +43,8 @@ public class FurnitureBlock extends BigBlock implements EntityBlock {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     public enum Kind {
-        SOFA(-1, 1, 0, 0, 1, 0, 0, 9, true),
-        ARMCHAIR(0, 0, 0, 0, 1, 0, 0, 9, true),
+        SOFA(-1, 1, 0, 0, 1, 0, 0, 10, true),
+        ARMCHAIR(0, 0, 0, 0, 1, 0, 0, 10, true),
         COFFEE_TABLE(0, 0, 0, 0, 1, 0, 0, 0, true),
         FIREPLACE(0, 1, 0, 0, 2, 15, 0, 0, false),
         TV_STAND(0, 1, 0, 0, 2, 6, 0, 0, false),
@@ -62,7 +62,7 @@ public class FurnitureBlock extends BigBlock implements EntityBlock {
         PIANO(0, 1, 0, 0, 2, 0, 0, 0, false),
         AQUARIUM(0, 1, 0, 0, 2, 10, 0, 0, false),
         CHANDELIER(0, 0, 0, 0, 1, 15, 0, 0, false),
-        BATHTUB(0, 1, 0, 0, 1, 0, 0, 9, true);
+        BATHTUB(0, 1, 0, 0, 1, 0, 0, 6, true);
 
         public final int lat0, lat1, dep0, dep1, height, light, storage, seat;
         public final boolean low;

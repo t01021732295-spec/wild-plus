@@ -23,10 +23,10 @@ public final class HomeShop {
 
     private static final Map<String, Long> HOUSE_PRICE = Map.of("cabin", 50_000L, "log_house", 120_000L, "brick_house", 250_000L,
             "hanok", 400_000L, "modern", 600_000L, "mansion", 1_200_000L);
-    private static final Map<String, String> HOUSE_SUB = Map.of("cabin", "9×11 · 이층 침대 · 상자 · 작업대 · 화로",
-            "log_house", "11×11 · 베란다 · 벽난로 · 소파 · 냉장고", "brick_house", "11×11 · 2층 · 발코니 · 캐노피 침대 · TV",
-            "hanok", "13×12 · 기와지붕 · 대청마루 · 장독대 · 책장", "modern", "13×13 · 통유리 · 옥상 정원 · 수영장",
-            "mansion", "19×18 · 3층 · 탑 2개 · 분수 · 피아노 · 샹들리에");
+    private static final Map<String, String> HOUSE_SUB = Map.of("cabin", "9×11 · 방 2 · 거실·부엌 + 다락 침실",
+            "log_house", "11×11 · 방 3 · 거실(벽난로) · 부엌 · 침실 · 베란다", "brick_house", "11×12 · 방 5 · 2층 · 침실·서재·욕실 · 발코니",
+            "hanok", "13×12 · 방 3 · 대청마루 · 안방 · 사랑방", "modern", "13×13 · 방 4 · 침실 · 드레스룸 · 옥상 정원 · 수영장",
+            "mansion", "19×18 · 방 9 · 3층 · 식당 · 옷방 · 욕실 · 서재 · 음악실");
 
     private static long furniturePrice(String n) {
         if (n.startsWith("sofa_")) return 12_000;

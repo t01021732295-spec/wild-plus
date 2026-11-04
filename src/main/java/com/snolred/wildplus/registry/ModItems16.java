@@ -29,10 +29,10 @@ public final class ModItems16 {
     static {
         house("cabin", 9, 10, 11);
         house("log_house", 11, 11, 11);
-        house("brick_house", 11, 15, 11);
+        house("brick_house", 11, 15, 12);
         house("hanok", 13, 10, 12);
         house("modern", 13, 10, 13);
-        house("mansion", 19, 18, 18);
+        house("mansion", 19, 19, 18);
     }
 
     public static void init() {}

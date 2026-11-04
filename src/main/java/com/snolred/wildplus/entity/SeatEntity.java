@@ -39,7 +39,8 @@ public class SeatEntity extends Entity {
         if (!(p.level() instanceof ServerLevel sl) || p.isPassenger() || taken(sl, at)) return false;
         SeatEntity s = ModEntities.SEAT.get().create(sl, EntitySpawnReason.TRIGGERED);
         if (s == null) return false;
-        s.snapTo(at.x, at.y - 0.62, at.z, yaw, 0);
+        // 타는 사람은 자리(0.01) 위에서 0.6 내려가 앉고, 앉은 자세의 엉덩이는 발 + 0.75 → 엉덩이가 at.y 에 오도록
+        s.snapTo(at.x, at.y - 0.75 + 0.6 - 0.01, at.z, yaw, 0);
         s.block = block.immutable();
         s.bath = bath;
         sl.addFreshEntity(s);
