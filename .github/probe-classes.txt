@@ -1,8 +1,5 @@
-net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate
-net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager
-net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings
-net.neoforged.neoforge.common.extensions.IBlockExtension
-net.minecraft.client.renderer.entity.NoopRenderer
-net.minecraft.world.inventory.ChestMenu
-net.minecraft.world.item.alchemy.PotionContents
-net.minecraft.world.entity.player.Player
+net.minecraft.world.level.block.AbstractBedBlock
+net.minecraft.world.level.block.BedBlock
+net.minecraft.world.attribute.BedRule
+net.minecraft.world.level.block.EnchantingTableBlock
+net.minecraft.world.entity.Entity
