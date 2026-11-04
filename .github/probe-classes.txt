@@ -1,3 +1,13 @@
-net.minecraft.world.entity.projectile.FishingHook
-net.minecraft.world.item.FishingRodItem
-net.neoforged.neoforge.event.entity.player.ItemFishedEvent
+net.minecraft.client.renderer.entity.HumanoidMobRenderer
+net.minecraft.client.renderer.entity.MobRenderer
+net.minecraft.client.renderer.entity.LivingEntityRenderer
+net.minecraft.client.renderer.entity.EntityRenderer
+net.minecraft.client.renderer.entity.state.HumanoidRenderState
+net.minecraft.client.renderer.entity.state.EntityRenderState
+net.minecraft.client.renderer.entity.state.LivingEntityRenderState
+net.minecraft.client.renderer.state.level.CameraRenderState
+net.minecraft.client.renderer.entity.EntityRendererProvider$Context
+net.minecraft.client.model.HumanoidModel
+net.minecraft.client.model.geom.ModelLayers
+net.minecraft.world.entity.PathfinderMob
+net.minecraft.world.entity.ai.navigation.PathNavigation
