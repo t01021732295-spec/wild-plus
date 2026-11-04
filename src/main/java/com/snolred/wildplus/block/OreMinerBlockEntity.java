@@ -32,19 +32,19 @@ public class OreMinerBlockEntity extends MachineBlockEntity {
 
     // 초 = 출하가(동) × 3.6 → 시간당 약 1,000동 (최소 15초)
     public static final List<Ore> ORES = List.of(
-            new Ore("석탄", () -> Items.COAL, 1, 0, 15),
-            new Ore("구리 원석", () -> Items.RAW_COPPER, 1, 0, 15),
-            new Ore("철 원석", () -> Items.RAW_IRON, 1, 0, 15),
-            new Ore("금 원석", () -> Items.RAW_GOLD, 1, 0, 15),
-            new Ore("레드스톤", () -> Items.REDSTONE, 2, 0, 15),
-            new Ore("청금석", () -> Items.LAPIS_LAZULI, 2, 0, 15),
-            new Ore("석영", () -> Items.QUARTZ, 1, 0, 15),
-            new Ore("다이아몬드", () -> Items.DIAMOND, 1, 1, 108),
-            new Ore("에메랄드", () -> Items.EMERALD, 1, 1, 36),
-            new Ore("미스릴 원석", () -> ModItems2.RAW_MYTHRIL.get(), 1, 2, 18),
-            new Ore("비취", () -> ModItems2.JADE.get(), 1, 2, 18),
-            new Ore("루비", () -> com.snolred.wildplus.registry.ModItems7.RUBY.get(), 1, 2, 144),
-            new Ore("사파이어", () -> com.snolred.wildplus.registry.ModItems11.SAPPHIRE.get(), 1, 2, 126));
+            new Ore("석탄", () -> Items.COAL, 1, 0, 22),
+            new Ore("구리 원석", () -> Items.RAW_COPPER, 1, 0, 22),
+            new Ore("철 원석", () -> Items.RAW_IRON, 1, 0, 22),
+            new Ore("금 원석", () -> Items.RAW_GOLD, 1, 0, 22),
+            new Ore("레드스톤", () -> Items.REDSTONE, 2, 0, 22),
+            new Ore("청금석", () -> Items.LAPIS_LAZULI, 2, 0, 22),
+            new Ore("석영", () -> Items.QUARTZ, 1, 0, 22),
+            new Ore("다이아몬드", () -> Items.DIAMOND, 1, 1, 162),
+            new Ore("에메랄드", () -> Items.EMERALD, 1, 1, 54),
+            new Ore("미스릴 원석", () -> ModItems2.RAW_MYTHRIL.get(), 1, 2, 27),
+            new Ore("비취", () -> ModItems2.JADE.get(), 1, 2, 27),
+            new Ore("루비", () -> com.snolred.wildplus.registry.ModItems7.RUBY.get(), 1, 2, 216),
+            new Ore("사파이어", () -> com.snolred.wildplus.registry.ModItems11.SAPPHIRE.get(), 1, 2, 189));
 
     public static final int MAX_TIER = 2;
     /** 강화 재료: 1단계 다이아 블록 4개, 2단계 루비 블록 8개 */
