@@ -179,7 +179,7 @@ public class PianoScreen extends AbstractContainerScreen<PickMenu> {
             int kx = kx0() - leftPos + i * 18;
             g.text(UiKit.font(), s, kx + 9 - UiKit.font().width(s) / 2, KY + WH - 22, 0xFF6B6B74, false);
         }
-        UiKit.text(g, "키보드: Z X C V B N M (아래) · Q W E R T Y U I (위) · 검은 건반 S D G H J / 2 3 5 6 7", 10, H - 30, 0xFF9A9AA8);
+        UiKit.text(g, "⌨ 아래 Z~, (검은 S D G H J) · 위 Q~I (검은 2 3 5 6 7)", 10, H - 30, 0xFF9A9AA8);
         UiKit.text(g, "1 · 4 = 악기 바꾸기", 10, H - 19, 0xFF9A9AA8);
     }
 
