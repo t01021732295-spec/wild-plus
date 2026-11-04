@@ -1,3 +1,0 @@
-net/minecraft/client/renderer/entity/ZombieRenderer.java	class|super\(	6
-net/minecraft/client/renderer/entity/AbstractZombieRenderer.java	class|super\(|extractRenderState	8
-net/minecraft/client/renderer/entity/EntityRenderer.java	submitNameTag|nameTag	6
