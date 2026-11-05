@@ -14,10 +14,11 @@ import net.minecraft.world.entity.player.Inventory;
  * 서버: 첫 줄 = 경주 (상태\n남은 초\n날씨\n내 마권\n지난 결과\n경마장 있음), 다음 6줄 = 말 (주인\n속도\n지구력\n최근\n배당\n색\n내 말)
  */
 public class BettingScreen extends AbstractContainerScreen<PickMenu> {
-    private static final int W = 400, H = 250;
+    private static final int W = 400, H = 236;
     private static final int[][] SILK = {{0xFFDC3232, 0xFFFAFAFA}, {0xFF325AC8, 0xFFFADC3C}, {0xFF289650, 0xFFFAFAFA}, {0xFFF0AA28, 0xFF3C281E},
             {0xFF9646B4, 0xFFFAFAFA}, {0xFF1E1E24, 0xFFE63C3C}};
-    private static final String[] TYPE = {"단승 1등", "연승 2등 안", "복연승 3등 안"};
+    private static final String[] TYPE = {"단승", "연승", "복연승"};
+    private static final String[] TYPE_SUB = {"1등을 맞혀요", "2등 안에 들면", "3등 안에 들면"};
     private static final String[] CHIP = {"1천", "5천", "1만", "5만"};
     private static final long[] CHIPS = {1_000, 5_000, 10_000, 50_000};
     private int sel, type, chip = 2;
@@ -56,7 +57,7 @@ public class BettingScreen extends AbstractContainerScreen<PickMenu> {
         rows.clear();
         for (int i = 0; i < 6; i++) {
             final int k = i;
-            rows.add(addRenderableWidget(new Clear(leftPos + 11, topPos + 52 + i * 30, 222, 27, () -> sel = k)));
+            rows.add(addRenderableWidget(new Clear(leftPos + 11, topPos + 50 + i * 28, 222, 25, () -> sel = k)));
         }
         int tx = leftPos + 244;
         for (int t = 0; t < 3; t++) {
@@ -65,9 +66,9 @@ public class BettingScreen extends AbstractContainerScreen<PickMenu> {
         }
         for (int c = 0; c < 4; c++) {
             final int k = c;
-            addRenderableWidget(new Clear(tx + 8 + c * 36, topPos + 122, 30, 18, () -> chip = k));
+            addRenderableWidget(new Clear(tx + 8 + c * 36, topPos + 126, 30, 16, () -> chip = k));
         }
-        buy = addRenderableWidget(UiButton.of(tx, topPos + 202, W - 252, 20, "🎫 마권 사기", UiButton.ORANGE, () -> {
+        buy = addRenderableWidget(UiButton.of(tx, topPos + 192, W - 252, 18, "🎫 마권 사기", UiButton.ORANGE, () -> {
             if (this.minecraft != null && this.minecraft.gameMode != null)
                 this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 1000 + sel * 100 + type * 10 + chip);
         }));
@@ -90,25 +91,25 @@ public class BettingScreen extends AbstractContainerScreen<PickMenu> {
         UiKit.round(g, x + W - 96, y + 7, 86, 18, 3, 0xFFE8BE46);
         UiKit.round(g, x + W - 95, y + 8, 84, 16, 3, 0xFF0F1412);
         // 전광판
-        UiKit.round(g, x + 8, y + 36, 228, H - 44, 4, 0xFF3C4642);
-        UiKit.round(g, x + 9, y + 37, 226, H - 46, 4, 0xFF101418);
+        UiKit.round(g, x + 8, y + 36, 228, H - 54, 4, 0xFF3C4642);
+        UiKit.round(g, x + 9, y + 37, 226, H - 56, 4, 0xFF101418);
         for (int i = 0; i < horses() && i < 6; i++) {
-            int ry = y + 52 + i * 30;
+            int ry = y + 50 + i * 28;
             boolean on = i == sel;
-            g.fill(x + 11, ry, x + 233, ry + 27, on ? 0xFF243C30 : 0xFF181E22);
-            if (on) UiKit.outline(g, x + 11, ry, 222, 27, 0xFFFFDC50);
+            g.fill(x + 11, ry, x + 233, ry + 25, on ? 0xFF243C30 : 0xFF181E22);
+            if (on) UiKit.outline(g, x + 11, ry, 222, 25, 0xFFFFDC50);
             int[] c = SILK[i % 6];
-            g.fill(x + 14, ry + 4, x + 28, ry + 23, c[1]);
-            g.fill(x + 15, ry + 5, x + 27, ry + 22, c[0]);
+            g.fill(x + 14, ry + 3, x + 28, ry + 22, c[1]);
+            g.fill(x + 15, ry + 4, x + 27, ry + 21, c[0]);
             String[] h = horse(i);
-            bar(g, x + 110, ry + 11, 32, num(h, 1) / 100f, 0xFF5AC878);
-            bar(g, x + 148, ry + 11, 32, num(h, 2) / 100f, 0xFF5AA0E6);
+            bar(g, x + 100, ry + 10, 26, num(h, 1) / 100f, 0xFF5AC878);
+            bar(g, x + 132, ry + 10, 26, num(h, 2) / 100f, 0xFF5AA0E6);
         }
         // 종이 마권
         int tx = x + 244;
-        UiKit.round(g, tx, y + 36, W - 252, 160, 4, 0xFFD2C8AF);
-        UiKit.round(g, tx + 1, y + 37, W - 254, 158, 4, 0xFFFCF8EB);
-        for (int k = 0; k < 156; k += 6) g.fill(tx - 1, y + 39 + k, tx + 2, y + 42 + k, 0xFF1F7A4C);
+        UiKit.round(g, tx, y + 36, W - 252, 150, 4, 0xFFD2C8AF);
+        UiKit.round(g, tx + 1, y + 37, W - 254, 148, 4, 0xFFFCF8EB);
+        for (int k = 0; k < 146; k += 6) g.fill(tx - 1, y + 39 + k, tx + 2, y + 42 + k, 0xFF1F7A4C);
         g.fill(tx + 8, y + 56, tx + 48, y + 90, 0xFFF0E8D2);
         if (sel < horses()) {
             g.pose().pushMatrix();
@@ -125,8 +126,8 @@ public class BettingScreen extends AbstractContainerScreen<PickMenu> {
         int[] chipC = {0xFFC8C8CD, 0xFF4682DC, 0xFFDC3C3C, 0xFF1E1E24};
         for (int c = 0; c < 4; c++) {
             int cx = tx + 8 + c * 36;
-            UiKit.round(g, cx - 1, y + 121, 32, 20, 9, c == chip ? 0xFFFFDC50 : 0xFFFFFFFF);
-            UiKit.round(g, cx, y + 122, 30, 18, 8, chipC[c]);
+            UiKit.round(g, cx - 1, y + 125, 32, 18, 8, c == chip ? 0xFFFFDC50 : 0xFFFFFFFF);
+            UiKit.round(g, cx, y + 126, 30, 16, 7, chipC[c]);
         }
         g.fill(tx + 8, y + 148, x + W - 14, y + 149, 0xFFD2C8AF);
     }
@@ -160,16 +161,16 @@ public class BettingScreen extends AbstractContainerScreen<PickMenu> {
         }
         UiKit.center(g, timer, W - 53, 12, 0xFFFFDC50);
         String[] heads = {"번", "말 / 주인", "속도", "지구력", "최근", "배당"};
-        int[] hx = {14, 32, 110, 148, 186, 214};
+        int[] hx = {14, 32, 100, 132, 166, 206};
         for (int k = 0; k < heads.length; k++) g.text(font, heads[k], hx[k], 41, 0xFF8CAA96, false);
         for (int i = 0; i < horses() && i < 6; i++) {
-            int ry = 52 + i * 30;
+            int ry = 50 + i * 28;
             String[] h = horse(i);
             int[] c = SILK[i % 6];
             UiKit.center(g, String.valueOf(i + 1), 21, ry + 10, c[1]);
             g.text(font, menu.entries.get(i + 1).title(), 32, ry + 4, 0xFFF0F5F0, false);
             g.text(font, (h.length > 0 ? h[0] : "") + (h.length > 6 && h[6].equals("1") ? " (내 말)" : ""), 32, ry + 15, h.length > 6 && h[6].equals("1") ? 0xFFFFDC50 : 0xFF96B4A0, false);
-            g.text(font, h.length > 3 ? h[3] : "", 186, ry + 9, 0xFFE6E6DC, false);
+            g.text(font, h.length > 3 ? h[3] : "", 166, ry + 9, 0xFFE6E6DC, false);
             UiKit.right(g, (h.length > 4 ? h[4] : "") + "배", 230, ry + 9, 0xFFFFDC50);
         }
         // 마권
@@ -181,17 +182,17 @@ public class BettingScreen extends AbstractContainerScreen<PickMenu> {
             g.text(font, String.format("단승 배당 %.1f배", odds(sel, 0)), tx + 54, 74, 0xFF6E6E78, false);
         }
         for (int t = 0; t < 3; t++) UiKit.center(g, TYPE[t], tx + 31 + t * 48, 99, t == type ? 0xFFFFFFFF : 0xFF3C4650);
-        g.text(font, "건 돈", tx + 10, 112, 0xFF6E6E78, false);
-        for (int c = 0; c < 4; c++) UiKit.center(g, CHIP[c], tx + 23 + c * 36, 127, 0xFFFFFFFF);
+        g.text(font, TYPE_SUB[type] + " · 건 돈", tx + 10, 113, 0xFF6E6E78, false);
+        for (int c = 0; c < 4; c++) UiKit.center(g, CHIP[c], tx + 23 + c * 36, 130, 0xFFFFFFFF);
         double o = sel < horses() ? odds(sel, type) : 0;
         g.text(font, String.format("%,d동 × %.1f배 → 당첨 시", CHIPS[chip], o), tx + 10, 154, 0xFF3C4650, false);
         String win = String.format("%,d동", Math.round(CHIPS[chip] * o));
-        UiKit.big(g, win, W - 14 - UiKit.bigWidth(win, 2), 168, 2, 0xFFB0283A);
-        g.text(font, in.length > 3 ? in[3] : "", tx, 230, 0xFFBEE6C8, false);
+        UiKit.big(g, win, W - 14 - UiKit.bigWidth(win, 2), 166, 2, 0xFFB0283A);
+        g.text(font, in.length > 3 ? in[3] : "", tx, 214, 0xFFBEE6C8, false);
         if (in.length > 4 && !in[4].isEmpty()) {
             String last = "지난 경주 " + in[4];
             while (font.width(last) > 222 && last.length() > 4) last = last.substring(0, last.length() - 2) + "…";
-            g.text(font, last, 12, H - 14, 0xFF8CAA96, false);
+            g.text(font, last, 12, H - 12, 0xFF8CAA96, false);
         }
     }
 

@@ -18,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
  * 버튼 번호 = 건물 × 10 + (0 재료 · 1 만동 · 2 십만동 · 3 부지 상자)
  */
 public class VillageScreen extends AbstractContainerScreen<PickMenu> {
-    private static final int W = 420, H = 262, N = 5;
+    private static final int W = 420, H = 238, N = 5;
     private int sel;
     private UiButton giveItems, give1, give10, site;
     private final List<UiButton> cards = new ArrayList<>();
@@ -57,13 +57,13 @@ public class VillageScreen extends AbstractContainerScreen<PickMenu> {
         cards.clear();
         for (int i = 0; i < N; i++) {
             final int k = i;
-            cards.add(addRenderableWidget(new Clear(leftPos + 8 + i * 81, topPos + 36, 77, 76, () -> sel = k)));
+            cards.add(addRenderableWidget(new Clear(leftPos + 8 + i * 81, topPos + 34, 77, 66, () -> sel = k)));
         }
         int rx = leftPos + 276, w = W - 284;
-        giveItems = addRenderableWidget(UiButton.of(rx, topPos + 186, w, 18, "📦 손에 든 재료 기부", UiButton.GREEN, () -> click(0)));
-        give1 = addRenderableWidget(UiButton.of(rx, topPos + 208, w / 2 - 2, 18, "💰 1만 동", UiButton.GOLD, () -> click(1)));
-        give10 = addRenderableWidget(UiButton.of(rx + w / 2 + 2, topPos + 208, w / 2 - 2, 18, "💰 10만 동", UiButton.GOLD, () -> click(2)));
-        site = addRenderableWidget(UiButton.of(rx, topPos + 230, w, 18, "🏗 공사 부지 상자 받기", UiButton.BLUE, () -> click(3)));
+        giveItems = addRenderableWidget(UiButton.of(rx, topPos + 168, w, 18, "📦 손에 든 재료 기부", UiButton.GREEN, () -> click(0)));
+        give1 = addRenderableWidget(UiButton.of(rx, topPos + 190, w / 2 - 2, 18, "💰 1만 동", UiButton.GOLD, () -> click(1)));
+        give10 = addRenderableWidget(UiButton.of(rx + w / 2 + 2, topPos + 190, w / 2 - 2, 18, "💰 10만 동", UiButton.GOLD, () -> click(2)));
+        site = addRenderableWidget(UiButton.of(rx, topPos + 212, w, 18, "🏗 공사 부지 상자 받기", UiButton.BLUE, () -> click(3)));
     }
 
     @Override
@@ -86,23 +86,23 @@ public class VillageScreen extends AbstractContainerScreen<PickMenu> {
             String[] f = p(i);
             int cx = x + 8 + i * 81, st = num(f, 0);
             boolean open = f.length > 1 && f[1].equals("1");
-            UiKit.round(g, cx, y + 36, 77, 76, 4, i == sel ? 0xFF3C6EBE : 0xFF8C643C);
-            UiKit.round(g, cx + (i == sel ? 2 : 1), y + 36 + (i == sel ? 2 : 1), 77 - (i == sel ? 4 : 2), 76 - (i == sel ? 4 : 2), 3, 0xFFFCF6E6);
-            g.fillGradient(cx + 4, y + 40, cx + 73, y + 82, open ? 0xFF9CCFF7 : 0xFFB4B4B4, open ? 0xFFD6ECFC : 0xFFD2D2D2);
+            UiKit.round(g, cx, y + 34, 77, 66, 4, i == sel ? 0xFF3C6EBE : 0xFF8C643C);
+            UiKit.round(g, cx + (i == sel ? 2 : 1), y + 34 + (i == sel ? 2 : 1), 77 - (i == sel ? 4 : 2), 66 - (i == sel ? 4 : 2), 3, 0xFFFCF6E6);
+            g.fillGradient(cx + 4, y + 38, cx + 73, y + 76, open ? 0xFF9CCFF7 : 0xFFB4B4B4, open ? 0xFFD6ECFC : 0xFFD2D2D2);
             g.pose().pushMatrix();
-            g.pose().translate(cx + 14.5F, y + 37);
-            g.pose().scale(3F, 3F);
+            g.pose().translate(cx + 16.5F, y + 35);
+            g.pose().scale(2.75F, 2.75F);
             g.item(menu.entries.get(i).icon(), 0, 0);
             g.pose().popMatrix();
-            if (!open) g.fill(cx + 4, y + 40, cx + 73, y + 82, 0x88505050);
+            if (!open) g.fill(cx + 4, y + 38, cx + 73, y + 76, 0x88505050);
             for (int k = 0; k < 3; k++) {
                 int dx = cx + 26 + k * 9;
-                UiKit.round(g, dx, y + 100, 7, 7, 3, k < st ? 0xFF3CA05A : 0xFFCDC3AF);
+                UiKit.round(g, dx, y + 90, 6, 6, 3, k < st ? 0xFF3CA05A : 0xFFCDC3AF);
             }
-            if (st >= 3) UiKit.round(g, cx + 46, y + 41, 26, 11, 2, 0xFF3CA05A);
+            if (st >= 3) UiKit.round(g, cx + 46, y + 39, 26, 11, 2, 0xFF3CA05A);
         }
         // 설계도
-        int bx = x + 8, by = y + 118, bw = 260, bh = H - 126;
+        int bx = x + 8, by = y + 104, bw = 260, bh = H - 112;
         UiKit.round(g, bx, by, bw, bh, 4, 0xFFE6ECFA);
         UiKit.round(g, bx + 2, by + 2, bw - 4, bh - 4, 3, 0xFF2C54A4);
         for (int k = bx + 4; k < bx + bw - 4; k += 10) g.fill(k, by + 3, k + 1, by + bh - 3, 0xFF3660B2);
@@ -112,7 +112,7 @@ public class VillageScreen extends AbstractContainerScreen<PickMenu> {
         for (int m = 0; m < mats.length && m < 3; m++) {
             String[] q = mats[m].split("\\|");
             if (q.length < 4) continue;
-            int my = by + 34 + m * 24;
+            int my = by + 30 + m * 22;
             UiKit.round(g, bx + 8, my - 1, 18, 18, 2, 0xFFFFFFFF);
             try {
                 g.item(new ItemStack(BuiltInRegistries.ITEM.getValue(Identifier.parse(q[1]))), bx + 9, my);
@@ -121,11 +121,11 @@ public class VillageScreen extends AbstractContainerScreen<PickMenu> {
             long have = Long.parseLong(q[2]), need = Math.max(1, Long.parseLong(q[3]));
             bar(g, bx + 32, my + 11, 220, (float) have / need, have >= need ? 0xFF96F0AA : 0xFFFFC83C);
         }
-        bar(g, bx + 60, by + 112, 160, num(f, 2) / 100f, 0xFFFF785A);
+        bar(g, bx + 60, by + 102, 160, num(f, 2) / 100f, 0xFFFF785A);
         // 기여 순위
         int rx = x + 276;
-        UiKit.round(g, rx, by, W - 284, 64, 4, 0xFF8C643C);
-        UiKit.round(g, rx + 1, by + 1, W - 286, 62, 4, 0xFFFCF6E6);
+        UiKit.round(g, rx, by, W - 284, 60, 4, 0xFF8C643C);
+        UiKit.round(g, rx + 1, by + 1, W - 286, 58, 4, 0xFFFCF6E6);
     }
 
     private static void bar(GuiGraphicsExtractor g, int x, int y, int w, float f, int c) {
@@ -141,39 +141,39 @@ public class VillageScreen extends AbstractContainerScreen<PickMenu> {
         for (int i = 0; i < N && i < menu.entries.size(); i++) {
             String[] f = p(i);
             int cx = 8 + i * 81;
-            UiKit.center(g, menu.entries.get(i).title(), cx + 38, 87, 0xFF3C2819);
-            if (num(f, 0) >= 3) UiKit.center(g, "완공", cx + 59, 43, 0xFFFFFFFF);
-            if (f.length > 1 && f[1].equals("0")) UiKit.center(g, "🔒 다음 차례", cx + 38, 58, 0xFFFFFFFF);
+            UiKit.center(g, menu.entries.get(i).title(), cx + 38, 79, 0xFF3C2819);
+            if (num(f, 0) >= 3) UiKit.center(g, "완공", cx + 59, 41, 0xFFFFFFFF);
+            if (f.length > 1 && f[1].equals("0")) UiKit.center(g, "🔒 다음 차례", cx + 38, 54, 0xFFFFFFFF);
         }
         String[] f = p(sel);
         int st = num(f, 0);
         String name = sel < menu.entries.size() ? menu.entries.get(sel).title() : "";
         String head = st >= 3 ? "📐 " + name + " · 완공!" : f.length > 6 && f[6].equals("1") ? "📐 " + name + " · 1단계 준비 끝 → 공사 부지 상자를 놓아 주세요"
                 : "📐 " + name + " · " + (st == 0 ? "1단계 터 닦기" : st == 1 ? "2단계 골조" : "3단계 완공") + " 모으는 중";
-        UiKit.bold(g, head, 16, 124, 0xFFFFFFFF);
-        g.text(font, "완공 효과: " + (f.length > 3 ? f[3] : ""), 16, 136, 0xFFC8DCFF, false);
+        UiKit.bold(g, head, 16, 109, 0xFFFFFFFF);
+        g.text(font, "완공 효과: " + (f.length > 3 ? f[3] : ""), 16, 120, 0xFFC8DCFF, false);
         String[] mats = f.length > 4 ? f[4].split(";") : new String[0];
         for (int m = 0; m < mats.length && m < 3; m++) {
             String[] q = mats[m].split("\\|");
             if (q.length < 4) continue;
-            int my = 118 + 34 + m * 24;
+            int my = 104 + 30 + m * 22;
             long have = Long.parseLong(q[2]), need = Long.parseLong(q[3]);
             g.text(font, q[0], 40, my, 0xFFFFFFFF, false);
             String t = String.format("%,d / %,d%s%s", have, need, q[0].equals("돈") ? "동" : "", have >= need ? " ✔" : "");
             UiKit.right(g, t, 252, my, have >= need ? 0xFF96F0AA : 0xFFFFFFFF);
         }
-        UiKit.bold(g, "전체 진행", 16, 228, 0xFFFFFFFF);
-        UiKit.right(g, num(f, 2) + "%", 260, 228, 0xFFFFC83C);
+        UiKit.bold(g, "전체 진행", 16, 204, 0xFFFFFFFF);
+        UiKit.right(g, num(f, 2) + "%", 260, 204, 0xFFFFC83C);
         // 기여 순위
         int rx = 276;
-        UiKit.bold(g, "🏅 기여 순위", rx + 8, 123, 0xFF3C2819);
+        UiKit.bold(g, "🏅 기여 순위", rx + 8, 108, 0xFF3C2819);
         String[] medal = {"🥇", "🥈", "🥉", "4"};
         for (int k = 0; k + N < menu.entries.size() && k < 4; k++) {
             PickMenu.Entry e = menu.entries.get(N + k);
-            g.text(font, medal[k] + " " + e.title(), rx + 8, 136 + k * 11, 0xFF3C2819, false);
-            UiKit.right(g, e.sub(), W - 12, 136 + k * 11, 0xFF6E5A46);
+            g.text(font, medal[k] + " " + e.title(), rx + 8, 120 + k * 10, 0xFF3C2819, false);
+            UiKit.right(g, e.sub(), W - 12, 120 + k * 10, 0xFF6E5A46);
         }
-        if (menu.entries.size() <= N) g.text(font, "아직 기부한 사람이 없어요", rx + 8, 140, 0xFF8A7A66, false);
+        if (menu.entries.size() <= N) g.text(font, "아직 기부한 사람이 없어요", rx + 8, 124, 0xFF8A7A66, false);
     }
 
     @Override

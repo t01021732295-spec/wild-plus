@@ -981,12 +981,16 @@ jobs:
             cmd "/tp @s 760 145 -30 180 45"
             sleep 8
             import -window root shot-racetrack.png || true
+            cmd "/gamemode spectator"
+            cmd "/tp @s 783 132 -68 90 30"
             cmd "/derby race"
-            sleep 2
-            cmd "/tp @s 778 136 -68 90 32"
-            sleep 6
+            sleep 12
             import -window root shot-race-running.png || true
-            sleep 30
+            cmd "/tp @s 759 128 -40 180 35"
+            sleep 6
+            import -window root shot-race-running2.png || true
+            sleep 20
+            cmd "/gamemode survival"
             cmd "/tp @s 774.3 119 -55.5 -90 20"
             sleep 1; xdotool click 3; sleep 2
             import -window root shot-betting-ui.png || true

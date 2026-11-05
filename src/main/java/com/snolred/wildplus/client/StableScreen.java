@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Inventory;
  * 서버: 첫 줄 = 말 (등록\n속도\n지구력\n순발력\n근성\n컨디션\n배고픔\n레벨\n경험치\n출전\n1착\n2착\n상금\n훈련\n출전신청\n경주안내\n3착)
  */
 public class StableScreen extends AbstractContainerScreen<PickMenu> {
-    private static final int W = 400, H = 250;
+    private static final int W = 400, H = 236;
     private static final String[][] ACTS = {{"🥕 먹이 주기", "당근 · 황금 당근 · 건초 · 사과", "배고픔 회복 · 황금 당근은 컨디션 +1"},
             {"🏃 주로 달리기", "속도 +2 · 지구력 +1", "1,000동 · 배고픔 -15"}, {"🚧 장애물 연습", "순발력 +2 · 근성 +1", "2,000동 · 배고픔 -15"},
             {"😴 푹 쉬기", "컨디션 +2", "하루 한 번"}};
@@ -53,10 +53,10 @@ public class StableScreen extends AbstractContainerScreen<PickMenu> {
         int cx = leftPos + 278;
         for (int i = 0; i < 4; i++) {
             final int k = i;
-            addRenderableWidget(new Card(cx, topPos + 36 + i * 40, W - 286, 36, k, () -> click(k)));
+            addRenderableWidget(new Card(cx, topPos + 36 + i * 37, W - 286, 34, k, () -> click(k)));
         }
-        addRenderableWidget(UiButton.of(cx, topPos + 200, W - 286, 24, "🏁 다음 경주 출전 신청", UiButton.RED, () -> click(5)));
-        addRenderableWidget(UiButton.of(leftPos + 8, topPos + 228, 142, 16, "🐴 타고 있는 말 등록", UiButton.GOLD, () -> click(4)));
+        addRenderableWidget(UiButton.of(cx, topPos + 188, W - 286, 22, "🏁 다음 경주 출전 신청", UiButton.RED, () -> click(5)));
+        addRenderableWidget(UiButton.of(leftPos + 8, topPos + 214, 142, 16, "🐴 타고 있는 말 등록", UiButton.GOLD, () -> click(4)));
     }
 
     @Override
@@ -67,27 +67,27 @@ public class StableScreen extends AbstractContainerScreen<PickMenu> {
         for (int k = y + 34; k < y + H - 4; k += 9) g.fill(x + 4, k, x + W - 4, k + 1, 0xFF694224);
         g.fillGradient(x + 3, y + 3, x + W - 3, y + 30, 0xFFAA3C32, 0xFF782822);
         // 사진 (마구간 안)
-        UiKit.round(g, x + 8, y + 36, 142, 134, 4, 0xFF503219);
-        g.fillGradient(x + 10, y + 38, x + 148, y + 132, 0xFFFAEBC8, 0xFFE1CDA5);
-        g.fillGradient(x + 10, y + 132, x + 148, y + 168, 0xFFDEBE5A, 0xFFBEA046);
+        UiKit.round(g, x + 8, y + 36, 142, 122, 4, 0xFF503219);
+        g.fillGradient(x + 10, y + 38, x + 148, y + 124, 0xFFFAEBC8, 0xFFE1CDA5);
+        g.fillGradient(x + 10, y + 124, x + 148, y + 156, 0xFFDEBE5A, 0xFFBEA046);
         if (reg() && !menu.entries.isEmpty()) {
             g.pose().pushMatrix();
-            g.pose().translate(x + 31, y + 46);
-            g.pose().scale(6F, 6F);
+            g.pose().translate(x + 35, y + 44);
+            g.pose().scale(5.5F, 5.5F);
             g.item(menu.entries.get(0).icon(), 0, 0);
             g.pose().popMatrix();
         }
-        UiKit.round(g, x + 8, y + 174, 142, 22, 3, 0xFFFAF0D7);
+        UiKit.round(g, x + 8, y + 161, 142, 18, 3, 0xFFFAF0D7);
         // 경험치 막대
-        UiKit.round(g, x + 12, y + 218, 136, 6, 3, 0xFF503219);
-        UiKit.round(g, x + 12, y + 218, Math.max(6, 136 * n(8) / 100), 6, 3, 0xFFFFC83C);
+        UiKit.round(g, x + 12, y + 204, 136, 5, 2, 0xFF503219);
+        UiKit.round(g, x + 12, y + 204, Math.max(5, 136 * n(8) / 100), 5, 2, 0xFFFFC83C);
         // 능력치 판
         int px = x + 158;
         UiKit.round(g, px, y + 36, 112, H - 44, 4, 0xFF503219);
         UiKit.round(g, px + 1, y + 37, 110, H - 46, 4, 0xFFFCF6E6);
         int[] cols = {0xFF5ABE6E, 0xFF5096DC, 0xFFF0A032, 0xFFC85A5A};
-        for (int i = 0; i < 4; i++) bar(g, px + 8, y + 69 + i * 22, 96, n(1 + i) / 100f, cols[i]);
-        bar(g, px + 8, y + 189, 96, n(6) / 100f, 0xFFE6963C);
+        for (int i = 0; i < 4; i++) bar(g, px + 8, y + 66 + i * 21, 96, n(1 + i) / 100f, cols[i]);
+        bar(g, px + 8, y + 182, 96, n(6) / 100f, 0xFFE6963C);
     }
 
     private static void bar(GuiGraphicsExtractor g, int x, int y, int w, float f, int c) {
@@ -102,25 +102,25 @@ public class StableScreen extends AbstractContainerScreen<PickMenu> {
         UiKit.text(g, "말을 타고 [등록] · 하루 훈련 3번 · 컨디션이 좋을수록 빨라요 · " + s(15), 10, 19, 0xFFFFDCD2);
         String name = menu.entries.isEmpty() ? "" : menu.entries.get(0).title();
         if (!reg()) {
-            UiKit.center(g, "아직 경주마가 없어요", 79, 90, 0xFF6B4A2A);
-            UiKit.center(g, "말을 타고 아래 [등록]", 79, 104, 0xFF8A6A4A);
+            UiKit.center(g, "아직 경주마가 없어요", 79, 84, 0xFF6B4A2A);
+            UiKit.center(g, "말을 타고 아래 [등록]", 79, 98, 0xFF8A6A4A);
             name = "등록 전";
         }
-        UiKit.center(g, name, 79, 181, 0xFF3C2819);
-        g.text(font, String.format("출전 %d · 1착 %d · 2착 %d · 3착 %d", n(9), n(10), n(11), n(16)), 12, 200, 0xFFFAEBCD, false);
-        g.text(font, String.format("레벨 %d · 상금 %,d동", n(7), n(12)), 12, 209, 0xFFFAEBCD, false);
+        UiKit.center(g, name, 79, 166, 0xFF3C2819);
+        g.text(font, String.format("출전 %d · 1착 %d · 2착 %d · 3착 %d", n(9), n(10), n(11), n(16)), 12, 184, 0xFFFAEBCD, false);
+        g.text(font, String.format("레벨 %d · 상금 %,d동", n(7), n(12)), 12, 194, 0xFFFAEBCD, false);
         int px = 158;
         UiKit.bold(g, "능력치", px + 8, 42, 0xFF3C2819);
         String[] st = {"속도", "지구력", "순발력", "근성"};
         for (int i = 0; i < 4; i++) {
-            g.text(font, st[i], px + 8, 58 + i * 22, 0xFF503C28, false);
-            UiKit.right(g, String.valueOf(n(1 + i)), px + 104, 58 + i * 22, 0xFF3C2819);
+            g.text(font, st[i], px + 8, 56 + i * 21, 0xFF503C28, false);
+            UiKit.right(g, String.valueOf(n(1 + i)), px + 104, 56 + i * 21, 0xFF3C2819);
         }
-        g.text(font, "컨디션", px + 8, 150, 0xFF503C28, false);
+        g.text(font, "컨디션", px + 8, 144, 0xFF503C28, false);
         int cond = n(5);
-        g.text(font, "♥".repeat(cond) + "♡".repeat(Math.max(0, 5 - cond)) + "  " + (cond >= 4 ? "좋음" : cond >= 2 ? "보통" : "지침"), px + 8, 161, 0xFFDC3C50, false);
-        g.text(font, "배고픔 " + n(6), px + 8, 179, 0xFF503C28, false);
-        g.text(font, "훈련 " + n(13) + "/3" + (s(14).equals("1") ? " · 출전 신청함 ✔" : ""), px + 8, 202, s(14).equals("1") ? 0xFF2E8A3E : 0xFF786450, false);
+        g.text(font, "♥".repeat(cond) + "♡".repeat(Math.max(0, 5 - cond)) + "  " + (cond >= 4 ? "좋음" : cond >= 2 ? "보통" : "지침"), px + 8, 155, 0xFFDC3C50, false);
+        g.text(font, "배고픔 " + n(6), px + 8, 172, 0xFF503C28, false);
+        g.text(font, "훈련 " + n(13) + "/3" + (s(14).equals("1") ? " · 출전 신청함 ✔" : ""), px + 8, 194, s(14).equals("1") ? 0xFF2E8A3E : 0xFF786450, false);
     }
 
     @Override
@@ -145,8 +145,8 @@ public class StableScreen extends AbstractContainerScreen<PickMenu> {
             UiKit.round(g, x + 2, y + 2, w - 4, h - 4, 3, isHoveredOrFocused() ? 0xFFFFFFF4 : 0xFFFCF6E6);
             var font = UiKit.font();
             UiKit.bold(g, ACTS[k][0], x + 6, y + 4, 0xFF3C2819);
-            g.text(font, ACTS[k][1], x + 6, y + 16, 0xFF5A5046, false);
-            g.text(font, ACTS[k][2], x + 6, y + 25, ACT_C[k], false);
+            g.text(font, ACTS[k][1], x + 6, y + 15, 0xFF5A5046, false);
+            g.text(font, ACTS[k][2], x + 6, y + 24, ACT_C[k], false);
         }
     }
 }
