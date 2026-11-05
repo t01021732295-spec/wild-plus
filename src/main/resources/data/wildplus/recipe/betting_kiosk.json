@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GGG",
+    "IPI",
+    "IRI"
+  ],
+  "key": {
+    "G": "minecraft:glass_pane",
+    "I": "minecraft:iron_ingot",
+    "P": "minecraft:paper",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "id": "wildplus:betting_kiosk",
+    "count": 1
+  }
+}

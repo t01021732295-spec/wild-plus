@@ -82,6 +82,7 @@ public class FishingLootModifier extends LootModifier {
         }
         // 등급: 낚싯대 × 미끼, 자동 낚시는 절반
         float m = rod.grade() * (bait == 1 ? 1.3F : bait == 2 ? 1.5F : bait == 3 ? 3F : 1F) * (angler == null ? 0.5F : 1F);
+        if (com.snolred.wildplus.content.Village.done(level.getServer(), "harbor")) m *= 1.15F; // 3.5 마을 항구 완공
         int g = com.snolred.wildplus.event.FishingPlus.rollGrade(random, m);
         ItemStack caught = loot.get(fishIndex);
         com.snolred.wildplus.economy.Grade.apply(caught, g);

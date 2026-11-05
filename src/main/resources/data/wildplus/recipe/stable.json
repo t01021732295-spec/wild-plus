@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "P P",
+    "PHP"
+  ],
+  "key": {
+    "S": "#minecraft:wooden_slabs",
+    "P": "#minecraft:planks",
+    "H": "minecraft:hay_block"
+  },
+  "result": {
+    "id": "wildplus:stable",
+    "count": 1
+  }
+}

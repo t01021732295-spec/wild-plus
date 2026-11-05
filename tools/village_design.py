@@ -265,3 +265,32 @@ PROJECTS = {
     "hot_spring": ("온천", hot_spring, "들어가면 재생 · 배고픔 회복 · 블러드문 다음 날 피로 회복",
                    [[("돌", 192), ("대나무", 128)], [("물 양동이", 16), ("마그마 블록", 16)], [("우유병", 32), ("인삼", 4)]], [60_000, 120_000, 200_000]),
 }
+
+
+def clock_face():
+    """시계판 (벽걸이 1칸 · 뒤 벽에 붙음): 금테 · 흰 판 · 바늘이 돎 (시계탑에 4면)"""
+    z = -8
+
+    def face(t, f, u, v, W, Hh):
+        if f != "front":
+            return (200, 170, 130)
+        cx, cy = (W - 1) / 2, (Hh - 1) / 2
+        r = math.hypot(u - cx, v - cy)
+        if r > W / 2:
+            return None
+        if r > W / 2 - 1.2:
+            return GOLD
+        for k in range(12):
+            a = 2 * math.pi * k / 12
+            if round(cx + math.sin(a) * (W / 2 - 2.2)) == u and round(cy - math.cos(a) * (W / 2 - 2.2)) == v:
+                return (40, 40, 40)
+        am = 2 * math.pi * t / 32
+        ah = 2 * math.pi * t / 32 / 12
+        for d in range(0, int(W / 2) - 2):
+            if round(cx + math.sin(am) * d) == u and round(cy - math.cos(am) * d) == v:
+                return (30, 30, 30)
+        for d in range(0, int(W / 2) - 4):
+            if round(cx + math.sin(ah) * d) == u and round(cy - math.cos(ah) * d) == v:
+                return (120, 30, 30)
+        return (250, 248, 235)
+    return [Box(-7, 1, z, 14, 14, 1.5, Anim(32, 10, face)), Box(-0.05, 0, 7.9, 0.1, 0.1, 0.1, lambda *a: None)]

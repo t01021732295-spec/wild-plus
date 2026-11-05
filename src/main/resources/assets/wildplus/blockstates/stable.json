@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/stable"
+    },
+    "facing=east": {
+      "model": "wildplus:block/stable",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/stable",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/stable",
+      "y": 270
+    }
+  }
+}

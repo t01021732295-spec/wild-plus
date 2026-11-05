@@ -226,3 +226,20 @@ DERBY = {
     "scoreboard": ("전광판", scoreboard, -1, 1, 0, 0, 2, "실시간 순위 · 배당 · 다음 경주 시간"),
     "finish_post": ("결승 기둥", finish_post, 0, 0, 0, 0, 2, "결승선 · 사진 판정"),
 }
+
+
+def racetrack_mini():
+    """경마장 상자 아이템용 작은 모형 (블록 단위 · 상자 수를 줄임)"""
+    B, sol = H.B, H.solid
+    out = [B(-18.5, -0.5, -20.5, 37, 0.5, 41, sol((95, 160, 70), False))]
+    for k in range(24):
+        a0, a1 = 2 * math.pi * k / 24, 2 * math.pi * (k + 1) / 24
+        for (rx, rz, c, h) in ((9.8, 17.8, (150, 110, 70), 0.1), (11.4, 19.4, (250, 250, 250), 0.9), (8.1, 16.1, (250, 250, 250), 0.9)):
+            x0, z0 = math.cos(a0) * rx, math.sin(a0) * rz
+            x1, z1 = math.cos(a1) * rx, math.sin(a1) * rz
+            w = 2.6 if h < 0.5 else 0.3
+            out.append(B(min(x0, x1) - w / 2, 0, min(z0, z1) - w / 2, abs(x1 - x0) + w, h, abs(z1 - z0) + w, sol(c, False)))
+    out += [B(12.5, 0, -9, 4.5, 4, 18, sol((140, 140, 145), False)), B(12, 4, -9.5, 5.5, 0.5, 19, sol((150, 40, 40), False)),
+            B(8, 0, -0.5, 4, 2, 1, sol((235, 235, 238), False)), B(-1.5, 0, -0.2, 3, 2, 0.4, sol((30, 30, 34), False)),
+            B(-17.5, 0, -8, 3, 2, 16, sol((150, 95, 55), False))]
+    return out

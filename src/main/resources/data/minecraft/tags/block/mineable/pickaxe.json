@@ -44,6 +44,9 @@
     "wildplus:podium",
     "wildplus:trophy_gold",
     "wildplus:trophy_silver",
-    "wildplus:trophy_bronze"
+    "wildplus:trophy_bronze",
+    "wildplus:betting_kiosk",
+    "wildplus:starting_gate",
+    "wildplus:clock_face"
   ]
 }

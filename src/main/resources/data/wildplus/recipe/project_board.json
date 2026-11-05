@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PPP",
+    "PMP",
+    "S S"
+  ],
+  "key": {
+    "P": "#minecraft:planks",
+    "M": "minecraft:map",
+    "S": "minecraft:stick"
+  },
+  "result": {
+    "id": "wildplus:project_board",
+    "count": 1
+  }
+}

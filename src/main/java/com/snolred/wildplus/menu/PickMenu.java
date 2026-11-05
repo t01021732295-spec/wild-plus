@@ -23,7 +23,7 @@ public class PickMenu extends AbstractContainerMenu {
     public static final int BTN_TOGGLE = 900;
     public static final int FLAG_CAN_TOGGLE = 1, FLAG_PUBLIC = 2, FLAG_CAN_RENAME = 4;
     /** 화면 테마: 투기장(콜로세움) · 진열장(유리 케이스 격자) */
-    public static final int FLAG_ARENA = 8, FLAG_SHOP = 16, FLAG_JOB = 32, FLAG_REALTY = 64, FLAG_PIANO = 128, FLAG_GUESTBOOK = 256;
+    public static final int FLAG_ARENA = 8, FLAG_SHOP = 16, FLAG_JOB = 32, FLAG_REALTY = 64, FLAG_PIANO = 128, FLAG_GUESTBOOK = 256, FLAG_DERBY_BET = 512, FLAG_STABLE = 1024, FLAG_VILLAGE = 2048;
 
     /** 한 줄: 이름 · 부가 설명 · (진열장 화면용) 아이템 그림 · 모양(K_…) */
     public record Entry(String title, String sub, ItemStack icon, int kind) {

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PGP",
+    "PCP"
+  ],
+  "key": {
+    "P": "#minecraft:planks",
+    "G": "minecraft:gold_ingot",
+    "C": "minecraft:chest"
+  },
+  "result": {
+    "id": "wildplus:donation_box",
+    "count": 1
+  }
+}

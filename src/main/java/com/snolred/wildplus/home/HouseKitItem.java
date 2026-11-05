@@ -39,6 +39,11 @@ public class HouseKitItem extends Item {
         this.sz = sz;
     }
 
+    /** 지을 구조물 (마을 부지 상자는 다른 폴더) */
+    protected net.minecraft.resources.Identifier templateId() {
+        return WildPlus.id("house/" + house);
+    }
+
     public static Rotation rotationFor(Direction look) {
         return switch (look) {
             case EAST -> Rotation.CLOCKWISE_90;
@@ -71,7 +76,7 @@ public class HouseKitItem extends Item {
         BlockPos target = ctx.getClickedPos();
         if (level.getBlockState(target).canBeReplaced()) target = target.below();
         Direction look = p.getDirection();
-        StructureTemplate t = level.getStructureTemplateManager().get(WildPlus.id("house/" + house)).orElse(null);
+        StructureTemplate t = level.getStructureTemplateManager().get(templateId()).orElse(null);
         if (t == null) {
             p.sendSystemMessage(Component.literal("집 설계도를 찾을 수 없어요: " + house).withStyle(ChatFormatting.RED));
             return InteractionResult.FAIL;

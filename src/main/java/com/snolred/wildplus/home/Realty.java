@@ -73,7 +73,8 @@ public final class Realty {
         });
         // 목장 건물 2종
         Object[][] farms = {{"🏚 큰 축사", 150_000L, ModItems17.BARN_KIT.get(), "13×15 · 소·양 우리 2칸 · 여물통 · 건초 다락 · 울타리 마당"},
-                {"🐔 닭장", 40_000L, ModItems17.COOP_KIT.get(), "7×9 · 둥지 상자 2 · 물그릇 · 철망 마당"}};
+                {"🐔 닭장", 40_000L, ModItems17.COOP_KIT.get(), "7×9 · 둥지 상자 2 · 물그릇 · 철망 마당"},
+                {"🏇 경마장", 300_000L, com.snolred.wildplus.registry.ModItems18.RACETRACK_KIT.get(), "37×41 · 흙 타원 주로 · 관중석 · 출발 게이트 · 전광판 · 마구간 4 · 마권 발매기 2"}};
         for (Object[] f : farms) {
             long price = (Long) f[1];
             Item item = (Item) f[2];

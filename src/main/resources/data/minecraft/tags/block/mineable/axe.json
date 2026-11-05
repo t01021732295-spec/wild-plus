@@ -56,6 +56,11 @@
     "wildplus:ranch_market",
     "wildplus:guestbook",
     "wildplus:house_plaque",
-    "wildplus:contest_board"
+    "wildplus:contest_board",
+    "wildplus:stable",
+    "wildplus:project_board",
+    "wildplus:donation_box",
+    "wildplus:scoreboard",
+    "wildplus:finish_post"
   ]
 }

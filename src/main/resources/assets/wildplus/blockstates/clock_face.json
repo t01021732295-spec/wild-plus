@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/clock_face"
+    },
+    "facing=east": {
+      "model": "wildplus:block/clock_face",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/clock_face",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/clock_face",
+      "y": 270
+    }
+  }
+}

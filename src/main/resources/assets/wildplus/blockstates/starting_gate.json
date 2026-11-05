@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/starting_gate"
+    },
+    "facing=east": {
+      "model": "wildplus:block/starting_gate",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/starting_gate",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/starting_gate",
+      "y": 270
+    }
+  }
+}
