@@ -341,7 +341,6 @@ public final class Derby {
                     var h = EntityTypes.HORSE.create(lv, EntitySpawnReason.EVENT);
                     if (h == null) continue;
                     h.setNoAi(true);
-                    h.setInvulnerable(true);
                     h.setCustomName(Component.literal((i + 1) + "번 " + raceField.get(i).name()));
                     h.setCustomNameVisible(true);
                     h.getPersistentData().putBoolean("wp_race", true);
@@ -568,6 +567,12 @@ public final class Derby {
                 p.sendSystemMessage(Component.literal((k + 1) + "등 " + q[0] + "번 " + (q.length > 1 ? q[1] : "")).withStyle(ChatFormatting.GRAY));
             }
         }
+    }
+
+    /** 경주 중인 말은 다치지 않음 */
+    @SubscribeEvent
+    public static void onHurt(net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent event) {
+        if (event.getEntity().getPersistentData().getBooleanOr("wp_race", false)) event.setCanceled(true);
     }
 
     // ───────── 시험 명령: /derby race ─────────
