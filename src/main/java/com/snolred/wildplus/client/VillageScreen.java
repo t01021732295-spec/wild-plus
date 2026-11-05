@@ -90,8 +90,8 @@ public class VillageScreen extends AbstractContainerScreen<PickMenu> {
             UiKit.round(g, cx + (i == sel ? 2 : 1), y + 36 + (i == sel ? 2 : 1), 77 - (i == sel ? 4 : 2), 76 - (i == sel ? 4 : 2), 3, 0xFFFCF6E6);
             g.fillGradient(cx + 4, y + 40, cx + 73, y + 82, open ? 0xFF9CCFF7 : 0xFFB4B4B4, open ? 0xFFD6ECFC : 0xFFD2D2D2);
             g.pose().pushMatrix();
-            g.pose().translate(cx + 22.5F, y + 44);
-            g.pose().scale(2F, 2F);
+            g.pose().translate(cx + 14.5F, y + 37);
+            g.pose().scale(3F, 3F);
             g.item(menu.entries.get(i).icon(), 0, 0);
             g.pose().popMatrix();
             if (!open) g.fill(cx + 4, y + 40, cx + 73, y + 82, 0x88505050);

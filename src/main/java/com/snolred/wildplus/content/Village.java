@@ -232,6 +232,7 @@ public final class Village {
         StructurePlaceSettings set = new StructurePlaceSettings().setRotation(Rotation.values()[Math.floorMod(pr.getIntOr("rot", 0), 4)]).setRotationPivot(BlockPos.ZERO);
         t.placeInWorld(lv, origin, origin, set, lv.getRandom(), Block.UPDATE_ALL);
         var box = t.getBoundingBox(set, origin);
+        com.snolred.wildplus.home.HouseKitItem.refillParts(lv, box);
         for (int k = 0; k < 30; k++) {
             lv.sendParticles(ParticleTypes.CLOUD, box.minX() + lv.getRandom().nextDouble() * box.getXSpan(), origin.getY() + 1 + lv.getRandom().nextDouble() * 4,
                     box.minZ() + lv.getRandom().nextDouble() * box.getZSpan(), 1, 0, 0.05, 0, 0.02);

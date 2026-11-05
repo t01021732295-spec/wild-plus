@@ -35,6 +35,9 @@ class Template:
         self.entities.append((x, y, z, nbt))
 
     def save(self, name):
+        if name.startswith(("house/", "village/")):  # 3.5: 큰 블록 부속 칸 보호
+            import big_parts
+            big_parts.void_parts(self)
         palette, index = [], {}
         blocks = []
         for (x, y, z), (block, props, nbt) in sorted(self.blocks.items()):

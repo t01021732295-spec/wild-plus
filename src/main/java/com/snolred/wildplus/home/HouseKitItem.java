@@ -44,6 +44,14 @@ public class HouseKitItem extends Item {
         return WildPlus.id("house/" + house);
     }
 
+    /** 3.5: 구조물이 놓은 빈 칸이 큰 블록(가구 · 기계)의 부속 칸을 지우므로, 놓은 뒤 부속 칸을 다시 채움 */
+    public static void refillParts(ServerLevel level, BoundingBox box) {
+        for (BlockPos q : BlockPos.betweenClosed(box.minX(), box.minY(), box.minZ(), box.maxX(), box.maxY(), box.maxZ())) {
+            BlockState s = level.getBlockState(q);
+            if (s.getBlock() instanceof com.snolred.wildplus.block.BigBlock big) big.placeParts(level, q.immutable(), s);
+        }
+    }
+
     public static Rotation rotationFor(Direction look) {
         return switch (look) {
             case EAST -> Rotation.CLOCKWISE_90;
@@ -123,6 +131,7 @@ public class HouseKitItem extends Item {
         }
         String name = getName(ctx.getItemInHand()).getString();
         t.placeInWorld(level, origin, origin, settings, level.getRandom(), Block.UPDATE_ALL);
+        refillParts(level, box);
         if (!p.isCreative()) ctx.getItemInHand().shrink(1);
         level.playSound(null, target, SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 1.0F, 1.2F);
         level.playSound(null, target, SoundEvents.WOOD_PLACE, SoundSource.BLOCKS, 1.0F, 0.8F);

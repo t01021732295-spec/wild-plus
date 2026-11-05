@@ -983,11 +983,11 @@ jobs:
             import -window root shot-racetrack.png || true
             cmd "/derby race"
             sleep 2
-            cmd "/tp @s 777 126 -68 90 25"
+            cmd "/tp @s 778 136 -68 90 32"
             sleep 6
             import -window root shot-race-running.png || true
             sleep 30
-            cmd "/tp @s 776.7 119 -55.5 90 20"
+            cmd "/tp @s 774.3 119 -55.5 -90 20"
             sleep 1; xdotool click 3; sleep 2
             import -window root shot-betting-ui.png || true
             xdotool key Escape; sleep 1
