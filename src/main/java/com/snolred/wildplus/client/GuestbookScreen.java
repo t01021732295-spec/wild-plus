@@ -105,8 +105,8 @@ public class GuestbookScreen extends AbstractContainerScreen<PickMenu> {
                 if (mine && idx < reviews()) selected = idx;
             })));
         }
-        prev = addRenderableWidget(UiButton.of(leftPos + W / 2 + 6, topPos + H - 26, 18, 15, "◀", UiButton.WHITE, () -> { page--; refresh(); }));
-        next = addRenderableWidget(UiButton.of(leftPos + W - 28, topPos + H - 26, 18, 15, "▶", UiButton.WHITE, () -> { page++; refresh(); }));
+        prev = addRenderableWidget(UiButton.of(leftPos + W - 70, topPos + 13, 16, 13, "◀", UiButton.WHITE, () -> { page--; refresh(); }));
+        next = addRenderableWidget(UiButton.of(leftPos + W - 34, topPos + 13, 16, 13, "▶", UiButton.WHITE, () -> { page++; refresh(); }));
         refresh();
     }
 
@@ -157,8 +157,8 @@ public class GuestbookScreen extends AbstractContainerScreen<PickMenu> {
         g.fillGradient(mid, y + 10, mid + 10, y + H - 10, 0x30000000, 0x00000000);
         g.fill(mid, y + 10, mid + 1, y + H - 10, 0x40000000);
         // 빨간 책갈피 끈
-        g.fill(mid + 30, y + 6, mid + 34, y + 36, 0xFFB0283A);
-        for (int k = 0; k < 3; k++) g.fill(mid + 30 + k, y + 36 + k, mid + 34 - k, y + 37 + k, 0xFFB0283A);
+        g.fill(mid + 92, y + 6, mid + 96, y + 30, 0xFFB0283A);
+        for (int k = 0; k < 3; k++) g.fill(mid + 92 + k, y + 30 + k, mid + 96 - k, y + 31 + k, 0xFFB0283A);
         // 왼쪽: 집 점수 막대
         int bx = x + 18, by = y + 108, bw = W / 2 - 34;
         UiKit.round(g, bx, by, bw, 8, 3, 0xFFE2D6BC);
@@ -239,7 +239,7 @@ public class GuestbookScreen extends AbstractContainerScreen<PickMenu> {
                 g.text(font, rp, rx + 8, y + 32, RED_INK, false);
             }
         }
-        UiKit.center(g, (page + 1) + " / " + pages(), W / 2 + (W / 2) / 2, H - 22, SOFT_INK);
+        UiKit.center(g, (page + 1) + "/" + pages(), W - 44, 16, SOFT_INK);
     }
 
     @Override
