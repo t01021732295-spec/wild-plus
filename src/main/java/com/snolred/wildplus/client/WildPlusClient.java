@@ -34,6 +34,7 @@ public class WildPlusClient {
         event.<com.snolred.wildplus.menu.PickMenu, net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<com.snolred.wildplus.menu.PickMenu>>register(
                 com.snolred.wildplus.registry.ModMenus.PICK.get(), (m, inv, t) -> (m.flags & com.snolred.wildplus.menu.PickMenu.FLAG_REALTY) != 0
                         ? new RealtyScreen(m, inv, t) : (m.flags & com.snolred.wildplus.menu.PickMenu.FLAG_PIANO) != 0 ? new PianoScreen(m, inv, t)
+                        : (m.flags & com.snolred.wildplus.menu.PickMenu.FLAG_GUESTBOOK) != 0 ? new GuestbookScreen(m, inv, t)
                         : new PickScreen(m, inv, t));
         event.register(com.snolred.wildplus.registry.ModMenus.BACKPACK.get(), BackpackScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.STOCKS.get(), StockScreen::new);

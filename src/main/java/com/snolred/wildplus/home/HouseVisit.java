@@ -152,7 +152,6 @@ public final class HouseVisit {
         ContentData.get(server).dirty();
         p.sendSystemMessage(Component.literal("💌 " + h.getStringOr("name", "집") + "에 " + stars(stars) + (text.isEmpty() ? "" : " “" + text + "”") + " 남겼어요")
                 .withStyle(ChatFormatting.LIGHT_PURPLE));
-        if (text.isEmpty()) p.sendSystemMessage(suggest("[한 줄 후기 쓰기]", "/house review " + stars + " "));
         ServerPlayer o = server.getPlayerList().getPlayer(owner);
         if (o != null) {
             o.sendSystemMessage(Component.literal("🏠 " + p.getName().getString() + "님이 우리 집에 " + stars(stars) + (text.isEmpty() ? "" : " “" + text + "”"))
@@ -193,37 +192,30 @@ public final class HouseVisit {
         ContentData.get(server).dirty();
         String name = h.getStringOr("name", be.ownerName + "네 집");
         ListTag l = reviews(h);
-        String header = String.format("%s · %s %.1f (%d개)%s", name, stars((int) Math.round(average(h))), average(h), l.size(),
-                h.getLongOr("best_week", -99) >= ContentData.week() - 1 ? " · 🎀 예쁜 집" : "");
-        List<PickMenu.Entry> rows = new ArrayList<>();
         boolean mine = owner.equals(p.getUUID());
-        if (!mine) {
-            for (int s = 5; s >= 1; s--) rows.add(PickMenu.Entry.of(PickMenu.K_PRIMARY, stars(s), s == 5 ? "최고예요!" : s == 4 ? "멋져요" : s == 3 ? "괜찮아요" : s == 2 ? "아쉬워요" : "별로예요"));
-        } else {
-            rows.add(PickMenu.Entry.of(PickMenu.K_PRIMARY, "✏ 집 이름 바꾸기", "지금: " + name));
-        }
-        rows.add(PickMenu.Entry.of(PickMenu.K_INFO, String.format("🏅 집 점수 %d/100", sc.total()),
-                String.format("가구 %d종 %d개 · 침대 %d · 조명 %d · 트로피 %d · 꽃 %d", sc.kinds(), sc.pieces(), sc.beds(), sc.lights(), sc.trophies(), sc.plants())));
-        int base = rows.size();
+        // 3.4 방명록 책 화면 (GuestbookScreen): 첫 줄 = 집 정보, 그다음 = 후기 (명령 /house … 로 쓰기 · 답글 · 이름)
+        List<PickMenu.Entry> rows = new ArrayList<>();
+        rows.add(new PickMenu.Entry(name, String.join("\n", h.getStringOr("owner_name", be.ownerName), String.format("%.2f", average(h)),
+                String.valueOf(l.size()), String.valueOf(sc.total()),
+                String.format("가구 %d종 %d개 · 침대 %d · 조명 %d · 트로피 %d · 꽃 %d", sc.kinds(), sc.pieces(), sc.beds(), sc.lights(), sc.trophies(), sc.plants()),
+                h.getLongOr("best_week", -99) >= ContentData.week() - 1 ? "1" : "0", mine ? "1" : "0", String.valueOf(ContentData.gameDay + 1))));
         for (Tag t : l) {
             CompoundTag r = (CompoundTag) t;
-            String reply = r.getStringOr("reply", "");
-            rows.add(new PickMenu.Entry(stars(r.getIntOr("stars", 0)) + " " + r.getStringOr("name", "?") + " · " + (r.getLongOr("day", 0) + 1) + "일차",
-                    (r.getStringOr("text", "").isEmpty() ? "(별점만)" : "“" + r.getStringOr("text", "") + "”") + (reply.isEmpty() ? (mine ? " · 눌러서 답글" : "") : " ↳ 주인: " + reply)));
+            rows.add(new PickMenu.Entry(r.getStringOr("name", "?"), String.join("\n", String.valueOf(r.getIntOr("stars", 0)), String.valueOf(r.getLongOr("day", 0) + 1),
+                    r.getStringOr("text", "").replace("\n", " "), r.getStringOr("reply", "").replace("\n", " "))));
         }
         p.getPersistentData().putString("wp_gb_owner", owner.toString());
-        PickMenu.open(p, Component.literal("📖 방명록"), header, "아직 후기가 없어요", rows, 0, i -> {
-            if (!mine && i < 5) {
-                review(p, owner, 5 - i, "");
-                p.closeContainer();
-            } else if (mine && i == 0) {
-                p.closeContainer();
-                p.sendSystemMessage(suggest("[여기를 눌러 집 이름 입력]", "/house name "));
-            } else if (mine && i >= base) {
-                p.closeContainer();
-                p.sendSystemMessage(suggest("[" + (i - base + 1) + "번 후기에 답글 쓰기]", "/house reply " + (i - base) + " "));
-            }
-        }, null, pl -> pl.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) < 64.0);
+        p.getPersistentData().putLong("wp_gb_pos", pos.asLong());
+        PickMenu.open(p, Component.literal("📖 방명록"), "", "", rows, PickMenu.FLAG_GUESTBOOK, i -> {}, null,
+                pl -> pl.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) < 64.0);
+    }
+
+    /** 명령으로 쓰고 나서 방명록 화면 다시 열기 */
+    private static void reopen(ServerPlayer p) {
+        long at = p.getPersistentData().getLongOr("wp_gb_pos", Long.MIN_VALUE);
+        if (at == Long.MIN_VALUE) return;
+        BlockPos pos = BlockPos.of(at);
+        if (p.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) < 64.0) openGuestbook(p, pos);
     }
 
     /** 문패: 근처 방명록의 집 정보 */
@@ -292,6 +284,17 @@ public final class HouseVisit {
                 h.getStringOr("name", "?"), h.getStringOr("owner_name", "?"), BEST_PRIZE)).withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD), false);
     }
 
+    private static int reviewCmd(ServerPlayer sp, int stars, String text) {
+        String o = sp.getPersistentData().getStringOr("wp_gb_owner", "");
+        if (o.isEmpty()) {
+            sp.sendSystemMessage(Component.literal("먼저 친구 집의 방명록을 눌러 주세요").withStyle(ChatFormatting.RED));
+            return 0;
+        }
+        boolean ok = review(sp, UUID.fromString(o), stars, text);
+        if (ok) reopen(sp);
+        return ok ? 1 : 0;
+    }
+
     // ───────── 명령: /house name · review · reply ─────────
     @SubscribeEvent
     public static void onCommands(RegisterCommandsEvent event) {
@@ -304,18 +307,13 @@ public final class HouseVisit {
                     ContentData.get(sp.level().getServer()).dirty();
                     final String fn = n;
                     ctx.getSource().sendSuccess(() -> Component.literal("🏠 집 이름: " + fn), false);
+                    reopen(sp);
                     return 1;
                 })))
                 .then(Commands.literal("review").then(Commands.argument("stars", IntegerArgumentType.integer(1, 5))
-                        .then(Commands.argument("text", StringArgumentType.greedyString()).executes(ctx -> {
-                            ServerPlayer sp = ctx.getSource().getPlayerOrException();
-                            String o = sp.getPersistentData().getStringOr("wp_gb_owner", "");
-                            if (o.isEmpty()) {
-                                ctx.getSource().sendFailure(Component.literal("먼저 친구 집의 방명록을 눌러 주세요"));
-                                return 0;
-                            }
-                            return review(sp, UUID.fromString(o), IntegerArgumentType.getInteger(ctx, "stars"), StringArgumentType.getString(ctx, "text").trim()) ? 1 : 0;
-                        }))))
+                        .executes(ctx -> reviewCmd(ctx.getSource().getPlayerOrException(), IntegerArgumentType.getInteger(ctx, "stars"), ""))
+                        .then(Commands.argument("text", StringArgumentType.greedyString()).executes(ctx -> reviewCmd(ctx.getSource().getPlayerOrException(),
+                                IntegerArgumentType.getInteger(ctx, "stars"), StringArgumentType.getString(ctx, "text").trim())))))
                 .then(Commands.literal("reply").then(Commands.argument("index", IntegerArgumentType.integer(0, MAX_REVIEWS))
                         .then(Commands.argument("text", StringArgumentType.greedyString()).executes(ctx -> {
                             ServerPlayer sp = ctx.getSource().getPlayerOrException();
@@ -324,6 +322,7 @@ public final class HouseVisit {
                                 return 0;
                             }
                             ctx.getSource().sendSuccess(() -> Component.literal("💬 답글을 달았어요"), false);
+                            reopen(sp);
                             return 1;
                         })))));
     }
