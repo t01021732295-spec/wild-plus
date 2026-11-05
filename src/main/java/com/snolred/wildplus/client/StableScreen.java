@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
  */
 public class StableScreen extends AbstractContainerScreen<PickMenu> {
     private static final int W = 400, H = 236;
-    private static final String[][] ACTS = {{"🥕 먹이 주기", "당근 · 황금 당근 · 건초 · 사과", "배고픔 회복 · 황금 당근은 컨디션 +1"},
+    private static final String[][] ACTS = {{"🥕 먹이 주기", "당근 · 건초 · 사과", "황금 당근은 컨디션 +1"},
             {"🏃 주로 달리기", "속도 +2 · 지구력 +1", "1,000동 · 배고픔 -15"}, {"🚧 장애물 연습", "순발력 +2 · 근성 +1", "2,000동 · 배고픔 -15"},
             {"😴 푹 쉬기", "컨디션 +2", "하루 한 번"}};
     private static final int[] ACT_C = {0xFF5AA050, 0xFF4682DC, 0xFFDC8C28, 0xFF966EB4};
