@@ -138,6 +138,39 @@ public class OreMinerBlockEntity extends MachineBlockEntity {
         be.setChanged();
     }
 
+    // ───────── 부숴도 강화 유지: 떨어지는 채굴기 아이템에 강화 단계를 적어 두고, 놓을 때 되살림 ─────────
+    public static final String TIER_KEY = "wp_miner_tier";
+
+    /** 이 아이템에 적힌 강화 단계 (없으면 0) */
+    public static int tierOf(ItemStack stack) {
+        return stack.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY)
+                .copyTag().getIntOr(TIER_KEY, 0);
+    }
+
+    /** 놓을 때 (OreMinerBlock.setPlacedBy) */
+    public void restoreTier(ItemStack stack) {
+        int t = Math.min(MAX_TIER, tierOf(stack));
+        if (t > tier) {
+            tier = t;
+            setChanged();
+        }
+    }
+
+    @net.neoforged.bus.api.SubscribeEvent
+    public static void onDrops(net.neoforged.neoforge.event.level.BlockDropsEvent event) {
+        if (!(event.getBlockEntity() instanceof OreMinerBlockEntity be) || be.tier <= 0) return;
+        for (var e : event.getDrops()) {
+            ItemStack s = e.getItem();
+            if (!s.is(com.snolred.wildplus.registry.ModItems5.ORE_MINER.get())) continue;
+            ItemStack c = s.copy();
+            net.minecraft.world.item.component.CustomData.update(net.minecraft.core.component.DataComponents.CUSTOM_DATA, c, t -> t.putInt(TIER_KEY, be.tier));
+            c.set(net.minecraft.core.component.DataComponents.LORE, new net.minecraft.world.item.component.ItemLore(List.of(
+                    net.minecraft.network.chat.Component.literal("⛏ 강화 " + TIER_NAME[be.tier] + " · "
+                            + (be.tier == 1 ? "다이아 · 에메랄드까지" : "루비 · 사파이어까지")).withStyle(net.minecraft.ChatFormatting.AQUA))));
+            e.setItem(c);
+        }
+    }
+
     @Override
     protected void saveAdditional(ValueOutput out) {
         super.saveAdditional(out);

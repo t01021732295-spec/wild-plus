@@ -34,6 +34,14 @@ public class OreMinerBlock extends MachineBlock {
         return SHAPE;
     }
 
+    /** 강화 단계가 적힌 채굴기를 놓으면 그대로 */
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @org.jspecify.annotations.Nullable net.minecraft.world.entity.LivingEntity placer,
+            net.minecraft.world.item.ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        if (!level.isClientSide() && level.getBlockEntity(pos) instanceof OreMinerBlockEntity be) be.restoreTier(stack);
+    }
+
     /** 작동 중: 드릴 구멍에서 돌가루 · 배기관 연기 */
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource r) {
