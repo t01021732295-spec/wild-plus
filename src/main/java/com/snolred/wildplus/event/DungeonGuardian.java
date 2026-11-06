@@ -184,10 +184,37 @@ public final class DungeonGuardian {
         t.putInt("tier", Math.min(10, tier + 1));
         t.putLong("week", com.snolred.wildplus.content.ContentData.week());
         t.putLongArray("gates", gates.stream().mapToLong(BlockPos::asLong).toArray());
+        // 보물 창고 상자 자리 · 방향 · 종류를 기억 (부서져도 다시 놓고 채우기 위해)
+        List<long[]> cs = vaultChests(level, home);
+        t.putLongArray("chests", cs.stream().mapToLong(c -> c[0]).toArray());
+        t.putIntArray("chestInfo", cs.stream().mapToInt(c -> (int) c[1]).toArray());
         d.section("dungeons").put(String.valueOf(home.asLong()), t);
         d.dirty();
         level.getServer().getPlayerList().broadcastSystemMessage(Component.literal("다음 주(게임 속 7일 뒤)에 이 던전의 수호자가 "
                 + Math.min(10, tier + 1) + "단계로 돌아오고 보물 창고가 다시 채워져요").withStyle(ChatFormatting.GRAY), false);
+    }
+
+    /**
+     * 보물 창고 상자 찾기: 보스 자리에서 가로세로 16칸 · 높이 -4~6 안, 봉인 벽돌에 붙은 상자 (플레이어가 투기장에 둔 상자는 제외).
+     * 구조물이 어느 방향으로 돌아가 생겨도 되게 사방을 본다. 앞면이 보스 쪽을 보면 안쪽 창고(좋은 보물) 상자.
+     * 반환: {자리, 방향(2D 번호) | 창고면 4}
+     */
+    private static List<long[]> vaultChests(ServerLevel level, BlockPos home) {
+        List<long[]> out = new java.util.ArrayList<>();
+        for (BlockPos p : BlockPos.betweenClosed(home.offset(-16, -4, -16), home.offset(16, 6, 16))) {
+            var st = level.getBlockState(p);
+            if (!st.is(net.minecraft.world.level.block.Blocks.CHEST) || !(level.getBlockEntity(p) instanceof net.minecraft.world.level.block.entity.ChestBlockEntity)) continue;
+            boolean bySeal = false;
+            for (net.minecraft.core.Direction d : net.minecraft.core.Direction.Plane.HORIZONTAL)
+                if (level.getBlockState(p.relative(d)).is(com.snolred.wildplus.registry.ModBlocks2.DUNGEON_SEAL.get())) bySeal = true;
+            if (!bySeal) continue;
+            net.minecraft.core.Direction f = st.getValue(net.minecraft.world.level.block.ChestBlock.FACING);
+            double dx = home.getX() - p.getX(), dz = home.getZ() - p.getZ();
+            double along = dx * f.getStepX() + dz * f.getStepZ(), across = Math.abs(dx * f.getStepZ() - dz * f.getStepX());
+            boolean vault = along > across;
+            out.add(new long[]{p.asLong(), f.get2DDataValue() | (vault ? 4 : 0)});
+        }
+        return out;
     }
 
     @SubscribeEvent
@@ -208,15 +235,26 @@ public final class DungeonGuardian {
                 level.setBlock(BlockPos.of(g), com.snolred.wildplus.registry.ModBlocks2.DUNGEON_SEAL.get().defaultBlockState()
                         .setValue(com.snolred.wildplus.block.SealBlock.GATE, true), 3);
             }
-            // 창고 상자 다시 채우기 (보스 자리에서 16칸 안의 상자)
-            for (BlockPos p : BlockPos.betweenClosed(home.offset(-16, -4, -4), home.offset(16, 6, 16))) {
+            // 창고 상자 다시 채우기: 쓰러졌을 때 기억한 자리 (없으면 지금 찾아봄). 부서진 상자는 다시 놓음
+            long[] cp = t.getLongArray("chests").orElse(new long[0]);
+            int[] ci = t.getIntArray("chestInfo").orElse(new int[0]);
+            if (cp.length == 0 || ci.length != cp.length) {
+                List<long[]> found = vaultChests(level, home);
+                cp = found.stream().mapToLong(c -> c[0]).toArray();
+                ci = found.stream().mapToInt(c -> (int) c[1]).toArray();
+            }
+            for (int i = 0; i < cp.length; i++) {
+                BlockPos p = BlockPos.of(cp[i]);
+                net.minecraft.core.Direction f = net.minecraft.core.Direction.from2DDataValue(ci[i] & 3);
+                if (!(level.getBlockEntity(p) instanceof net.minecraft.world.level.block.entity.ChestBlockEntity)) {
+                    level.setBlock(p, net.minecraft.world.level.block.Blocks.CHEST.defaultBlockState()
+                            .setValue(net.minecraft.world.level.block.ChestBlock.FACING, f), 3);
+                }
                 if (level.getBlockEntity(p) instanceof net.minecraft.world.level.block.entity.ChestBlockEntity chest) {
                     chest.clearContent();
-                    var cs = level.getBlockState(p);
-                    boolean vault = cs.hasProperty(net.minecraft.world.level.block.ChestBlock.FACING)
-                            && cs.getValue(net.minecraft.world.level.block.ChestBlock.FACING) == net.minecraft.core.Direction.NORTH;
                     chest.setLootTable(net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE,
-                            com.snolred.wildplus.WildPlus.id(vault ? "chests/dungeon_vault" : "chests/dungeon")), level.getRandom().nextLong());
+                            com.snolred.wildplus.WildPlus.id((ci[i] & 4) != 0 ? "chests/dungeon_vault" : "chests/dungeon")), level.getRandom().nextLong());
+                    chest.setChanged();
                 }
             }
             Mob boss = net.minecraft.world.entity.EntityTypes.WITHER_SKELETON.create(level, net.minecraft.world.entity.EntitySpawnReason.EVENT);
