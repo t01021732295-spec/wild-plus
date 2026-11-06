@@ -23,7 +23,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 /**
  * 흙 영양 (비료): 경작지 칸마다 비료 단계(1 일반 · 2 고급 · 3 황금)와 남은 수확 횟수를 기억한다.
  * <ul>
- *   <li>비료가 든 칸의 작물은 더 빨리 자란다 (2초마다 단계 × 12% 확률로 한 번 더 자람).</li>
+ *   <li>비료가 든 칸의 작물은 더 빨리 자란다 (2초마다 단계 × 6% 확률로 한 단계 자람 · 밝을 때). 밀 기준 일반 약 4분 · 황금 약 1분 반.</li>
  *   <li>다 자란 작물을 거두면 품질(은 · 금 · 무지개)이 붙는다. 비료 단계가 높을수록, 물이 촉촉할수록 잘 붙는다.</li>
  *   <li>비료 한 번에 수확 3번까지. 경작지가 사라지면 지워진다.</li>
  * </ul>
@@ -136,8 +136,11 @@ public final class Soil {
             BlockPos up = fl.above();
             BlockState st = level.getBlockState(up);
             int tier = d.getIntOr(k, 0) / 10;
-            if (st.getBlock() instanceof CropBlock crop && !crop.isMaxAge(st) && level.getRandom().nextFloat() < tier * 0.12F) {
-                st.randomTick(level, up, level.getRandom());
+            // 예전엔 randomTick 을 한 번 더 불렀는데, 그 안에서 빛 · 수분 · 주변 작물로 또 확률을 굴려서 거의 안 자랐음 → 직접 한 단계 올림
+            if (st.getBlock() instanceof CropBlock crop && !crop.isMaxAge(st) && level.getRawBrightness(up, 0) >= 9
+                    && level.getRandom().nextFloat() < tier * 0.06F) {
+                level.setBlock(up, crop.getStateForAge(crop.getAge(st) + 1), 2);
+                level.sendParticles(ParticleTypes.HAPPY_VILLAGER, up.getX() + 0.5, up.getY() + 0.4, up.getZ() + 0.5, 2, 0.25, 0.2, 0.25, 0);
             }
         }
         if (!gone.isEmpty()) {
