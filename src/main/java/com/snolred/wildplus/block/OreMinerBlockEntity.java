@@ -20,7 +20,7 @@ import net.minecraft.world.level.storage.ValueOutput;
  * - 강화 단계: 0단계 석탄~석영 / 1단계(다이아 블록 4개) 다이아 · 에메랄드 / 2단계(루비 블록 8개) 미스릴 · 비취 · 루비 · 사파이어.
  *   채굴기를 그 블록을 들고 우클릭하면 강화된다.
  * 서버와 청크가 켜져 있을 때만 캔다 (꺼져 있던 시간은 계산하지 않음). 결과 칸이 차면 멈춘다.
- * 칸: 0~17 결과. 호퍼로 뺄 수 있다.
+ * 칸: 0~17 결과. 아래 호퍼가 빨아가거나, 아래 · 옆에 붙인 호퍼(아래는 상자도)로 1초에 4개씩 직접 내보낸다.
  */
 public class OreMinerBlockEntity extends MachineBlockEntity {
     public static final int OUTPUT = 18;
@@ -114,6 +114,7 @@ public class OreMinerBlockEntity extends MachineBlockEntity {
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, OreMinerBlockEntity be) {
         if (level.getGameTime() % 20 != 5) return;
+        if (level instanceof net.minecraft.server.level.ServerLevel sl) be.pushOut(sl, 4); // 붙은 호퍼 · 아래 상자로 내보냄
         long now = System.currentTimeMillis();
         if (be.lastMillis == 0) be.lastMillis = now;
         long elapsed = Math.min(MAX_CATCHUP_MS, Math.max(0, now - be.lastMillis));

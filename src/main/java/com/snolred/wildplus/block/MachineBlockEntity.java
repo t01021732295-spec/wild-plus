@@ -34,6 +34,55 @@ public abstract class MachineBlockEntity extends BlockEntity implements WorldlyC
     /** 이 물건을 입력 칸에 넣을 수 있는지 */
     public abstract boolean isValidInput(ItemStack stack);
 
+    /**
+     * 결과 칸 → 붙어 있는 호퍼 · 상자로 직접 내보냄 (1번에 최대 n개). 아래 칸은 어떤 보관함이든, 옆 4칸은 호퍼만.
+     * (호퍼가 위에서 빨아들이는 것에만 기대지 않음: 호퍼를 옆에 붙여도 연결됨)
+     */
+    public void pushOut(ServerLevel level, int n) {
+        for (Direction d : new Direction[]{Direction.DOWN, Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST}) {
+            if (n <= 0) return;
+            BlockEntity be = level.getBlockEntity(worldPosition.relative(d));
+            if (!(be instanceof net.minecraft.world.Container to) || be == this) continue;
+            if (d != Direction.DOWN && !(be instanceof net.minecraft.world.level.block.entity.HopperBlockEntity)) continue;
+            for (int i = inputSlots; i < items.size() && n > 0; i++) {
+                ItemStack here = items.get(i);
+                if (here.isEmpty()) continue;
+                int moved = insert(to, here, Math.min(n, here.getCount()), d.getOpposite());
+                if (moved > 0) {
+                    here.shrink(moved);
+                    n -= moved;
+                    to.setChanged();
+                    setChanged();
+                }
+            }
+        }
+    }
+
+    /** to 에 stack 을 최대 max 개 넣고 넣은 개수를 돌려줌 (stack 은 건드리지 않음) */
+    private static int insert(net.minecraft.world.Container to, ItemStack stack, int max, Direction face) {
+        int left = max;
+        int[] slots = to instanceof WorldlyContainer w ? w.getSlotsForFace(face) : java.util.stream.IntStream.range(0, to.getContainerSize()).toArray();
+        for (int pass = 0; pass < 2 && left > 0; pass++) { // 먼저 같은 물건 칸 채우고, 그다음 빈 칸
+            for (int slot : slots) {
+                if (left <= 0) break;
+                if (!to.canPlaceItem(slot, stack)) continue;
+                if (to instanceof WorldlyContainer w && !w.canPlaceItemThroughFace(slot, stack, face)) continue;
+                ItemStack there = to.getItem(slot);
+                int cap = Math.min(to.getMaxStackSize(), stack.getMaxStackSize());
+                if (pass == 0 && !there.isEmpty() && ItemStack.isSameItemSameComponents(there, stack) && there.getCount() < cap) {
+                    int k = Math.min(left, cap - there.getCount());
+                    there.grow(k);
+                    left -= k;
+                } else if (pass == 1 && there.isEmpty()) {
+                    int k = Math.min(left, cap);
+                    to.setItem(slot, stack.copyWithCount(k));
+                    left -= k;
+                }
+            }
+        }
+        return max - left;
+    }
+
     /** 결과 칸들에 물건을 넣는다. 다 못 넣으면 남은 것을 돌려준다 */
     public ItemStack addOutput(ItemStack stack) {
         ItemStack rest = stack.copy();
