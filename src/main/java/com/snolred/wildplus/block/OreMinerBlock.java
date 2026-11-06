@@ -36,7 +36,7 @@ public class OreMinerBlock extends MachineBlock {
 
     /** 강화 단계가 적힌 채굴기를 놓으면 그대로 */
     @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @org.jspecify.annotations.Nullable net.minecraft.world.entity.LivingEntity placer,
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, net.minecraft.world.entity.@org.jspecify.annotations.Nullable LivingEntity placer,
             net.minecraft.world.item.ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
         if (!level.isClientSide() && level.getBlockEntity(pos) instanceof OreMinerBlockEntity be) be.restoreTier(stack);
