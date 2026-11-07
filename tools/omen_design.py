@@ -34,12 +34,10 @@ def omen_altar():
     for x in (-15, 13):
         out += [Box(x, 14, -7, 2, 18, 2, planks(DARKWOOD)), Box(x - 3, 30, -7.5, 8, 1.2, 1, planks(DARKWOOD)),
                 Box(x - 3, 16, -6.2, 8, 14, 0.4, banner)]
-    # 흉조 병 받침 6 (빛나는 병)
-    bottle = glow((90, 230, 210), OMEN_C)
+    # 흉조 병 받침 6 (바닐라 흉조 병 모양)
     for k, x in enumerate((-11, -7, -3, 1, 5, 9)):
         z = 5 if k % 2 == 0 else 3
-        out += [Box(x, 14, z, 3, 1, 3, C((110, 104, 120))), Box(x + 0.5, 15, z + 0.5, 2, 3, 2, bottle),
-                Box(x + 0.9, 18, z + 0.9, 1.2, 1, 1.2, C((90, 70, 50)))]
+        out += [Box(x - 0.2, 14, z - 0.2, 3.4, 1, 3.4, C((110, 104, 120)))] + omen_bottle(x, 15, z, 1.0)
     # 가운데 수정 (수호 게이지)
     crystal = glow((180, 255, 240), (60, 170, 160))
     out += [Box(-3, 14, -5, 6, 2, 6, C((60, 56, 70))), Box(-2, 16, -4, 4, 9, 4, crystal),
@@ -73,49 +71,48 @@ def prison():
     return out
 
 
-def illager(ox=0, oz=0, robe=(60, 60, 66), trim=(40, 40, 46), extra=()):
-    """우민 체형: 큰 머리 · 긴 코 · 일자 눈썹 · 회색 피부 · 팔짱"""
-    skin = (150, 160, 158)
+def omen_bottle(x, y, z, s=1.0):
+    """바닐라 흉조 병 모양 작은 상자: 청록 유리 테두리 · 보라 물약 · 붉은 눈 · 마개"""
+    def body(f, u, v, W, H):
+        if u in (0, W - 1) or v in (0, H - 1):
+            return (74, 200, 213) if (u + v) % 2 else (58, 120, 127)
+        if f == "front" and v == H // 2 and u in (W // 2 - 1, W // 2):
+            return (255, 0, 72)
+        return (73, 51, 72) if v < H // 2 else (35, 31, 42)
+    b = Box(x, y, z, 3 * s, 3 * s, 3 * s, body)
+    b.res = 2
+    return [b, Box(x + 0.9 * s, y + 3 * s, z + 0.9 * s, 1.2 * s, 0.8 * s, 1.2 * s, C((74, 200, 213))),
+            Box(x + 0.8 * s, y + 3.8 * s, z + 0.8 * s, 1.4 * s, 0.8 * s, 1.4 * s, C((126, 69, 60)))]
 
-    def head(f, u, v, W, H):
-        if f == "top":
-            return (40, 40, 44)
-        if f == "front":
-            if v == 3 and 1 <= u <= 6:
-                return (40, 40, 44)  # 일자 눈썹
-            if v == 4 and u in (2, 5):
-                return (40, 120, 70)
-            return skin
-        return skin if v > 1 else (40, 40, 44)
-    out = [Box(ox - 4, 24, oz - 4, 8, 10, 8, head), Box(ox - 1, 26, oz + 4, 2, 4, 2, C(shade(skin, 0.9)))]
-    out += [Box(ox - 4, 12, oz - 3, 8, 12, 6, lambda f, u, v, W, H: robe if (u + v) % 7 else shade(robe, 1.1)),
-            Box(ox - 4.2, 0, oz - 3.2, 8.4, 12, 6.4, C(trim))]
-    out += [Box(ox - 6, 17, oz + 2.5, 12, 4, 4, C(shade(robe, 0.9)))]  # 팔짱
-    out += list(extra)
-    return out
+
+SKINS = {}  # draw 스크립트가 채움: {"smuggler": PIL 64x64, "mercenary": ...}
 
 
 def smuggler():
-    """우민 밀수꾼: 두건 망토 · 큰 배낭 (흉조 병 매달림) · 등불"""
-    hood = (60, 40, 70)
-    ex = [Box(-4.6, 30, -4.6, 9.2, 5, 9.2, C(hood)), Box(-4.8, 22, -4.8, 9.6, 10, 2, C(hood)),
-          Box(-5, 3, -5, 10, 20, 1.5, lambda f, u, v, W, H: hood if u % 3 else shade(hood, 1.2))]
-    ex += [Box(-5, 10, -9, 10, 14, 5, planks((140, 95, 55))), Box(-5.5, 23, -8.5, 11, 2, 4, C((90, 60, 40)))]
-    bottle = glow((90, 230, 210), OMEN_C)
-    for (x, y) in [(-6.5, 14), (5.5, 16), (-6.5, 19)]:
-        ex.append(Box(x, y, -7, 1.5, 3, 1.5, bottle))
-    ex += [Box(6, 12, 3, 0.6, 6, 0.6, C((60, 60, 60))), Box(5, 9, 2, 3, 3, 3, glow((255, 230, 140), (240, 160, 60)))]
-    return illager(robe=(70, 50, 80), trim=(40, 30, 50), extra=ex)
+    """우민 밀수꾼: 바닐라 변명자 체형 · 보라 두건 망토 · 가죽 조끼 · 큰 배낭 (흉조 병 매달림) · 허리 등불"""
+    from illager_skins import illager_boxes
+    out = illager_boxes(SKINS["smuggler"], arms="crossed", hat=True)
+    leather = planks((120, 84, 50))
+    out += [Box(-4.5, 9, -9, 9, 14, 5.5, leather), Box(-5, 22, -9.5, 10, 2.5, 6.5, C((80, 54, 34))),
+            Box(-3, 12, -9.6, 6, 5, 0.8, C((96, 66, 40))), Box(-1, 14, -10, 2, 1.5, 0.6, C((200, 170, 80)))]
+    out += omen_bottle(-7.6, 13, -8, 0.8) + omen_bottle(5, 15, -8, 0.8) + omen_bottle(-7.6, 18, -6.5, 0.7)
+    out += [Box(5.2, 12, 0.5, 0.5, 4, 0.5, C((50, 50, 54))), Box(4.5, 8, -0.2, 2, 4, 2, glow((255, 230, 140), (230, 150, 50))),
+            Box(4.3, 12, -0.4, 2.4, 0.6, 2.4, C((50, 50, 54))), Box(4.3, 7.6, -0.4, 2.4, 0.6, 2.4, C((50, 50, 54)))]
+    return out
 
 
 def mercenary():
-    """우민 용병 (전향한 변명자): 마을 파란 옷 · 철 어깨 · 도끼 · 마을 문장 방패"""
+    """우민 용병 (전향한 변명자): 바닐라 변명자 체형 · 마을 파란 겉옷 · 철모 · 철 어깨 · 도끼 · 마을 문장 방패"""
+    from illager_skins import illager_boxes
+    out = illager_boxes(SKINS["mercenary"], arms="down", hat=True)
     steel = metal((180, 184, 192))
-    ex = [Box(-5, 20, -3.5, 3, 3, 7, steel), Box(2, 20, -3.5, 3, 3, 7, steel), Box(-4.4, 33, -4.4, 8.8, 2, 8.8, steel)]
-    ex += [Box(6, 8, 5, 1, 14, 1, planks(DARKWOOD)), Box(5, 18, 5.5, 5, 5, 0.8, steel)]
-    crest = lambda f, u, v, W, H: (240, 200, 70) if f == "front" and abs(u - W / 2) < 1.5 and 2 < v < H - 2 else (40, 90, 170)
-    ex += [Box(-9, 10, -2, 1.2, 12, 8, crest)]
-    return illager(robe=(50, 90, 160), trim=(40, 60, 110), extra=ex)
+    out += [Box(-8.6, 21, -2.6, 5.2, 3.2, 5.2, steel), Box(3.4, 21, -2.6, 5.2, 3.2, 5.2, steel)]
+    # 오른손 도끼 (앞으로 뻗음)
+    out += [Box(-6.6, 11, -1, 1.2, 1.2, 14, planks(DARKWOOD)), Box(-7, 10, 10, 2, 5, 3.5, steel), Box(-6.8, 9, 12.5, 1.6, 7, 1, C((230, 232, 238)))]
+    # 왼팔 방패 (마을 문장)
+    crest = lambda f, u, v, W, H: (240, 200, 70) if f == "right" and (abs(u - W / 2) < 1.2 and 2 < v < H - 3 or (v == H - 4 and abs(u - W / 2) < 3)) else (40, 70, 150) if f == "right" else (110, 80, 50)
+    out += [Box(8, 8, -4, 1.2, 13, 9, crest)]
+    return out
 
 
 DESIGNS = {
