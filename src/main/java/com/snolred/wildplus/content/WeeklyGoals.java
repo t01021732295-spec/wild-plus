@@ -77,7 +77,7 @@ public final class WeeklyGoals {
         return out;
     }
 
-    public static final long PRO_COST = 5000;
+    public static final long PRO_COST = com.snolred.wildplus.economy.Prices.x(5000L);
 
     /** 프로 패스 단계 보상 (일반보다 좋음) */
     public static List<ItemStack> proReward(int tier) {

@@ -17,7 +17,7 @@ import net.minecraft.world.level.Level;
 public class BackpackItem extends Item {
     public static final int[] COLS = {10, 10, 10, 14, 16};
     public static final int[] ROWS = {3, 5, 7, 7, 8};
-    public static final long[] UPGRADE_COST = {200, 800, 3000, 30000};
+    public static final long[] UPGRADE_COST = {com.snolred.wildplus.economy.Prices.x(200L), com.snolred.wildplus.economy.Prices.x(800L), com.snolred.wildplus.economy.Prices.x(3000L), com.snolred.wildplus.economy.Prices.x(30000L)};
     public static final int MAX_TIER = 4;
 
     public final int tier;

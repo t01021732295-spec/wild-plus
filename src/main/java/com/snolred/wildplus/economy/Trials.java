@@ -69,7 +69,7 @@ public final class Trials {
     private static final float[] MUL_HARD = {1F, 1.6F, 2.5F, 0.5F, 0.8F, 1.2F};
 
     public static long cost(int target) {
-        return COST[Math.max(0, Math.min(5, target - FIRST))];
+        return Prices.x(COST[Math.max(0, Math.min(5, target - FIRST))]);
     }
 
     public static Item material(int target) {

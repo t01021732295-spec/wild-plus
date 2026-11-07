@@ -75,7 +75,7 @@ public class GachaMachineBlock extends HorizontalDirectionalBlock {
         if (last != null && now - last < 15 && now >= last) {
             return InteractionResult.SUCCESS;
         }
-        int price = WildConfig.GACHA_PRICE.getAsInt();
+        int price = com.snolred.wildplus.economy.Prices.x(WildConfig.GACHA_PRICE.getAsInt());
         if (!Coins.pay(player, price)) {
             sp.sendOverlayMessage(Component.translatable("message.wildplus.gacha.no_money", Coins.describe(price),
                     Coins.describe(Coins.totalValue(player))).withStyle(ChatFormatting.RED));

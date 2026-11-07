@@ -38,7 +38,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 /**
  * 부동산: 청크(16×16, 위아래 전부)를 돈으로 사서 내 땅으로 만든다.
- * - 값: 첫 땅 40만동, 땅이 하나 늘 때마다 +20만동. 되팔면 20만동만 돌려받음 (나머지는 국고로 사라짐)
+ * - 값 (3.7 물가 3배): 첫 땅 120만동, 땅이 하나 늘 때마다 +60만동. 되팔면 60만동만 돌려받음 (나머지는 국고로 사라짐)
  * - 재산세: 청크당 5,000동. 접속 중이면 게임 하루마다(통장→동전), 접속 안 하면 현실 24시간마다(통장에서). 7일치 밀리면 땅이 모두 풀림
  * - 설정(주인의 모든 땅에 적용): 출입(모두 · 친구만 · 주인만), 블록 부수기·설치, 상자·문 등 사용
  * - 폭발(크리퍼 · TNT)로 땅의 블록이 부서지지 않음
@@ -46,7 +46,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 public final class Land {
     private Land() {}
 
-    public static final long BASE_PRICE = 400_000, STEP_PRICE = 200_000, REFUND = 200_000, UPKEEP = 5_000;
+    public static final long BASE_PRICE = com.snolred.wildplus.economy.Prices.x(400_000L), STEP_PRICE = com.snolred.wildplus.economy.Prices.x(200_000L), REFUND = com.snolred.wildplus.economy.Prices.x(200_000L), UPKEEP = com.snolred.wildplus.economy.Prices.x(5_000L);
     public static final int ACCESS_ALL = 0, ACCESS_FRIENDS = 1, ACCESS_OWNER = 2, MAX_DEBT = 7;
     private static final String[] ACCESS_NAME = {"모두 출입 가능", "친구만 출입", "나만 출입"};
 

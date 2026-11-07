@@ -19,7 +19,11 @@ import net.minecraft.world.item.Items;
 public final class RanchShop {
     private RanchShop() {}
 
-    private record Good(String name, String sub, long price, Item item, int count) {}
+    private record Good(String name, String sub, long price, Item item, int count) {
+        Good {
+            price = com.snolred.wildplus.economy.Prices.x(price); // 3.7 물가 인상
+        }
+    }
 
     private static List<Good> goods() {
         List<Good> g = new ArrayList<>();

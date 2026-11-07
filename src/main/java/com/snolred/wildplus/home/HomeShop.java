@@ -19,7 +19,11 @@ import net.minecraft.world.item.ItemStack;
 public final class HomeShop {
     private HomeShop() {}
 
-    private record Good(String name, String sub, long price, Item item) {}
+    private record Good(String name, String sub, long price, Item item) {
+        Good {
+            price = com.snolred.wildplus.economy.Prices.x(price); // 3.7 물가 인상
+        }
+    }
 
     static final Map<String, Long> HOUSE_PRICE = Map.of("cabin", 50_000L, "log_house", 120_000L, "brick_house", 250_000L,
             "hanok", 400_000L, "modern", 600_000L, "mansion", 1_200_000L);

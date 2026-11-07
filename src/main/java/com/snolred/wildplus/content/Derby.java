@@ -140,7 +140,7 @@ public final class Derby {
                 msg(p, String.format("🥕 냠냠! 배고픔 %d%s", h.getIntOr("hunger", 0), food[1] > 0 ? " · 컨디션 +1" : ""), ChatFormatting.GREEN);
             }
             case 1, 2 -> {
-                long cost = id == 1 ? 1_000 : 2_000;
+                long cost = com.snolred.wildplus.economy.Prices.x(id == 1 ? 1_000L : 2_000L);
                 if (h.getIntOr("train_n", 0) >= 3) {
                     msg(p, "오늘 훈련은 다 했어요 (하루 3번)", ChatFormatting.GRAY);
                     return;

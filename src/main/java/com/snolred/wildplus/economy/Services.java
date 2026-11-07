@@ -20,7 +20,11 @@ import net.minecraft.world.entity.player.Player;
 public final class Services {
     private Services() {}
 
-    private record Buff(String name, Holder<MobEffect> effect, int amp, int seconds, long price) {}
+    private record Buff(String name, Holder<MobEffect> effect, int amp, int seconds, long price) {
+        Buff {
+            price = com.snolred.wildplus.economy.Prices.x(price);
+        }
+    }
 
     private static List<Buff> buffs() {
         return List.of(
@@ -50,7 +54,7 @@ public final class Services {
         entries.add(new PickMenu.Entry("체력·배고픔 가득 채우기", "80동"));
         PickMenu.open(player, Component.translatable("container.wildplus.pharmacy"), "고르면 바로 결제돼요 (가방 동전·주머니에서)",
                 "", entries, 0, i -> {
-                    long price = i < list.size() ? list.get(i).price() : 80;
+                    long price = i < list.size() ? list.get(i).price() : com.snolred.wildplus.economy.Prices.x(80L);
                     if (!Coins.pay(player, price)) {
                         player.sendOverlayMessage(Component.translatable("message.wildplus.service.no_money", price).withStyle(ChatFormatting.RED));
                         return;
@@ -68,7 +72,11 @@ public final class Services {
                 }, null, p -> near(p, pos));
     }
 
-    private record Weather(String name, String command, long price) {}
+    private record Weather(String name, String command, long price) {
+        Weather {
+            price = com.snolred.wildplus.economy.Prices.x(price);
+        }
+    }
 
     public static void openWeather(ServerPlayer player, BlockPos pos) {
         List<Weather> list = List.of(

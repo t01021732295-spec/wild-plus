@@ -51,7 +51,7 @@ public final class Realty {
                         DIR[k].equals("중개소 자리") ? "바로 이" : DIR[k], (cx + dx) << 4, ((cx + dx) << 4) + 15, (cz + dz) << 4, ((cz + dz) << 4) + 15);
                 if (o == null) {
                     long price = Land.nextPrice(me);
-                    list.add(new Listing(new PickMenu.Entry("🌿 " + where, String.format("%,d동\n땅 · 매매\n%s\n%d번째 땅이라 이 값 (땅이 늘수록 +20만)", price, detail, mine + 1),
+                    list.add(new Listing(new PickMenu.Entry("🌿 " + where, String.format("%,d동\n땅 · 매매\n%s\n%d번째 땅이라 이 값 (땅이 늘수록 +60만)", price, detail, mine + 1),
                             new ItemStack(Items.GRASS_BLOCK), PickMenu.K_PRIMARY), () -> contract(p, Land.buyAt(p, at), where, price, day)));
                 } else if (o.equals(me)) {
                     list.add(new Listing(new PickMenu.Entry("🏡 " + where, String.format("내 땅\n내 땅 · 내놓기\n%s\n내놓으면 %,d동을 돌려받아요", detail, Land.REFUND),
@@ -64,7 +64,7 @@ public final class Realty {
         }
         // 신축 분양: 집 6종
         ModItems16.HOUSES.forEach((id, it) -> {
-            long price = HomeShop.HOUSE_PRICE.getOrDefault(id, 100_000L);
+            long price = com.snolred.wildplus.economy.Prices.x(HomeShop.HOUSE_PRICE.getOrDefault(id, 100_000L));
             String name = new ItemStack(it.get()).getHoverName().getString().replace(" 상자", "");
             String[] sub = HomeShop.HOUSE_SUB.getOrDefault(id, "").split(" · ", 3);
             list.add(new Listing(new PickMenu.Entry("🏠 " + name, String.format("%,d동\n집 · 신축 분양\n크기: %s\n구성: %s\n특징: %s\n열쇠(집 상자)를 드려요 · 원하는 땅에 웅크리고 우클릭하면 완공\n내 땅에 지으면 남이 못 부숴요",
@@ -76,7 +76,7 @@ public final class Realty {
                 {"🐔 닭장", 40_000L, ModItems17.COOP_KIT.get(), "7×9 · 둥지 상자 2 · 물그릇 · 철망 마당"},
                 {"🏇 경마장", 300_000L, com.snolred.wildplus.registry.ModItems18.RACETRACK_KIT.get(), "37×41 · 흙 타원 주로 · 관중석 · 출발 게이트 · 전광판 · 마구간 4 · 마권 발매기 2"}};
         for (Object[] f : farms) {
-            long price = (Long) f[1];
+            long price = com.snolred.wildplus.economy.Prices.x((Long) f[1]);
             Item item = (Item) f[2];
             String name = ((String) f[0]).substring(3);
             list.add(new Listing(new PickMenu.Entry((String) f[0], String.format("%,d동\n목장 · 분양\n%s\n열쇠(건물 상자)를 드려요\n가축은 가축 상점에서", price, f[3]),

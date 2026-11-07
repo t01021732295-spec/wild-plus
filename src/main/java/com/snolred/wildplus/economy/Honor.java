@@ -36,7 +36,8 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
  * 결제는 은행 통장에서 먼저, 모자라면 가진 동전으로. 쓴 돈은 국고로 들어간다.
  */
 public final class Honor {
-    public static final long[] RANK_COST = {2_000, 8_000, 25_000, 80_000, 250_000, 600_000, 2_000_000, 5_000_000, 9_999_999};
+    public static final long[] RANK_COST = {com.snolred.wildplus.economy.Prices.x(2_000L), com.snolred.wildplus.economy.Prices.x(8_000L), com.snolred.wildplus.economy.Prices.x(25_000L), com.snolred.wildplus.economy.Prices.x(80_000L), com.snolred.wildplus.economy.Prices.x(250_000L), com.snolred.wildplus.economy.Prices.x(600_000L),
+            com.snolred.wildplus.economy.Prices.x(2_000_000L), com.snolred.wildplus.economy.Prices.x(5_000_000L), 19_999_999L};
     public static final String[] RANK_NAME = {"없음", "브론즈", "실버", "골드", "다이아", "레전드", "신화", "초월", "불멸", "절대자"};
     public static final int[] RANK_COLOR = {0xFFAAAAAA, 0xFFCD7F32, 0xFFC0C8D0, 0xFFFFC83D, 0xFF5FE3FF, 0xFFFF5AE0, 0xFFFF3B3B,
             0xFF9D5CFF, 0xFF1ED6B4, 0xFFFF8A00};
@@ -44,11 +45,11 @@ public final class Honor {
     /** 불멸: 죽음을 막는 간격 (게임 하루) */
     public static final long REVIVE_TICKS = 24000L;
     private static final String REVIVE_AT = "wildplus_honor_revive";
-    public static final long FLIGHT_COST = 500, BOSS_COST = 3_000, FESTIVAL_COST = 5_000;
+    public static final long FLIGHT_COST = com.snolred.wildplus.economy.Prices.x(500L), BOSS_COST = com.snolred.wildplus.economy.Prices.x(3_000L), FESTIVAL_COST = com.snolred.wildplus.economy.Prices.x(5_000L);
     public static final long FLIGHT_TICKS = 20L * 60 * 30, FESTIVAL_TICKS = 20L * 60 * 60;
     public static final int BTN_RANK = 0, BTN_FLIGHT = 1, BTN_BOSS = 2, BTN_FESTIVAL = 3;
     // 11차 특별 구매
-    public static final long HEAL_COST = 300, XP_COST = 800, MERCHANT_COST = 1_000, MAP_COST = 1_500, GUARD_COST = 2_000;
+    public static final long HEAL_COST = com.snolred.wildplus.economy.Prices.x(300L), XP_COST = com.snolred.wildplus.economy.Prices.x(800L), MERCHANT_COST = com.snolred.wildplus.economy.Prices.x(1_000L), MAP_COST = com.snolred.wildplus.economy.Prices.x(1_500L), GUARD_COST = com.snolred.wildplus.economy.Prices.x(2_000L);
     public static final int BTN_HEAL = 4, BTN_XP = 5, BTN_MERCHANT = 6, BTN_MAP = 7, BTN_GUARD = 8;
     /** 등급마다 새로 생기는 혜택 (누적) */
     public static final String[] PERK = {"", "1분마다 배고픔 회복", "낙하 피해 절반", "몬스터 처치 시 동전",

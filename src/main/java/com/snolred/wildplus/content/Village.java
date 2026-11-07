@@ -45,16 +45,16 @@ public final class Village {
     public static final String[] EFFECT = {"모두 경험치 +10%", "금 · 토요일 모두 행운", "낚시 등급 확률 +15%", "매일 아침 소식 · 날씨 예보 · /plaza 귀환", "들어가면 재생 · 배고픔 회복"};
     /** [건물][단계 0~2] = {재료1, 개수, 재료2, 개수, 돈} ("#" 로 시작하면 태그) */
     private static final Object[][][] NEED = {
-            {{"minecraft:oak_planks", 256, "minecraft:stone_bricks", 128, 50_000}, {"minecraft:book", 64, "minecraft:glass", 64, 100_000},
-                    {"minecraft:bookshelf", 32, "minecraft:lapis_lazuli", 64, 150_000}},
-            {{"#minecraft:wool", 128, "minecraft:iron_ingot", 64, 80_000}, {"minecraft:gold_ingot", 32, "minecraft:redstone", 128, 150_000},
-                    {"minecraft:diamond", 8, "minecraft:emerald", 32, 250_000}},
-            {{"minecraft:birch_planks", 256, "#minecraft:logs", 64, 60_000}, {"#minecraft:fishes", 128, "minecraft:iron_ingot", 32, 120_000},
-                    {"minecraft:pufferfish", 16, "minecraft:gold_ingot", 16, 180_000}},
-            {{"minecraft:stone", 256, "minecraft:bricks", 128, 50_000}, {"minecraft:copper_ingot", 64, "minecraft:gold_ingot", 16, 100_000},
-                    {"minecraft:clock", 4, "minecraft:redstone_block", 8, 150_000}},
-            {{"minecraft:stone", 192, "minecraft:bamboo", 128, 60_000}, {"minecraft:water_bucket", 16, "minecraft:magma_block", 16, 120_000},
-                    {"wildplus:milk_bottle", 32, "wildplus:ginseng", 4, 200_000}}};
+            {{"minecraft:oak_planks", 256, "minecraft:stone_bricks", 128, com.snolred.wildplus.economy.Prices.x(50_000)}, {"minecraft:book", 64, "minecraft:glass", 64, com.snolred.wildplus.economy.Prices.x(100_000)},
+                    {"minecraft:bookshelf", 32, "minecraft:lapis_lazuli", 64, com.snolred.wildplus.economy.Prices.x(150_000)}},
+            {{"#minecraft:wool", 128, "minecraft:iron_ingot", 64, com.snolred.wildplus.economy.Prices.x(80_000)}, {"minecraft:gold_ingot", 32, "minecraft:redstone", 128, com.snolred.wildplus.economy.Prices.x(150_000)},
+                    {"minecraft:diamond", 8, "minecraft:emerald", 32, com.snolred.wildplus.economy.Prices.x(250_000)}},
+            {{"minecraft:birch_planks", 256, "#minecraft:logs", 64, com.snolred.wildplus.economy.Prices.x(60_000)}, {"#minecraft:fishes", 128, "minecraft:iron_ingot", 32, com.snolred.wildplus.economy.Prices.x(120_000)},
+                    {"minecraft:pufferfish", 16, "minecraft:gold_ingot", 16, com.snolred.wildplus.economy.Prices.x(180_000)}},
+            {{"minecraft:stone", 256, "minecraft:bricks", 128, com.snolred.wildplus.economy.Prices.x(50_000)}, {"minecraft:copper_ingot", 64, "minecraft:gold_ingot", 16, com.snolred.wildplus.economy.Prices.x(100_000)},
+                    {"minecraft:clock", 4, "minecraft:redstone_block", 8, com.snolred.wildplus.economy.Prices.x(150_000)}},
+            {{"minecraft:stone", 192, "minecraft:bamboo", 128, com.snolred.wildplus.economy.Prices.x(60_000)}, {"minecraft:water_bucket", 16, "minecraft:magma_block", 16, com.snolred.wildplus.economy.Prices.x(120_000)},
+                    {"wildplus:milk_bottle", 32, "wildplus:ginseng", 4, com.snolred.wildplus.economy.Prices.x(200_000)}}};
 
     private static CompoundTag root(MinecraftServer s) {
         return ContentData.get(s).section("village");

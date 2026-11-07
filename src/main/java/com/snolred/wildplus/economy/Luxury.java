@@ -31,7 +31,11 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 public final class Luxury {
     private Luxury() {}
 
-    private record Good(String name, String sub, long price, Consumer<ServerPlayer> give) {}
+    private record Good(String name, String sub, long price, Consumer<ServerPlayer> give) {
+        Good {
+            price = com.snolred.wildplus.economy.Prices.x(price); // 3.7 물가 인상
+        }
+    }
 
     public static final String[] AURA = {"불꽃", "눈꽃", "하트", "별빛"};
     /** 앞 3개는 명품관에서 돈으로, 뒤 2개는 투기장 메달 상점에서 */

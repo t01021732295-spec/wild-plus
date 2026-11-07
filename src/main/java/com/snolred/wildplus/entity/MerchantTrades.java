@@ -202,19 +202,19 @@ public final class MerchantTrades {
 
     /** 상인이 물건을 판다: price동 → item n개 (동전 최대 두 종류로 지불) */
     private static void sell(List<MerchantOffer> out, ItemLike item, int count, int price, int maxUses) {
-        List<ItemStack> coins = Coins.toCoins(price);
+        List<ItemStack> coins = Coins.toCoins(com.snolred.wildplus.economy.Prices.x(price)); // 3.7 물가 인상
         ItemCost a = cost(coins.get(0));
         Optional<ItemCost> b = coins.size() > 1 ? Optional.of(cost(coins.get(1))) : Optional.empty();
         out.add(new MerchantOffer(a, b, new ItemStack(item, count), maxUses, 2, 0.0F));
     }
 
     private static void sellStack(List<MerchantOffer> out, ItemStack result, int price) {
-        List<ItemStack> coins = Coins.toCoins(price);
+        List<ItemStack> coins = Coins.toCoins(com.snolred.wildplus.economy.Prices.x(price)); // 3.7 물가 인상
         out.add(new MerchantOffer(cost(coins.get(0)), Optional.empty(), result, 4, 1, 0.0F));
     }
 
     private static void sellStack(List<MerchantOffer> out, ItemStack result, int price, int maxUses) {
-        List<ItemStack> coins = Coins.toCoins(price);
+        List<ItemStack> coins = Coins.toCoins(com.snolred.wildplus.economy.Prices.x(price)); // 3.7 물가 인상
         Optional<ItemCost> b = coins.size() > 1 ? Optional.of(cost(coins.get(1))) : Optional.empty();
         out.add(new MerchantOffer(cost(coins.get(0)), b, result, maxUses, 2, 0.0F));
     }

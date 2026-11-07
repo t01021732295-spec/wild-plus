@@ -62,12 +62,12 @@ public final class Enhance {
         if (level + 1 >= Trials.FIRST) return Trials.cost(level + 1); // X 이상: 고정 가격
         long c = BASE_COST;
         for (int i = vanillaMax; i < level; i++) c *= 3;
-        return c;
+        return Prices.x(c);
     }
 
     /** 수리 비용: 기본 5동 + 닳은 내구도 20당 1동 */
     public static long repairCost(ItemStack stack) {
-        return stack.isDamageableItem() && stack.isDamaged() ? 5 + stack.getDamageValue() / 20 : 0;
+        return stack.isDamageableItem() && stack.isDamaged() ? Prices.x(5L + stack.getDamageValue() / 20) : 0;
     }
 
     public static void apply(ItemStack stack, Option o) {
