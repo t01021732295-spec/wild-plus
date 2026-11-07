@@ -24,6 +24,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -110,14 +111,14 @@ public final class EliteMobs {
 
     public static Group groupOf(Entity e) {
         EntityType<?> t = e.getType();
-        if (t == EntityType.ZOMBIE || t == EntityType.HUSK || t == EntityType.DROWNED || t == EntityType.ZOMBIE_VILLAGER
-                || t == EntityType.ZOMBIFIED_PIGLIN) return Group.ZOMBIE;
-        if (t == EntityType.SKELETON || t == EntityType.STRAY || t == EntityType.BOGGED || t == EntityType.PILLAGER) return Group.ARCHER;
-        if (t == EntityType.CREEPER) return Group.CREEPER;
-        if (t == EntityType.SPIDER || t == EntityType.CAVE_SPIDER) return Group.SPIDER;
-        if (t == EntityType.ENDERMAN) return Group.ENDERMAN;
-        if (t == EntityType.WITCH) return Group.WITCH;
-        if (t == EntityType.VINDICATOR || t == EntityType.WITHER_SKELETON || t == EntityType.PIGLIN_BRUTE) return Group.WARRIOR;
+        if (t == EntityTypes.ZOMBIE || t == EntityTypes.HUSK || t == EntityTypes.DROWNED || t == EntityTypes.ZOMBIE_VILLAGER
+                || t == EntityTypes.ZOMBIFIED_PIGLIN) return Group.ZOMBIE;
+        if (t == EntityTypes.SKELETON || t == EntityTypes.STRAY || t == EntityTypes.BOGGED || t == EntityTypes.PILLAGER) return Group.ARCHER;
+        if (t == EntityTypes.CREEPER) return Group.CREEPER;
+        if (t == EntityTypes.SPIDER || t == EntityTypes.CAVE_SPIDER) return Group.SPIDER;
+        if (t == EntityTypes.ENDERMAN) return Group.ENDERMAN;
+        if (t == EntityTypes.WITCH) return Group.WITCH;
+        if (t == EntityTypes.VINDICATOR || t == EntityTypes.WITHER_SKELETON || t == EntityTypes.PIGLIN_BRUTE) return Group.WARRIOR;
         return Group.ANY;
     }
 
@@ -291,7 +292,7 @@ public final class EliteMobs {
             if (hasAffix(attacker, Affix.WARP) && target instanceof Player p) {
                 for (int k = 0; k < 8; k++) {
                     double x = p.getX() + (p.getRandom().nextDouble() - 0.5) * 12, z = p.getZ() + (p.getRandom().nextDouble() - 0.5) * 12;
-                    if (p.randomTeleport(x, p.getY() + p.getRandom().nextInt(5) - 2, z, true)) break;
+                    if (safeTeleport(p, x, p.getY(), z)) break;
                 }
                 p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 40, 0));
                 level.playSound(null, p.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 1.0F, 0.8F);
@@ -347,11 +348,26 @@ public final class EliteMobs {
             if (hasAffix(target, Affix.BLINK) && event.getSource().getEntity() instanceof Player p && mob.getRandom().nextFloat() < 0.3F) {
                 Vec3 behind = p.position().subtract(p.getLookAngle().multiply(2.0, 0, 2.0));
                 level.sendParticles(ParticleTypes.PORTAL, mob.getX(), mob.getY() + 1, mob.getZ(), 20, 0.3, 0.6, 0.3, 0.2);
-                if (mob.randomTeleport(behind.x, p.getY(), behind.z, true)) {
+                if (safeTeleport(mob, behind.x, p.getY(), behind.z)) {
                     level.playSound(null, mob.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.HOSTILE, 0.8F, 1.3F);
                 }
             }
         }
+    }
+
+    /** 발밑이 단단하고 머리 위가 빈 곳(±3칸)을 찾아 순간이동 */
+    private static boolean safeTeleport(LivingEntity e, double x, double y, double z) {
+        ServerLevel level = (ServerLevel) e.level();
+        BlockPos base = BlockPos.containing(x, y, z);
+        for (int dy = 0; dy <= 6; dy++) {
+            BlockPos p = base.above(dy % 2 == 0 ? dy / 2 : -(dy + 1) / 2);
+            if (level.getBlockState(p.below()).isSolid() && level.getBlockState(p).getCollisionShape(level, p).isEmpty()
+                    && level.getBlockState(p.above()).getCollisionShape(level, p.above()).isEmpty()) {
+                e.teleportTo(p.getX() + 0.5, p.getY(), p.getZ() + 0.5);
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void summon(ServerLevel level, Mob mob, int n) {
@@ -413,7 +429,6 @@ public final class EliteMobs {
             if (d > 3 && d < 12) {
                 Vec3 v = t.position().subtract(mob.position()).normalize();
                 mob.setDeltaMovement(v.x * 1.2, 0.55, v.z * 1.2);
-                mob.hurtMarked = true;
                 level.playSound(null, mob.blockPosition(), SoundEvents.SPIDER_AMBIENT, SoundSource.HOSTILE, 1.0F, 0.7F);
             }
         }
@@ -435,7 +450,6 @@ public final class EliteMobs {
             extra.setOwner(owner);
             extra.setPos(arrow.getX(), arrow.getY(), arrow.getZ());
             extra.setDeltaMovement(r);
-            extra.setBaseDamage(arrow.getBaseDamage());
             extra.pickup = AbstractArrow.Pickup.DISALLOWED;
             extra.getPersistentData().putBoolean(VOLLEY_CHILD, true);
             if (hasAffix(owner, Affix.BURNING)) extra.igniteForSeconds(100);
