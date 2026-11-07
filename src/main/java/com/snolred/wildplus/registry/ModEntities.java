@@ -45,6 +45,12 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.SeatEntity>> SEAT = ENTITIES.registerEntityType("seat",
             com.snolred.wildplus.entity.SeatEntity::new, MobCategory.MISC, b -> b.sized(0.01F, 0.01F).noSummon().clientTrackingRange(8));
 
+    // ───────── 3.8 흉조: 우민 용병 · 우민 밀수꾼 ─────────
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.MercenaryEntity>> MERCENARY = ENTITIES.registerEntityType("illager_mercenary",
+            com.snolred.wildplus.entity.MercenaryEntity::new, MobCategory.MISC, b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.SmugglerEntity>> SMUGGLER = ENTITIES.registerEntityType("illager_smuggler",
+            com.snolred.wildplus.entity.SmugglerEntity::new, MobCategory.MISC, b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
+
     // ───────── 보스 (레이드 3 · 하늘의 탑 6) ─────────
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.BossMobs.Titan>> TITAN_BOSS = ENTITIES.registerEntityType("titan_boss",
             com.snolred.wildplus.entity.BossMobs.Titan::new, MobCategory.MONSTER, b -> b.sized(1.95F, 2.2F).fireImmune().clientTrackingRange(10));
@@ -82,6 +88,8 @@ public final class ModEntities {
         event.put(FISHER_MERCHANT.get(), merchant);
         event.put(BANKER_MERCHANT.get(), merchant);
         event.put(BANDIT.get(), BanditEntity.createAttributes().build());
+        event.put(MERCENARY.get(), com.snolred.wildplus.entity.MercenaryEntity.createAttributes().build());
+        event.put(SMUGGLER.get(), com.snolred.wildplus.entity.SmugglerEntity.createAttributes().build());
         event.put(GOLDEN_SLIME.get(), Monster.createMonsterAttributes().build());
         event.put(CUSTOMER.get(), Mob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.32).add(Attributes.MAX_HEALTH, 20.0)
                 .add(Attributes.FOLLOW_RANGE, 32.0).build());

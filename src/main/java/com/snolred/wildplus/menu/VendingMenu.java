@@ -182,12 +182,19 @@ public class VendingMenu extends AbstractContainerMenu {
         return false;
     }
 
+    /** 3.8: 마을(무한 재고) 자판기는 마을의 영웅 · 흉조 제단 할인 */
+    private int shownPrice(int slot) {
+        int base = machine.price(slot);
+        if (!machine.infinite()) return base;
+        return (int) com.snolred.wildplus.omen.Discounts.apply(base, com.snolred.wildplus.omen.Discounts.pct(player, machine.getBlockPos()));
+    }
+
     private boolean buy(int slot) {
         if (machine.items().getItem(slot).isEmpty()) {
             playSound(SoundEvents.VILLAGER_NO, 1.4F);
             return false;
         }
-        int price = machine.price(slot);
+        int price = shownPrice(slot);
         if (credit < price) {
             playSound(SoundEvents.VILLAGER_NO, 1.4F);
             return false;
@@ -320,7 +327,7 @@ public class VendingMenu extends AbstractContainerMenu {
     private final class ServerData implements ContainerData {
         @Override
         public int get(int i) {
-            if (i < 9) return machine.price(i);
+            if (i < 9) return shownPrice(i);
             return switch (i) {
                 case D_CREDIT_LO -> (int) (credit % 10000);
                 case D_CREDIT_HI -> (int) Math.min(credit / 10000, 30000);

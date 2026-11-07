@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "III",
+    "ILI",
+    "SSS"
+  ],
+  "key": {
+    "I": "minecraft:iron_bars",
+    "L": "minecraft:lantern",
+    "S": "minecraft:stone_bricks"
+  },
+  "result": {
+    "id": "wildplus:illager_prison",
+    "count": 1
+  }
+}

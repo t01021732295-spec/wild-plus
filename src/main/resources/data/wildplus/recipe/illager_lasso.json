@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "SLS",
+    " S "
+  ],
+  "key": {
+    "S": "minecraft:string",
+    "L": "minecraft:lead"
+  },
+  "result": {
+    "id": "wildplus:illager_lasso",
+    "count": 1
+  }
+}

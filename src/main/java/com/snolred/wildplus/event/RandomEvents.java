@@ -95,7 +95,13 @@ public final class RandomEvents {
         HERO_TIME(4800, BossEvent.BossBarColor.RED),
         DOUBLE_DROPS(6000, BossEvent.BossBarColor.GREEN),
         FULL_MOON(6000, BossEvent.BossBarColor.PURPLE),
-        VAMPIRE_NIGHT(4800, BossEvent.BossBarColor.RED);
+        VAMPIRE_NIGHT(4800, BossEvent.BossBarColor.RED),
+        // 3.8 후반 이벤트 (누군가 통장 300만동 이상일 때부터 40% 확률로)
+        OMEN_STORM(6000, BossEvent.BossBarColor.PURPLE),
+        ILLAGER_ARMADA(6000, BossEvent.BossBarColor.RED),
+        STARFALL(6000, BossEvent.BossBarColor.PURPLE),
+        GOLDEN_VAULT(6000, BossEvent.BossBarColor.YELLOW),
+        MARKET_BOOM(4800, BossEvent.BossBarColor.GREEN);
 
         public final int duration;
         public final BossEvent.BossBarColor color;
@@ -108,6 +114,10 @@ public final class RandomEvents {
         public String key() {
             return "event.wildplus." + name().toLowerCase(Locale.ROOT);
         }
+
+        public boolean late() {
+            return ordinal() >= OMEN_STORM.ordinal();
+        }
     }
 
     private static final String TAG = "wildplus_event_mob", WANTED_TAG = "wildplus_wanted", GOBLIN_TAG = "wildplus_treasure_rabbit";
@@ -119,9 +129,23 @@ public final class RandomEvents {
             Type.DOUBLE_DROPS, Type.FULL_MOON, Type.VAMPIRE_NIGHT, Type.ANIMAL_MIGRATION, Type.MERCHANT_CARAVAN};
 
     public static Type random(RandomSource rnd) {
-        Type[] all = Type.values();
-        return all[rnd.nextInt(all.length)];
+        List<Type> early = new ArrayList<>();
+        for (Type t : Type.values()) if (!t.late()) early.add(t);
+        return early.get(rnd.nextInt(early.size()));
     }
+
+    /** 자동 이벤트 고르기: 후반(통장 300만동 이상인 사람이 있음)이면 40% 확률로 후반 이벤트 */
+    private static Type pick(MinecraftServer server, RandomSource rnd) {
+        if (com.snolred.wildplus.omen.Omen.late(server) && rnd.nextFloat() < 0.4F) {
+            List<Type> late = new ArrayList<>();
+            for (Type t : Type.values()) if (t.late()) late.add(t);
+            return late.get(rnd.nextInt(late.size()));
+        }
+        return random(rnd);
+    }
+
+    private static final String ARMADA_TAG = "wildplus_armada";
+    private static final List<UUID> ARMADA = new ArrayList<>();
     private static Type active;
     private static long endsAt, nextAt = -1;
     private static ServerBossEvent bar;
@@ -160,7 +184,7 @@ public final class RandomEvents {
             case BANK_BONUS -> {
                 WildData data = WildData.get(server);
                 for (var e : new ArrayList<>(data.bank.entrySet())) {
-                    long bonus = Math.min(300, e.getValue() * 2 / 100);
+                    long bonus = Math.min(30_000, e.getValue() * 2 / 100); // 3.8: 상한 300 → 3만동
                     if (bonus <= 0) continue;
                     data.addBalance(e.getKey(), bonus);
                     ServerPlayer p = server.getPlayerList().getPlayer(e.getKey());
@@ -221,6 +245,82 @@ public final class RandomEvents {
                             m.getBlockX(), m.getBlockZ()).withStyle(ChatFormatting.RED), false);
                 }
             }
+            case OMEN_STORM -> {
+                for (ServerPlayer p : players) {
+                    if (p.hasEffect(MobEffects.BAD_OMEN) || p.hasEffect(MobEffects.RAID_OMEN)) continue;
+                    p.addEffect(new MobEffectInstance(MobEffects.BAD_OMEN, 120000, rnd.nextInt(3)));
+                }
+                server.getPlayerList().broadcastSystemMessage(Component.literal("☠ 모두에게 흉조가 걸렸어요! 이벤트 동안 흉조 습격 보상 ×1.5 · 밀수꾼 3배")
+                        .withStyle(ChatFormatting.DARK_PURPLE), false);
+            }
+            case ILLAGER_ARMADA -> {
+                if (players.isEmpty()) break;
+                ServerPlayer p = players.get(rnd.nextInt(players.size()));
+                BlockPos at = surface(level, p, 30, 45);
+                if (at == null) break;
+                ARMADA.clear();
+                List<EntityType<? extends Mob>> kinds = new ArrayList<>();
+                for (int i = 0; i < 7; i++) kinds.add(EntityTypes.PILLAGER);
+                for (int i = 0; i < 5; i++) kinds.add(EntityTypes.VINDICATOR);
+                kinds.add(EntityTypes.EVOKER);
+                kinds.add(EntityTypes.EVOKER);
+                kinds.add(EntityTypes.WITCH);
+                kinds.add(EntityTypes.RAVAGER);
+                for (EntityType<? extends Mob> k : kinds) {
+                    Mob m = spawnAt(level, at, k, 6);
+                    if (m == null) continue;
+                    m.getPersistentData().putBoolean(ARMADA_TAG, true);
+                    m.addEffect(new MobEffectInstance(MobEffects.GLOWING, type.duration, 0, false, false));
+                    if (rnd.nextFloat() < 0.4F && k != EntityTypes.RAVAGER) EliteMobs.makeElite(m, 1);
+                    m.setTarget(p);
+                    ARMADA.add(m.getUUID());
+                }
+                target = at;
+                server.getPlayerList().broadcastSystemMessage(Component.literal(String.format("⚔ 우민 대군 %d명이 %d, %d 에 나타났어요! 처치마다 3,000동 · 전멸시키면 모두 10만동 + 흉조 병",
+                        ARMADA.size(), at.getX(), at.getZ())).withStyle(ChatFormatting.RED, ChatFormatting.BOLD), false);
+            }
+            case STARFALL -> {
+                if (players.isEmpty()) break;
+                ServerPlayer p = players.get(rnd.nextInt(players.size()));
+                BlockPos at = surface(level, p, 50, 90);
+                if (at == null) break;
+                meteor(level, at, rnd);
+                target = at;
+                for (int i = 0; i < 4; i++) {
+                    Mob m = spawnAt(level, at, i % 2 == 0 ? EntityTypes.BLAZE : EntityTypes.WITHER_SKELETON, 5);
+                    if (m != null) EliteMobs.makeElite(m, 1 + rnd.nextInt(2));
+                }
+                server.getPlayerList().broadcastSystemMessage(Component.literal(String.format("☄ 거대한 별똥별이 %d, %d, %d 에 떨어졌어요! 루비 · 사파이어 · 미스릴 광석 (정예 수호자 주의)",
+                        at.getX(), at.getY(), at.getZ())).withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD), false);
+            }
+            case GOLDEN_VAULT -> {
+                if (players.isEmpty()) break;
+                ServerPlayer p = players.get(rnd.nextInt(players.size()));
+                BlockPos at = surface(level, p, 40, 70);
+                if (at == null) break;
+                level.setBlock(at, Blocks.CHEST.defaultBlockState(), 3);
+                level.setBlock(at.below(), Blocks.GOLD_BLOCK.defaultBlockState(), 3);
+                if (level.getBlockEntity(at) instanceof ChestBlockEntity chest) {
+                    ItemStack[] loot = {new ItemStack(ModItems3.DIAMOND_COIN.get(), 30 + rnd.nextInt(31)),
+                            new ItemStack(com.snolred.wildplus.registry.ModItems13.EMERALD_COIN.get(), 2 + rnd.nextInt(4)),
+                            new ItemStack(Items.GOLD_BLOCK, 2 + rnd.nextInt(4)), new ItemStack(Items.DIAMOND, 3 + rnd.nextInt(5)),
+                            rnd.nextFloat() < 0.4F ? new ItemStack(com.snolred.wildplus.registry.ModItems19.LIFE_ESSENCE.get()) : new ItemStack(Items.EMERALD, 16)};
+                    for (int i = 0; i < loot.length; i++) chest.setItem(i * 5 + rnd.nextInt(4), loot[i]);
+                }
+                for (int i = 0; i < 6; i++) {
+                    Mob m = spawnAt(level, at, rnd.nextBoolean() ? EntityTypes.ZOMBIE : EntityTypes.HUSK, 5);
+                    if (m == null) continue;
+                    m.setItemSlot(net.minecraft.world.entity.EquipmentSlot.HEAD, new ItemStack(Items.GOLDEN_HELMET));
+                    m.setItemSlot(net.minecraft.world.entity.EquipmentSlot.CHEST, new ItemStack(Items.GOLDEN_CHESTPLATE));
+                    m.setItemSlot(net.minecraft.world.entity.EquipmentSlot.MAINHAND, new ItemStack(Items.GOLDEN_SWORD));
+                    EliteMobs.makeElite(m, 1);
+                }
+                target = at;
+                server.getPlayerList().broadcastSystemMessage(Component.literal(String.format("💰 황금 금고가 %d, %d, %d 에 나타났어요! (다이아 동전 30~60 · 에메랄드 동전 · 황금 정예 6마리가 지킴)",
+                        at.getX(), at.getY(), at.getZ())).withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD), false);
+            }
+            case MARKET_BOOM -> server.getPlayerList().broadcastSystemMessage(Component.literal("📈 시장 호황! 이벤트 동안 출하 상자가 20초마다 바로 팔리고 값은 1.5배")
+                    .withStyle(ChatFormatting.GREEN), false);
             default -> {}
         }
         WildPlus.LOGGER.info("Random event started: {}", type);
@@ -252,8 +352,7 @@ public final class RandomEvents {
         if (active == null) {
             if (now >= nextAt && WildConfig.EVENTS_ENABLED.getAsBoolean() && !server.getPlayerList().getPlayers().isEmpty()) {
                 nextAt = now + interval(level.getRandom());
-                Type[] all = Type.values();
-                start(server, all[level.getRandom().nextInt(all.length)]);
+                start(server, pick(server, level.getRandom()));
             }
             return;
         }
@@ -345,7 +444,10 @@ public final class RandomEvents {
                 if (now % 60 != 0) break;
                 for (ServerPlayer p : players) {
                     for (int i = 0; i < 3; i++) {
-                        ItemStack coin = new ItemStack(rnd.nextFloat() < 0.15F ? ModItems3.SILVER_COIN.get() : ModItems3.COPPER_COIN.get(), 1 + rnd.nextInt(3));
+                        float f = rnd.nextFloat(); // 3.8: 동화 · 은화 → 은화 · 금화 · 가끔 다이아 동전
+                        ItemStack coin = f < 0.05F ? new ItemStack(ModItems3.DIAMOND_COIN.get())
+                                : f < 0.35F ? new ItemStack(ModItems3.GOLD_COIN.get(), 1 + rnd.nextInt(2))
+                                : new ItemStack(ModItems3.SILVER_COIN.get(), 2 + rnd.nextInt(4));
                         BlockPos pos = p.blockPosition().offset(rnd.nextInt(13) - 6, 12, rnd.nextInt(13) - 6);
                         drop(level, pos, coin);
                     }
@@ -436,6 +538,30 @@ public final class RandomEvents {
                     }
                 }
             }
+            case ILLAGER_ARMADA -> {
+                if (now % 20 != 0 || ARMADA.isEmpty()) break;
+                ARMADA.removeIf(u -> {
+                    Entity e = level.getEntity(u);
+                    return e == null || !e.isAlive();
+                });
+                if (bar != null) bar.setName(Component.translatable(active.key()).append(" · 남은 우민 " + ARMADA.size()).withStyle(ChatFormatting.BOLD));
+                if (ARMADA.isEmpty()) {
+                    WildData wd = WildData.get(server);
+                    for (ServerPlayer p : players) {
+                        wd.addBalance(p.getUUID(), 100_000);
+                        com.snolred.wildplus.omen.Omen.give(p, com.snolred.wildplus.omen.Omen.withAmp(new ItemStack(Items.OMINOUS_BOTTLE, 2), rnd.nextInt(3)));
+                        p.sendSystemMessage(Component.literal("🏆 우민 대군 전멸! 100,000동 통장 입금 + 흉조 병 2").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
+                    }
+                    wd.setDirty();
+                    stop(server);
+                }
+            }
+            case STARFALL, GOLDEN_VAULT -> {
+                if (target != null && now % 20 == 0) {
+                    level.sendParticles(active == Type.STARFALL ? ParticleTypes.END_ROD : ParticleTypes.WAX_ON, target.getX() + 0.5, target.getY() + 2,
+                            target.getZ() + 0.5, 6, 0.4, 2, 0.4, 0.02);
+                }
+            }
             case SUPPLY_DROP -> {
                 if (target != null && now % 20 == 0) {
                     level.sendParticles(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, target.getX() + 0.5, target.getY() + 1.2, target.getZ() + 0.5, 2, 0.1, 0.5, 0.1, 0.01);
@@ -457,8 +583,8 @@ public final class RandomEvents {
         if (!(event.getSource().getEntity() instanceof Player killer) || dead instanceof Player) return;
         if (dead.getPersistentData().getBooleanOr(GOBLIN_TAG, false)) {
             RandomSource r = killer.getRandom();
-            ItemStack[] loot = {new ItemStack(ModItems3.GOLD_COIN.get(), 1 + r.nextInt(2)), new ItemStack(Items.DIAMOND, 1 + r.nextInt(3)),
-                    new ItemStack(Items.EMERALD, 2 + r.nextInt(4)), new ItemStack(ModItems3.SILVER_COIN.get(), 3 + r.nextInt(6))};
+            ItemStack[] loot = {new ItemStack(ModItems3.GOLD_COIN.get(), 5 + r.nextInt(6)), new ItemStack(Items.DIAMOND, 1 + r.nextInt(3)),
+                    new ItemStack(Items.EMERALD, 2 + r.nextInt(4)), new ItemStack(ModItems3.DIAMOND_COIN.get(), 3 + r.nextInt(4))};
             for (ItemStack s : loot) event.getDrops().add(new ItemEntity(dead.level(), dead.getX(), dead.getY() + 0.5, dead.getZ(), s));
             if (dead.level() instanceof ServerLevel sl) {
                 sl.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, dead.getX(), dead.getY() + 0.5, dead.getZ(), 30, 0.4, 0.4, 0.4, 0.3);
@@ -472,11 +598,11 @@ public final class RandomEvents {
         if (!(dead instanceof Monster m)) return;
         Player p = killer;
         if (active == Type.FULL_MOON && p.getRandom().nextFloat() < 0.25F) {
-            event.getDrops().add(new ItemEntity(m.level(), m.getX(), m.getY() + 0.5, m.getZ(), new ItemStack(ModItems3.SILVER_COIN.get())));
+            event.getDrops().add(new ItemEntity(m.level(), m.getX(), m.getY() + 0.5, m.getZ(), new ItemStack(ModItems3.GOLD_COIN.get())));
         }
         if (active == Type.GOLD_RUSH) {
             ItemEntity it = new ItemEntity(m.level(), m.getX(), m.getY() + 0.5, m.getZ(),
-                    new ItemStack(ModItems3.COPPER_COIN.get(), 3 + p.getRandom().nextInt(8)));
+                    p.getRandom().nextFloat() < 0.1F ? new ItemStack(ModItems3.GOLD_COIN.get()) : new ItemStack(ModItems3.SILVER_COIN.get(), 2 + p.getRandom().nextInt(5)));
             event.getDrops().add(it);
         }
     }
@@ -502,11 +628,19 @@ public final class RandomEvents {
     public static void onDeath(LivingDeathEvent event) {
         LivingEntity e = event.getEntity();
         if (e.getPersistentData().getBooleanOr(WANTED_TAG, false) && event.getSource().getEntity() instanceof ServerPlayer killer) {
-            Coins.give(killer, 500);
+            Coins.give(killer, 30_000); // 3.8: 500 → 3만동
             killer.level().getServer().getPlayerList().broadcastSystemMessage(Component.translatable("message.wildplus.event.wanted_done",
                     killer.getName()).withStyle(ChatFormatting.GOLD), false);
             if (active == Type.WANTED) stop(killer.level().getServer());
         }
+    }
+
+    /** 3.8 우민 대군: 처치마다 3,000동 */
+    @SubscribeEvent
+    public static void onArmadaKill(LivingDeathEvent event) {
+        if (!event.getEntity().getPersistentData().getBooleanOr(ARMADA_TAG, false) || !(event.getSource().getEntity() instanceof ServerPlayer p)) return;
+        WildData.get(p.level().getServer()).addBalance(p.getUUID(), 3_000);
+        p.sendOverlayMessage(Component.literal("⚔ 우민 대군 처치 +3,000동").withStyle(ChatFormatting.GOLD));
     }
 
     /** 흡혈의 밤: 플레이어가 준 근접 피해의 25% 회복 */
@@ -594,6 +728,41 @@ public final class RandomEvents {
         }
         level.addFreshEntityWithPassengers(m);
         return m;
+    }
+
+    /** 한 자리 주변에 몹 (이벤트가 끝나면 사라짐) */
+    private static Mob spawnAt(ServerLevel level, BlockPos center, EntityType<? extends Mob> type, int spread) {
+        RandomSource rnd = level.getRandom();
+        BlockPos pos = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                center.offset(rnd.nextInt(spread * 2 + 1) - spread, 0, rnd.nextInt(spread * 2 + 1) - spread));
+        Mob m = type.create(level, EntitySpawnReason.EVENT);
+        if (m == null) return null;
+        m.snapTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, rnd.nextFloat() * 360F, 0F);
+        m.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), EntitySpawnReason.EVENT, null);
+        if (m instanceof net.minecraft.world.entity.raid.Raider r) r.setCanJoinRaid(false);
+        m.getPersistentData().putBoolean(TAG, true);
+        SPAWNED.add(m.getUUID());
+        level.addFreshEntityWithPassengers(m);
+        return m;
+    }
+
+    /** 별똥별: 땅 위에 불탄 운석 덩어리 (광석이 박힘) */
+    private static void meteor(ServerLevel level, BlockPos at, RandomSource rnd) {
+        level.explode(null, at.getX() + 0.5, at.getY() + 1, at.getZ() + 0.5, 3.0F, Level.ExplosionInteraction.NONE);
+        BlockState[] ores = {com.snolred.wildplus.registry.ModBlocks2.RUBY_ORE.get().defaultBlockState(),
+                com.snolred.wildplus.registry.ModBlocks2.SAPPHIRE_ORE.get().defaultBlockState(),
+                com.snolred.wildplus.registry.ModBlocks.MYTHRIL_ORE.get().defaultBlockState(), Blocks.DIAMOND_ORE.defaultBlockState(),
+                Blocks.EMERALD_ORE.defaultBlockState(), Blocks.GOLD_ORE.defaultBlockState()};
+        for (BlockPos p : BlockPos.betweenClosed(at.offset(-2, 0, -2), at.offset(2, 3, 2))) {
+            double d = p.distSqr(at.above(1));
+            if (d > 6.5 || !level.getBlockState(p).canBeReplaced()) continue;
+            float f = rnd.nextFloat();
+            BlockState s = f < 0.30F ? ores[rnd.nextInt(ores.length)] : f < 0.55F ? Blocks.MAGMA_BLOCK.defaultBlockState()
+                    : f < 0.8F ? Blocks.BLACKSTONE.defaultBlockState() : Blocks.OBSIDIAN.defaultBlockState();
+            level.setBlock(p.immutable(), s, 3);
+        }
+        level.sendParticles(ParticleTypes.LAVA, at.getX() + 0.5, at.getY() + 2, at.getZ() + 0.5, 40, 1.5, 1, 1.5, 0.1);
+        level.sendParticles(ParticleTypes.LARGE_SMOKE, at.getX() + 0.5, at.getY() + 3, at.getZ() + 0.5, 60, 1.5, 2, 1.5, 0.05);
     }
 
     private static void drop(ServerLevel level, BlockPos pos, ItemStack stack) {

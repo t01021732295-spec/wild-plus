@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/illager_prison"
+    },
+    "facing=east": {
+      "model": "wildplus:block/illager_prison",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/illager_prison",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/illager_prison",
+      "y": 270
+    }
+  }
+}

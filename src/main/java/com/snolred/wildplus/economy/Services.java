@@ -50,11 +50,13 @@ public final class Services {
     public static void openPharmacy(ServerPlayer player, BlockPos pos) {
         List<Buff> list = buffs();
         List<PickMenu.Entry> entries = new ArrayList<>();
-        for (Buff b : list) entries.add(new PickMenu.Entry(b.name(), String.format("%,d동", b.price())));
-        entries.add(new PickMenu.Entry("체력·배고픔 가득 채우기", "80동"));
-        PickMenu.open(player, Component.translatable("container.wildplus.pharmacy"), "고르면 바로 결제돼요 (가방 동전·주머니에서)",
+        int off = com.snolred.wildplus.omen.Discounts.pct(player, pos);
+        for (Buff b : list) entries.add(new PickMenu.Entry(b.name(), String.format("%,d동", com.snolred.wildplus.omen.Discounts.apply(b.price(), off))));
+        entries.add(new PickMenu.Entry("체력·배고픔 가득 채우기", String.format("%,d동", com.snolred.wildplus.omen.Discounts.apply(com.snolred.wildplus.economy.Prices.x(80L), off))));
+        PickMenu.open(player, Component.translatable("container.wildplus.pharmacy"), "고르면 바로 결제돼요 (가방 동전·주머니에서)"
+                        + com.snolred.wildplus.omen.Discounts.tag(off),
                 "", entries, 0, i -> {
-                    long price = i < list.size() ? list.get(i).price() : com.snolred.wildplus.economy.Prices.x(80L);
+                    long price = com.snolred.wildplus.omen.Discounts.apply(i < list.size() ? list.get(i).price() : com.snolred.wildplus.economy.Prices.x(80L), off);
                     if (!Coins.pay(player, price)) {
                         player.sendOverlayMessage(Component.translatable("message.wildplus.service.no_money", price).withStyle(ChatFormatting.RED));
                         return;
@@ -86,18 +88,20 @@ public final class Services {
                 new Weather("아침으로 (오전 7시)", "time set day", 300),
                 new Weather("밤으로", "time set night", 300));
         List<PickMenu.Entry> entries = new ArrayList<>();
-        for (Weather w : list) entries.add(new PickMenu.Entry(w.name(), String.format("%,d동", w.price())));
-        PickMenu.open(player, Component.translatable("container.wildplus.weather_station"), "날씨·시간은 모두에게 적용돼요",
+        int off = com.snolred.wildplus.omen.Discounts.pct(player, pos);
+        for (Weather w : list) entries.add(new PickMenu.Entry(w.name(), String.format("%,d동", com.snolred.wildplus.omen.Discounts.apply(w.price(), off))));
+        PickMenu.open(player, Component.translatable("container.wildplus.weather_station"), "날씨·시간은 모두에게 적용돼요" + com.snolred.wildplus.omen.Discounts.tag(off),
                 "", entries, 0, i -> {
                     Weather w = list.get(i);
-                    if (!Coins.pay(player, w.price())) {
-                        player.sendOverlayMessage(Component.translatable("message.wildplus.service.no_money", w.price()).withStyle(ChatFormatting.RED));
+                    long wp = com.snolred.wildplus.omen.Discounts.apply(w.price(), off);
+                    if (!Coins.pay(player, wp)) {
+                        player.sendOverlayMessage(Component.translatable("message.wildplus.service.no_money", wp).withStyle(ChatFormatting.RED));
                         return;
                     }
                     MinecraftServer server = player.level().getServer();
                     server.getCommands().performPrefixedCommand(server.createCommandSourceStack().withSuppressedOutput(), w.command());
                     server.getPlayerList().broadcastSystemMessage(Component.translatable("message.wildplus.service.weather",
-                            player.getName(), w.name(), w.price()).withStyle(ChatFormatting.AQUA), false);
+                            player.getName(), w.name(), wp).withStyle(ChatFormatting.AQUA), false);
                     player.closeContainer();
                 }, null, p -> near(p, pos));
     }

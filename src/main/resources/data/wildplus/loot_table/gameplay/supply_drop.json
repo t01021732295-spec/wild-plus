@@ -144,6 +144,25 @@
           }
         }
       ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:diamond_coin",
+          "weight": 1,
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 5,
+              "max": 15
+            }
+          }
+        }
+      ],
+      "bonus_rolls": 0
     }
   ],
   "random_sequence": "wildplus:gameplay/supply_drop"

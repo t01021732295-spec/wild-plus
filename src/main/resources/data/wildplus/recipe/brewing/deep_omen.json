@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:brewing",
+  "input": {
+    "item": "minecraft:ominous_bottle"
+  },
+  "reagent": {
+    "item": "minecraft:prismarine_crystals"
+  },
+  "output": {
+    "id": "wildplus:deep_omen"
+  }
+}

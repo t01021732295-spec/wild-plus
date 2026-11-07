@@ -146,11 +146,18 @@ public class ShippingBinBlockEntity extends BlockEntity implements net.minecraft
         if (day > be.lastDay) {
             be.lastDay = day;
             be.sell(server);
+        } else if (com.snolred.wildplus.event.RandomEvents.isActive(com.snolred.wildplus.event.RandomEvents.Type.MARKET_BOOM)
+                && level.getGameTime() % 400 == 7) {
+            be.sell(server, 1.5); // 3.8 시장 호황: 20초마다 바로 1.5배로
         }
     }
 
     /** 지금 바로 판매 (아침 정산 · 시험 명령어) */
     public void sell(ServerLevel server) {
+        sell(server, 1.0);
+    }
+
+    public void sell(ServerLevel server, double boost) {
         long centi = remainderCenti;
         int sold = 0;
         for (int i = 0; i < SIZE; i++) {
@@ -168,6 +175,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements net.minecraft
             if (hr >= 7) centi += (centi - remainderCenti) / 5;
             else if (hr >= 6) centi += (centi - remainderCenti) / 10;
         }
+        if (boost > 1.0 && sold > 0) centi += (long) ((centi - remainderCenti) * (boost - 1.0));
         long coins = centi / 100;
         remainderCenti = centi % 100;
         setChanged();

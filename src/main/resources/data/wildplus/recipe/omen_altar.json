@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BCB",
+    "GEG",
+    "DDD"
+  ],
+  "key": {
+    "B": "minecraft:ominous_bottle",
+    "C": "minecraft:crying_obsidian",
+    "G": "minecraft:gold_block",
+    "E": "minecraft:emerald_block",
+    "D": "minecraft:polished_deepslate"
+  },
+  "result": {
+    "id": "wildplus:omen_altar",
+    "count": 1
+  }
+}

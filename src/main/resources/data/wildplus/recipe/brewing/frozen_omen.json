@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:brewing",
+  "input": {
+    "item": "minecraft:ominous_bottle"
+  },
+  "reagent": {
+    "item": "minecraft:blue_ice"
+  },
+  "output": {
+    "id": "wildplus:frozen_omen"
+  }
+}

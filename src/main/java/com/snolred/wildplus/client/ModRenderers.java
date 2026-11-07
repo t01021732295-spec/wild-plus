@@ -38,6 +38,9 @@ public final class ModRenderers {
         event.registerEntityRenderer(ModEntities.GOLDEN_SLIME.get(), GoldenSlimeRenderer::new);
         event.registerEntityRenderer(ModEntities.CUSTOMER.get(), CustomerRenderer::new);
         event.registerEntityRenderer(ModEntities.SEAT.get(), net.minecraft.client.renderer.entity.NoopRenderer::new);
+        // 3.8 흉조: 바닐라 변명자 모델 + 두건/철모(모자 층) + 소품
+        event.registerEntityRenderer(ModEntities.SMUGGLER.get(), ctx -> new OmenIllager(ctx, tex("illager_smuggler"), IllagerPropsLayer.SMUGGLER));
+        event.registerEntityRenderer(ModEntities.MERCENARY.get(), ctx -> new OmenIllager(ctx, tex("illager_mercenary"), IllagerPropsLayer.MERCENARY));
         // 보스: 바닐라 모델 + 전용 텍스처
         event.registerEntityRenderer(ModEntities.TITAN_BOSS.get(), ctx -> new net.minecraft.client.renderer.entity.RavagerRenderer(ctx) {
             @Override
@@ -114,6 +117,22 @@ public final class ModRenderers {
         IllagerTex(EntityRendererProvider.Context ctx, Identifier texture) {
             super(ctx);
             this.texture = texture;
+        }
+
+        @Override
+        public Identifier getTextureLocation(IllagerRenderState state) {
+            return texture;
+        }
+    }
+
+    static final class OmenIllager extends VindicatorRenderer {
+        private final Identifier texture;
+
+        OmenIllager(EntityRendererProvider.Context ctx, Identifier texture, float[][] props) {
+            super(ctx);
+            this.texture = texture;
+            this.getModel().getHat().visible = true;
+            this.addLayer(new IllagerPropsLayer(this, props));
         }
 
         @Override
