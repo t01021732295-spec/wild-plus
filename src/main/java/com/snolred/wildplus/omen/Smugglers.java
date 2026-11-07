@@ -46,16 +46,16 @@ public final class Smugglers {
 
     static List<Good> goods() {
         return List.of(
-                new Good("저주받은 날카로움 VI 책", "바닐라 최대치를 넘는 날카로움 · 소실 저주", 3, 1, l -> book(l, Enchantments.SHARPNESS, 6)),
-                new Good("저주받은 효율 VI 책", "더 빠른 채굴 · 소실 저주", 3, 1, l -> book(l, Enchantments.EFFICIENCY, 6)),
-                new Good("금지된 물약 (광기)", "1분 힘 III · 신속 II · 저항 → 끝나면 대가", 2, 3, l -> new ItemStack(ModItems20.FORBIDDEN_POTION.get())),
-                new Good("생명의 정수", "로열 에메랄드 재료 (정예 몹 3%)", 4, 2, l -> new ItemStack(ModItems19.LIFE_ESSENCE.get())),
-                new Good("겉날개", "엔드에 가지 않고도…", 8, 1, l -> new ItemStack(Items.ELYTRA)),
-                new Good("불사의 토템", "죽음을 한 번 막아 줌", 3, 2, l -> new ItemStack(Items.TOTEM_OF_UNDYING)),
-                new Good("흉조 투척병 ×3", "몬스터 정예화 · 친구에게 장난", 1, 3, l -> new ItemStack(ModItems20.OMEN_FLASK.get(), 3)),
-                new Good("흉조 양조 재료 세트", "블레이즈 가루 · 푸른 얼음 · 프리즈머린 수정 · 팬텀 막 · 금 블록", 1, 2, l -> ItemStack.EMPTY),
-                new Good("우민 올가미", "약해진 우민을 묶어 포로로", 1, 2, l -> new ItemStack(ModItems20.ILLAGER_LASSO.get())),
-                new Good("밀수 지도", "가까운 전초 기지 · 삼림 대저택 위치", 1, 1, l -> ItemStack.EMPTY));
+                new Good("날카로움 VI 책", "날카로움 VI · 소실 저주", 3, 1, l -> book(l, Enchantments.SHARPNESS, 6)),
+                new Good("효율 VI 책", "효율 VI · 소실 저주", 3, 1, l -> book(l, Enchantments.EFFICIENCY, 6)),
+                new Good("광기의 물약", "힘 III · 신속 II · 저항", 2, 3, l -> new ItemStack(ModItems20.FORBIDDEN_POTION.get())),
+                new Good("생명의 정수", "정예 몹 3% · 제작 재료", 4, 2, l -> new ItemStack(ModItems19.LIFE_ESSENCE.get())),
+                new Good("겉날개", "비행 장비", 8, 1, l -> new ItemStack(Items.ELYTRA)),
+                new Good("불사의 토템", "죽음 1회 방지", 3, 2, l -> new ItemStack(Items.TOTEM_OF_UNDYING)),
+                new Good("흉조 병 ×3", "우민 정예화 · 흉조 효과", 1, 3, l -> new ItemStack(ModItems20.OMEN_FLASK.get(), 3)),
+                new Good("양조 재료 5종", "테마 흉조 양조 재료", 1, 2, l -> ItemStack.EMPTY),
+                new Good("우민 올가미", "약화된 우민 포획", 1, 2, l -> new ItemStack(ModItems20.ILLAGER_LASSO.get())),
+                new Good("밀수 지도", "전초 기지 · 대저택 위치", 1, 1, l -> ItemStack.EMPTY));
     }
 
     private static ItemStack book(ServerLevel l, net.minecraft.resources.ResourceKey<Enchantment> key, int lv) {
@@ -82,7 +82,7 @@ public final class Smugglers {
             es.add(new PickMenu.Entry(g.name(), left <= 0 ? "품절" : g.sub() + " · 흉조 병 " + g.price() + "개 · 남은 " + left, icon,
                     left <= 0 ? PickMenu.K_INFO : PickMenu.K_ROW));
         }
-        PickMenu.open(p, Component.literal("🕯 우민 밀수꾼"), "화폐는 흉조 병 · 내 흉조 병 " + Omen.countBottles(p) + "개 · 흉조가 풀리면 떠나요", "", es,
+        PickMenu.open(p, Component.literal("🕯 밀수꾼 상점"), "흉조 병 " + Omen.countBottles(p) + "개 보유 · 흉조 종료 시 퇴장", "", es,
                 PickMenu.FLAG_SHOP, i -> {
                     if (i < 0 || i >= gs.size() || !s.isAlive()) return;
                     Good g = gs.get(i);
