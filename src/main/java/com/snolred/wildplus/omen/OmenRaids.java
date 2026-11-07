@@ -302,6 +302,20 @@ public final class OmenRaids {
         if (st.theme != Theme.NONE) sb.append(" · ").append(st.theme.title);
         sb.append(String.format(" · 웨이브 %d/%d · 남은 우민 %d · 주민 %d/%d · ×%.2f", Math.min(r.getGroupsSpawned(), waves), waves, alive,
                 villagersNow, st.villagers, st.mult()));
+        if (!r.isStarted()) sb.append(" · 첫 웨이브 준비 중");
+        else if (r.isBetweenWaves()) sb.append(" · 다음 웨이브 준비 중");
+        if (!r.isStarted() && now - st.start >= 1200 && now % 1200 == 0) {
+            String cause = !level.hasChunkAt(st.center) ? "습격 중심 청크가 로드되지 않음"
+                    : !level.isVillage(st.center) ? "습격 중심이 마을로 인식되지 않음"
+                    : "바닐라 습격의 우민 스폰 위치 탐색이 지연됨";
+            for (ServerPlayer p : level.players()) {
+                if (p.distanceToSqr(st.center.getX(), st.center.getY(), st.center.getZ()) <= 160 * 160) {
+                    p.sendSystemMessage(Component.literal("⚠ 흉조 첫 웨이브 지연: " + cause
+                            + " · 중심 " + st.center.getX() + ", " + st.center.getY() + ", " + st.center.getZ())
+                            .withStyle(ChatFormatting.YELLOW));
+                }
+            }
+        }
         if (st.streak > 1) sb.append(" · 연쇄 ").append(st.streak);
         if (st.timeEnd > 0) {
             long sec = Math.max(0, (st.timeEnd - now) / 20);
@@ -578,6 +592,9 @@ public final class OmenRaids {
             return;
         }
         if (r.getRaidOmenLevel() <= 0) r.setRaidOmenLevel(Math.min(r.getMaxRaidOmenLevel(), amp + 1));
+        // The vanilla raid pauses completely while its center chunk is not loaded.
+        // The player may be beside the bell while the village POI average lies in another chunk.
+        level.getChunkAt(r.getCenter());
         level.playSound(null, bell, SoundEvents.BELL_BLOCK, SoundSource.BLOCKS, 2.0F, 0.7F);
         level.playSound(null, bell, SoundEvents.RAID_HORN.value(), SoundSource.HOSTILE, 4.0F, 1.0F);
         level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, bell.getX() + 0.5, bell.getY() + 1, bell.getZ() + 0.5, 40, 0.6, 0.6, 0.6, 0.05);
