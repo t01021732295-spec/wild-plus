@@ -1,0 +1,1088 @@
+######## net.minecraft.world.inventory.BrewingStandMenu$FuelSlot
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$FuelSlot extends net.minecraft.world.inventory.Slot {
+  public net.minecraft.world.inventory.BrewingStandMenu$FuelSlot(net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+  public static boolean mayPlaceItem(net.minecraft.world.item.ItemStack);
+  public net.minecraft.resources.Identifier getNoItemIcon();
+}
+######## net.minecraft.world.inventory.BrewingStandMenu$IngredientsSlot
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$IngredientsSlot extends net.minecraft.world.inventory.Slot {
+  private final net.minecraft.world.item.crafting.RecipePropertySet propertySet;
+  public net.minecraft.world.inventory.BrewingStandMenu$IngredientsSlot(net.minecraft.world.item.crafting.RecipePropertySet, net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+}
+######## net.minecraft.world.inventory.BrewingStandMenu$PotionSlot
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$PotionSlot extends net.minecraft.world.inventory.Slot {
+  private final net.minecraft.world.item.crafting.RecipeAccess recipeAccess;
+  public net.minecraft.world.inventory.BrewingStandMenu$PotionSlot(net.minecraft.world.item.crafting.RecipeAccess, net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+  public int getMaxStackSize();
+  public void onTake(net.minecraft.world.entity.player.Player, net.minecraft.world.item.ItemStack);
+  public net.minecraft.resources.Identifier getNoItemIcon();
+}
+######## net.minecraft.world.inventory.BrewingStandMenu
+Compiled from "BrewingStandMenu.java"
+public class net.minecraft.world.inventory.BrewingStandMenu extends net.minecraft.world.inventory.AbstractContainerMenu {
+  private static final net.minecraft.resources.Identifier EMPTY_SLOT_FUEL;
+  private static final net.minecraft.resources.Identifier EMPTY_SLOT_POTION;
+  private static final int BOTTLE_SLOT_START;
+  private static final int BOTTLE_SLOT_END;
+  private static final int INGREDIENT_SLOT;
+  private static final int FUEL_SLOT;
+  private static final int SLOT_COUNT;
+  private static final int DATA_COUNT;
+  private static final int INV_SLOT_START;
+  private static final int INV_SLOT_END;
+  private static final int USE_ROW_SLOT_START;
+  private static final int USE_ROW_SLOT_END;
+  private final net.minecraft.world.Container brewingStand;
+  private final net.minecraft.world.inventory.ContainerData brewingStandData;
+  private final net.minecraft.world.inventory.Slot ingredientSlot;
+  public net.minecraft.world.inventory.BrewingStandMenu(int, net.minecraft.world.entity.player.Inventory);
+  public net.minecraft.world.inventory.BrewingStandMenu(int, net.minecraft.world.entity.player.Inventory, net.minecraft.world.Container, net.minecraft.world.inventory.ContainerData);
+  public boolean stillValid(net.minecraft.world.entity.player.Player);
+  public net.minecraft.world.item.ItemStack quickMoveStack(net.minecraft.world.entity.player.Player, int);
+  public int getFuel();
+  public int getTotalFuel();
+  public int getBrewingTicks();
+  public int getTotalBrewingTicks();
+  static {};
+}
+######## net.minecraft.world.item.crafting.PotionIngredient
+Compiled from "PotionIngredient.java"
+public final class net.minecraft.world.item.crafting.PotionIngredient extends java.lang.Record implements java.util.function.Predicate<net.minecraft.world.item.ItemStack> {
+  private final net.minecraft.world.item.crafting.Ingredient ingredient;
+  private final java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate> potions;
+  public static final com.mojang.serialization.MapCodec<net.minecraft.world.item.crafting.PotionIngredient> MAP_CODEC;
+  public static final net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, net.minecraft.world.item.crafting.PotionIngredient> STREAM_CODEC;
+  public net.minecraft.world.item.crafting.PotionIngredient(net.minecraft.world.item.crafting.Ingredient, java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate>);
+  public boolean test(net.minecraft.world.item.ItemStack);
+  public static net.minecraft.world.item.crafting.PotionIngredient of(net.minecraft.world.item.Item, net.minecraft.core.component.predicates.PotionsPredicate);
+  public static net.minecraft.world.item.crafting.PotionIngredient of(net.minecraft.world.item.Item);
+  public static boolean isPotionInput(net.minecraft.world.item.ItemStack, net.minecraft.world.item.crafting.RecipeAccess);
+  public final java.lang.String toString();
+  public final int hashCode();
+  public final boolean equals(java.lang.Object);
+  public net.minecraft.world.item.crafting.Ingredient ingredient();
+  public java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate> potions();
+  public boolean test(java.lang.Object);
+  static {};
+}
+######## net.minecraft.world.item.enchantment.EnchantmentHelper
+Compiled from "EnchantmentHelper.java"
+public class net.minecraft.world.item.enchantment.EnchantmentHelper {
+  public net.minecraft.world.item.enchantment.EnchantmentHelper();
+  public static int getItemEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.item.ItemInstance);
+  public static int getTagEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.item.ItemInstance);
+  public static net.minecraft.world.item.enchantment.ItemEnchantments updateEnchantments(net.minecraft.world.item.ItemStack, java.util.function.Consumer<net.minecraft.world.item.enchantment.ItemEnchantments$Mutable>);
+  public static boolean canStoreEnchantments(net.minecraft.world.item.ItemStack);
+  public static void setEnchantments(net.minecraft.world.item.ItemStack, net.minecraft.world.item.enchantment.ItemEnchantments);
+  public static net.minecraft.world.item.enchantment.ItemEnchantments getEnchantmentsForCrafting(net.minecraft.world.item.ItemStack);
+  public static net.minecraft.core.component.DataComponentType<net.minecraft.world.item.enchantment.ItemEnchantments> getComponentType(net.minecraft.world.item.ItemStack);
+  public static boolean hasAnyEnchantments(net.minecraft.world.item.ItemStack);
+  public static int processDurabilityChange(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static int processAmmoUse(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.item.ItemStack, int);
+  public static int processBlockExperience(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static int processMobExperience(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.entity.Entity, int);
+  public static net.minecraft.world.item.ItemStack createBook(net.minecraft.world.item.enchantment.EnchantmentInstance);
+  public static void runIterationOnItem(net.minecraft.world.item.ItemStack, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentVisitor);
+  public static void runIterationOnItem(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.entity.LivingEntity, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentInSlotVisitor);
+  public static void runIterationOnEquipment(net.minecraft.world.entity.LivingEntity, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentInSlotVisitor);
+  public static boolean isImmuneToDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource);
+  public static float getDamageProtection(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource);
+  public static float modifyDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyFallBasedDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyArmorEffectiveness(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyKnockback(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static void doPostAttackEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource);
+  public static void doPostPiercingAttackEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static void doPostAttackEffectsWithItemSource(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, net.minecraft.world.item.ItemStack);
+  public static void doPostAttackEffectsWithItemSourceOnBreak(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, net.minecraft.world.item.ItemStack, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static void runLocationChangedEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static void runLocationChangedEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.EquipmentSlot);
+  public static void stopLocationBasedEffects(net.minecraft.world.entity.LivingEntity);
+  public static void stopLocationBasedEffects(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.EquipmentSlot);
+  public static void tickEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static int getEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.entity.LivingEntity);
+  public static int processProjectileCount(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, int);
+  public static float processProjectileSpread(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, float);
+  public static int getPiercingCount(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.item.ItemStack);
+  public static void onProjectileSpawned(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.projectile.Projectile, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static void onHitBlock(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.Entity, net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.phys.Vec3, net.minecraft.world.level.block.state.BlockState, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static int modifyDurabilityToRepairFromXp(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static float processEquipmentDropChance(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float processEquipmentDropChance(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource, float, net.minecraft.world.entity.EquipmentSlot);
+  public static void forEachModifier(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlotGroup, java.util.function.BiConsumer<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier>);
+  public static void forEachModifier(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlot, java.util.function.BiConsumer<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier>);
+  public static int getFishingLuckBonus(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static float getFishingTimeReduction(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static int getTridentReturnToOwnerAcceleration(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static float modifyCrossbowChargingTime(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, float);
+  public static float getTridentSpinAttackStrength(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity);
+  public static boolean hasTag(net.minecraft.world.item.ItemStack, net.minecraft.tags.TagKey<net.minecraft.world.item.enchantment.Enchantment>);
+  public static boolean has(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<?>);
+  public static <T> java.util.Optional<T> pickHighestLevel(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<java.util.List<T>>);
+  public static <T> com.mojang.datafixers.util.Pair<T, java.lang.Integer> getHighestLevel(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<T>);
+  public static java.util.Optional<net.minecraft.world.item.enchantment.EnchantedItemInUse> getRandomItemWith(net.minecraft.core.component.DataComponentType<?>, net.minecraft.world.entity.LivingEntity, java.util.function.Predicate<net.minecraft.world.item.ItemStack>);
+  public static int getEnchantmentCost(net.minecraft.util.RandomSource, int, int, net.minecraft.world.item.ItemStack);
+  public static net.minecraft.world.item.ItemStack enchantItem(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, net.minecraft.core.RegistryAccess, java.util.Optional<? extends net.minecraft.core.HolderSet<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static net.minecraft.world.item.ItemStack enchantItem(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance> selectEnchantment(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static void filterCompatibleEnchantments(java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance>, net.minecraft.world.item.enchantment.EnchantmentInstance);
+  public static boolean isEnchantmentCompatible(java.util.Collection<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>, net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>);
+  public static java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance> getAvailableEnchantmentResults(int, net.minecraft.world.item.ItemStack, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static void enchantItemFromProvider(net.minecraft.world.item.ItemStack, net.minecraft.core.RegistryAccess, net.minecraft.resources.ResourceKey<net.minecraft.world.item.enchantment.providers.EnchantmentProvider>, net.minecraft.world.DifficultyInstance, net.minecraft.util.RandomSource);
+}
+######## net.minecraft.world.level.block.entity.BrewingStandBlockEntity
+Compiled from "BrewingStandBlockEntity.java"
+public class net.minecraft.world.level.block.entity.BrewingStandBlockEntity extends net.minecraft.world.level.block.entity.BaseContainerBlockEntity implements net.minecraft.world.WorldlyContainer {
+  private static final int INGREDIENT_SLOT;
+  private static final int FUEL_SLOT;
+  private static final int[] SLOTS_FOR_UP;
+  private static final int[] SLOTS_FOR_DOWN;
+  private static final int[] SLOTS_FOR_SIDES;
+  public static final int DATA_BREW_TIME;
+  public static final int DATA_FUEL_USES;
+  public static final int DATA_TOTAL_BREW_TIME;
+  public static final int DATA_TOTAL_FUEL_USES;
+  public static final int NUM_DATA_VALUES;
+  private static final int DEFAULT_BREW_TIME;
+  public static final int BREWING_TIME_SECONDS;
+  private static final int DEFAULT_FUEL;
+  private static final float DEFAULT_SPEED_MULTIPLIER;
+  private static final int DEFAULT_FUEL_USES;
+  private static final net.minecraft.network.chat.Component DEFAULT_NAME;
+  private net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> items;
+  private int brewTime;
+  private int totalBrewTime;
+  private boolean[] lastPotionCount;
+  private net.minecraft.world.item.Item ingredient;
+  private int fuel;
+  private int totalFuel;
+  private float speedMultiplier;
+  protected final net.minecraft.world.inventory.ContainerData dataAccess;
+  private final net.minecraft.world.item.crafting.RecipeManager$CachedCheck<net.minecraft.world.item.crafting.BrewingInput, net.minecraft.world.item.crafting.BrewingRecipe> quickCheck;
+  public net.minecraft.world.level.block.entity.BrewingStandBlockEntity(net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState);
+  protected net.minecraft.network.chat.Component getDefaultName();
+  public int getContainerSize();
+  protected net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> getItems();
+  protected void setItems(net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack>);
+  protected int getUses(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.component.BrewingFuel);
+  protected float getSpeedMultiplier(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.component.BrewingFuel);
+  public static void serverTick(net.minecraft.server.level.ServerLevel, net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  private boolean[] getPotionBits();
+  private static boolean isBrewable(net.minecraft.server.level.ServerLevel, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  private static void doBrew(net.minecraft.server.level.ServerLevel, net.minecraft.core.BlockPos, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  protected void loadAdditional(net.minecraft.world.level.storage.ValueInput);
+  protected void saveAdditional(net.minecraft.world.level.storage.ValueOutput);
+  public boolean canPlaceItem(int, net.minecraft.world.item.ItemStack);
+  public int[] getSlotsForFace(net.minecraft.core.Direction);
+  public boolean canPlaceItemThroughFace(int, net.minecraft.world.item.ItemStack, net.minecraft.core.Direction);
+  public boolean canTakeItemThroughFace(int, net.minecraft.world.item.ItemStack, net.minecraft.core.Direction);
+  protected net.minecraft.world.inventory.AbstractContainerMenu createMenu(int, net.minecraft.world.entity.player.Inventory);
+  static {};
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$FuelSlot extends net.minecraft.world.inventory.Slot {
+  public net.minecraft.world.inventory.BrewingStandMenu$FuelSlot(net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+  public static boolean mayPlaceItem(net.minecraft.world.item.ItemStack);
+  public net.minecraft.resources.Identifier getNoItemIcon();
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$IngredientsSlot extends net.minecraft.world.inventory.Slot {
+  private final net.minecraft.world.item.crafting.RecipePropertySet propertySet;
+  public net.minecraft.world.inventory.BrewingStandMenu$IngredientsSlot(net.minecraft.world.item.crafting.RecipePropertySet, net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$PotionSlot extends net.minecraft.world.inventory.Slot {
+  private final net.minecraft.world.item.crafting.RecipeAccess recipeAccess;
+  public net.minecraft.world.inventory.BrewingStandMenu$PotionSlot(net.minecraft.world.item.crafting.RecipeAccess, net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+  public int getMaxStackSize();
+  public void onTake(net.minecraft.world.entity.player.Player, net.minecraft.world.item.ItemStack);
+  public net.minecraft.resources.Identifier getNoItemIcon();
+}
+Compiled from "BrewingStandMenu.java"
+public class net.minecraft.world.inventory.BrewingStandMenu extends net.minecraft.world.inventory.AbstractContainerMenu {
+  private static final net.minecraft.resources.Identifier EMPTY_SLOT_FUEL;
+  private static final net.minecraft.resources.Identifier EMPTY_SLOT_POTION;
+  private static final int BOTTLE_SLOT_START;
+  private static final int BOTTLE_SLOT_END;
+  private static final int INGREDIENT_SLOT;
+  private static final int FUEL_SLOT;
+  private static final int SLOT_COUNT;
+  private static final int DATA_COUNT;
+  private static final int INV_SLOT_START;
+  private static final int INV_SLOT_END;
+  private static final int USE_ROW_SLOT_START;
+  private static final int USE_ROW_SLOT_END;
+  private final net.minecraft.world.Container brewingStand;
+  private final net.minecraft.world.inventory.ContainerData brewingStandData;
+  private final net.minecraft.world.inventory.Slot ingredientSlot;
+  public net.minecraft.world.inventory.BrewingStandMenu(int, net.minecraft.world.entity.player.Inventory);
+  public net.minecraft.world.inventory.BrewingStandMenu(int, net.minecraft.world.entity.player.Inventory, net.minecraft.world.Container, net.minecraft.world.inventory.ContainerData);
+  public boolean stillValid(net.minecraft.world.entity.player.Player);
+  public net.minecraft.world.item.ItemStack quickMoveStack(net.minecraft.world.entity.player.Player, int);
+  public int getFuel();
+  public int getTotalFuel();
+  public int getBrewingTicks();
+  public int getTotalBrewingTicks();
+  static {};
+}
+Compiled from "PotionIngredient.java"
+public final class net.minecraft.world.item.crafting.PotionIngredient extends java.lang.Record implements java.util.function.Predicate<net.minecraft.world.item.ItemStack> {
+  private final net.minecraft.world.item.crafting.Ingredient ingredient;
+  private final java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate> potions;
+  public static final com.mojang.serialization.MapCodec<net.minecraft.world.item.crafting.PotionIngredient> MAP_CODEC;
+  public static final net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, net.minecraft.world.item.crafting.PotionIngredient> STREAM_CODEC;
+  public net.minecraft.world.item.crafting.PotionIngredient(net.minecraft.world.item.crafting.Ingredient, java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate>);
+  public boolean test(net.minecraft.world.item.ItemStack);
+  public static net.minecraft.world.item.crafting.PotionIngredient of(net.minecraft.world.item.Item, net.minecraft.core.component.predicates.PotionsPredicate);
+  public static net.minecraft.world.item.crafting.PotionIngredient of(net.minecraft.world.item.Item);
+  public static boolean isPotionInput(net.minecraft.world.item.ItemStack, net.minecraft.world.item.crafting.RecipeAccess);
+  public final java.lang.String toString();
+  public final int hashCode();
+  public final boolean equals(java.lang.Object);
+  public net.minecraft.world.item.crafting.Ingredient ingredient();
+  public java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate> potions();
+  public boolean test(java.lang.Object);
+  static {};
+}
+Compiled from "EnchantmentHelper.java"
+public class net.minecraft.world.item.enchantment.EnchantmentHelper {
+  public net.minecraft.world.item.enchantment.EnchantmentHelper();
+  public static int getItemEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.item.ItemInstance);
+  public static net.minecraft.world.item.enchantment.ItemEnchantments updateEnchantments(net.minecraft.world.item.ItemStack, java.util.function.Consumer<net.minecraft.world.item.enchantment.ItemEnchantments$Mutable>);
+  public static boolean canStoreEnchantments(net.minecraft.world.item.ItemStack);
+  public static void setEnchantments(net.minecraft.world.item.ItemStack, net.minecraft.world.item.enchantment.ItemEnchantments);
+  public static net.minecraft.world.item.enchantment.ItemEnchantments getEnchantmentsForCrafting(net.minecraft.world.item.ItemStack);
+  private static net.minecraft.core.component.DataComponentType<net.minecraft.world.item.enchantment.ItemEnchantments> getComponentType(net.minecraft.world.item.ItemStack);
+  public static boolean hasAnyEnchantments(net.minecraft.world.item.ItemStack);
+  public static int processDurabilityChange(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static int processAmmoUse(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.item.ItemStack, int);
+  public static int processBlockExperience(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static int processMobExperience(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.entity.Entity, int);
+  public static net.minecraft.world.item.ItemStack createBook(net.minecraft.world.item.enchantment.EnchantmentInstance);
+  private static void runIterationOnItem(net.minecraft.world.item.ItemStack, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentVisitor);
+  private static void runIterationOnItem(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.entity.LivingEntity, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentInSlotVisitor);
+  private static void runIterationOnEquipment(net.minecraft.world.entity.LivingEntity, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentInSlotVisitor);
+  public static boolean isImmuneToDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource);
+  public static float getDamageProtection(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource);
+  public static float modifyDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyFallBasedDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyArmorEffectiveness(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyKnockback(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static void doPostAttackEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource);
+  public static void doPostPiercingAttackEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static void doPostAttackEffectsWithItemSource(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, net.minecraft.world.item.ItemStack);
+  public static void doPostAttackEffectsWithItemSourceOnBreak(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, net.minecraft.world.item.ItemStack, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static void runLocationChangedEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static void runLocationChangedEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.EquipmentSlot);
+  public static void stopLocationBasedEffects(net.minecraft.world.entity.LivingEntity);
+  public static void stopLocationBasedEffects(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.EquipmentSlot);
+  public static void tickEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static int getEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.entity.LivingEntity);
+  public static int processProjectileCount(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, int);
+  public static float processProjectileSpread(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, float);
+  public static int getPiercingCount(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.item.ItemStack);
+  public static void onProjectileSpawned(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.projectile.Projectile, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static void onHitBlock(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.Entity, net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.phys.Vec3, net.minecraft.world.level.block.state.BlockState, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static int modifyDurabilityToRepairFromXp(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static float processEquipmentDropChance(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource, float);
+  public static void forEachModifier(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlotGroup, java.util.function.BiConsumer<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier>);
+  public static void forEachModifier(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlot, java.util.function.BiConsumer<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier>);
+  public static int getFishingLuckBonus(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static float getFishingTimeReduction(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static int getTridentReturnToOwnerAcceleration(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static float modifyCrossbowChargingTime(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, float);
+  public static float getTridentSpinAttackStrength(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity);
+  public static boolean hasTag(net.minecraft.world.item.ItemStack, net.minecraft.tags.TagKey<net.minecraft.world.item.enchantment.Enchantment>);
+  public static boolean has(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<?>);
+  public static <T> java.util.Optional<T> pickHighestLevel(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<java.util.List<T>>);
+  public static <T> com.mojang.datafixers.util.Pair<T, java.lang.Integer> getHighestLevel(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<T>);
+  public static java.util.Optional<net.minecraft.world.item.enchantment.EnchantedItemInUse> getRandomItemWith(net.minecraft.core.component.DataComponentType<?>, net.minecraft.world.entity.LivingEntity, java.util.function.Predicate<net.minecraft.world.item.ItemStack>);
+  public static int getEnchantmentCost(net.minecraft.util.RandomSource, int, int, net.minecraft.world.item.ItemStack);
+  public static net.minecraft.world.item.ItemStack enchantItem(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, net.minecraft.core.RegistryAccess, java.util.Optional<? extends net.minecraft.core.HolderSet<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static net.minecraft.world.item.ItemStack enchantItem(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance> selectEnchantment(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static void filterCompatibleEnchantments(java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance>, net.minecraft.world.item.enchantment.EnchantmentInstance);
+  public static boolean isEnchantmentCompatible(java.util.Collection<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>, net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>);
+  public static java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance> getAvailableEnchantmentResults(int, net.minecraft.world.item.ItemStack, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static void enchantItemFromProvider(net.minecraft.world.item.ItemStack, net.minecraft.core.RegistryAccess, net.minecraft.resources.ResourceKey<net.minecraft.world.item.enchantment.providers.EnchantmentProvider>, net.minecraft.world.DifficultyInstance, net.minecraft.util.RandomSource);
+}
+Compiled from "BrewingStandBlockEntity.java"
+public class net.minecraft.world.level.block.entity.BrewingStandBlockEntity extends net.minecraft.world.level.block.entity.BaseContainerBlockEntity implements net.minecraft.world.WorldlyContainer {
+  private static final int INGREDIENT_SLOT;
+  private static final int FUEL_SLOT;
+  private static final int[] SLOTS_FOR_UP;
+  private static final int[] SLOTS_FOR_DOWN;
+  private static final int[] SLOTS_FOR_SIDES;
+  public static final int DATA_BREW_TIME;
+  public static final int DATA_FUEL_USES;
+  public static final int DATA_TOTAL_BREW_TIME;
+  public static final int DATA_TOTAL_FUEL_USES;
+  public static final int NUM_DATA_VALUES;
+  private static final int DEFAULT_BREW_TIME;
+  public static final int BREWING_TIME_SECONDS;
+  private static final int DEFAULT_FUEL;
+  private static final float DEFAULT_SPEED_MULTIPLIER;
+  private static final int DEFAULT_FUEL_USES;
+  private static final net.minecraft.network.chat.Component DEFAULT_NAME;
+  private net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> items;
+  private int brewTime;
+  private int totalBrewTime;
+  private boolean[] lastPotionCount;
+  private net.minecraft.world.item.Item ingredient;
+  private int fuel;
+  private int totalFuel;
+  private float speedMultiplier;
+  protected final net.minecraft.world.inventory.ContainerData dataAccess;
+  private final net.minecraft.world.item.crafting.RecipeManager$CachedCheck<net.minecraft.world.item.crafting.BrewingInput, net.minecraft.world.item.crafting.BrewingRecipe> quickCheck;
+  public net.minecraft.world.level.block.entity.BrewingStandBlockEntity(net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState);
+  protected net.minecraft.network.chat.Component getDefaultName();
+  public int getContainerSize();
+  protected net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> getItems();
+  protected void setItems(net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack>);
+  protected int getUses(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.component.BrewingFuel);
+  protected float getSpeedMultiplier(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.component.BrewingFuel);
+  public static void serverTick(net.minecraft.server.level.ServerLevel, net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  private boolean[] getPotionBits();
+  private static boolean isBrewable(net.minecraft.server.level.ServerLevel, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  private static void doBrew(net.minecraft.server.level.ServerLevel, net.minecraft.core.BlockPos, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  protected void loadAdditional(net.minecraft.world.level.storage.ValueInput);
+  protected void saveAdditional(net.minecraft.world.level.storage.ValueOutput);
+  public boolean canPlaceItem(int, net.minecraft.world.item.ItemStack);
+  public int[] getSlotsForFace(net.minecraft.core.Direction);
+  public boolean canPlaceItemThroughFace(int, net.minecraft.world.item.ItemStack, net.minecraft.core.Direction);
+  public boolean canTakeItemThroughFace(int, net.minecraft.world.item.ItemStack, net.minecraft.core.Direction);
+  protected net.minecraft.world.inventory.AbstractContainerMenu createMenu(int, net.minecraft.world.entity.player.Inventory);
+  static {};
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$FuelSlot extends net.minecraft.world.inventory.Slot {
+  public net.minecraft.world.inventory.BrewingStandMenu$FuelSlot(net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+  public static boolean mayPlaceItem(net.minecraft.world.item.ItemStack);
+  public net.minecraft.resources.Identifier getNoItemIcon();
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$IngredientsSlot extends net.minecraft.world.inventory.Slot {
+  private final net.minecraft.world.item.crafting.RecipePropertySet propertySet;
+  public net.minecraft.world.inventory.BrewingStandMenu$IngredientsSlot(net.minecraft.world.item.crafting.RecipePropertySet, net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$PotionSlot extends net.minecraft.world.inventory.Slot {
+  private final net.minecraft.world.item.crafting.RecipeAccess recipeAccess;
+  public net.minecraft.world.inventory.BrewingStandMenu$PotionSlot(net.minecraft.world.item.crafting.RecipeAccess, net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+  public int getMaxStackSize();
+  public void onTake(net.minecraft.world.entity.player.Player, net.minecraft.world.item.ItemStack);
+  public net.minecraft.resources.Identifier getNoItemIcon();
+}
+Compiled from "BrewingStandMenu.java"
+public class net.minecraft.world.inventory.BrewingStandMenu extends net.minecraft.world.inventory.AbstractContainerMenu {
+  private static final net.minecraft.resources.Identifier EMPTY_SLOT_FUEL;
+  private static final net.minecraft.resources.Identifier EMPTY_SLOT_POTION;
+  private static final int BOTTLE_SLOT_START;
+  private static final int BOTTLE_SLOT_END;
+  private static final int INGREDIENT_SLOT;
+  private static final int FUEL_SLOT;
+  private static final int SLOT_COUNT;
+  private static final int DATA_COUNT;
+  private static final int INV_SLOT_START;
+  private static final int INV_SLOT_END;
+  private static final int USE_ROW_SLOT_START;
+  private static final int USE_ROW_SLOT_END;
+  private final net.minecraft.world.Container brewingStand;
+  private final net.minecraft.world.inventory.ContainerData brewingStandData;
+  private final net.minecraft.world.inventory.Slot ingredientSlot;
+  public net.minecraft.world.inventory.BrewingStandMenu(int, net.minecraft.world.entity.player.Inventory);
+  public net.minecraft.world.inventory.BrewingStandMenu(int, net.minecraft.world.entity.player.Inventory, net.minecraft.world.Container, net.minecraft.world.inventory.ContainerData);
+  public boolean stillValid(net.minecraft.world.entity.player.Player);
+  public net.minecraft.world.item.ItemStack quickMoveStack(net.minecraft.world.entity.player.Player, int);
+  public int getFuel();
+  public int getTotalFuel();
+  public int getBrewingTicks();
+  public int getTotalBrewingTicks();
+  static {};
+}
+Compiled from "PotionIngredient.java"
+public final class net.minecraft.world.item.crafting.PotionIngredient extends java.lang.Record implements java.util.function.Predicate<net.minecraft.world.item.ItemStack> {
+  private final net.minecraft.world.item.crafting.Ingredient ingredient;
+  private final java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate> potions;
+  public static final com.mojang.serialization.MapCodec<net.minecraft.world.item.crafting.PotionIngredient> MAP_CODEC;
+  public static final net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, net.minecraft.world.item.crafting.PotionIngredient> STREAM_CODEC;
+  public net.minecraft.world.item.crafting.PotionIngredient(net.minecraft.world.item.crafting.Ingredient, java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate>);
+  public boolean test(net.minecraft.world.item.ItemStack);
+  public static net.minecraft.world.item.crafting.PotionIngredient of(net.minecraft.world.item.Item, net.minecraft.core.component.predicates.PotionsPredicate);
+  public static net.minecraft.world.item.crafting.PotionIngredient of(net.minecraft.world.item.Item);
+  public static boolean isPotionInput(net.minecraft.world.item.ItemStack, net.minecraft.world.item.crafting.RecipeAccess);
+  public final java.lang.String toString();
+  public final int hashCode();
+  public final boolean equals(java.lang.Object);
+  public net.minecraft.world.item.crafting.Ingredient ingredient();
+  public java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate> potions();
+  public boolean test(java.lang.Object);
+  static {};
+}
+Compiled from "EnchantmentHelper.java"
+public class net.minecraft.world.item.enchantment.EnchantmentHelper {
+  public net.minecraft.world.item.enchantment.EnchantmentHelper();
+  public static int getItemEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.item.ItemInstance);
+  public static int getTagEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.item.ItemInstance);
+  public static net.minecraft.world.item.enchantment.ItemEnchantments updateEnchantments(net.minecraft.world.item.ItemStack, java.util.function.Consumer<net.minecraft.world.item.enchantment.ItemEnchantments$Mutable>);
+  public static boolean canStoreEnchantments(net.minecraft.world.item.ItemStack);
+  public static void setEnchantments(net.minecraft.world.item.ItemStack, net.minecraft.world.item.enchantment.ItemEnchantments);
+  public static net.minecraft.world.item.enchantment.ItemEnchantments getEnchantmentsForCrafting(net.minecraft.world.item.ItemStack);
+  public static net.minecraft.core.component.DataComponentType<net.minecraft.world.item.enchantment.ItemEnchantments> getComponentType(net.minecraft.world.item.ItemStack);
+  public static boolean hasAnyEnchantments(net.minecraft.world.item.ItemStack);
+  public static int processDurabilityChange(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static int processAmmoUse(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.item.ItemStack, int);
+  public static int processBlockExperience(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static int processMobExperience(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.entity.Entity, int);
+  public static net.minecraft.world.item.ItemStack createBook(net.minecraft.world.item.enchantment.EnchantmentInstance);
+  public static void runIterationOnItem(net.minecraft.world.item.ItemStack, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentVisitor);
+  public static void runIterationOnItem(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.entity.LivingEntity, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentInSlotVisitor);
+  public static void runIterationOnEquipment(net.minecraft.world.entity.LivingEntity, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentInSlotVisitor);
+  public static boolean isImmuneToDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource);
+  public static float getDamageProtection(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource);
+  public static float modifyDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyFallBasedDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyArmorEffectiveness(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyKnockback(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static void doPostAttackEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource);
+  public static void doPostPiercingAttackEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static void doPostAttackEffectsWithItemSource(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, net.minecraft.world.item.ItemStack);
+  public static void doPostAttackEffectsWithItemSourceOnBreak(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, net.minecraft.world.item.ItemStack, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static void runLocationChangedEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static void runLocationChangedEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.EquipmentSlot);
+  public static void stopLocationBasedEffects(net.minecraft.world.entity.LivingEntity);
+  public static void stopLocationBasedEffects(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.EquipmentSlot);
+  public static void tickEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static int getEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.entity.LivingEntity);
+  public static int processProjectileCount(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, int);
+  public static float processProjectileSpread(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, float);
+  public static int getPiercingCount(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.item.ItemStack);
+  public static void onProjectileSpawned(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.projectile.Projectile, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static void onHitBlock(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.Entity, net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.phys.Vec3, net.minecraft.world.level.block.state.BlockState, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static int modifyDurabilityToRepairFromXp(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static float processEquipmentDropChance(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float processEquipmentDropChance(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource, float, net.minecraft.world.entity.EquipmentSlot);
+  public static void forEachModifier(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlotGroup, java.util.function.BiConsumer<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier>);
+  public static void forEachModifier(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlot, java.util.function.BiConsumer<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier>);
+  public static int getFishingLuckBonus(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static float getFishingTimeReduction(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static int getTridentReturnToOwnerAcceleration(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static float modifyCrossbowChargingTime(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, float);
+  public static float getTridentSpinAttackStrength(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity);
+  public static boolean hasTag(net.minecraft.world.item.ItemStack, net.minecraft.tags.TagKey<net.minecraft.world.item.enchantment.Enchantment>);
+  public static boolean has(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<?>);
+  public static <T> java.util.Optional<T> pickHighestLevel(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<java.util.List<T>>);
+  public static <T> com.mojang.datafixers.util.Pair<T, java.lang.Integer> getHighestLevel(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<T>);
+  public static java.util.Optional<net.minecraft.world.item.enchantment.EnchantedItemInUse> getRandomItemWith(net.minecraft.core.component.DataComponentType<?>, net.minecraft.world.entity.LivingEntity, java.util.function.Predicate<net.minecraft.world.item.ItemStack>);
+  public static int getEnchantmentCost(net.minecraft.util.RandomSource, int, int, net.minecraft.world.item.ItemStack);
+  public static net.minecraft.world.item.ItemStack enchantItem(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, net.minecraft.core.RegistryAccess, java.util.Optional<? extends net.minecraft.core.HolderSet<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static net.minecraft.world.item.ItemStack enchantItem(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance> selectEnchantment(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static void filterCompatibleEnchantments(java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance>, net.minecraft.world.item.enchantment.EnchantmentInstance);
+  public static boolean isEnchantmentCompatible(java.util.Collection<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>, net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>);
+  public static java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance> getAvailableEnchantmentResults(int, net.minecraft.world.item.ItemStack, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static void enchantItemFromProvider(net.minecraft.world.item.ItemStack, net.minecraft.core.RegistryAccess, net.minecraft.resources.ResourceKey<net.minecraft.world.item.enchantment.providers.EnchantmentProvider>, net.minecraft.world.DifficultyInstance, net.minecraft.util.RandomSource);
+}
+Compiled from "BrewingStandBlockEntity.java"
+public class net.minecraft.world.level.block.entity.BrewingStandBlockEntity extends net.minecraft.world.level.block.entity.BaseContainerBlockEntity implements net.minecraft.world.WorldlyContainer {
+  private static final int INGREDIENT_SLOT;
+  private static final int FUEL_SLOT;
+  private static final int[] SLOTS_FOR_UP;
+  private static final int[] SLOTS_FOR_DOWN;
+  private static final int[] SLOTS_FOR_SIDES;
+  public static final int DATA_BREW_TIME;
+  public static final int DATA_FUEL_USES;
+  public static final int DATA_TOTAL_BREW_TIME;
+  public static final int DATA_TOTAL_FUEL_USES;
+  public static final int NUM_DATA_VALUES;
+  private static final int DEFAULT_BREW_TIME;
+  public static final int BREWING_TIME_SECONDS;
+  private static final int DEFAULT_FUEL;
+  private static final float DEFAULT_SPEED_MULTIPLIER;
+  private static final int DEFAULT_FUEL_USES;
+  private static final net.minecraft.network.chat.Component DEFAULT_NAME;
+  private net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> items;
+  private int brewTime;
+  private int totalBrewTime;
+  private boolean[] lastPotionCount;
+  private net.minecraft.world.item.Item ingredient;
+  private int fuel;
+  private int totalFuel;
+  private float speedMultiplier;
+  protected final net.minecraft.world.inventory.ContainerData dataAccess;
+  private final net.minecraft.world.item.crafting.RecipeManager$CachedCheck<net.minecraft.world.item.crafting.BrewingInput, net.minecraft.world.item.crafting.BrewingRecipe> quickCheck;
+  public net.minecraft.world.level.block.entity.BrewingStandBlockEntity(net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState);
+  protected net.minecraft.network.chat.Component getDefaultName();
+  public int getContainerSize();
+  protected net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> getItems();
+  protected void setItems(net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack>);
+  protected int getUses(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.component.BrewingFuel);
+  protected float getSpeedMultiplier(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.component.BrewingFuel);
+  public static void serverTick(net.minecraft.server.level.ServerLevel, net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  private boolean[] getPotionBits();
+  private static boolean isBrewable(net.minecraft.server.level.ServerLevel, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  private static void doBrew(net.minecraft.server.level.ServerLevel, net.minecraft.core.BlockPos, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  protected void loadAdditional(net.minecraft.world.level.storage.ValueInput);
+  protected void saveAdditional(net.minecraft.world.level.storage.ValueOutput);
+  public boolean canPlaceItem(int, net.minecraft.world.item.ItemStack);
+  public int[] getSlotsForFace(net.minecraft.core.Direction);
+  public boolean canPlaceItemThroughFace(int, net.minecraft.world.item.ItemStack, net.minecraft.core.Direction);
+  public boolean canTakeItemThroughFace(int, net.minecraft.world.item.ItemStack, net.minecraft.core.Direction);
+  protected net.minecraft.world.inventory.AbstractContainerMenu createMenu(int, net.minecraft.world.entity.player.Inventory);
+  static {};
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$FuelSlot extends net.minecraft.world.inventory.Slot {
+  public net.minecraft.world.inventory.BrewingStandMenu$FuelSlot(net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+  public static boolean mayPlaceItem(net.minecraft.world.item.ItemStack);
+  public net.minecraft.resources.Identifier getNoItemIcon();
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$IngredientsSlot extends net.minecraft.world.inventory.Slot {
+  private final net.minecraft.world.item.crafting.RecipePropertySet propertySet;
+  public net.minecraft.world.inventory.BrewingStandMenu$IngredientsSlot(net.minecraft.world.item.crafting.RecipePropertySet, net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$PotionSlot extends net.minecraft.world.inventory.Slot {
+  private final net.minecraft.world.item.crafting.RecipeAccess recipeAccess;
+  public net.minecraft.world.inventory.BrewingStandMenu$PotionSlot(net.minecraft.world.item.crafting.RecipeAccess, net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+  public int getMaxStackSize();
+  public void onTake(net.minecraft.world.entity.player.Player, net.minecraft.world.item.ItemStack);
+  public net.minecraft.resources.Identifier getNoItemIcon();
+}
+Compiled from "BrewingStandMenu.java"
+public class net.minecraft.world.inventory.BrewingStandMenu extends net.minecraft.world.inventory.AbstractContainerMenu {
+  private static final net.minecraft.resources.Identifier EMPTY_SLOT_FUEL;
+  private static final net.minecraft.resources.Identifier EMPTY_SLOT_POTION;
+  private static final int BOTTLE_SLOT_START;
+  private static final int BOTTLE_SLOT_END;
+  private static final int INGREDIENT_SLOT;
+  private static final int FUEL_SLOT;
+  private static final int SLOT_COUNT;
+  private static final int DATA_COUNT;
+  private static final int INV_SLOT_START;
+  private static final int INV_SLOT_END;
+  private static final int USE_ROW_SLOT_START;
+  private static final int USE_ROW_SLOT_END;
+  private final net.minecraft.world.Container brewingStand;
+  private final net.minecraft.world.inventory.ContainerData brewingStandData;
+  private final net.minecraft.world.inventory.Slot ingredientSlot;
+  public net.minecraft.world.inventory.BrewingStandMenu(int, net.minecraft.world.entity.player.Inventory);
+  public net.minecraft.world.inventory.BrewingStandMenu(int, net.minecraft.world.entity.player.Inventory, net.minecraft.world.Container, net.minecraft.world.inventory.ContainerData);
+  public boolean stillValid(net.minecraft.world.entity.player.Player);
+  public net.minecraft.world.item.ItemStack quickMoveStack(net.minecraft.world.entity.player.Player, int);
+  public int getFuel();
+  public int getTotalFuel();
+  public int getBrewingTicks();
+  public int getTotalBrewingTicks();
+  static {};
+}
+Compiled from "PotionIngredient.java"
+public final class net.minecraft.world.item.crafting.PotionIngredient extends java.lang.Record implements java.util.function.Predicate<net.minecraft.world.item.ItemStack> {
+  private final net.minecraft.world.item.crafting.Ingredient ingredient;
+  private final java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate> potions;
+  public static final com.mojang.serialization.MapCodec<net.minecraft.world.item.crafting.PotionIngredient> MAP_CODEC;
+  public static final net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, net.minecraft.world.item.crafting.PotionIngredient> STREAM_CODEC;
+  public net.minecraft.world.item.crafting.PotionIngredient(net.minecraft.world.item.crafting.Ingredient, java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate>);
+  public boolean test(net.minecraft.world.item.ItemStack);
+  public static net.minecraft.world.item.crafting.PotionIngredient of(net.minecraft.world.item.Item, net.minecraft.core.component.predicates.PotionsPredicate);
+  public static net.minecraft.world.item.crafting.PotionIngredient of(net.minecraft.world.item.Item);
+  public static boolean isPotionInput(net.minecraft.world.item.ItemStack, net.minecraft.world.item.crafting.RecipeAccess);
+  public final java.lang.String toString();
+  public final int hashCode();
+  public final boolean equals(java.lang.Object);
+  public net.minecraft.world.item.crafting.Ingredient ingredient();
+  public java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate> potions();
+  public boolean test(java.lang.Object);
+  static {};
+}
+Compiled from "EnchantmentHelper.java"
+public class net.minecraft.world.item.enchantment.EnchantmentHelper {
+  public net.minecraft.world.item.enchantment.EnchantmentHelper();
+  public static int getItemEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.item.ItemInstance);
+  public static int getTagEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.item.ItemInstance);
+  public static net.minecraft.world.item.enchantment.ItemEnchantments updateEnchantments(net.minecraft.world.item.ItemStack, java.util.function.Consumer<net.minecraft.world.item.enchantment.ItemEnchantments$Mutable>);
+  public static boolean canStoreEnchantments(net.minecraft.world.item.ItemStack);
+  public static void setEnchantments(net.minecraft.world.item.ItemStack, net.minecraft.world.item.enchantment.ItemEnchantments);
+  public static net.minecraft.world.item.enchantment.ItemEnchantments getEnchantmentsForCrafting(net.minecraft.world.item.ItemStack);
+  public static net.minecraft.core.component.DataComponentType<net.minecraft.world.item.enchantment.ItemEnchantments> getComponentType(net.minecraft.world.item.ItemStack);
+  public static boolean hasAnyEnchantments(net.minecraft.world.item.ItemStack);
+  public static int processDurabilityChange(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static int processAmmoUse(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.item.ItemStack, int);
+  public static int processBlockExperience(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static int processMobExperience(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.entity.Entity, int);
+  public static net.minecraft.world.item.ItemStack createBook(net.minecraft.world.item.enchantment.EnchantmentInstance);
+  public static void runIterationOnItem(net.minecraft.world.item.ItemStack, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentVisitor);
+  public static void runIterationOnItem(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.entity.LivingEntity, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentInSlotVisitor);
+  public static void runIterationOnEquipment(net.minecraft.world.entity.LivingEntity, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentInSlotVisitor);
+  public static boolean isImmuneToDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource);
+  public static float getDamageProtection(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource);
+  public static float modifyDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyFallBasedDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyArmorEffectiveness(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyKnockback(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static void doPostAttackEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource);
+  public static void doPostPiercingAttackEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static void doPostAttackEffectsWithItemSource(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, net.minecraft.world.item.ItemStack);
+  public static void doPostAttackEffectsWithItemSourceOnBreak(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, net.minecraft.world.item.ItemStack, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static void runLocationChangedEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static void runLocationChangedEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.EquipmentSlot);
+  public static void stopLocationBasedEffects(net.minecraft.world.entity.LivingEntity);
+  public static void stopLocationBasedEffects(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.EquipmentSlot);
+  public static void tickEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static int getEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.entity.LivingEntity);
+  public static int processProjectileCount(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, int);
+  public static float processProjectileSpread(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, float);
+  public static int getPiercingCount(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.item.ItemStack);
+  public static void onProjectileSpawned(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.projectile.Projectile, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static void onHitBlock(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.Entity, net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.phys.Vec3, net.minecraft.world.level.block.state.BlockState, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static int modifyDurabilityToRepairFromXp(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static float processEquipmentDropChance(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float processEquipmentDropChance(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource, float, net.minecraft.world.entity.EquipmentSlot);
+  public static void forEachModifier(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlotGroup, java.util.function.BiConsumer<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier>);
+  public static void forEachModifier(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlot, java.util.function.BiConsumer<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier>);
+  public static int getFishingLuckBonus(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static float getFishingTimeReduction(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static int getTridentReturnToOwnerAcceleration(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static float modifyCrossbowChargingTime(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, float);
+  public static float getTridentSpinAttackStrength(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity);
+  public static boolean hasTag(net.minecraft.world.item.ItemStack, net.minecraft.tags.TagKey<net.minecraft.world.item.enchantment.Enchantment>);
+  public static boolean has(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<?>);
+  public static <T> java.util.Optional<T> pickHighestLevel(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<java.util.List<T>>);
+  public static <T> com.mojang.datafixers.util.Pair<T, java.lang.Integer> getHighestLevel(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<T>);
+  public static java.util.Optional<net.minecraft.world.item.enchantment.EnchantedItemInUse> getRandomItemWith(net.minecraft.core.component.DataComponentType<?>, net.minecraft.world.entity.LivingEntity, java.util.function.Predicate<net.minecraft.world.item.ItemStack>);
+  public static int getEnchantmentCost(net.minecraft.util.RandomSource, int, int, net.minecraft.world.item.ItemStack);
+  public static net.minecraft.world.item.ItemStack enchantItem(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, net.minecraft.core.RegistryAccess, java.util.Optional<? extends net.minecraft.core.HolderSet<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static net.minecraft.world.item.ItemStack enchantItem(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance> selectEnchantment(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static void filterCompatibleEnchantments(java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance>, net.minecraft.world.item.enchantment.EnchantmentInstance);
+  public static boolean isEnchantmentCompatible(java.util.Collection<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>, net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>);
+  public static java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance> getAvailableEnchantmentResults(int, net.minecraft.world.item.ItemStack, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static void enchantItemFromProvider(net.minecraft.world.item.ItemStack, net.minecraft.core.RegistryAccess, net.minecraft.resources.ResourceKey<net.minecraft.world.item.enchantment.providers.EnchantmentProvider>, net.minecraft.world.DifficultyInstance, net.minecraft.util.RandomSource);
+}
+Compiled from "BrewingStandBlockEntity.java"
+public class net.minecraft.world.level.block.entity.BrewingStandBlockEntity extends net.minecraft.world.level.block.entity.BaseContainerBlockEntity implements net.minecraft.world.WorldlyContainer {
+  private static final int INGREDIENT_SLOT;
+  private static final int FUEL_SLOT;
+  private static final int[] SLOTS_FOR_UP;
+  private static final int[] SLOTS_FOR_DOWN;
+  private static final int[] SLOTS_FOR_SIDES;
+  public static final int DATA_BREW_TIME;
+  public static final int DATA_FUEL_USES;
+  public static final int DATA_TOTAL_BREW_TIME;
+  public static final int DATA_TOTAL_FUEL_USES;
+  public static final int NUM_DATA_VALUES;
+  private static final int DEFAULT_BREW_TIME;
+  public static final int BREWING_TIME_SECONDS;
+  private static final int DEFAULT_FUEL;
+  private static final float DEFAULT_SPEED_MULTIPLIER;
+  private static final int DEFAULT_FUEL_USES;
+  private static final net.minecraft.network.chat.Component DEFAULT_NAME;
+  private net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> items;
+  private int brewTime;
+  private int totalBrewTime;
+  private boolean[] lastPotionCount;
+  private net.minecraft.world.item.Item ingredient;
+  private int fuel;
+  private int totalFuel;
+  private float speedMultiplier;
+  protected final net.minecraft.world.inventory.ContainerData dataAccess;
+  private final net.minecraft.world.item.crafting.RecipeManager$CachedCheck<net.minecraft.world.item.crafting.BrewingInput, net.minecraft.world.item.crafting.BrewingRecipe> quickCheck;
+  public net.minecraft.world.level.block.entity.BrewingStandBlockEntity(net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState);
+  protected net.minecraft.network.chat.Component getDefaultName();
+  public int getContainerSize();
+  protected net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> getItems();
+  protected void setItems(net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack>);
+  protected int getUses(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.component.BrewingFuel);
+  protected float getSpeedMultiplier(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.component.BrewingFuel);
+  public static void serverTick(net.minecraft.server.level.ServerLevel, net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  private boolean[] getPotionBits();
+  private static boolean isBrewable(net.minecraft.server.level.ServerLevel, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  private static void doBrew(net.minecraft.server.level.ServerLevel, net.minecraft.core.BlockPos, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  protected void loadAdditional(net.minecraft.world.level.storage.ValueInput);
+  protected void saveAdditional(net.minecraft.world.level.storage.ValueOutput);
+  public boolean canPlaceItem(int, net.minecraft.world.item.ItemStack);
+  public int[] getSlotsForFace(net.minecraft.core.Direction);
+  public boolean canPlaceItemThroughFace(int, net.minecraft.world.item.ItemStack, net.minecraft.core.Direction);
+  public boolean canTakeItemThroughFace(int, net.minecraft.world.item.ItemStack, net.minecraft.core.Direction);
+  protected net.minecraft.world.inventory.AbstractContainerMenu createMenu(int, net.minecraft.world.entity.player.Inventory);
+  static {};
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$FuelSlot extends net.minecraft.world.inventory.Slot {
+  public net.minecraft.world.inventory.BrewingStandMenu$FuelSlot(net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+  public static boolean mayPlaceItem(net.minecraft.world.item.ItemStack);
+  public net.minecraft.resources.Identifier getNoItemIcon();
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$IngredientsSlot extends net.minecraft.world.inventory.Slot {
+  private final net.minecraft.world.item.crafting.RecipePropertySet propertySet;
+  public net.minecraft.world.inventory.BrewingStandMenu$IngredientsSlot(net.minecraft.world.item.crafting.RecipePropertySet, net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$PotionSlot extends net.minecraft.world.inventory.Slot {
+  private final net.minecraft.world.item.crafting.RecipeAccess recipeAccess;
+  public net.minecraft.world.inventory.BrewingStandMenu$PotionSlot(net.minecraft.world.item.crafting.RecipeAccess, net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+  public int getMaxStackSize();
+  public void onTake(net.minecraft.world.entity.player.Player, net.minecraft.world.item.ItemStack);
+  public net.minecraft.resources.Identifier getNoItemIcon();
+}
+Compiled from "BrewingStandMenu.java"
+public class net.minecraft.world.inventory.BrewingStandMenu extends net.minecraft.world.inventory.AbstractContainerMenu {
+  private static final net.minecraft.resources.Identifier EMPTY_SLOT_FUEL;
+  private static final net.minecraft.resources.Identifier EMPTY_SLOT_POTION;
+  private static final int BOTTLE_SLOT_START;
+  private static final int BOTTLE_SLOT_END;
+  private static final int INGREDIENT_SLOT;
+  private static final int FUEL_SLOT;
+  private static final int SLOT_COUNT;
+  private static final int DATA_COUNT;
+  private static final int INV_SLOT_START;
+  private static final int INV_SLOT_END;
+  private static final int USE_ROW_SLOT_START;
+  private static final int USE_ROW_SLOT_END;
+  private final net.minecraft.world.Container brewingStand;
+  private final net.minecraft.world.inventory.ContainerData brewingStandData;
+  private final net.minecraft.world.inventory.Slot ingredientSlot;
+  public net.minecraft.world.inventory.BrewingStandMenu(int, net.minecraft.world.entity.player.Inventory);
+  public net.minecraft.world.inventory.BrewingStandMenu(int, net.minecraft.world.entity.player.Inventory, net.minecraft.world.Container, net.minecraft.world.inventory.ContainerData);
+  public boolean stillValid(net.minecraft.world.entity.player.Player);
+  public net.minecraft.world.item.ItemStack quickMoveStack(net.minecraft.world.entity.player.Player, int);
+  public int getFuel();
+  public int getTotalFuel();
+  public int getBrewingTicks();
+  public int getTotalBrewingTicks();
+  static {};
+}
+Compiled from "PotionIngredient.java"
+public final class net.minecraft.world.item.crafting.PotionIngredient extends java.lang.Record implements java.util.function.Predicate<net.minecraft.world.item.ItemStack> {
+  private final net.minecraft.world.item.crafting.Ingredient ingredient;
+  private final java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate> potions;
+  public static final com.mojang.serialization.MapCodec<net.minecraft.world.item.crafting.PotionIngredient> MAP_CODEC;
+  public static final net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, net.minecraft.world.item.crafting.PotionIngredient> STREAM_CODEC;
+  public net.minecraft.world.item.crafting.PotionIngredient(net.minecraft.world.item.crafting.Ingredient, java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate>);
+  public boolean test(net.minecraft.world.item.ItemStack);
+  public static net.minecraft.world.item.crafting.PotionIngredient of(net.minecraft.world.item.Item, net.minecraft.core.component.predicates.PotionsPredicate);
+  public static net.minecraft.world.item.crafting.PotionIngredient of(net.minecraft.world.item.Item);
+  public static boolean isPotionInput(net.minecraft.world.item.ItemStack, net.minecraft.world.item.crafting.RecipeAccess);
+  public final java.lang.String toString();
+  public final int hashCode();
+  public final boolean equals(java.lang.Object);
+  public net.minecraft.world.item.crafting.Ingredient ingredient();
+  public java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate> potions();
+  public boolean test(java.lang.Object);
+  static {};
+}
+Compiled from "EnchantmentHelper.java"
+public class net.minecraft.world.item.enchantment.EnchantmentHelper {
+  public net.minecraft.world.item.enchantment.EnchantmentHelper();
+  public static int getItemEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.item.ItemInstance);
+  public static int getTagEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.item.ItemInstance);
+  public static net.minecraft.world.item.enchantment.ItemEnchantments updateEnchantments(net.minecraft.world.item.ItemStack, java.util.function.Consumer<net.minecraft.world.item.enchantment.ItemEnchantments$Mutable>);
+  public static boolean canStoreEnchantments(net.minecraft.world.item.ItemStack);
+  public static void setEnchantments(net.minecraft.world.item.ItemStack, net.minecraft.world.item.enchantment.ItemEnchantments);
+  public static net.minecraft.world.item.enchantment.ItemEnchantments getEnchantmentsForCrafting(net.minecraft.world.item.ItemStack);
+  public static net.minecraft.core.component.DataComponentType<net.minecraft.world.item.enchantment.ItemEnchantments> getComponentType(net.minecraft.world.item.ItemStack);
+  public static boolean hasAnyEnchantments(net.minecraft.world.item.ItemStack);
+  public static int processDurabilityChange(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static int processAmmoUse(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.item.ItemStack, int);
+  public static int processBlockExperience(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static int processMobExperience(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.entity.Entity, int);
+  public static net.minecraft.world.item.ItemStack createBook(net.minecraft.world.item.enchantment.EnchantmentInstance);
+  public static void runIterationOnItem(net.minecraft.world.item.ItemStack, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentVisitor);
+  public static void runIterationOnItem(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.entity.LivingEntity, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentInSlotVisitor);
+  public static void runIterationOnEquipment(net.minecraft.world.entity.LivingEntity, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentInSlotVisitor);
+  public static boolean isImmuneToDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource);
+  public static float getDamageProtection(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource);
+  public static float modifyDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyFallBasedDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyArmorEffectiveness(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyKnockback(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static void doPostAttackEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource);
+  public static void doPostPiercingAttackEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static void doPostAttackEffectsWithItemSource(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, net.minecraft.world.item.ItemStack);
+  public static void doPostAttackEffectsWithItemSourceOnBreak(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, net.minecraft.world.item.ItemStack, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static void runLocationChangedEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static void runLocationChangedEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.EquipmentSlot);
+  public static void stopLocationBasedEffects(net.minecraft.world.entity.LivingEntity);
+  public static void stopLocationBasedEffects(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.EquipmentSlot);
+  public static void tickEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static int getEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.entity.LivingEntity);
+  public static int processProjectileCount(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, int);
+  public static float processProjectileSpread(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, float);
+  public static int getPiercingCount(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.item.ItemStack);
+  public static void onProjectileSpawned(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.projectile.Projectile, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static void onHitBlock(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.Entity, net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.phys.Vec3, net.minecraft.world.level.block.state.BlockState, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static int modifyDurabilityToRepairFromXp(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static float processEquipmentDropChance(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float processEquipmentDropChance(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource, float, net.minecraft.world.entity.EquipmentSlot);
+  public static void forEachModifier(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlotGroup, java.util.function.BiConsumer<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier>);
+  public static void forEachModifier(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlot, java.util.function.BiConsumer<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier>);
+  public static int getFishingLuckBonus(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static float getFishingTimeReduction(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static int getTridentReturnToOwnerAcceleration(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static float modifyCrossbowChargingTime(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, float);
+  public static float getTridentSpinAttackStrength(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity);
+  public static boolean hasTag(net.minecraft.world.item.ItemStack, net.minecraft.tags.TagKey<net.minecraft.world.item.enchantment.Enchantment>);
+  public static boolean has(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<?>);
+  public static <T> java.util.Optional<T> pickHighestLevel(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<java.util.List<T>>);
+  public static <T> com.mojang.datafixers.util.Pair<T, java.lang.Integer> getHighestLevel(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<T>);
+  public static java.util.Optional<net.minecraft.world.item.enchantment.EnchantedItemInUse> getRandomItemWith(net.minecraft.core.component.DataComponentType<?>, net.minecraft.world.entity.LivingEntity, java.util.function.Predicate<net.minecraft.world.item.ItemStack>);
+  public static int getEnchantmentCost(net.minecraft.util.RandomSource, int, int, net.minecraft.world.item.ItemStack);
+  public static net.minecraft.world.item.ItemStack enchantItem(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, net.minecraft.core.RegistryAccess, java.util.Optional<? extends net.minecraft.core.HolderSet<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static net.minecraft.world.item.ItemStack enchantItem(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance> selectEnchantment(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static void filterCompatibleEnchantments(java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance>, net.minecraft.world.item.enchantment.EnchantmentInstance);
+  public static boolean isEnchantmentCompatible(java.util.Collection<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>, net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>);
+  public static java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance> getAvailableEnchantmentResults(int, net.minecraft.world.item.ItemStack, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static void enchantItemFromProvider(net.minecraft.world.item.ItemStack, net.minecraft.core.RegistryAccess, net.minecraft.resources.ResourceKey<net.minecraft.world.item.enchantment.providers.EnchantmentProvider>, net.minecraft.world.DifficultyInstance, net.minecraft.util.RandomSource);
+}
+Compiled from "BrewingStandBlockEntity.java"
+public class net.minecraft.world.level.block.entity.BrewingStandBlockEntity extends net.minecraft.world.level.block.entity.BaseContainerBlockEntity implements net.minecraft.world.WorldlyContainer {
+  private static final int INGREDIENT_SLOT;
+  private static final int FUEL_SLOT;
+  private static final int[] SLOTS_FOR_UP;
+  private static final int[] SLOTS_FOR_DOWN;
+  private static final int[] SLOTS_FOR_SIDES;
+  public static final int DATA_BREW_TIME;
+  public static final int DATA_FUEL_USES;
+  public static final int DATA_TOTAL_BREW_TIME;
+  public static final int DATA_TOTAL_FUEL_USES;
+  public static final int NUM_DATA_VALUES;
+  private static final int DEFAULT_BREW_TIME;
+  public static final int BREWING_TIME_SECONDS;
+  private static final int DEFAULT_FUEL;
+  private static final float DEFAULT_SPEED_MULTIPLIER;
+  private static final int DEFAULT_FUEL_USES;
+  private static final net.minecraft.network.chat.Component DEFAULT_NAME;
+  private net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> items;
+  private int brewTime;
+  private int totalBrewTime;
+  private boolean[] lastPotionCount;
+  private net.minecraft.world.item.Item ingredient;
+  private int fuel;
+  private int totalFuel;
+  private float speedMultiplier;
+  protected final net.minecraft.world.inventory.ContainerData dataAccess;
+  private final net.minecraft.world.item.crafting.RecipeManager$CachedCheck<net.minecraft.world.item.crafting.BrewingInput, net.minecraft.world.item.crafting.BrewingRecipe> quickCheck;
+  public net.minecraft.world.level.block.entity.BrewingStandBlockEntity(net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState);
+  protected net.minecraft.network.chat.Component getDefaultName();
+  public int getContainerSize();
+  protected net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> getItems();
+  protected void setItems(net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack>);
+  protected int getUses(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.component.BrewingFuel);
+  protected float getSpeedMultiplier(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.component.BrewingFuel);
+  public static void serverTick(net.minecraft.server.level.ServerLevel, net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  private boolean[] getPotionBits();
+  private static boolean isBrewable(net.minecraft.server.level.ServerLevel, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  private static void doBrew(net.minecraft.server.level.ServerLevel, net.minecraft.core.BlockPos, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  protected void loadAdditional(net.minecraft.world.level.storage.ValueInput);
+  protected void saveAdditional(net.minecraft.world.level.storage.ValueOutput);
+  public boolean canPlaceItem(int, net.minecraft.world.item.ItemStack);
+  public int[] getSlotsForFace(net.minecraft.core.Direction);
+  public boolean canPlaceItemThroughFace(int, net.minecraft.world.item.ItemStack, net.minecraft.core.Direction);
+  public boolean canTakeItemThroughFace(int, net.minecraft.world.item.ItemStack, net.minecraft.core.Direction);
+  protected net.minecraft.world.inventory.AbstractContainerMenu createMenu(int, net.minecraft.world.entity.player.Inventory);
+  static {};
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$FuelSlot extends net.minecraft.world.inventory.Slot {
+  public net.minecraft.world.inventory.BrewingStandMenu$FuelSlot(net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+  public static boolean mayPlaceItem(net.minecraft.world.item.ItemStack);
+  public net.minecraft.resources.Identifier getNoItemIcon();
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$IngredientsSlot extends net.minecraft.world.inventory.Slot {
+  private final net.minecraft.world.item.crafting.RecipePropertySet propertySet;
+  public net.minecraft.world.inventory.BrewingStandMenu$IngredientsSlot(net.minecraft.world.item.crafting.RecipePropertySet, net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+}
+Compiled from "BrewingStandMenu.java"
+class net.minecraft.world.inventory.BrewingStandMenu$PotionSlot extends net.minecraft.world.inventory.Slot {
+  private final net.minecraft.world.item.crafting.RecipeAccess recipeAccess;
+  public net.minecraft.world.inventory.BrewingStandMenu$PotionSlot(net.minecraft.world.item.crafting.RecipeAccess, net.minecraft.world.Container, int, int, int);
+  public boolean mayPlace(net.minecraft.world.item.ItemStack);
+  public int getMaxStackSize();
+  public void onTake(net.minecraft.world.entity.player.Player, net.minecraft.world.item.ItemStack);
+  public net.minecraft.resources.Identifier getNoItemIcon();
+}
+Compiled from "BrewingStandMenu.java"
+public class net.minecraft.world.inventory.BrewingStandMenu extends net.minecraft.world.inventory.AbstractContainerMenu {
+  private static final net.minecraft.resources.Identifier EMPTY_SLOT_FUEL;
+  private static final net.minecraft.resources.Identifier EMPTY_SLOT_POTION;
+  private static final int BOTTLE_SLOT_START;
+  private static final int BOTTLE_SLOT_END;
+  private static final int INGREDIENT_SLOT;
+  private static final int FUEL_SLOT;
+  private static final int SLOT_COUNT;
+  private static final int DATA_COUNT;
+  private static final int INV_SLOT_START;
+  private static final int INV_SLOT_END;
+  private static final int USE_ROW_SLOT_START;
+  private static final int USE_ROW_SLOT_END;
+  private final net.minecraft.world.Container brewingStand;
+  private final net.minecraft.world.inventory.ContainerData brewingStandData;
+  private final net.minecraft.world.inventory.Slot ingredientSlot;
+  public net.minecraft.world.inventory.BrewingStandMenu(int, net.minecraft.world.entity.player.Inventory);
+  public net.minecraft.world.inventory.BrewingStandMenu(int, net.minecraft.world.entity.player.Inventory, net.minecraft.world.Container, net.minecraft.world.inventory.ContainerData);
+  public boolean stillValid(net.minecraft.world.entity.player.Player);
+  public net.minecraft.world.item.ItemStack quickMoveStack(net.minecraft.world.entity.player.Player, int);
+  public int getFuel();
+  public int getTotalFuel();
+  public int getBrewingTicks();
+  public int getTotalBrewingTicks();
+  static {};
+}
+Compiled from "PotionIngredient.java"
+public final class net.minecraft.world.item.crafting.PotionIngredient extends java.lang.Record implements java.util.function.Predicate<net.minecraft.world.item.ItemStack> {
+  private final net.minecraft.world.item.crafting.Ingredient ingredient;
+  private final java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate> potions;
+  public static final com.mojang.serialization.MapCodec<net.minecraft.world.item.crafting.PotionIngredient> MAP_CODEC;
+  public static final net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, net.minecraft.world.item.crafting.PotionIngredient> STREAM_CODEC;
+  public net.minecraft.world.item.crafting.PotionIngredient(net.minecraft.world.item.crafting.Ingredient, java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate>);
+  public boolean test(net.minecraft.world.item.ItemStack);
+  public static net.minecraft.world.item.crafting.PotionIngredient of(net.minecraft.world.item.Item, net.minecraft.core.component.predicates.PotionsPredicate);
+  public static net.minecraft.world.item.crafting.PotionIngredient of(net.minecraft.world.item.Item);
+  public static boolean isPotionInput(net.minecraft.world.item.ItemStack, net.minecraft.world.item.crafting.RecipeAccess);
+  public final java.lang.String toString();
+  public final int hashCode();
+  public final boolean equals(java.lang.Object);
+  public net.minecraft.world.item.crafting.Ingredient ingredient();
+  public java.util.Optional<net.minecraft.core.component.predicates.PotionsPredicate> potions();
+  public boolean test(java.lang.Object);
+  static {};
+}
+Compiled from "EnchantmentHelper.java"
+public class net.minecraft.world.item.enchantment.EnchantmentHelper {
+  public net.minecraft.world.item.enchantment.EnchantmentHelper();
+  public static int getItemEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.item.ItemInstance);
+  public static net.minecraft.world.item.enchantment.ItemEnchantments updateEnchantments(net.minecraft.world.item.ItemStack, java.util.function.Consumer<net.minecraft.world.item.enchantment.ItemEnchantments$Mutable>);
+  public static boolean canStoreEnchantments(net.minecraft.world.item.ItemStack);
+  public static void setEnchantments(net.minecraft.world.item.ItemStack, net.minecraft.world.item.enchantment.ItemEnchantments);
+  public static net.minecraft.world.item.enchantment.ItemEnchantments getEnchantmentsForCrafting(net.minecraft.world.item.ItemStack);
+  private static net.minecraft.core.component.DataComponentType<net.minecraft.world.item.enchantment.ItemEnchantments> getComponentType(net.minecraft.world.item.ItemStack);
+  public static boolean hasAnyEnchantments(net.minecraft.world.item.ItemStack);
+  public static int processDurabilityChange(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static int processAmmoUse(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.item.ItemStack, int);
+  public static int processBlockExperience(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static int processMobExperience(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.entity.Entity, int);
+  public static net.minecraft.world.item.ItemStack createBook(net.minecraft.world.item.enchantment.EnchantmentInstance);
+  private static void runIterationOnItem(net.minecraft.world.item.ItemStack, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentVisitor);
+  private static void runIterationOnItem(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.entity.LivingEntity, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentInSlotVisitor);
+  private static void runIterationOnEquipment(net.minecraft.world.entity.LivingEntity, net.minecraft.world.item.enchantment.EnchantmentHelper$EnchantmentInSlotVisitor);
+  public static boolean isImmuneToDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource);
+  public static float getDamageProtection(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource);
+  public static float modifyDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyFallBasedDamage(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyArmorEffectiveness(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static float modifyKnockback(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, float);
+  public static void doPostAttackEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource);
+  public static void doPostPiercingAttackEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static void doPostAttackEffectsWithItemSource(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, net.minecraft.world.item.ItemStack);
+  public static void doPostAttackEffectsWithItemSourceOnBreak(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.Entity, net.minecraft.world.damagesource.DamageSource, net.minecraft.world.item.ItemStack, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static void runLocationChangedEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static void runLocationChangedEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.EquipmentSlot);
+  public static void stopLocationBasedEffects(net.minecraft.world.entity.LivingEntity);
+  public static void stopLocationBasedEffects(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.EquipmentSlot);
+  public static void tickEffects(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity);
+  public static int getEnchantmentLevel(net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>, net.minecraft.world.entity.LivingEntity);
+  public static int processProjectileCount(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, int);
+  public static float processProjectileSpread(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity, float);
+  public static int getPiercingCount(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.item.ItemStack);
+  public static void onProjectileSpawned(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.projectile.Projectile, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static void onHitBlock(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, net.minecraft.world.entity.Entity, net.minecraft.world.entity.EquipmentSlot, net.minecraft.world.phys.Vec3, net.minecraft.world.level.block.state.BlockState, java.util.function.Consumer<net.minecraft.world.item.ItemStack>);
+  public static int modifyDurabilityToRepairFromXp(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, int);
+  public static float processEquipmentDropChance(net.minecraft.server.level.ServerLevel, net.minecraft.world.entity.LivingEntity, net.minecraft.world.damagesource.DamageSource, float);
+  public static void forEachModifier(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlotGroup, java.util.function.BiConsumer<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier>);
+  public static void forEachModifier(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.EquipmentSlot, java.util.function.BiConsumer<net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute>, net.minecraft.world.entity.ai.attributes.AttributeModifier>);
+  public static int getFishingLuckBonus(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static float getFishingTimeReduction(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static int getTridentReturnToOwnerAcceleration(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.ItemStack, net.minecraft.world.entity.Entity);
+  public static float modifyCrossbowChargingTime(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity, float);
+  public static float getTridentSpinAttackStrength(net.minecraft.world.item.ItemStack, net.minecraft.world.entity.LivingEntity);
+  public static boolean hasTag(net.minecraft.world.item.ItemStack, net.minecraft.tags.TagKey<net.minecraft.world.item.enchantment.Enchantment>);
+  public static boolean has(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<?>);
+  public static <T> java.util.Optional<T> pickHighestLevel(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<java.util.List<T>>);
+  public static <T> com.mojang.datafixers.util.Pair<T, java.lang.Integer> getHighestLevel(net.minecraft.world.item.ItemStack, net.minecraft.core.component.DataComponentType<T>);
+  public static java.util.Optional<net.minecraft.world.item.enchantment.EnchantedItemInUse> getRandomItemWith(net.minecraft.core.component.DataComponentType<?>, net.minecraft.world.entity.LivingEntity, java.util.function.Predicate<net.minecraft.world.item.ItemStack>);
+  public static int getEnchantmentCost(net.minecraft.util.RandomSource, int, int, net.minecraft.world.item.ItemStack);
+  public static net.minecraft.world.item.ItemStack enchantItem(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, net.minecraft.core.RegistryAccess, java.util.Optional<? extends net.minecraft.core.HolderSet<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static net.minecraft.world.item.ItemStack enchantItem(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance> selectEnchantment(net.minecraft.util.RandomSource, net.minecraft.world.item.ItemStack, int, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static void filterCompatibleEnchantments(java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance>, net.minecraft.world.item.enchantment.EnchantmentInstance);
+  public static boolean isEnchantmentCompatible(java.util.Collection<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>, net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>);
+  public static java.util.List<net.minecraft.world.item.enchantment.EnchantmentInstance> getAvailableEnchantmentResults(int, net.minecraft.world.item.ItemStack, java.util.stream.Stream<net.minecraft.core.Holder<net.minecraft.world.item.enchantment.Enchantment>>);
+  public static void enchantItemFromProvider(net.minecraft.world.item.ItemStack, net.minecraft.core.RegistryAccess, net.minecraft.resources.ResourceKey<net.minecraft.world.item.enchantment.providers.EnchantmentProvider>, net.minecraft.world.DifficultyInstance, net.minecraft.util.RandomSource);
+}
+Compiled from "BrewingStandBlockEntity.java"
+public class net.minecraft.world.level.block.entity.BrewingStandBlockEntity extends net.minecraft.world.level.block.entity.BaseContainerBlockEntity implements net.minecraft.world.WorldlyContainer {
+  private static final int INGREDIENT_SLOT;
+  private static final int FUEL_SLOT;
+  private static final int[] SLOTS_FOR_UP;
+  private static final int[] SLOTS_FOR_DOWN;
+  private static final int[] SLOTS_FOR_SIDES;
+  public static final int DATA_BREW_TIME;
+  public static final int DATA_FUEL_USES;
+  public static final int DATA_TOTAL_BREW_TIME;
+  public static final int DATA_TOTAL_FUEL_USES;
+  public static final int NUM_DATA_VALUES;
+  private static final int DEFAULT_BREW_TIME;
+  public static final int BREWING_TIME_SECONDS;
+  private static final int DEFAULT_FUEL;
+  private static final float DEFAULT_SPEED_MULTIPLIER;
+  private static final int DEFAULT_FUEL_USES;
+  private static final net.minecraft.network.chat.Component DEFAULT_NAME;
+  private net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> items;
+  private int brewTime;
+  private int totalBrewTime;
+  private boolean[] lastPotionCount;
+  private net.minecraft.world.item.Item ingredient;
+  private int fuel;
+  private int totalFuel;
+  private float speedMultiplier;
+  protected final net.minecraft.world.inventory.ContainerData dataAccess;
+  private final net.minecraft.world.item.crafting.RecipeManager$CachedCheck<net.minecraft.world.item.crafting.BrewingInput, net.minecraft.world.item.crafting.BrewingRecipe> quickCheck;
+  public net.minecraft.world.level.block.entity.BrewingStandBlockEntity(net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState);
+  protected net.minecraft.network.chat.Component getDefaultName();
+  public int getContainerSize();
+  protected net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack> getItems();
+  protected void setItems(net.minecraft.core.NonNullList<net.minecraft.world.item.ItemStack>);
+  protected int getUses(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.component.BrewingFuel);
+  protected float getSpeedMultiplier(net.minecraft.server.level.ServerLevel, net.minecraft.world.item.component.BrewingFuel);
+  public static void serverTick(net.minecraft.server.level.ServerLevel, net.minecraft.core.BlockPos, net.minecraft.world.level.block.state.BlockState, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  private boolean[] getPotionBits();
+  private static boolean isBrewable(net.minecraft.server.level.ServerLevel, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  private static void doBrew(net.minecraft.server.level.ServerLevel, net.minecraft.core.BlockPos, net.minecraft.world.level.block.entity.BrewingStandBlockEntity);
+  protected void loadAdditional(net.minecraft.world.level.storage.ValueInput);
+  protected void saveAdditional(net.minecraft.world.level.storage.ValueOutput);
+  public boolean canPlaceItem(int, net.minecraft.world.item.ItemStack);
+  public int[] getSlotsForFace(net.minecraft.core.Direction);
+  public boolean canPlaceItemThroughFace(int, net.minecraft.world.item.ItemStack, net.minecraft.core.Direction);
+  public boolean canTakeItemThroughFace(int, net.minecraft.world.item.ItemStack, net.minecraft.core.Direction);
+  protected net.minecraft.world.inventory.AbstractContainerMenu createMenu(int, net.minecraft.world.entity.player.Inventory);
+  static {};
+}
+######## javap -c net.minecraft.world.inventory.BrewingStandMenu$PotionSlot
+######## javap -c net.minecraft.world.item.crafting.PotionIngredient
+  public final java.lang.String toString();
+         4: ldc           #95                 // String item
+        22: ldc           #114                // String potion_contents
