@@ -1,4 +1,0 @@
-net/minecraft/server/level/ServerLevel.java	getRaidAt|getRaids\(|findNearestMapStructure	2
-net/minecraft/client/renderer/entity/VindicatorRenderer.java	.	60
-net/minecraft/client/model/monster/illager/IllagerModel.java	hat|ArmPose	3
-net/minecraft/world/entity/npc/villager/AbstractVillager.java	setTradingPlayer|getOffers|notifyTrade	4

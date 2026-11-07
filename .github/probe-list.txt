@@ -1,6 +1,2 @@
-world/entity/raid/Raid\.
-Illager
-Vindicator
-OminousBottle
-brewing/
-Mercenary
+recipe/brewing/.*(redstone|turtle|gunpowder|dragon)
+BrewingStand
