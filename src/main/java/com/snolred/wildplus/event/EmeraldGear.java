@@ -30,6 +30,11 @@ import net.neoforged.neoforge.event.level.BlockDropsEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 /**
+ * 3.6 로열 에메랄드 상향 (얻기 어려워진 만큼): 검 약탈 80% · 생명 수확 4 · 흡혈 15% / 곡괭이 65% · 성급함 II 10초 /
+ * 도끼 3배 · 처형 1.8배 / 삽 10% / 괭이 100% · 13×13 / 활 회복 4 · 재생 II /
+ * 2부위 + 포만 (10초마다 배고픔 1 회복) / 4부위 체력 증가 IV · 저항 I · 생명의 가호 30초마다 ·
+ * 생명의 오라 (4초마다 8칸 안 다른 플레이어 체력 2 회복) · 불멸의 맹세 (죽을 피해를 받으면 체력 절반으로 버팀 · 10분마다).
+ *
  * 에메랄드 장비 (풍요 · 행운 · 생명). 로열 에메랄드는 같은 능력이 훨씬 강하고 추가 능력이 붙으며 내구도 무한 · 불에 안 탐.
  *  - 검 "약탈": 처치하면 30%(로열 70%) 확률로 전리품 두 배, 경험치 1.3배(로열 2배)
  *        로열 추가 "생명 수확": 처치할 때마다 체력 2 회복 · 20% 확률로 에메랄드 1~2개
@@ -82,21 +87,35 @@ public final class EmeraldGear {
             p.addEffect(fx(MobEffects.LUCK, royal >= 2 ? 1 : 0));
             p.addEffect(fx(MobEffects.HERO_OF_THE_VILLAGE, royal >= 2 ? 1 : 0));
         }
-        if (royal >= 2) p.addEffect(fx(MobEffects.REGENERATION, 0));
+        if (royal >= 2) {
+            p.addEffect(fx(MobEffects.REGENERATION, 0));
+            if (p.tickCount % 200 == 0) p.getFoodData().eat(1, 1.0F); // 포만
+        }
         if (n >= 4) {
             // 체력 증가는 효과가 끊겼다 다시 붙으면 체력이 깎이므로 길게 유지
             MobEffectInstance hb = p.getEffect(MobEffects.HEALTH_BOOST);
-            int amp = royal >= 4 ? 2 : 0;
+            int amp = royal >= 4 ? 3 : 0;
             if (hb == null || hb.getAmplifier() != amp || hb.getDuration() < 200) {
                 p.addEffect(new MobEffectInstance(MobEffects.HEALTH_BOOST, 400, amp, true, false, true));
             }
         }
-        if (royal >= 4) p.addEffect(fx(MobEffects.RESISTANCE, 0));
+        if (royal >= 4) {
+            p.addEffect(fx(MobEffects.RESISTANCE, 0));
+            // 생명의 오라: 4초마다 주변 8칸 다른 플레이어 체력 2 회복
+            if (p.tickCount % 80 == 0) {
+                ServerLevel sl0 = (ServerLevel) p.level();
+                for (Player o : sl0.getEntitiesOfClass(Player.class, p.getBoundingBox().inflate(8.0))) {
+                    if (o == p || !o.isAlive() || o.getHealth() >= o.getMaxHealth()) continue;
+                    o.heal(2.0F);
+                    sl0.sendParticles(ParticleTypes.HAPPY_VILLAGER, o.getX(), o.getY() + 1.2, o.getZ(), 6, 0.3, 0.4, 0.3, 0);
+                }
+            }
+        }
         // 대지의 축복: 로열 괭이를 들면 주변 작물이 빨리 자람
         if (p.getMainHandItem().is(ROYAL_EMERALD_HOE.get()) || p.getOffhandItem().is(ROYAL_EMERALD_HOE.get())) {
             ServerLevel sl = (ServerLevel) p.level();
             BlockPos c = p.blockPosition();
-            for (BlockPos q : BlockPos.betweenClosed(c.offset(-4, -2, -4), c.offset(4, 2, 4))) {
+            for (BlockPos q : BlockPos.betweenClosed(c.offset(-6, -2, -6), c.offset(6, 2, 6))) {
                 BlockState st = sl.getBlockState(q);
                 if (st.getBlock() instanceof CropBlock crop && !crop.isMaxAge(st) && p.getRandom().nextFloat() < 0.35F) {
                     st.randomTick(sl, q.immutable(), p.getRandom());
@@ -116,7 +135,7 @@ public final class EmeraldGear {
         if (p.getHealth() <= 0 || p.getHealth() > p.getMaxHealth() * 0.3F || royalPieces(p) < 4) return;
         long now = sl.getGameTime();
         var tag = p.getPersistentData();
-        if (now - tag.getLongOr(GUARD_AT, -10000L) < 800) return;
+        if (now - tag.getLongOr(GUARD_AT, -10000L) < 600) return;
         tag.putLong(GUARD_AT, now);
         p.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 200, 2));
         p.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 100, 2));
@@ -129,19 +148,51 @@ public final class EmeraldGear {
         LivingEntity target = event.getEntity();
         if (event.getSource().getEntity() instanceof Player p && event.getSource().getDirectEntity() == p
                 && is(p.getMainHandItem(), EMERALD_AXE, ROYAL_EMERALD_AXE) && target.getHealth() >= target.getMaxHealth()) {
-            event.setAmount(event.getAmount() * (p.getMainHandItem().is(ROYAL_EMERALD_AXE.get()) ? 2.6F : 1.8F));
+            event.setAmount(event.getAmount() * (p.getMainHandItem().is(ROYAL_EMERALD_AXE.get()) ? 3.0F : 1.8F));
             if (target.level() instanceof ServerLevel sl) {
                 sl.sendParticles(ParticleTypes.HAPPY_VILLAGER, target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), 8, 0.3, 0.3, 0.3, 0);
             }
         } else if (event.getSource().getEntity() instanceof Player p && event.getSource().getDirectEntity() == p
                 && p.getMainHandItem().is(ROYAL_EMERALD_AXE.get()) && target.getHealth() <= target.getMaxHealth() * 0.3F) {
             // 처형
-            event.setAmount(event.getAmount() * 1.5F);
+            event.setAmount(event.getAmount() * 1.8F);
             if (target.level() instanceof ServerLevel sl) {
                 sl.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), 12, 0.3, 0.3, 0.3, 0.2);
             }
         }
         if (target instanceof Player p && pieces(p) >= 4 && royalPieces(p) < 4) event.setAmount(event.getAmount() * 0.9F);
+    }
+
+    /** 로열 검 흡혈: 근접 피해의 15% 회복 */
+    @SubscribeEvent
+    public static void onSwordHit(LivingDamageEvent.Post event) {
+        if (event.getSource().getEntity() instanceof Player p && event.getSource().getDirectEntity() == p
+                && p.getMainHandItem().is(ROYAL_EMERALD_SWORD.get()) && event.getEntity() != p) {
+            p.heal(event.getHealthDamage() * 0.15F);
+        }
+    }
+
+    /** 불멸의 맹세 (로열 4부위): 죽을 피해를 받으면 체력 절반으로 버팀 · 10분(12000틱)마다 */
+    private static final String VOW_AT = "wildplus_royal_vow";
+
+    @SubscribeEvent
+    public static void onDeathVow(net.neoforged.neoforge.event.entity.living.LivingDeathEvent event) {
+        if (!(event.getEntity() instanceof Player p) || !(p.level() instanceof ServerLevel sl) || royalPieces(p) < 4) return;
+        long now = sl.getGameTime();
+        var tag = p.getPersistentData();
+        if (now - tag.getLongOr(VOW_AT, -100000L) < 12000) return;
+        tag.putLong(VOW_AT, now);
+        event.setCanceled(true);
+        p.setHealth(p.getMaxHealth() * 0.5F);
+        p.removeEffect(MobEffects.WITHER);
+        p.removeEffect(MobEffects.POISON);
+        p.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 200, 3));
+        p.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 2));
+        p.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 400, 0));
+        sl.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, p.getX(), p.getY() + 1, p.getZ(), 60, 0.5, 0.8, 0.5, 0.4);
+        sl.playSound(null, p.blockPosition(), net.minecraft.sounds.SoundEvents.TOTEM_USE, net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, 1.2F);
+        p.sendSystemMessage(net.minecraft.network.chat.Component.literal("💚 불멸의 맹세! 로열 에메랄드가 죽음을 막았어요 (10분 뒤 다시)")
+                .withStyle(net.minecraft.ChatFormatting.GREEN, net.minecraft.ChatFormatting.BOLD));
     }
 
     /** 생명의 화살 */
@@ -151,8 +202,8 @@ public final class EmeraldGear {
         String bow = a.getPersistentData().getStringOr(Bows.BOW_TAG, "");
         if (bow.equals("emerald")) owner.heal(1.0F);
         else if (bow.equals("royal_emerald")) {
-            owner.heal(3.0F);
-            owner.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 0));
+            owner.heal(4.0F);
+            owner.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 1));
             owner.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 0));
         } else return;
         if (owner.level() instanceof ServerLevel sl) sl.sendParticles(ParticleTypes.HEART, owner.getX(), owner.getY() + 2, owner.getZ(), 1, 0.2, 0.1, 0.2, 0);
@@ -167,13 +218,13 @@ public final class EmeraldGear {
         boolean royalSword = hand.is(ROYAL_EMERALD_SWORD.get());
         if (royalSword) {
             // 생명 수확
-            p.heal(2.0F);
-            if (p.getRandom().nextFloat() < 0.2F) {
+            p.heal(4.0F);
+            if (p.getRandom().nextFloat() < 0.35F) {
                 LivingEntity v = event.getEntity();
                 event.getDrops().add(new ItemEntity(v.level(), v.getX(), v.getY() + 0.5, v.getZ(), new ItemStack(Items.EMERALD, 1 + p.getRandom().nextInt(2))));
             }
         }
-        float chance = royalSword ? 0.7F : 0.3F;
+        float chance = royalSword ? 0.8F : 0.3F;
         if (p.getRandom().nextFloat() >= chance) return;
         for (ItemEntity e : event.getDrops()) {
             ItemStack s = e.getItem();
@@ -204,10 +255,10 @@ public final class EmeraldGear {
         RandomSource r = event.getLevel().getRandom();
         BlockPos pos = event.getPos();
         if (tool.is(ROYAL_EMERALD_PICKAXE.get()) && state.is(Tags.Blocks.ORES) && event.getBreaker() instanceof Player miner) {
-            miner.addEffect(new MobEffectInstance(MobEffects.HASTE, 120, 1, true, false, true)); // 광맥의 축복
+            miner.addEffect(new MobEffectInstance(MobEffects.HASTE, 200, 1, true, false, true)); // 광맥의 축복
         }
         if (is(tool, EMERALD_PICKAXE, ROYAL_EMERALD_PICKAXE) && state.is(Tags.Blocks.ORES)
-                && r.nextFloat() < (tool.is(ROYAL_EMERALD_PICKAXE.get()) ? 0.5F : 0.2F)) {
+                && r.nextFloat() < (tool.is(ROYAL_EMERALD_PICKAXE.get()) ? 0.65F : 0.2F)) {
             for (ItemEntity e : event.getDrops()) {
                 if (!e.getItem().is(state.getBlock().asItem())) {
                     e.getItem().grow(1);
@@ -218,7 +269,7 @@ public final class EmeraldGear {
         } else if (is(tool, EMERALD_SHOVEL, ROYAL_EMERALD_SHOVEL)
                 && (state.is(BlockTags.DIRT) || state.is(BlockTags.SAND) || state.is(Blocks.GRAVEL))) {
             boolean royalShovel = tool.is(ROYAL_EMERALD_SHOVEL.get());
-            float chance = royalShovel ? 0.07F : 0.02F;
+            float chance = royalShovel ? 0.10F : 0.02F;
             if (r.nextFloat() < chance) {
                 float k = r.nextFloat();
                 ItemStack t = k < 0.5F ? new ItemStack(Items.GOLD_NUGGET, 2 + r.nextInt(4))
@@ -227,7 +278,7 @@ public final class EmeraldGear {
                 event.getLevel().sendParticles(ParticleTypes.WAX_ON, pos.getX() + 0.5, pos.getY() + 0.8, pos.getZ() + 0.5, 10, 0.3, 0.3, 0.3, 0.05);
             }
         } else if (is(tool, EMERALD_HOE, ROYAL_EMERALD_HOE) && state.getBlock() instanceof CropBlock crop && crop.isMaxAge(state)
-                && r.nextFloat() < (tool.is(ROYAL_EMERALD_HOE.get()) ? 0.75F : 0.3F)) {
+                && r.nextFloat() < (tool.is(ROYAL_EMERALD_HOE.get()) ? 1.0F : 0.3F)) {
             for (ItemEntity e : event.getDrops()) if (!e.getItem().is(crop.asItem())) e.getItem().grow(e.getItem().getCount());
             event.getLevel().sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 6, 0.3, 0.3, 0.3, 0);
         }

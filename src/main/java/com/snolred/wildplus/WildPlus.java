@@ -50,6 +50,7 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModItems15.init();
         com.snolred.wildplus.registry.ModBlocks6.init();
         com.snolred.wildplus.registry.ModItems16.init();
+        com.snolred.wildplus.registry.ModItems19.init();
         com.snolred.wildplus.registry.ModBlocks7.init();
         com.snolred.wildplus.registry.ModItems17.init();
         com.snolred.wildplus.registry.ModBlocks8.init();

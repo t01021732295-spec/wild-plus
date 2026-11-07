@@ -69,7 +69,7 @@ public class SunkenChestItem extends Item {
             case 3 -> {
                 out.add(new ItemStack(com.snolred.wildplus.registry.ModItems3.DIAMOND_COIN.get(), 3 + r.nextInt(3)));
                 out.add(new ItemStack(net.minecraft.world.item.Items.DIAMOND, 4 + r.nextInt(4)));
-                out.add(new ItemStack(net.minecraft.world.item.Items.HEART_OF_THE_SEA));
+                if (r.nextFloat() < 0.35F) out.add(new ItemStack(net.minecraft.world.item.Items.HEART_OF_THE_SEA)); // 3.6: 확정 → 35%
             }
             case 4 -> {
                 out.add(new ItemStack(com.snolred.wildplus.registry.ModItems13.EMERALD_COIN.get(), 1 + r.nextInt(2)));

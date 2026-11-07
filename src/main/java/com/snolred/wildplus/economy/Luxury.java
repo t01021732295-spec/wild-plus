@@ -71,6 +71,8 @@ public final class Luxury {
         g.add(new Good("✦ 겉날개", "하늘을 나는 날개", 2_000_000, pl -> item(pl, new ItemStack(Items.ELYTRA))));
         g.add(new Good("✦ 용의 깃털", "스카이 사파이어 승급 재료", 1_500_000,
                 pl -> item(pl, new ItemStack(com.snolred.wildplus.registry.ModItems11.DRAGON_PLUME.get()))));
+        g.add(new Good("✦ 생명의 결정", "로열 에메랄드 승급 재료", 1_500_000,
+                pl -> item(pl, new ItemStack(com.snolred.wildplus.registry.ModItems12.LIFE_CRYSTAL.get()))));
         g.add(new Good("✦ 불사의 토템", "죽음을 한 번 막아 줌", 500_000, pl -> item(pl, new ItemStack(Items.TOTEM_OF_UNDYING))));
         g.add(new Good("✦ 신호기", "", 1_500_000, pl -> item(pl, new ItemStack(Items.BEACON))));
         g.add(new Good("✦ 셜커 상자", "", 500_000, pl -> item(pl, new ItemStack(Items.SHULKER_BOX))));

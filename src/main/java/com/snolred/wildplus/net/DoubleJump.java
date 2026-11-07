@@ -50,6 +50,7 @@ public final class DoubleJump {
         ctx.enqueueWork(() -> {
             if (!(ctx.player() instanceof ServerPlayer sp) || !wearing(sp) || sp.onGround() || USED.contains(sp.getUUID())) return;
             USED.add(sp.getUUID());
+            if (sp.isFallFlying()) sp.stopFallFlying(); // 같은 입력으로 시작된 활공 취소 (더블 점프 우선)
             sp.resetFallDistance();
             sp.level().sendParticles(ParticleTypes.CLOUD, sp.getX(), sp.getY(), sp.getZ(), 12, 0.3, 0.05, 0.3, 0.02);
             sp.level().sendParticles(ParticleTypes.END_ROD, sp.getX(), sp.getY() + 0.1, sp.getZ(), 6, 0.3, 0.05, 0.3, 0.02);

@@ -254,6 +254,7 @@ public final class BloodLord {
             drop(event, e, new ItemStack(Items.NETHERITE_INGOT));
         }
         drop(event, e, new ItemStack(ModItems6.LORD_HEART.get()));
+        drop(event, e, new ItemStack(com.snolred.wildplus.registry.ModItems19.LIFE_ESSENCE.get(), 1 + r.nextInt(2))); // 3.6
         drop(event, e, new ItemStack(ModItems.BLOOD_SHARD.get(), 10 + r.nextInt(11)));
         drop(event, e, new ItemStack(ModItems3.GOLD_COIN.get(), 5 + r.nextInt(6)));
         drop(event, e, new ItemStack(Items.DIAMOND, 3 + r.nextInt(4)));

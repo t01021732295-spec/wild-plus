@@ -16,7 +16,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 public final class JumpClient {
     private JumpClient() {}
 
-    private static boolean used, wasDown;
+    private static boolean used, wasDown, wasFlying;
 
     @SubscribeEvent
     static void onTick(ClientTickEvent.Post event) {
@@ -25,6 +25,11 @@ public final class JumpClient {
         if (p == null) return;
         boolean down = mc.options.keyJump.isDown();
         if (p.onGround() || p.isInWater() || p.onClimbable()) used = false;
+        // 겉날개(스카이 사파이어 흉갑 포함)가 같은 점프 입력으로 활공을 먼저 시작해 버리면 더블 점프가 씹힘:
+        // 이번 틱에 막 시작된 활공이고 더블 점프를 아직 안 썼으면 → 활공을 취소하고 더블 점프 (다음 점프 입력에 활공)
+        boolean justGlided = p.isFallFlying() && !wasFlying;
+        if (justGlided && down && !wasDown && !used && DoubleJump.wearing(p)) p.stopFallFlying();
+        wasFlying = p.isFallFlying();
         if (down && !wasDown && !p.onGround() && !used && !p.isInWater() && !p.isFallFlying() && !p.getAbilities().flying
                 && !p.isPassenger() && DoubleJump.wearing(p)) {
             used = true;

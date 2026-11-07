@@ -61,7 +61,11 @@ public class VendingMachineBlockEntity extends BlockEntity implements MenuProvid
 
     // ───────── 접근자 ─────────
     public SimpleContainer items() { return items; }
-    public int price(int slot) { return prices[slot]; }
+    public int price(int slot) {
+        // 3.6: 마을 자판기의 불사의 토템은 최소 30,000동 (로열 에메랄드 재료 난이도)
+        if (infinite && items.getItem(slot).is(net.minecraft.world.item.Items.TOTEM_OF_UNDYING)) return Math.max(prices[slot], 30_000);
+        return prices[slot];
+    }
     public long earnings() { return earnings; }
     public boolean infinite() { return infinite; }
     public String ownerName() { return ownerName; }

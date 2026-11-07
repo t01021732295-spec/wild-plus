@@ -876,5 +876,22 @@
   "item.wildplus.village_amusement": "Amusement Site Kit",
   "item.wildplus.village_harbor": "Harbor Site Kit",
   "item.wildplus.village_clock_tower": "Clock Tower Site Kit",
-  "item.wildplus.village_hot_spring": "Hot Spring Site Kit"
+  "item.wildplus.village_hot_spring": "Hot Spring Site Kit",
+  "item.wildplus.life_essence": "Life Essence",
+  "affix.wildplus.frost": "Frost",
+  "affix.wildplus.berserk": "Berserk",
+  "affix.wildplus.regenerating": "Regenerating",
+  "affix.wildplus.blink": "Blink",
+  "affix.wildplus.horde": "Horde",
+  "affix.wildplus.infect": "Infect",
+  "affix.wildplus.sniper": "Sniper",
+  "affix.wildplus.volley": "Volley",
+  "affix.wildplus.mega_blast": "Mega Blast",
+  "affix.wildplus.stealth": "Stealth",
+  "affix.wildplus.webber": "Webber",
+  "affix.wildplus.leaper": "Leaper",
+  "affix.wildplus.warp": "Warp",
+  "affix.wildplus.hexer": "Hexer",
+  "affix.wildplus.cleaver": "Cleaver",
+  "affix.wildplus.sunder": "Sunder"
 }

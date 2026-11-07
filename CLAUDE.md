@@ -9,7 +9,7 @@
   - `.github/workflows/build.yml`: 빌드 → 서버 스모크 테스트 → 클라이언트 실행 후 스크린샷(`shot-*.png`)
   - 결과는 `ci-log` 브랜치(status.txt · build-errors.txt · server-tail.txt · client-filtered.txt · shot-*.png)
   - jar 는 릴리스 `latest` 에 `wildplus-<버전>.jar` 로 올라감
-- 버전: `gradle.properties` 의 `mod_version` (최근 3.3.0)
+- 버전: `gradle.properties` 의 `mod_version` (최근 3.6.0)
 - 새 push 는 진행 중인 CI 를 취소함. 문서만 바꿀 땐 커밋 메시지에 `[skip ci]`.
 - API 확인용 `probe.yml`: `.github/probe-classes.txt`(javap 클래스) · `probe-grep.txt` · `probe-javap.txt`(정규식) 를 고치고
   `gh api -X POST repos/t01021732295-spec/wild-plus/actions/workflows/probe.yml/dispatches -f ref=main` → 결과는 `ci-probe` 브랜치 `probe.txt`
@@ -18,7 +18,7 @@
 
 ## 데이터 생성 (파이썬)
 - `cd tools && python3 gen_data.py` → 모델 · 블록상태 · 언어(ko_kr/en_us) · 레시피 · 루트테이블 · 태그 · 구조물 생성
-  - `data_v2 … data_v23` 를 차례로 부름. 새 기능은 `data_vNN.py` 를 추가하고 gen_data 끝에 연결.
+  - `data_v2 … data_v26` 를 차례로 부름. 새 기능은 **아직 없는 번호**의 `data_vNN.py` 를 추가하고 gen_data 끝에 연결 (ModItemsNN · ModBlocksNN 도 마찬가지 — 먼저 ls 로 확인).
   - 텍스처: `gen_textures.py` (`textures_v*`)
 - **주의:** 구조물 재생성은 결과가 매번 조금 달라짐 → 생성 후 바꾸려던 구조물만 남기고 나머지는
   `git checkout src/main/resources/data/wildplus/structure/<이름>.nbt` 로 되돌리기.
