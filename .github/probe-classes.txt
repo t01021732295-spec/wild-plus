@@ -1,5 +1,0 @@
-net.minecraft.world.level.block.AbstractBedBlock
-net.minecraft.world.level.block.BedBlock
-net.minecraft.world.attribute.BedRule
-net.minecraft.world.level.block.EnchantingTableBlock
-net.minecraft.world.entity.Entity

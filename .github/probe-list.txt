@@ -1,0 +1,6 @@
+world/entity/raid/Raid\.
+Illager
+Vindicator
+OminousBottle
+brewing/
+Mercenary
