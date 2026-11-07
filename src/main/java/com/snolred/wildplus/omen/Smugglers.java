@@ -48,8 +48,8 @@ public final class Smugglers {
         return List.of(
                 new Good("날카로움 VI 책", "날카로움 VI · 소실 저주", 3, 1, l -> book(l, Enchantments.SHARPNESS, 6)),
                 new Good("효율 VI 책", "효율 VI · 소실 저주", 3, 1, l -> book(l, Enchantments.EFFICIENCY, 6)),
-                new Good("광기의 물약", "힘 III · 신속 II · 저항", 2, 3, l -> new ItemStack(ModItems20.FORBIDDEN_POTION.get())),
-                new Good("생명의 정수", "정예 몹 3% · 제작 재료", 4, 2, l -> new ItemStack(ModItems19.LIFE_ESSENCE.get())),
+                new Good("광기의 물약", "힘 III · 신속 II · 저항 · 종료 후 대가", 2, 3, l -> new ItemStack(ModItems20.FORBIDDEN_POTION.get())),
+                new Good("생명의 정수", "정예 몹 3% · 로열 에메랄드 재료", 4, 2, l -> new ItemStack(ModItems19.LIFE_ESSENCE.get())),
                 new Good("겉날개", "비행 장비", 8, 1, l -> new ItemStack(Items.ELYTRA)),
                 new Good("불사의 토템", "죽음 1회 방지", 3, 2, l -> new ItemStack(Items.TOTEM_OF_UNDYING)),
                 new Good("흉조 병 ×3", "우민 정예화 · 흉조 효과", 1, 3, l -> new ItemStack(ModItems20.OMEN_FLASK.get(), 3)),
