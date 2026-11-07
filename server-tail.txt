@@ -1,0 +1,637 @@
+ystem chat: Tropical Fish has the following entity data: {count: 1, id: "minecraft:tropical_fish"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 1, id: "minecraft:cod"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {count: 1, id: "wildplus:anglerfish"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Storm Eel has the following entity data: {count: 1, id: "wildplus:storm_eel"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 2, id: "minecraft:cod"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 1, id: "minecraft:cod"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {count: 1, id: "minecraft:salmon"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {components: {"minecraft:lore": [{color: "green", text: "★ 고급 등급", italic: 0b}, {color: "gray", text: "출하 가격 ×1.50", italic: 0b}], "minecraft:rarity": "uncommon", "minecraft:custom_data": {wp_grade: 1}}, count: 1, id: "minecraft:cod"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Storm Eel has the following entity data: {count: 3, id: "wildplus:storm_eel"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 1, id: "minecraft:cod"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Storm Eel has the following entity data: {count: 2, id: "wildplus:storm_eel"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Storm Eel has the following entity data: {count: 1, id: "wildplus:storm_eel"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 2, id: "minecraft:cod"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 4, id: "minecraft:cod"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {count: 3, id: "wildplus:anglerfish"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Tuna has the following entity data: {count: 1, id: "wildplus:tuna"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {count: 1, id: "wildplus:anglerfish"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Pufferfish has the following entity data: {count: 2, id: "minecraft:pufferfish"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Storm Eel has the following entity data: {count: 2, id: "wildplus:storm_eel"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Storm Eel has the following entity data: {count: 2, id: "wildplus:storm_eel"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Storm Eel has the following entity data: {count: 1, id: "wildplus:storm_eel"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Storm Eel has the following entity data: {count: 1, id: "wildplus:storm_eel"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 4, id: "minecraft:cod"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Moonlight Fish has the following entity data: {count: 1, id: "wildplus:moonlight_fish"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Moonlight Fish has the following entity data: {count: 1, id: "wildplus:moonlight_fish"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Bone has the following entity data: {count: 1, id: "minecraft:bone"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Storm Eel has the following entity data: {count: 1, id: "wildplus:storm_eel"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Sunken Chest has the following entity data: {components: {"minecraft:custom_model_data": {floats: [0.0f]}, "minecraft:custom_name": {color: "gold", text: "동 보물상자", italic: 0b}, "minecraft:rarity": "uncommon", "minecraft:custom_data": {wp_chest: 0}}, count: 1, id: "wildplus:sunken_chest"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 1, id: "minecraft:cod"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Storm Eel has the following entity data: {count: 1, id: "wildplus:storm_eel"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {count: 1, id: "minecraft:salmon"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Sunken Chest has the following entity data: {components: {"minecraft:custom_model_data": {floats: [0.0f]}, "minecraft:custom_name": {color: "gold", text: "동 보물상자", italic: 0b}, "minecraft:rarity": "uncommon", "minecraft:custom_data": {wp_chest: 0}}, count: 1, id: "wildplus:sunken_chest"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Storm Eel has the following entity data: {count: 2, id: "wildplus:storm_eel"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {count: 1, id: "wildplus:anglerfish"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 2, id: "minecraft:cod"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Storm Eel has the following entity data: {count: 1, id: "wildplus:storm_eel"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Sunken Chest has the following entity data: {components: {"minecraft:custom_model_data": {floats: [1.0f]}, "minecraft:custom_name": {color: "gray", text: "은 보물상자", italic: 0b}, "minecraft:rarity": "uncommon", "minecraft:custom_data": {wp_chest: 1}}, count: 1, id: "wildplus:sunken_chest"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 2, id: "minecraft:cod"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Pufferfish has the following entity data: {count: 1, id: "minecraft:pufferfish"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {count: 1, id: "minecraft:salmon"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {count: 1, id: "minecraft:salmon"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Moonlight Fish has the following entity data: {count: 1, id: "wildplus:moonlight_fish"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Pufferfish has the following entity data: {components: {"minecraft:lore": [{color: "green", text: "★ 고급 등급", italic: 0b}, {color: "gray", text: "출하 가격 ×1.50", italic: 0b}], "minecraft:rarity": "uncommon", "minecraft:custom_data": {wp_grade: 1}}, count: 2, id: "minecraft:pufferfish"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 2, id: "minecraft:cod"}
+[11:40:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Killed 50 entities
+[11:41:00] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set the weather to clear
+[11:41:01] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST sprinkler_plot
+[11:41:02] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 28 block(s)
+[11:41:02] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST control_plot
+[11:41:03] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 66 block(s)
+[11:41:04] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set minecraft:overworld to 14000 tick(s)
+[11:41:05] [Server thread/INFO] [co.sn.wi.WildPlus/]: Blood Moon started
+[11:41:05] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Blood Moon started.
+[11:41:06] [Server thread/INFO] [co.sn.wi.WildPlus/]: Blood Moon ended
+[11:41:06] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Blood Moon stopped.
+[11:41:06] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 items
+[11:41:06] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Water Bottle]
+[11:41:07] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Anglerfish]
+[11:41:07] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 items
+[11:41:07] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Moonlight Fish]
+[11:41:07] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Moonlight Fish]
+[11:41:07] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Bowl]
+[11:41:07] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Cod]
+[11:41:08] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 items
+[11:41:08] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Pufferfish]
+[11:41:08] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Salmon]
+[11:41:08] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Salmon]
+[11:41:08] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Anglerfish]
+[11:41:08] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Rotten Flesh]
+[11:41:08] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Anglerfish]
+[11:41:09] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Golden Carp]
+[11:41:09] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Anglerfish]
+[11:41:09] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Cod]
+[11:41:09] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Golden Carp]
+[11:41:09] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 items
+[11:41:09] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Salmon]
+[11:41:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Anglerfish]
+[11:41:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Leather]
+[11:41:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [동 보물상자]
+[11:41:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 items
+[11:41:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 items
+[11:41:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Anglerfish]
+[11:41:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 items
+[11:41:11] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [다이아 보물상자]
+[11:41:11] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Salmon]
+[11:41:11] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Moonlight Fish]
+[11:41:11] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Salmon]
+[11:41:11] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Cod]
+[11:41:11] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Moonlight Fish]
+[11:41:12] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [은 보물상자]
+[11:41:12] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 items
+[11:41:12] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Anglerfish]
+[11:41:12] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 items
+[11:41:12] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Salmon]
+[11:41:12] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 items
+[11:41:12] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Salmon]
+[11:41:13] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Cod]
+[11:41:13] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [동 보물상자]
+[11:41:13] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Leather Boots]
+[11:41:13] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 items
+[11:41:13] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Leather Boots]
+[11:41:13] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 items
+[11:41:14] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Anglerfish]
+[11:41:14] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Pufferfish]
+[11:41:14] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 items
+[11:41:14] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Cod]
+[11:41:14] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Moonlight Fish]
+[11:41:14] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Cod]
+[11:41:14] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Golden Carp]
+[11:41:15] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Cod]
+[11:41:15] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Anglerfish]
+[11:41:15] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 items
+[11:41:15] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Cod]
+[11:41:15] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Raw Salmon]
+[11:41:15] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Moonlight Fish]
+[11:41:16] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST fishing night
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 6, id: "minecraft:cod"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Water Bottle has the following entity data: {components: {"minecraft:potion_contents": {potion: "minecraft:water"}}, count: 1, id: "minecraft:potion"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {count: 1, id: "wildplus:anglerfish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Moonlight Fish has the following entity data: {count: 2, id: "wildplus:moonlight_fish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Moonlight Fish has the following entity data: {count: 1, id: "wildplus:moonlight_fish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Bowl has the following entity data: {count: 1, id: "minecraft:bowl"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 1, id: "minecraft:cod"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Moonlight Fish has the following entity data: {count: 1, id: "wildplus:moonlight_fish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Pufferfish has the following entity data: {count: 1, id: "minecraft:pufferfish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {count: 1, id: "minecraft:salmon"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {count: 1, id: "minecraft:salmon"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {count: 1, id: "wildplus:anglerfish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Rotten Flesh has the following entity data: {count: 1, id: "minecraft:rotten_flesh"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {count: 1, id: "wildplus:anglerfish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Golden Carp has the following entity data: {count: 1, id: "wildplus:golden_carp"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {count: 1, id: "wildplus:anglerfish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 3, id: "minecraft:cod"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Golden Carp has the following entity data: {count: 1, id: "wildplus:golden_carp"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {count: 4, id: "wildplus:anglerfish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {count: 2, id: "wildplus:anglerfish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {components: {"minecraft:lore": [{color: "green", text: "★ 고급 등급", italic: 0b}, {color: "gray", text: "출하 가격 ×1.50", italic: 0b}], "minecraft:custom_data": {wp_grade: 1}}, count: 1, id: "wildplus:anglerfish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Leather has the following entity data: {count: 1, id: "minecraft:leather"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Sunken Chest has the following entity data: {components: {"minecraft:custom_model_data": {floats: [0.0f]}, "minecraft:custom_name": {color: "gold", text: "동 보물상자", italic: 0b}, "minecraft:rarity": "uncommon", "minecraft:custom_data": {wp_chest: 0}}, count: 1, id: "wildplus:sunken_chest"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 1, id: "minecraft:cod"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 3, id: "minecraft:cod"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {count: 1, id: "wildplus:anglerfish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {count: 2, id: "minecraft:salmon"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Sunken Chest has the following entity data: {components: {"minecraft:custom_model_data": {floats: [3.0f]}, "minecraft:custom_name": {color: "aqua", text: "다이아 보물상자", italic: 0b}, "minecraft:custom_data": {wp_chest: 3}}, count: 1, id: "wildplus:sunken_chest"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {count: 3, id: "minecraft:salmon"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Moonlight Fish has the following entity data: {count: 1, id: "wildplus:moonlight_fish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 2, id: "minecraft:cod"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Moonlight Fish has the following entity data: {count: 1, id: "wildplus:moonlight_fish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Sunken Chest has the following entity data: {components: {"minecraft:custom_model_data": {floats: [1.0f]}, "minecraft:custom_name": {color: "gray", text: "은 보물상자", italic: 0b}, "minecraft:rarity": "uncommon", "minecraft:custom_data": {wp_chest: 1}}, count: 1, id: "wildplus:sunken_chest"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {count: 1, id: "minecraft:salmon"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {count: 3, id: "minecraft:salmon"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {count: 1, id: "wildplus:anglerfish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {count: 1, id: "minecraft:salmon"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {count: 1, id: "minecraft:salmon"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {count: 1, id: "minecraft:salmon"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 1, id: "minecraft:cod"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Sunken Chest has the following entity data: {components: {"minecraft:custom_model_data": {floats: [0.0f]}, "minecraft:custom_name": {color: "gold", text: "동 보물상자", italic: 0b}, "minecraft:rarity": "uncommon", "minecraft:custom_data": {wp_chest: 0}}, count: 1, id: "wildplus:sunken_chest"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Leather Boots has the following entity data: {components: {"minecraft:damage": 27}, count: 1, id: "minecraft:leather_boots"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Leather Boots has the following entity data: {components: {"minecraft:damage": 17}, count: 1, id: "minecraft:leather_boots"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 1, id: "minecraft:cod"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {count: 1, id: "wildplus:anglerfish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Pufferfish has the following entity data: {count: 1, id: "minecraft:pufferfish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Moonlight Fish has the following entity data: {count: 1, id: "wildplus:moonlight_fish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Cod has the following entity data: {count: 2, id: "minecraft:cod"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Golden Carp has the following entity data: {count: 1, id: "wildplus:golden_carp"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Anglerfish has the following entity data: {components: {"minecraft:lore": [{color: "green", text: "★ 고급 등급", italic: 0b}, {color: "gray", text: "출하 가격 ×1.50", italic: 0b}], "minecraft:custom_data": {wp_grade: 1}}, count: 1, id: "wildplus:anglerfish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {count: 1, id: "minecraft:salmon"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Raw Salmon has the following entity data: {components: {"minecraft:lore": [{color: "green", text: "★ 고급 등급", italic: 0b}, {color: "gray", text: "출하 가격 ×1.50", italic: 0b}], "minecraft:rarity": "uncommon", "minecraft:custom_data": {wp_grade: 1}}, count: 1, id: "minecraft:salmon"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Moonlight Fish has the following entity data: {count: 1, id: "wildplus:moonlight_fish"}
+[11:41:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Killed 53 entities
+[11:41:18] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set minecraft:overworld to 1000 tick(s)
+[11:41:19] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Game rule advance_time is now set to false
+[11:41:19] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Incorrect argument for command
+[11:41:19] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: gamerule doDaylightCycle false<--[HERE]
+[11:41:20] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set the weather to clear
+[11:41:21] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 391 block(s)
+[11:41:21] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 1 block(s)
+[11:41:22] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set the world spawn point to 0, 120, 0 [0.0]
+[11:41:23] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 4 block(s)
+[11:41:24] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at -4, 120, 3
+[11:41:24] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at -3, 120, 3
+[11:41:25] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at -2, 120, 3
+[11:41:26] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at -1, 120, 3
+[11:41:26] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Armor Stand
+[11:41:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:28] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:28] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:29] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:30] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:31] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:31] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:32] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:33] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:33] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:34] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:35] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:36] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:36] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:38] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:38] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:39] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:41] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Marked 9 chunks in Overworld from [5, -1] to [7, 1] to be force loaded
+[11:41:41] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 391 block(s)
+[11:41:41] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:41:42] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 95, 120, 7
+[11:41:43] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 97, 120, 7
+[11:41:43] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 99, 120, 7
+[11:41:44] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 101, 120, 7
+[11:41:45] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 103, 120, 7
+[11:41:45] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 105, 120, 7
+[11:41:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 12 block(s)
+[11:41:47] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 95, 120, 3
+[11:41:47] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 95, 120, 4
+[11:41:48] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 96, 120, 3
+[11:41:49] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 96, 120, 4
+[11:41:50] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 97, 120, 3
+[11:41:50] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 97, 120, 4
+[11:41:51] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 98, 120, 3
+[11:41:52] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 98, 120, 4
+[11:41:52] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 99, 120, 3
+[11:41:53] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 99, 120, 4
+[11:41:54] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 100, 120, 3
+[11:41:55] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 100, 120, 4
+[11:41:55] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 102, 120, 4
+[11:41:56] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:57] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:57] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:58] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:41:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:00] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:01] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:02] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:02] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:03] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:04] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:04] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:05] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:06] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:06] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:07] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:08] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:09] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:09] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:11] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:11] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:12] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:13] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:14] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:14] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Item Display
+[11:42:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Marked 24 chunks in Overworld from [22, -1] to [27, 2] to be force loaded
+[11:42:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new General Merchant
+[11:42:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Blacksmith Merchant
+[11:42:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Bandit
+[11:42:18] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Golden Slime
+[11:42:18] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST mobs
+[11:42:21] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Golden Slime has the following entity data: 1
+[11:42:22] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Killed Bandit
+[11:42:22] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Killed Golden Slime
+[11:42:23] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Killed Strawberry
+[11:42:24] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 0 items
+[11:42:24] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 4 items
+[11:42:25] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 3 items
+[11:42:26] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST loot3
+[11:42:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Emerald has the following entity data: {count: 4, id: "minecraft:emerald"}
+[11:42:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Blood Shard has the following entity data: {count: 2, id: "wildplus:blood_shard"}
+[11:42:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Iron Ingot has the following entity data: {count: 6, id: "minecraft:iron_ingot"}
+[11:42:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Lucky Charm has the following entity data: {count: 1, id: "wildplus:lucky_charm"}
+[11:42:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Coin Pouch has the following entity data: {count: 1, id: "wildplus:coin_pouch"}
+[11:42:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Copper Coin has the following entity data: {count: 4, id: "wildplus:copper_coin"}
+[11:42:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Strawberry has the following entity data: {count: 4, id: "wildplus:strawberry"}
+[11:42:28] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Killed 7 entities
+[11:42:28] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 0, 121, 3
+[11:42:31] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST vending
+[11:42:32] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 0, 121, 3 has the following block data: {item0: {count: 8, id: "minecraft:bread"}, item2: {count: 1, id: "minecraft:cake"}, components: {}, item1: {count: 4, id: "wildplus:pizza"}, owner_name: "", infinite: 1b, earnings: 0L, item8: {count: 4, id: "wildplus:honey_toast"}, x: 0, item7: {count: 8, id: "minecraft:golden_carrot"}, y: 121, z: 3, id: "wildplus:vending_machine", item4: {count: 8, id: "wildplus:tomato"}, prices: [I; 2, 4, 15, 1, 2, 1, 2, 6, 5], item3: {count: 8, id: "minecraft:apple"}, item6: {count: 8, id: "wildplus:strawberry"}, item5: {count: 16, id: "minecraft:cookie"}}
+[11:42:33] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TALL_OK
+[11:42:33] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 0, 122, 3
+[11:42:36] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TALL_HEAL_OK
+[11:42:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 0, 121, 3
+[11:42:38] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] PAIR_BREAK_OK
+[11:42:39] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Pizza Slice has the following entity data: {count: 4, id: "wildplus:pizza"}
+[11:42:39] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Strawberry has the following entity data: {count: 8, id: "wildplus:strawberry"}
+[11:42:39] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Honey Toast has the following entity data: {count: 4, id: "wildplus:honey_toast"}
+[11:42:39] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Coin Vending Machine has the following entity data: {count: 1, id: "wildplus:vending_machine"}
+[11:42:39] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Bread has the following entity data: {count: 8, id: "minecraft:bread"}
+[11:42:39] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Cake has the following entity data: {count: 1, id: "minecraft:cake"}
+[11:42:39] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Apple has the following entity data: {count: 8, id: "minecraft:apple"}
+[11:42:39] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Tomato has the following entity data: {count: 8, id: "wildplus:tomato"}
+[11:42:39] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Cookie has the following entity data: {count: 16, id: "minecraft:cookie"}
+[11:42:39] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Golden Carrot has the following entity data: {count: 8, id: "minecraft:golden_carrot"}
+[11:42:40] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Killed 10 entities
+[11:42:41] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 11 [Copper Coin]
+[11:42:41] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 11 [Copper Coin]
+[11:42:41] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 [Silver Coin]
+[11:42:41] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 7 [Copper Coin]
+[11:42:41] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Emerald]
+[11:42:41] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 3 [Firework Rocket]
+[11:42:41] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 9 [Redstone Dust]
+[11:42:42] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 3 [Firework Rocket]
+[11:42:42] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Emerald]
+[11:42:42] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 4 [Tomato Seeds]
+[11:42:42] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 12 [Copper Coin]
+[11:42:42] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Silver Coin]
+[11:42:42] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 5 [Copper Coin]
+[11:42:43] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 [Emerald]
+[11:42:43] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Emerald]
+[11:42:43] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Gold Coin]
+[11:42:43] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 3 [Firework Rocket]
+[11:42:43] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 5 [Copper Coin]
+[11:42:43] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 9 [Copper Coin]
+[11:42:43] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 11 [Copper Coin]
+[11:42:44] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 4 [Strawberry]
+[11:42:44] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 5 [Copper Coin]
+[11:42:44] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 9 [Copper Coin]
+[11:42:44] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 [Silver Coin]
+[11:42:44] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Name Tag]
+[11:42:44] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 10 [Redstone Dust]
+[11:42:45] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 [Strawberry Tart]
+[11:42:45] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Honey Toast]
+[11:42:45] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 2 [Silver Coin]
+[11:42:45] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Dropped 1 [Name Tag]
+[11:42:45] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST gacha x30
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Copper Coin has the following entity data: {count: 11, id: "wildplus:copper_coin"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Copper Coin has the following entity data: {count: 20, id: "wildplus:copper_coin"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Silver Coin has the following entity data: {count: 2, id: "wildplus:silver_coin"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Copper Coin has the following entity data: {count: 7, id: "wildplus:copper_coin"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Emerald has the following entity data: {count: 1, id: "minecraft:emerald"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Firework Rocket has the following entity data: {count: 6, id: "minecraft:firework_rocket"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Redstone Dust has the following entity data: {count: 9, id: "minecraft:redstone"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Firework Rocket has the following entity data: {count: 3, id: "minecraft:firework_rocket"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Emerald has the following entity data: {count: 1, id: "minecraft:emerald"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Tomato Seeds has the following entity data: {count: 4, id: "wildplus:tomato_seeds"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Copper Coin has the following entity data: {count: 12, id: "wildplus:copper_coin"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Silver Coin has the following entity data: {count: 1, id: "wildplus:silver_coin"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Emerald has the following entity data: {count: 3, id: "minecraft:emerald"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Gold Coin has the following entity data: {count: 1, id: "wildplus:gold_coin"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Copper Coin has the following entity data: {count: 5, id: "wildplus:copper_coin"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Copper Coin has the following entity data: {count: 30, id: "wildplus:copper_coin"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Strawberry has the following entity data: {count: 4, id: "wildplus:strawberry"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Silver Coin has the following entity data: {count: 2, id: "wildplus:silver_coin"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Name Tag has the following entity data: {count: 1, id: "minecraft:name_tag"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Redstone Dust has the following entity data: {count: 10, id: "minecraft:redstone"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Strawberry Tart has the following entity data: {count: 2, id: "wildplus:strawberry_tart"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Honey Toast has the following entity data: {count: 1, id: "wildplus:honey_toast"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Silver Coin has the following entity data: {count: 2, id: "wildplus:silver_coin"}
+[11:42:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Name Tag has the following entity data: {count: 1, id: "minecraft:name_tag"}
+[11:42:47] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Killed 24 entities
+[11:42:48] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 1, 121, 3
+[11:42:48] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST grave
+[11:42:49] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 1, 121, 3 has the following block data: {components: {}, owner_name: "Tester", x: 1, y: 121, z: 3, id: "wildplus:grave", items: [{count: 3, id: "minecraft:diamond"}]}
+[11:42:50] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: That position is not loaded
+[11:42:51] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: That position is not loaded
+[11:42:51] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST structures
+[11:42:52] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: The nearest wildplus:trading_post is at [-400, ~, 128] (419 blocks away)
+[11:42:52] [Server thread/INFO] [minecraft/LocateCommand]: Locating element wildplus:trading_post took 6 ms
+[11:42:57] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: The nearest wildplus:bandit_camp is at [-272, ~, -176] (323 blocks away)
+[11:42:57] [Server thread/INFO] [minecraft/LocateCommand]: Locating element wildplus:bandit_camp took 2 ms
+[11:43:02] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 1216 block(s)
+[11:43:03] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:03] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:04] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 1216 block(s)
+[11:43:05] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:05] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:06] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Loaded template "wildplus:trading_post" at 400, 120, 0
+[11:43:07] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Loaded template "wildplus:bandit_camp" at 416, 120, 0
+[11:43:08] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Marked 32 chunks in Overworld from [27, -1] to [32, 4] to be force loaded
+[11:43:08] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 1680 block(s)
+[11:43:09] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 1680 block(s)
+[11:43:11] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:12] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:12] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 1680 block(s)
+[11:43:13] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:14] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:14] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 1680 block(s)
+[11:43:15] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:16] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 336 block(s)
+[11:43:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:18] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:19] [Server thread/WARN] [minecraft/NbtUtils]: Unable to read property: age with value: "7" for blockstate: {id:"minecraft:beetroots",properties:{age:"7"}}
+[11:43:19] [Server thread/WARN] [minecraft/NbtUtils]: Unable to read property: age with value: "5" for blockstate: {id:"minecraft:beetroots",properties:{age:"5"}}
+[11:43:19] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Loaded template "wildplus:town" at 438, 120, -10
+[11:43:20] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Marked 20 chunks in Overworld from [33, -1] to [36, 3] to be force loaded
+[11:43:20] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 1240 block(s)
+[11:43:21] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:22] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:22] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 1240 block(s)
+[11:43:23] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:24] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:24] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 1240 block(s)
+[11:43:25] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:26] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:26] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 124 block(s)
+[11:43:27] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:28] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:43:29] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Loaded template "wildplus:bandit_hideout" at 530, 120, -10
+[11:43:29] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: That position is not loaded
+[11:43:30] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Marked 25 chunks in Overworld from [37, -1] to [41, 3] to be force loaded
+[11:43:31] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Loaded template "wildplus:dungeon" at 600, 98, -10
+[11:43:31] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: That position is not loaded
+[11:43:35] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: That position is not loaded
+[11:43:36] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST town
+[11:43:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new General Merchant
+[11:43:37] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Blacksmith Merchant
+[11:43:38] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Bandit
+[11:43:39] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Golden Slime
+[11:43:39] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Farmer Merchant
+[11:43:40] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Fisher Merchant
+[11:43:41] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Banker Merchant
+[11:43:41] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 383, 120, 4
+[11:43:42] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 384, 120, 4
+[11:43:43] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 385, 120, 4
+[11:43:44] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 381, 120, 4
+[11:43:44] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 380, 120, -6
+[11:43:45] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 382, 120, -6
+[11:43:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 384, 120, -6
+[11:43:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 386, 120, -6
+[11:43:47] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 388, 120, -6
+[11:43:48] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 390, 120, -6
+[11:43:48] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 392, 120, -6
+[11:43:49] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 394, 120, -6
+[11:43:50] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 396, 120, -6
+[11:43:51] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 398, 120, -6
+[11:43:51] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 400, 120, -6
+[11:43:51] [Server thread/INFO] [co.sn.wi.WildPlus/]: [WildPlus] 청크로더 minecraft:overworld|25|-1 → 1개
+[11:43:52] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 402, 120, -6
+[11:43:53] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 403, 120, -6
+[11:43:53] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 404, 120, -6
+[11:43:54] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Armor Stand
+[11:43:55] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 주식 시세를 새로 받아오는 중…
+[11:44:05] [Server thread/DEBUG] [ne.ne.ne.co.CommonHooks/WP]: Gathered mod list to write to world save world
+[11:44:11] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 2, 121, 3
+[11:44:14] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Set minecraft:overworld to 25014 tick(s)
+[11:44:19] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST shipping
+[11:44:20] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 2, 121, 3 has the following block data: [{}, {count: 5, id: "minecraft:dirt"}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+[11:44:21] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 이자 지급 완료
+[11:44:21] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: TREASURY 3
+[11:44:22] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 4, 121, 6
+[11:44:23] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 5, 121, 6
+[11:44:31] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST hopper
+[11:44:32] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 4, 121, 6 has the following block data: {item0: {count: 15, id: "minecraft:bread"}, earnings: 0L, components: {}, item1: {count: 3, id: "minecraft:apple"}, owner_name: "", infinite: 0b, x: 4, y: 121, z: 6, id: "wildplus:vending_machine", prices: [I; 10, 10, 10, 10, 10, 10, 10, 10, 10]}
+[11:44:33] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 8, 121, 6
+[11:44:34] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 8, 122, 6
+[11:44:41] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST bin hopper
+[11:44:42] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 8, 121, 6 has the following block data: [{count: 5, id: "minecraft:wheat"}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+[11:44:42] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 81 block(s)
+[11:44:43] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:44:44] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 25 block(s)
+[11:44:44] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 25 block(s)
+[11:44:45] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 54, 120, 34
+[11:44:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 54, 121, 34
+[11:44:47] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 50, 120, 30
+[11:44:47] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 58, 119, 38
+[11:44:48] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 58, 120, 38
+[11:44:57] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST machines
+[11:44:58] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] AUTOHARVEST_OK
+[11:44:58] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 54, 120, 34 has the following block data: [{count: 36, id: "minecraft:wheat_seeds"}, {}, {}, {}, {}, {}, {}, {}, {}, {count: 20, id: "minecraft:wheat"}, {components: {"minecraft:lore": [{color: "green", text: "★ 은 등급", italic: 0b}, {color: "gray", text: "출하 가격 ×1.25", italic: 0b}], "minecraft:rarity": "uncommon", "minecraft:custom_data": {wp_grade: 1}}, count: 4, id: "minecraft:wheat"}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+[11:44:59] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 50, 120, 30 has the following block data: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+[11:45:00] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 58, 120, 38 has the following block data: [{components: {"minecraft:damage": 1}, count: 1, id: "minecraft:fishing_rod"}, {count: 1, id: "minecraft:salmon"}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+[11:45:00] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:45:01] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 70, 120, 50
+[11:45:02] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 70, 119, 50
+[11:45:03] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 70, 118, 50
+[11:45:03] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 71, 120, 50
+[11:45:04] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 71, 119, 50
+[11:45:05] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 71, 118, 50
+[11:45:05] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 72, 120, 50
+[11:45:06] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 72, 119, 50
+[11:45:07] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 72, 118, 50
+[11:45:07] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 73, 120, 50
+[11:45:08] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 73, 119, 50
+[11:45:09] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 73, 118, 50
+[11:45:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 74, 120, 50
+[11:45:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 74, 119, 50
+[11:45:11] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 74, 118, 50
+[11:45:12] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 75, 120, 50
+[11:45:12] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 75, 119, 50
+[11:45:13] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 75, 118, 50
+[11:45:14] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 70, 120, 52
+[11:45:15] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 71, 120, 52
+[11:45:15] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 72, 120, 52
+[11:45:16] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 73, 120, 52
+[11:45:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 74, 120, 52
+[11:45:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 75, 120, 52
+[11:45:18] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 70, 120, 56
+[11:46:04] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST miner line
+[11:46:05] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 70, 118, 50 has the following block data: [{count: 2, Slot: 0b, id: "minecraft:coal"}]
+[11:46:05] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 70, 120, 52 has the following block data: [{count: 1, id: "wildplus:ruby"}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+[11:46:06] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 71, 118, 50 has the following block data: [{count: 2, Slot: 0b, id: "minecraft:coal"}]
+[11:46:07] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 71, 120, 52 has the following block data: [{count: 1, id: "wildplus:ruby"}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+[11:46:08] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 72, 118, 50 has the following block data: [{count: 2, Slot: 0b, id: "minecraft:coal"}]
+[11:46:08] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 72, 120, 52 has the following block data: [{count: 1, id: "wildplus:ruby"}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+[11:46:09] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 73, 118, 50 has the following block data: [{count: 2, Slot: 0b, id: "minecraft:coal"}]
+[11:46:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 73, 120, 52 has the following block data: [{count: 1, id: "wildplus:ruby"}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+[11:46:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 74, 118, 50 has the following block data: [{count: 2, Slot: 0b, id: "minecraft:coal"}]
+[11:46:11] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 74, 120, 52 has the following block data: [{count: 1, id: "wildplus:ruby"}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+[11:46:12] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 75, 118, 50 has the following block data: [{count: 2, Slot: 0b, id: "minecraft:coal"}]
+[11:46:12] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 75, 120, 52 has the following block data: [{count: 1, id: "wildplus:ruby"}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+[11:46:13] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 70, 120, 56 has the following block data: [{count: 2, id: "minecraft:coal"}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
+[11:46:14] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 72, 120, 52 has the following block data: {next: 176899L, components: {}, last: 1794051974396L, tier: 2, x: 72, progress: 13001L, y: 120, z: 52, id: "wildplus:ore_miner", items: [{count: 1, id: "wildplus:ruby"}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}], selected: 11}
+[11:46:15] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 6 block(s)
+[11:46:15] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 18 block(s)
+[11:46:16] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 398, 119, 3
+[11:46:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 398, 120, 3
+[11:46:17] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:46:18] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 44, 121, 44
+[11:46:19] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 45, 121, 44
+[11:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 44, 121, 45
+[11:46:20] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 44, 122, 44
+[11:46:29] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST filter hopper
+[11:46:30] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] FILTER_OK
+[11:46:31] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 44, 121, 45 has the following block data: [{count: 2, Slot: 0b, id: "minecraft:diamond"}]
+[11:46:31] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 45, 121, 44 has the following block data: [{count: 4, Slot: 0b, id: "minecraft:dirt"}]
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH bloodsteel_sword enchantable=true comp=Enchantable[value=18] options=11
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH bloodsteel_pickaxe enchantable=true comp=Enchantable[value=18] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH bloodsteel_axe enchantable=true comp=Enchantable[value=18] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH bloodsteel_shovel enchantable=true comp=Enchantable[value=18] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH bloodsteel_helmet enchantable=true comp=Enchantable[value=18] options=9
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH bloodsteel_chestplate enchantable=true comp=Enchantable[value=18] options=8
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH bloodsteel_leggings enchantable=true comp=Enchantable[value=18] options=8
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH bloodsteel_boots enchantable=true comp=Enchantable[value=18] options=10
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH mythril_sword enchantable=true comp=Enchantable[value=20] options=11
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH mythril_pickaxe enchantable=true comp=Enchantable[value=20] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH mythril_axe enchantable=true comp=Enchantable[value=20] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH mythril_shovel enchantable=true comp=Enchantable[value=20] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH mythril_hoe enchantable=true comp=Enchantable[value=20] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH jade_fishing_rod enchantable=true comp=Enchantable[value=15] options=5
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH jade_sword enchantable=true comp=Enchantable[value=25] options=11
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH jade_pickaxe enchantable=true comp=Enchantable[value=25] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH jade_axe enchantable=true comp=Enchantable[value=25] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH jade_shovel enchantable=true comp=Enchantable[value=25] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH jade_hoe enchantable=true comp=Enchantable[value=25] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH mythril_helmet enchantable=true comp=Enchantable[value=20] options=9
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH mythril_chestplate enchantable=true comp=Enchantable[value=20] options=8
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH mythril_leggings enchantable=true comp=Enchantable[value=20] options=8
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH mythril_boots enchantable=true comp=Enchantable[value=20] options=10
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH jade_helmet enchantable=true comp=Enchantable[value=30] options=9
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH jade_chestplate enchantable=true comp=Enchantable[value=30] options=8
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH jade_leggings enchantable=true comp=Enchantable[value=30] options=8
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH jade_boots enchantable=true comp=Enchantable[value=30] options=10
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH drill enchantable=true comp=Enchantable[value=12] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH ruby_sword enchantable=true comp=Enchantable[value=18] options=11
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH ruby_pickaxe enchantable=true comp=Enchantable[value=18] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH ruby_axe enchantable=true comp=Enchantable[value=18] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH ruby_shovel enchantable=true comp=Enchantable[value=18] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH ruby_hoe enchantable=true comp=Enchantable[value=18] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH ruby_helmet enchantable=true comp=Enchantable[value=18] options=9
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH ruby_chestplate enchantable=true comp=Enchantable[value=18] options=8
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH ruby_leggings enchantable=true comp=Enchantable[value=18] options=8
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH ruby_boots enchantable=true comp=Enchantable[value=18] options=10
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH mythril_bow enchantable=true comp=Enchantable[value=1] options=7
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH ruby_bow enchantable=true comp=Enchantable[value=1] options=7
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH star_ruby_bow enchantable=true comp=Enchantable[value=1] options=7
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH sapphire_sword enchantable=true comp=Enchantable[value=22] options=11
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH sapphire_pickaxe enchantable=true comp=Enchantable[value=22] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH sapphire_axe enchantable=true comp=Enchantable[value=22] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH sapphire_shovel enchantable=true comp=Enchantable[value=22] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH sapphire_hoe enchantable=true comp=Enchantable[value=22] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH sapphire_helmet enchantable=true comp=Enchantable[value=22] options=9
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH sapphire_chestplate enchantable=true comp=Enchantable[value=22] options=8
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH sapphire_leggings enchantable=true comp=Enchantable[value=22] options=8
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH sapphire_boots enchantable=true comp=Enchantable[value=22] options=10
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH sapphire_bow enchantable=true comp=Enchantable[value=1] options=7
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH sky_sapphire_bow enchantable=true comp=Enchantable[value=1] options=7
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH repair_kit enchantable=false comp=null options=0
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH emerald_sword enchantable=true comp=Enchantable[value=25] options=11
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH emerald_pickaxe enchantable=true comp=Enchantable[value=25] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH emerald_axe enchantable=true comp=Enchantable[value=25] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH emerald_shovel enchantable=true comp=Enchantable[value=25] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH emerald_hoe enchantable=true comp=Enchantable[value=25] options=6
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH emerald_helmet enchantable=true comp=Enchantable[value=25] options=9
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH emerald_chestplate enchantable=true comp=Enchantable[value=25] options=8
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH emerald_leggings enchantable=true comp=Enchantable[value=25] options=8
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH emerald_boots enchantable=true comp=Enchantable[value=25] options=10
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH emerald_bow enchantable=true comp=Enchantable[value=1] options=7
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH royal_emerald_bow enchantable=true comp=Enchantable[value=1] options=7
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH mythril_fishing_rod enchantable=true comp=Enchantable[value=15] options=5
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH ruby_fishing_rod enchantable=true comp=Enchantable[value=18] options=5
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH sapphire_fishing_rod enchantable=true comp=Enchantable[value=20] options=5
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH emerald_fishing_rod enchantable=true comp=Enchantable[value=25] options=5
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH stellar_ruby_fishing_rod enchantable=true comp=Enchantable[value=22] options=5
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH sky_sapphire_fishing_rod enchantable=true comp=Enchantable[value=22] options=5
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH royal_emerald_fishing_rod enchantable=true comp=Enchantable[value=28] options=5
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH dragon_fishing_rod enchantable=true comp=Enchantable[value=22] options=5
+[11:46:32] [Server thread/INFO] [co.sn.wi.WildPlus/]: ENCH animal_brush enchantable=false comp=null options=0
+[11:46:35] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:46:35] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 35, 121, 35
+[11:46:36] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 38, 121, 35
+[11:46:41] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] SORT_OK
+[11:46:42] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 38, 121, 35 has the following block data: [{count: 4, Slot: 0b, id: "minecraft:dirt"}]
+[11:46:42] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: No blocks were filled
+[11:46:43] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 25, 121, 44
+[11:46:44] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 25, 122, 44
+[11:46:44] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 28, 121, 44
+[11:46:45] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 28, 122, 44
+[11:46:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 28, 120, 44
+[11:46:46] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Changed the block at 28, 119, 44
+[11:46:59] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TEST trash and crafter
+[11:47:00] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] TRASH_OK
+[11:47:01] [Server thread/INFO] [minecraft/MinecraftServer]: [Not Secure] [Server] AUTOCRAFT_OK
+[11:47:02] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 28, 119, 44 has the following block data: [{count: 12, Slot: 0b, id: "minecraft:oak_planks"}]
+[11:47:02] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: 28, 121, 44 has the following block data: {components: {}, crafted: 3, pattern: [{count: 1, id: "minecraft:oak_log"}, {}, {}, {}, {}, {}, {}, {}, {}], x: 28, y: 121, z: 44, id: "wildplus:auto_crafter", items: [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]}
+[11:47:03] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Successfully filled 9 block(s)
+[11:47:04] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Summoned new Snowball
+[11:47:08] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Placed "wildplus:ore_ruby" at 0, -40, 0
+[11:47:10] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Game rule immediate_respawn is now set to true
+[11:47:11] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Incorrect argument for command
+[11:47:11] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: gamerule doImmediateRespawn true<--[HERE]
+[11:47:21] [Server thread/INFO] [minecraft/MinecraftServer]: System chat: Stopping the server
+[11:47:21] [Server thread/DEBUG] [ne.ne.fm.cl.tr.ClassTransformStatistics/]: Transformed/total loaded classes: 267/6837 (3.91%) and 5 parsed for mixin
+[11:47:21] [Server thread/INFO] [minecraft/MinecraftServer]: Stopping server
+[11:47:21] [Server thread/INFO] [minecraft/MinecraftServer]: Saving players
+[11:47:21] [Server thread/INFO] [minecraft/MinecraftServer]: Saving worlds
+[11:47:22] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[11:47:23] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[11:47:23] [Server thread/INFO] [minecraft/MinecraftServer]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[11:47:23] [Server thread/DEBUG] [ne.ne.ne.co.CommonHooks/WP]: Gathered mod list to write to world save world
+[11:47:23] [Server thread/DEBUG] [ne.ne.fm.co.ConfigTracker/CONFIG]: Unloading configs type SYNCED
+[11:47:23] [main/INFO] [ne.ne.fm.lo.FMLLoader/]: Closing FML Loader 1b5a3cfc
+[11:47:23] [main/INFO] [ne.ne.fm.ModLoader/]: Clearing ModLoader
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/smoke-1794051520801.json
+
+[Incubating] Problems report is available at: file:///home/runner/work/wild-plus/wild-plus/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.2.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 8m 47s
+7 actionable tasks: 3 executed, 4 up-to-date
+Configuration cache entry stored.
