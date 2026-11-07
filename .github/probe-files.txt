@@ -1,3 +1,0 @@
-data/minecraft/recipe/brewing/potion_awkward_blaze_powder.json
-data/minecraft/recipe/brewing/splash_potion_awkward_blaze_powder.json
-data/minecraft/recipe/brewing/potion_water_nether_wart.json

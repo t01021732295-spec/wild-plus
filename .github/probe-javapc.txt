@@ -1,0 +1,2 @@
+net.minecraft.world.inventory.BrewingStandMenu$PotionSlot
+net.minecraft.world.item.crafting.PotionIngredient

@@ -1,3 +1,0 @@
-net.minecraft.server.level.ServerLevel
-net.minecraft.world.effect.MobEffects
-net.minecraft.world.entity.monster.illager.Pillager

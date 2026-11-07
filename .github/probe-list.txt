@@ -1,2 +1,0 @@
-recipe/brewing/.*(redstone|turtle|gunpowder|dragon)
-BrewingStand

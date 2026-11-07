@@ -1,5 +1,4 @@
-world/item/crafting/[A-Za-z]*Brew[A-Za-z$]*\.class
-neoforge/.*[Bb]rew[A-Za-z$]*\.class
-world/item/crafting/RecipeSerializer\.class
-world/item/crafting/RecipeType\.class
-world/item/trading/ItemCost\.class
+world/item/crafting/PotionIngredient\.class
+world/inventory/BrewingStandMenu.*\.class
+world/level/block/entity/BrewingStandBlockEntity\.class
+world/item/enchantment/EnchantmentHelper\.class
