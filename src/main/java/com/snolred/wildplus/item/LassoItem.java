@@ -86,7 +86,7 @@ public class LassoItem extends Item {
         });
         if (target instanceof Raider r && r.getCurrentRaid() != null) r.getCurrentRaid().removeFromRaid(level, r, true);
         level.sendParticles(ParticleTypes.CLOUD, target.getX(), target.getY() + 1, target.getZ(), 20, 0.4, 0.6, 0.4, 0.02);
-        level.playSound(null, target.blockPosition(), SoundEvents.LEASH_KNOT_PLACE, SoundSource.PLAYERS, 1.0F, 0.8F);
+        level.playSound(null, target.blockPosition(), SoundEvents.ITEM_PICKUP, SoundSource.PLAYERS, 1.0F, 0.8F);
         target.discard();
         sp.sendSystemMessage(Component.literal("🪢 " + (elite ? "정예 " : "") + nameOf(id) + "을(를) 묶었어요! 우민 감옥에 쓰면 포로가 돼요")
                 .withStyle(ChatFormatting.GOLD));

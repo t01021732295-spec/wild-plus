@@ -39,7 +39,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractBannerBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.BuiltinStructures;
@@ -54,7 +53,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 /**
  * 3.8 역습격: 우민 전초 기지의 깃발에 흉조 병을 쓰면 우리가 쳐들어간다.
  * 흉조 세기에 따라 3~7 웨이브 (약탈자 · 변명자 · 소환사 · 마녀 · 마지막에 파괴수), 다 이기면 큰 보상 + 전초 기지 점령:
- * 깃발이 파란 마을 깃발로 바뀌고, 그 자리에 공용 워프 "⚑ 전진 기지"가 생기며, 다시는 약탈자가 생기지 않는다.
+ * 우민 깃발이 내려가고, 그 자리에 공용 워프 "⚑ 전진 기지"가 생기며, 다시는 약탈자가 생기지 않는다.
  */
 public final class CounterRaid {
     private CounterRaid() {}
@@ -252,22 +251,14 @@ public final class CounterRaid {
         capture(level, s);
     }
 
-    /** 점령: 깃발 → 파란 깃발 · 전진 기지 워프 · 기록 */
+    /** 점령: 우민 깃발 내리기 · 전진 기지 워프 · 기록 */
     private static void capture(ServerLevel level, Siege s) {
         MinecraftServer server = level.getServer();
         BoundingBox b = s.box;
         for (BlockPos p : BlockPos.betweenClosed(b.minX(), b.minY(), b.minZ(), b.maxX(), b.maxY(), b.maxZ())) {
             BlockState st = level.getBlockState(p);
             if (!(st.getBlock() instanceof AbstractBannerBlock)) continue;
-            BlockState blue;
-            if (st.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
-                blue = Blocks.BLUE_WALL_BANNER.defaultBlockState().setValue(BlockStateProperties.HORIZONTAL_FACING, st.getValue(BlockStateProperties.HORIZONTAL_FACING));
-            } else if (st.hasProperty(BlockStateProperties.ROTATION_16)) {
-                blue = Blocks.BLUE_BANNER.defaultBlockState().setValue(BlockStateProperties.ROTATION_16, st.getValue(BlockStateProperties.ROTATION_16));
-            } else {
-                continue;
-            }
-            level.setBlock(p.immutable(), blue, 3);
+            level.setBlock(p.immutable(), Blocks.AIR.defaultBlockState(), 3); // 우민 깃발을 내림
         }
         String name = String.format("⚑ 전진 기지 (%d, %d)", s.center.getX(), s.center.getZ());
         BlockPos warp = s.center;
@@ -289,7 +280,7 @@ public final class CounterRaid {
         ContentData.get(server).dirty();
         level.sendParticles(ParticleTypes.FIREWORK, s.center.getX() + 0.5, s.center.getY() + 3, s.center.getZ() + 0.5, 80, 3, 3, 3, 0.1);
         server.getPlayerList().broadcastSystemMessage(Component.literal("⚑ 전초 기지를 점령했어요! " + name
-                + " — 깃발이 마을 깃발로 바뀌고 워프가 생겼어요 · 이제 약탈자가 생기지 않아요").withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD), false);
+                + " — 우민 깃발을 내리고 워프가 생겼어요 · 이제 약탈자가 생기지 않아요").withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD), false);
     }
 
     // ───────── 기여도 · 점령지 스폰 막기 ─────────

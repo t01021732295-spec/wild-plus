@@ -105,7 +105,7 @@ public final class OmenAltar {
             t.putInt("points", points);
             r.put(key(pos), t);
             ContentData.get(s).dirty();
-            level.playSound(null, pos, SoundEvents.OMINOUS_BOTTLE_DISPOSE, SoundSource.BLOCKS, 1.0F, 0.9F);
+            level.playSound(null, pos, SoundEvents.OMINOUS_BOTTLE_DISPOSE.value(), SoundSource.BLOCKS, 1.0F, 0.9F);
             level.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, pos.getX() + 1, pos.getY() + 1.6, pos.getZ() + 0.5, 25, 0.4, 0.4, 0.4, 0.03);
             int after = stage(points);
             p.sendOverlayMessage(Component.literal(String.format("☠ 흉조 병 %d개를 바쳤어요 +%d점 → %d점 (%d단계)", n, add, points, after))

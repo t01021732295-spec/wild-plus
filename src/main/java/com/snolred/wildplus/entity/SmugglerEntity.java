@@ -29,7 +29,6 @@ public class SmugglerEntity extends Vindicator {
     public SmugglerEntity(EntityType<? extends Vindicator> type, Level level) {
         super(type, level);
         this.setCanJoinRaid(false);
-        this.setInvulnerable(true);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
