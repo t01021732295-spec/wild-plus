@@ -1,2 +1,4 @@
-net.minecraft.world.inventory.BrewingStandMenu$PotionSlot
-net.minecraft.world.item.crafting.PotionIngredient
+net.minecraft.world.entity.raid.Raid
+net.minecraft.world.entity.raid.Raids
+net.minecraft.world.effect.RaidOmenMobEffect
+net.minecraft.world.effect.BadOmenMobEffect

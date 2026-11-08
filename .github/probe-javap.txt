@@ -1,4 +1,0 @@
-world/item/crafting/PotionIngredient\.class
-world/inventory/BrewingStandMenu.*\.class
-world/level/block/entity/BrewingStandBlockEntity\.class
-world/item/enchantment/EnchantmentHelper\.class
