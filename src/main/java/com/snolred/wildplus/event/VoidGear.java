@@ -68,7 +68,7 @@ public final class VoidGear {
     private record Replant(ServerLevel level, BlockPos pos, BlockState state) {}
 
     private static final Map<UUID, State> STATES = new HashMap<>();
-    private static final Map<UUID, Integer> MARKS = new HashMap<>();
+    private static final Map<LivingEntity, Integer> MARKS = new HashMap<>();
     private static final int MARK_TICKS = 100;
     private static final List<Replant> REPLANT = new ArrayList<>();
     private static boolean areaBreaking;
@@ -197,7 +197,7 @@ public final class VoidGear {
             }
         }
         if (target instanceof Player p && pieces(p) >= 4) event.setAmount(event.getAmount() * 0.9F);
-        if (target.level() instanceof ServerLevel lv && lv.getServer().getTickCount() < MARKS.getOrDefault(target.getUUID(), 0)) {
+        if (target.level() instanceof ServerLevel lv && lv.getServer().getTickCount() < MARKS.getOrDefault(target, 0)) {
             event.setAmount(event.getAmount() * (target instanceof Mob m && FrostBurst.boss(m) ? 1.08F : 1.15F));
         }
     }
@@ -216,8 +216,11 @@ public final class VoidGear {
                 for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(3.0))) {
                     if (e != owner && (e == target || e instanceof Enemy)) magic(level, e, owner, 8.0F);
                 }
-                level.sendParticles(ParticleTypes.REVERSE_PORTAL, target.getX(), target.getY() + 0.5, target.getZ(), 40, 1.2, 0.5, 1.2, 0.1);
-                level.playSound(null, target.blockPosition(), SoundEvents.ENDERMAN_HURT, SoundSource.PLAYERS, 0.5F, 1.4F);
+                burstFx(level, target, 3.0, ParticleTypes.REVERSE_PORTAL);
+                level.sendParticles(ParticleTypes.EXPLOSION, target.getX(), target.getY() + 0.5, target.getZ(), 2, 0.6, 0.3, 0.6, 0);
+                level.playSound(null, target.blockPosition(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 0.8F, 1.5F);
+                level.playSound(null, target.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 0.45F, 1.8F);
+                owner.sendOverlayMessage(Component.literal("✦ 공허 화살 폭발!").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD));
             }
             // 귀환: 플레이어가 주울 수 있는 화살만 (무한 · 다중 발사 복사본 제외), 종류와 효과 그대로
             if (a.pickup == AbstractArrow.Pickup.ALLOWED) {
@@ -235,18 +238,39 @@ public final class VoidGear {
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(3.0))) {
             if (e != p && (e == target || e instanceof Enemy)) magic(level, e, p, 12.0F);
         }
-        level.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), 3, 1.0, 0.2, 1.0, 0);
-        level.sendParticles(ParticleTypes.REVERSE_PORTAL, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), 30, 1.0, 0.4, 1.0, 0.1);
-        level.playSound(null, target.blockPosition(), SoundEvents.ENDERMAN_HURT, SoundSource.PLAYERS, 0.5F, 1.7F);
+        level.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), 8, 1.4, 0.3, 1.4, 0);
+        level.sendParticles(ParticleTypes.SONIC_BOOM, target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), 1, 0, 0, 0, 0);
+        burstFx(level, target, 3.0, ParticleTypes.END_ROD);
+        level.playSound(null, target.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 0.6F, 1.5F);
+        level.playSound(null, target.blockPosition(), SoundEvents.ENDER_DRAGON_FLAP, SoundSource.PLAYERS, 1.0F, 0.8F);
+        p.sendOverlayMessage(Component.literal("✦ 공허 베기!").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD));
+    }
+
+    /** 바닥 고리 두 겹 + 위로 터지는 입자: 범위가 눈에 보이게 */
+    private static void burstFx(ServerLevel level, LivingEntity at, double radius, net.minecraft.core.particles.ParticleOptions ring) {
+        double y = at.getY() + 0.2;
+        for (double r : new double[] {radius * 0.55, radius}) {
+            int n = (int) (r * 14);
+            for (int i = 0; i < n; i++) {
+                double a = Math.PI * 2 * i / n;
+                level.sendParticles(ring, at.getX() + Math.cos(a) * r, y, at.getZ() + Math.sin(a) * r, 1, 0, 0.02, 0, 0);
+            }
+        }
+        level.sendParticles(ParticleTypes.ELECTRIC_SPARK, at.getX(), at.getY() + at.getBbHeight() * 0.5, at.getZ(), 50, 1.0, 0.9, 1.0, 0.35);
+        level.sendParticles(ParticleTypes.PORTAL, at.getX(), at.getY() + at.getBbHeight() * 0.5, at.getZ(), 90, 0.5, 0.7, 0.5, 1.2);
     }
 
     /** 균열 표식: 5초간 받는 피해 +15% (보스 +8%) */
     private static void mark(ServerLevel level, LivingEntity e, Player owner) {
         if (e == owner) return;
         int now = level.getServer().getTickCount();
-        MARKS.put(e.getUUID(), now + MARK_TICKS);
-        if (MARKS.size() > 256) MARKS.values().removeIf(t -> t <= now);
-        level.sendParticles(ParticleTypes.WITCH, e.getX(), e.getY() + e.getBbHeight() * 0.8, e.getZ(), 4, 0.25, 0.25, 0.25, 0.01);
+        boolean fresh = MARKS.getOrDefault(e, 0) <= now;
+        MARKS.put(e, now + MARK_TICKS);
+        if (fresh) {
+            level.sendParticles(ParticleTypes.WITCH, e.getX(), e.getY() + e.getBbHeight() * 0.7, e.getZ(), 30, 0.4, 0.5, 0.4, 0.15);
+            level.playSound(null, e.blockPosition(), SoundEvents.AMETHYST_CLUSTER_BREAK, SoundSource.PLAYERS, 1.0F, 0.6F);
+            if (owner instanceof ServerPlayer sp) sp.sendOverlayMessage(Component.literal("✧ 균열 표식").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD));
+        }
     }
 
     @SubscribeEvent
@@ -318,9 +342,25 @@ public final class VoidGear {
 
     @SubscribeEvent
     public static void onServerTick(ServerTickEvent.Post event) {
+        int tick = event.getServer().getTickCount();
+        if (!MARKS.isEmpty()) {
+            MARKS.entrySet().removeIf(en -> en.getValue() <= tick || !en.getKey().isAlive());
+            if (tick % 3 == 0) MARKS.keySet().forEach(e -> markFx(e, tick));
+        }
         if (REPLANT.isEmpty()) return;
         for (Replant r : REPLANT) if (r.level().getBlockState(r.pos()).isAir()) r.level().setBlockAndUpdate(r.pos(), r.state());
         REPLANT.clear();
+    }
+
+    /** 표식이 있는 동안 머리 위에서 도는 보라색 고리 */
+    private static void markFx(LivingEntity e, int tick) {
+        if (!(e.level() instanceof ServerLevel level)) return;
+        double y = e.getY() + e.getBbHeight() + 0.45, r = Math.max(0.55, e.getBbWidth() * 0.75);
+        for (int i = 0; i < 6; i++) {
+            double a = Math.PI * 2 * i / 6 + tick * 0.18;
+            level.sendParticles(ParticleTypes.REVERSE_PORTAL, e.getX() + Math.cos(a) * r, y, e.getZ() + Math.sin(a) * r, 1, 0, 0, 0, 0);
+        }
+        level.sendParticles(ParticleTypes.ELECTRIC_SPARK, e.getX(), y, e.getZ(), 1, 0.1, 0.05, 0.1, 0);
     }
 
     /** 삽 · 괭이 5×5 (웅크리면 한 칸) */
