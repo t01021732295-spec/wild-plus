@@ -41,7 +41,7 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.ProjectileImpactEvent;
-import net.neoforged.neoforge.event.entity.living.EnderManAngerEvent;
+import net.neoforged.neoforge.event.entity.living.LivingChangeTargetEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -163,7 +163,7 @@ public final class VoidGear {
     private static void rescue(ServerLevel level, ServerPlayer p, State s, int now) {
         p.teleportTo(s.safe.x, s.safe.y, s.safe.z);
         p.setDeltaMovement(Vec3.ZERO);
-        p.hurtMarked = true;
+        p.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(p));
         p.resetFallDistance();
         p.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 60, 4, true, false, true));
         p.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, 60, 0, true, false, true));
@@ -174,8 +174,9 @@ public final class VoidGear {
     }
 
     @SubscribeEvent
-    public static void onEnderManAnger(EnderManAngerEvent event) {
-        if (pieces(event.getPlayer()) >= 2) event.setCanceled(true);
+    public static void onEndermanTarget(LivingChangeTargetEvent event) {
+        if (event.getEntity() instanceof net.minecraft.world.entity.monster.EnderMan e && event.getNewAboutToBeSetTarget() instanceof Player p
+                && pieces(p) >= 2 && e.getLastHurtByMob() != p) event.setCanceled(true); // 먼저 때리면 반격은 함
     }
 
     @SubscribeEvent
