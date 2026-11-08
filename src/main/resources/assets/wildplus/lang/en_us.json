@@ -956,5 +956,15 @@
   "item.wildplus.void_leggings": "Void Leggings",
   "item.wildplus.void_leggings_blank": "Unfinished Void Leggings",
   "item.wildplus.void_boots": "Void Boots",
-  "item.wildplus.void_boots_blank": "Unfinished Void Boots"
+  "item.wildplus.void_boots_blank": "Unfinished Void Boots",
+  "item.wildplus.void_key": "Void Key",
+  "block.wildplus.void_seal": "Void Seal",
+  "block.wildplus.void_gate": "Void Gate",
+  "block.wildplus.void_altar": "Void Altar",
+  "block.wildplus.void_lift": "Void Lift",
+  "item.wildplus.awakening_core_1": "Awakening Core I",
+  "item.wildplus.awakening_core_2": "Awakening Core II",
+  "item.wildplus.awakening_core_3": "Awakening Core III",
+  "item.wildplus.awakening_core_4": "Awakening Core IV",
+  "item.wildplus.awakening_core_5": "Awakening Core V"
 }

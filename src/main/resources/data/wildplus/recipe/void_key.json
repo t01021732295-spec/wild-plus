@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "SES",
+    "SSS"
+  ],
+  "key": {
+    "S": "wildplus:void_shard",
+    "E": "minecraft:ender_eye"
+  },
+  "result": {
+    "id": "wildplus:void_key",
+    "count": 1
+  }
+}

@@ -29,6 +29,7 @@ public final class ModRenderers {
 
     @SubscribeEvent
     static void register(EntityRenderersEvent.RegisterRenderers event) {
+        event.registerEntityRenderer(net.minecraft.world.entity.EntityTypes.ENDER_DRAGON, VoidDragonRenderer::new);
         event.registerEntityRenderer(ModEntities.MERCHANT.get(), ctx -> new MerchantRenderer(ctx, tex("merchant")));
         event.registerEntityRenderer(ModEntities.BLACKSMITH_MERCHANT.get(), ctx -> new MerchantRenderer(ctx, tex("blacksmith_merchant")));
         event.registerEntityRenderer(ModEntities.FARMER_MERCHANT.get(), ctx -> new MerchantRenderer(ctx, tex("farmer_merchant")));

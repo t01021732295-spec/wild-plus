@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:awakening_core_4",
+    "wildplus:void_stone",
+    "wildplus:void_stone",
+    "wildplus:void_stone",
+    "wildplus:void_stone",
+    "wildplus:void_stone",
+    "wildplus:void_stone",
+    "wildplus:void_stone",
+    "wildplus:void_heart"
+  ],
+  "result": {
+    "id": "wildplus:awakening_core_5",
+    "count": 1
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/void_seal"
+    },
+    "facing=south": {
+      "model": "wildplus:block/void_seal"
+    },
+    "facing=east": {
+      "model": "wildplus:block/void_seal"
+    },
+    "facing=west": {
+      "model": "wildplus:block/void_seal"
+    }
+  }
+}

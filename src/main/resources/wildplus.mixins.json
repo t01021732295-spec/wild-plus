@@ -1,0 +1,8 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.snolred.wildplus.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": ["EnderDragonRendererMixin"],
+  "injectors": {"defaultRequire": 0}
+}

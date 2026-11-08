@@ -1,3 +1,0 @@
-net/minecraft/client/renderer/entity/EnderDragonRenderer.java	public void submit	62
-net/minecraft/client/renderer/entity/EnderDragonRenderer.java	public void extractRenderState	22
-net/minecraft/world/level/levelgen/feature/EndSpikeFeature.java	class EndSpike|record EndSpike	24

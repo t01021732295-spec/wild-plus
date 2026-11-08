@@ -1204,5 +1204,21 @@
   "item.wildplus.void_boots": "공허 부츠",
   "tooltip.wildplus.void_boots": "2부위: 엔더맨이 먼저 공격 안 함 · 저항 I · 힘 I · 최대 체력 +2칸\n4부위: 저항 II · 힘 I · 신속 I · 최대 체력 +4칸 · 받는 피해 10% 감소 · 공허 도약 · 공허 생환\n공허 도약: 공중에서 웅크리면 바라보는 쪽 8칸 (8초)",
   "item.wildplus.void_boots_blank": "미완성 공허 부츠",
-  "tooltip.wildplus.void_boots_blank": "강화대에서 공허 심장과 돈으로 완성"
+  "tooltip.wildplus.void_boots_blank": "강화대에서 공허 심장과 돈으로 완성",
+  "item.wildplus.void_key": "공허 열쇠",
+  "tooltip.wildplus.void_key": "공허 유적의 봉인을 여는 열쇠\n공허 파편 8 + 엔더의 눈",
+  "block.wildplus.void_seal": "공허 봉인",
+  "block.wildplus.void_gate": "공허의 문",
+  "block.wildplus.void_altar": "공허 제단",
+  "block.wildplus.void_lift": "공허 부양판",
+  "item.wildplus.awakening_core_1": "각성의 핵 I",
+  "tooltip.wildplus.awakening_core_1": "엔드 중앙 섬에서 우클릭: 각성 드래곤 I단계 소환\n엔더 드래곤을 한 번 쓰러뜨린 뒤 사용 가능",
+  "item.wildplus.awakening_core_2": "각성의 핵 II",
+  "tooltip.wildplus.awakening_core_2": "엔드 중앙 섬에서 우클릭: 각성 드래곤 II단계 소환\n엔더 드래곤을 한 번 쓰러뜨린 뒤 사용 가능",
+  "item.wildplus.awakening_core_3": "각성의 핵 III",
+  "tooltip.wildplus.awakening_core_3": "엔드 중앙 섬에서 우클릭: 각성 드래곤 III단계 소환\n엔더 드래곤을 한 번 쓰러뜨린 뒤 사용 가능",
+  "item.wildplus.awakening_core_4": "각성의 핵 IV",
+  "tooltip.wildplus.awakening_core_4": "엔드 중앙 섬에서 우클릭: 각성 드래곤 IV단계 소환\n엔더 드래곤을 한 번 쓰러뜨린 뒤 사용 가능",
+  "item.wildplus.awakening_core_5": "각성의 핵 V",
+  "tooltip.wildplus.awakening_core_5": "엔드 중앙 섬에서 우클릭: 각성 드래곤 V단계 소환\n엔더 드래곤을 한 번 쓰러뜨린 뒤 사용 가능"
 }
