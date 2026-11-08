@@ -311,6 +311,10 @@ def big_town():
         t.entity(x, 1.0, z, villager(prof, 90.0))
     for (x, z) in [(40.5, 4.5), (40.5, 75.5)]:
         t.entity(x, 1.0, z, mob("minecraft:iron_golem", 0.0, {"PlayerCreated": Byte(0)}))
+    # 3.9.9 마을 게시관
+    import structures_v39
+    structures_v39.add_to_town(lambda x, y, z, b, p: t.set(x, y, z, b, p) if p else t.set(x, y, z, b))
+    structures_v39.notice_hall()
     return t.save("town")
 
 

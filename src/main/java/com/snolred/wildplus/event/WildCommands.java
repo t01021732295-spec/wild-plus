@@ -121,6 +121,21 @@ public final class WildCommands {
                             com.snolred.wildplus.net.CosmeticSync.broadcast(p.level().getServer());
                             return 1;
                         })))))
+                .then(Commands.literal("townhall").executes(ctx -> { // 3.9.9 이미 있는 마을에 게시관 짓기 (보는 쪽 2칸 앞이 건물 앞쪽)
+                    var p = ctx.getSource().getPlayerOrException();
+                    var lv = p.level();
+                    var t = lv.getStructureTemplateManager().get(com.snolred.wildplus.WildPlus.id("village/notice_hall")).orElse(null);
+                    if (t == null) return 0;
+                    net.minecraft.core.BlockPos pivot = new net.minecraft.core.BlockPos(4, 0, 8);
+                    net.minecraft.core.BlockPos at = p.blockPosition().below().relative(p.getDirection(), 2);
+                    net.minecraft.core.BlockPos origin = at.subtract(pivot);
+                    var set = new net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings()
+                            .setRotation(com.snolred.wildplus.home.HouseKitItem.rotationFor(p.getDirection())).setRotationPivot(pivot);
+                    t.placeInWorld(lv, origin, origin, set, lv.getRandom(), net.minecraft.world.level.block.Block.UPDATE_ALL);
+                    com.snolred.wildplus.home.HouseKitItem.refillParts(lv, t.getBoundingBox(set, origin));
+                    ctx.getSource().sendSuccess(() -> net.minecraft.network.chat.Component.literal("🏛 마을 게시관을 지었어요"), false);
+                    return 1;
+                }))
                 .then(Commands.literal("uitest").then(Commands.argument("what", com.mojang.brigadier.arguments.StringArgumentType.word()).executes(ctx -> {
                     var p = ctx.getSource().getPlayerOrException();
                     var at = p.blockPosition();
