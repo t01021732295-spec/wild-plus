@@ -15,7 +15,6 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
@@ -74,14 +73,14 @@ public final class FrostBurst {
 
     /** 추가 피해가 무적 시간을 건드려 플레이어의 다음 공격을 막지 않도록 앞뒤로 되돌린다 */
     private static void hurt(ServerLevel level, LivingEntity e, Player owner, float amount) {
-        int invul = e.invulnerableTime;
-        e.invulnerableTime = 0;
+        int invul = e.getInvulnerableTime();
+        e.setInvulnerableTime(0);
         e.hurtServer(level, level.damageSources().indirectMagic(e, owner), amount);
-        e.invulnerableTime = invul;
+        e.setInvulnerableTime(invul);
     }
 
     private static boolean boss(Mob m) {
-        return m.getType().is(Tags.EntityTypes.BOSSES) || DungeonGuardian.isBoss(m) || m.getMaxHealth() >= 150.0F;
+        return DungeonGuardian.isBoss(m) || m.getMaxHealth() >= 150.0F; // 드래곤 · 위더 · 워든 · 핏빛 군주도 여기 걸림
     }
 
     private static void stop(Mob m, int ticks, int now) {
