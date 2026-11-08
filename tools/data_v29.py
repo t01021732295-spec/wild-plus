@@ -30,8 +30,8 @@ ROSE = ((255, 200, 190), (225, 140, 130), (130, 70, 70))
 FRAME = [None, GOLD, GOLD, GOLD, GOLD, GOLD, ROSE, ROSE, PLATINUM, PLATINUM, GOLD]
 
 
-# 3.9.6: 그 단계를 만드는 데 드는 아래 단계 개수 (II·III 9개 / IV·V 3개 / VI~X 2개) → X단계 = I단계 23,328개
-COST = [0, 0, 9, 9, 3, 3, 2, 2, 2, 2, 2]
+# 3.9.7: 그 단계를 만드는 데 드는 아래 단계 개수 (II 9개 / III~V 3개 / VI~X 2개) → X단계 = I단계 7,776개
+COST = [0, 0, 9, 3, 3, 3, 2, 2, 2, 2, 2]
 PATTERN = {9: ["CCC", "CCC", "CCC"], 3: ["CCC"], 2: ["CC"]}
 
 
