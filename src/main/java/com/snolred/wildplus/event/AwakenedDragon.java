@@ -278,7 +278,7 @@ public final class AwakenedDragon {
     @SubscribeEvent
     public static void onDamage(LivingDamageEvent.Post event) {
         if (event.getEntity() instanceof EnderDragon d && stage(d) > 0 && event.getSource().getEntity() instanceof ServerPlayer p) {
-            DAMAGE.computeIfAbsent(d.getUUID(), k -> new HashMap<>()).merge(p.getUUID(), event.getNewDamage(), Float::sum);
+            DAMAGE.computeIfAbsent(d.getUUID(), k -> new HashMap<>()).merge(p.getUUID(), event.getHealthDamage(), Float::sum);
         }
     }
 

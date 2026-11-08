@@ -84,12 +84,11 @@ public final class VoidRuin {
         ContentData d = ContentData.get(level.getServer());
         CompoundTag s = d.section("void_ruins");
         String key = Long.toString(altar.asLong());
-        if (!(s.get(key) instanceof CompoundTag c)) {
-            c = new CompoundTag();
-            c.putInt("tier", 1);
-            s.put(key, c);
-            d.dirty();
-        }
+        if (s.get(key) instanceof CompoundTag have) return have;
+        CompoundTag c = new CompoundTag();
+        c.putInt("tier", 1);
+        s.put(key, c);
+        d.dirty();
         return c;
     }
 
