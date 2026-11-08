@@ -49,6 +49,9 @@
     "wildplus:starting_gate",
     "wildplus:clock_face",
     "wildplus:omen_altar",
-    "wildplus:illager_prison"
+    "wildplus:illager_prison",
+    "wildplus:void_ore",
+    "wildplus:void_block",
+    "wildplus:void_brick"
   ]
 }

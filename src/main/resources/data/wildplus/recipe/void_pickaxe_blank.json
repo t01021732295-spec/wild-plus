@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "XXX",
+    " # ",
+    " # "
+  ],
+  "key": {
+    "X": "wildplus:void_stone",
+    "#": "minecraft:stick"
+  },
+  "result": {
+    "id": "wildplus:void_pickaxe_blank",
+    "count": 1
+  }
+}

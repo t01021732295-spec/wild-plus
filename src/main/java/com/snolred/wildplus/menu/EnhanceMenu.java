@@ -129,7 +129,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
             input.setChanged();
             sp.level().playSound(null, sp.blockPosition(), SoundEvents.BEACON_POWER_SELECT, SoundSource.BLOCKS, 1.0F, 1.2F);
             sp.level().playSound(null, sp.blockPosition(), SoundEvents.SMITHING_TABLE_USE, SoundSource.BLOCKS, 1.0F, 0.8F);
-            sp.sendSystemMessage(Component.literal(need == com.snolred.wildplus.registry.ModItems13.STELLAR_CORE.get() ? "✦ 스텔라 루비로 승급했어요! "
+            sp.sendSystemMessage(Component.literal(need == com.snolred.wildplus.registry.ModItems22.VOID_HEART.get() ? "✦ 공허 장비를 완성했어요! " : need == com.snolred.wildplus.registry.ModItems13.STELLAR_CORE.get() ? "✦ 스텔라 루비로 승급했어요! "
                     : need == com.snolred.wildplus.registry.ModItems12.LIFE_CRYSTAL.get() ? "✦ 로열 에메랄드로 승급했어요! "
                     : need == com.snolred.wildplus.registry.ModItems11.DRAGON_PLUME.get() ? "✦ 스카이 사파이어로 승급했어요! " : "✦ 승급했어요! ").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD)
                     .append(star.getHoverName().copy().withStyle(ChatFormatting.GOLD)));

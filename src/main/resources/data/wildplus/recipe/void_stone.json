@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:raw_void_stone",
+    "wildplus:raw_void_stone",
+    "wildplus:raw_void_stone",
+    "wildplus:raw_void_stone",
+    "wildplus:void_shard",
+    "wildplus:void_shard",
+    "wildplus:void_shard",
+    "wildplus:void_shard"
+  ],
+  "result": {
+    "id": "wildplus:void_stone",
+    "count": 1
+  }
+}

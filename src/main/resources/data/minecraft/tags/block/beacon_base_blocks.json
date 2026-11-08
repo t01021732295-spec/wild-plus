@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "wildplus:ruby_block",
-    "wildplus:sapphire_block"
+    "wildplus:sapphire_block",
+    "wildplus:void_block"
   ]
 }

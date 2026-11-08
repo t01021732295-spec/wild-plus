@@ -95,11 +95,13 @@ public final class ModItems9 {
         m.putAll(ModItems11.upgrades());
         m.putAll(ModItems12.upgrades());
         m.putAll(ModItems13.rodUpgrades());
+        m.putAll(ModItems22.upgrades());
         return m;
     }
 
     /** 승급에 필요한 재료: 루비 → 스텔라 코어, 사파이어 → 용의 깃털, 에메랄드 → 생명의 결정, 낚싯대 → 블록 */
     public static Item upgradeMaterial(Item from) {
+        if (ModItems22.upgrades().containsKey(from)) return ModItems22.VOID_HEART.get();
         Item rod = ModItems13.rodMaterial(from);
         if (rod != null) return rod;
         if (ModItems12.upgrades().containsKey(from)) return ModItems12.LIFE_CRYSTAL.get();

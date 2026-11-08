@@ -171,8 +171,9 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
                 if (rodTo != null) {
                     UiKit.bold(g, "✦ " + rodTo.getDefaultInstance().getHoverName().getString(), 68, ry, 0xFF0E5A9A);
                 } else {
-                    UiKit.bold(g, emer ? "✦ 로열 에메랄드" : sapph ? "✦ 스카이 사파이어" : "✦ 스텔라 루비", 68, ry,
-                            emer ? 0xFF0E7A3A : sapph ? 0xFF1D4ED8 : 0xFFB0103A);
+                    boolean voidGear = com.snolred.wildplus.registry.ModItems22.upgrades().containsKey(item.getItem());
+                    UiKit.bold(g, voidGear ? "✦ 공허 장비 완성" : emer ? "✦ 로열 에메랄드" : sapph ? "✦ 스카이 사파이어" : "✦ 스텔라 루비", 68, ry,
+                            voidGear ? 0xFF6D28D9 : emer ? 0xFF0E7A3A : sapph ? 0xFF1D4ED8 : 0xFFB0103A);
                 }
                 boolean has = menu.material().is(com.snolred.wildplus.registry.ModItems9.upgradeMaterial(item.getItem()));
                 String what = rodTo != null ? "재료" : emer ? "결정" : sapph ? "깃털" : "코어";

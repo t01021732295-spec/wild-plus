@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "wildplus:void"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "wildplus:void"
+      }
+    ],
+    "wings": [
+      {
+        "texture": "wildplus:void"
+      }
+    ]
+  }
+}

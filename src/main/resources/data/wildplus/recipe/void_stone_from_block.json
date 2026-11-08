@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:void_block"
+  ],
+  "result": {
+    "id": "wildplus:void_stone",
+    "count": 9
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "BBB",
+    "BSB",
+    "BBB"
+  ],
+  "key": {
+    "B": "minecraft:end_stone_bricks",
+    "S": "wildplus:void_shard"
+  },
+  "result": {
+    "id": "wildplus:void_brick",
+    "count": 8
+  }
+}

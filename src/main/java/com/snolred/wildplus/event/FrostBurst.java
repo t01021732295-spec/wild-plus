@@ -79,7 +79,7 @@ public final class FrostBurst {
         e.setInvulnerableTime(invul);
     }
 
-    private static boolean boss(Mob m) {
+    public static boolean boss(Mob m) {
         return DungeonGuardian.isBoss(m) || m.getMaxHealth() >= 150.0F; // 드래곤 · 위더 · 워든 · 핏빛 군주도 여기 걸림
     }
 
