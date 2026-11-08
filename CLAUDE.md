@@ -9,7 +9,7 @@
   - `.github/workflows/build.yml`: 빌드 → 서버 스모크 테스트 → 클라이언트 실행 후 스크린샷(`shot-*.png`)
   - 결과는 `ci-log` 브랜치(status.txt · build-errors.txt · server-tail.txt · client-filtered.txt · shot-*.png)
   - jar 는 릴리스 `latest` 에 `wildplus-<버전>.jar` 로 올라감
-- 버전: `gradle.properties` 의 `mod_version` (최근 3.9.5)
+- 버전: `gradle.properties` 의 `mod_version` (최근 4.0.0)
 - 새 push 는 진행 중인 CI 를 취소함. 문서만 바꿀 땐 커밋 메시지에 `[skip ci]`.
 - API 확인용 `probe.yml`: `.github/probe-classes.txt`(javap 클래스) · `probe-grep.txt` · `probe-javap.txt`(정규식) 를 고치고
   `gh api -X POST repos/t01021732295-spec/wild-plus/actions/workflows/probe.yml/dispatches -f ref=main` → 결과는 `ci-probe` 브랜치 `probe.txt`
@@ -18,7 +18,7 @@
 
 ## 데이터 생성 (파이썬)
 - `cd tools && python3 gen_data.py` → 모델 · 블록상태 · 언어(ko_kr/en_us) · 레시피 · 루트테이블 · 태그 · 구조물 생성
-  - `data_v2 … data_v30` 를 차례로 부름. 새 기능은 **아직 없는 번호**의 `data_vNN.py` 를 추가하고 gen_data 끝에 연결 (ModItemsNN · ModBlocksNN 도 마찬가지 — 먼저 ls 로 확인).
+  - `data_v2 … data_v33` 를 차례로 부름. 새 기능은 **아직 없는 번호**의 `data_vNN.py` 를 추가하고 gen_data 끝에 연결 (ModItemsNN · ModBlocksNN 도 마찬가지 — 먼저 ls 로 확인).
   - 텍스처: `gen_textures.py` (`textures_v*`)
 - **주의:** 구조물 재생성은 결과가 매번 조금 달라짐 → 생성 후 바꾸려던 구조물만 남기고 나머지는
   `git checkout src/main/resources/data/wildplus/structure/<이름>.nbt` 로 되돌리기.
@@ -44,6 +44,8 @@
   · `Prisoners`(올가미 → 감옥: 몸값/전향/심문) · `CounterRaid`(전초 기지 역습격 · 점령) · `Smugglers`(흉조 때만 오는 상인) · `OmenAltar`(마을 수호 게이지)
   · `Discounts`(마을의 영웅 할인을 모드 상인 · 서비스 · 마을 자판기에) / 몹 `entity/MercenaryEntity` · `SmugglerEntity` (변명자 모델 + `client/IllagerPropsLayer` 소품)
   · 스킨/아이콘은 `tools/illager_skins.py` 가 바닐라 그림(WILDPLUS_VANILLA_REF 폴더)에서 색만 바꿔 만듦 · 후반 이벤트는 `RandomEvents` 의 `late()`
+
+- 공허(4.0): `event/VoidGear`(장비 효과) · `AwakenedDragon`(각성의 핵 · 패턴 · 예고 장판 `warn`) · `VoidRuin`(열쇠 · 레버 · 문지기 · 재봉인, 좌표는 `tools/structures_v40.py` 와 일치) / 단계 텍스처는 `client/VoidDragonRenderer` + `mixin/EnderDragonRendererMixin`(드래곤 이름으로 단계 전달)
 
 ## 커밋
 커밋 메시지 끝에:
