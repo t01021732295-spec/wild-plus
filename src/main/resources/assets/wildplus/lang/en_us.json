@@ -925,5 +925,7 @@
   "item.wildplus.lucky_charm_7": "Lucky Charm VII",
   "item.wildplus.lucky_charm_8": "Lucky Charm VIII",
   "item.wildplus.lucky_charm_9": "Lucky Charm IX",
-  "item.wildplus.lucky_charm_10": "Lucky Charm X"
+  "item.wildplus.lucky_charm_10": "Lucky Charm X",
+  "block.wildplus.land_post": "Land Post",
+  "entity.wildplus.illager_prisoner": "Illager Prisoner"
 }

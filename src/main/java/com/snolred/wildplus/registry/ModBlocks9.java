@@ -14,7 +14,7 @@ public final class ModBlocks9 {
             p -> new BigBlock(p, com.snolred.wildplus.omen.OmenAltar::open, 0, 1, 0, 0, 2, null),
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.POLISHED_DEEPSLATE).noOcclusion().strength(3.0F, 9.0F).lightLevel(s -> 9));
     public static final DeferredBlock<BigBlock> ILLAGER_PRISON = BLOCKS.registerBlock("illager_prison",
-            p -> new BigBlock(p, com.snolred.wildplus.omen.Prisoners::open, 0, 1, 0, 0, 2, null),
+            p -> new BigBlock(p, com.snolred.wildplus.omen.Prisoners::open, -1, 1, 0, 1, 2, null), // 3.9: 3×2×2
             () -> BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BARS).sound(SoundType.METAL).noOcclusion().strength(3.0F, 9.0F).lightLevel(s -> 6));
 
     public static void init() {}

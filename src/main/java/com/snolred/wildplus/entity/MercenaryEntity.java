@@ -91,7 +91,7 @@ public class MercenaryEntity extends Vindicator {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this, Player.class, MercenaryEntity.class));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Mob.class, 5, true, false,
                 (e, lvl) -> e instanceof Enemy && e.getType() != EntityTypes.CREEPER && e.getType() != EntityTypes.ENDERMAN
-                        && !(e instanceof MercenaryEntity) && !(e instanceof SmugglerEntity)));
+                        && !(e instanceof MercenaryEntity) && !(e instanceof SmugglerEntity) && !(e instanceof PrisonerEntity)));
     }
 
     @Override

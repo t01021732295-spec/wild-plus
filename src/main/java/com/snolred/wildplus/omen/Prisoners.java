@@ -64,6 +64,87 @@ public final class Prisoners {
         if (ps.isEmpty()) root(s).remove(k);
         else root(s).put(k, cell);
         ContentData.get(s).dirty();
+        sync(s, k);
+    }
+
+    // ───────── 3.9 감옥 안에 포로 모습 ─────────
+    private static ServerLevel levelOf(MinecraftServer s, String k) {
+        String dim = k.substring(0, k.indexOf('|'));
+        for (ServerLevel l : s.getAllLevels()) if (l.dimension().identifier().toString().equals(dim)) return l;
+        return null;
+    }
+
+    private static BlockPos posOf(String k) {
+        String[] a = k.split("\\|");
+        return new BlockPos(Integer.parseInt(a[a.length - 3]), Integer.parseInt(a[a.length - 2]), Integer.parseInt(a[a.length - 1]));
+    }
+
+    private static boolean isPrison(ServerLevel l, BlockPos pos) {
+        return l.getBlockState(pos).is(com.snolred.wildplus.registry.ModBlocks9.ILLAGER_PRISON.get());
+    }
+
+    /** 포로 그림이 아직 자료와 맞는가 (아니면 스스로 사라짐) */
+    public static boolean stillHeld(com.snolred.wildplus.entity.PrisonerEntity e) {
+        if (e.cell.isEmpty() || !(e.level() instanceof ServerLevel l)) return false;
+        List<CompoundTag> ps = list(root(l.getServer()).getCompoundOrEmpty(e.cell));
+        return e.slot < ps.size() && e.prison != null && isPrison(l, e.prison)
+                && com.snolred.wildplus.entity.PrisonerEntity.kindOf(ps.get(e.slot).getStringOr("type", "")) == e.kind();
+    }
+
+    /** 자료대로 포로를 세우고, 남는 그림은 지운다 */
+    static void sync(MinecraftServer s, String k) {
+        ServerLevel l;
+        BlockPos pos;
+        try {
+            l = levelOf(s, k);
+            pos = posOf(k);
+        } catch (RuntimeException ex) {
+            return;
+        }
+        if (l == null || !l.isLoaded(pos)) return;
+        List<com.snolred.wildplus.entity.PrisonerEntity> have = l.getEntities(ModEntities.PRISONER.get(),
+                new net.minecraft.world.phys.AABB(pos).inflate(4), e -> k.equals(e.cell));
+        if (!isPrison(l, pos)) {
+            // 감옥이 부서짐: 포로들은 달아난다
+            for (var e : have) e.discard();
+            if (root(s).contains(k)) {
+                root(s).remove(k);
+                ContentData.get(s).dirty();
+                l.sendParticles(ParticleTypes.POOF, pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, 20, 1, 0.6, 1, 0.02);
+            }
+            return;
+        }
+        List<CompoundTag> ps = list(root(s).getCompoundOrEmpty(k));
+        net.minecraft.core.Direction f = l.getBlockState(pos).getValue(com.snolred.wildplus.block.BigBlock.FACING);
+        net.minecraft.core.Direction right = f.getClockWise(), back = f.getOpposite();
+        com.snolred.wildplus.entity.PrisonerEntity[] slot = new com.snolred.wildplus.entity.PrisonerEntity[MAX];
+        for (var e : have) {
+            if (e.slot < ps.size() && slot[e.slot] == null
+                    && com.snolred.wildplus.entity.PrisonerEntity.kindOf(ps.get(e.slot).getStringOr("type", "")) == e.kind()) {
+                slot[e.slot] = e;
+            } else {
+                e.discard();
+            }
+        }
+        double[] lat = {-1.05, 1.05, -0.35, 0.35};
+        double[] dep = {0.85, 0.85, 0.95, 0.95};
+        for (int i = 0; i < ps.size(); i++) {
+            if (slot[i] != null) continue;
+            var e = ModEntities.PRISONER.get().create(l, net.minecraft.world.entity.EntitySpawnReason.MOB_SUMMONED);
+            if (e == null) continue;
+            double x = pos.getX() + 0.5 + right.getStepX() * lat[i] + back.getStepX() * dep[i];
+            double z = pos.getZ() + 0.5 + right.getStepZ() * lat[i] + back.getStepZ() * dep[i];
+            float yaw = f.toYRot() + (i % 2 == 0 ? 12F : -12F);
+            e.snapTo(x, pos.getY() + 0.06, z, yaw, 0F);
+            e.setYHeadRot(yaw);
+            e.yBodyRot = yaw;
+            e.cell = k;
+            e.slot = i;
+            e.prison = pos.immutable();
+            CompoundTag t = ps.get(i);
+            e.setKind(com.snolred.wildplus.entity.PrisonerEntity.kindOf(t.getStringOr("type", "")), t.getBooleanOr("elite", false));
+            l.addFreshEntity(e);
+        }
     }
 
     static long ransom(String type, boolean elite) {
@@ -112,8 +193,8 @@ public final class Prisoners {
             if (!t.getStringOr("ransomBy", "").isEmpty()) sub += " · 💰 몸값 대기 (내일 아침)";
             es.add(new PickMenu.Entry("⛓ " + title(t), sub, new ItemStack(icon(t.getStringOr("type", "")))));
         }
-        PickMenu.open(p, Component.literal("⛓ 우민 감옥"), "포로 " + ps.size() + "/4 · 우민 올가미로 묶어서 감옥을 누르면 가둬요",
-                "비어 있어요 — 체력 40% 아래로 만든 우민을 올가미로 묶어 오세요", es, 0, i -> {
+        PickMenu.open(p, Component.literal("⛓ 우민 감옥"), "포로 " + ps.size() + "/4 · 올가미로 묶은 우민을 들고 감옥을 누르면 가둬요",
+                "비어 있어요 — 체력 40% 아래로 만든 우민을 올가미로 묶어 오세요", es, PickMenu.themed(PickMenu.T_PRISON), i -> {
                     if (i >= 0 && i < ps.size()) prisoner(p, pos, i);
                 }, null, q -> near(q, pos));
     }
@@ -153,7 +234,7 @@ public final class Prisoners {
                 + (stamina == 3 ? "가까운 전초 기지 위치" : stamina == 2 ? "다음 흉조 때 밀수꾼이 꼭 나타남" : "삼림 대저택 위치"),
                 new ItemStack(Items.WRITABLE_BOOK), stamina <= 0 ? PickMenu.K_INFO : PickMenu.K_PRIMARY));
         es.add(PickMenu.Entry.of(PickMenu.K_SMALL, "◀ 감옥으로", ""));
-        PickMenu.open(p, Component.literal("⛓ " + title(t)), "포로를 어떻게 할까요?", "", es, 0, i -> {
+        PickMenu.open(p, Component.literal("⛓ " + title(t)), "기력 " + stamina + "/3", "", es, PickMenu.themed(PickMenu.T_PRISON), i -> {
             List<CompoundTag> cur = list(root(s).getCompoundOrEmpty(k));
             if (idx >= cur.size()) return;
             CompoundTag c = cur.get(idx);
@@ -233,6 +314,9 @@ public final class Prisoners {
     @SubscribeEvent
     public static void onTick(ServerTickEvent.Post event) {
         MinecraftServer s = event.getServer();
+        if (s.getTickCount() % 40 == 20) {
+            for (String k : new ArrayList<>(root(s).keySet())) sync(s, k);
+        }
         if (s.getTickCount() % 200 != 0) return;
         CompoundTag r = root(s);
         long today = ContentData.gameDay;

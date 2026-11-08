@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "color=0": {
+      "model": "wildplus:block/land_post_0"
+    },
+    "color=1": {
+      "model": "wildplus:block/land_post_1"
+    },
+    "color=2": {
+      "model": "wildplus:block/land_post_2"
+    },
+    "color=3": {
+      "model": "wildplus:block/land_post_3"
+    },
+    "color=4": {
+      "model": "wildplus:block/land_post_4"
+    },
+    "color=5": {
+      "model": "wildplus:block/land_post_5"
+    },
+    "color=6": {
+      "model": "wildplus:block/land_post_6"
+    },
+    "color=7": {
+      "model": "wildplus:block/land_post_7"
+    }
+  }
+}

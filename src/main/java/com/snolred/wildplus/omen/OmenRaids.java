@@ -598,7 +598,7 @@ public final class OmenRaids {
         es.add(PickMenu.Entry.of(PickMenu.K_INFO, String.format("보상 배율 ×%.2f", mult * theme.money),
                 "흉조 " + roman(amp + 1) + (theme != Theme.NONE ? " · " + theme.title : "") + " · 1인 기본 " + Omen.won(BASE[Math.min(4, amp)])));
         es.add(PickMenu.Entry.of(PickMenu.K_PRIMARY, "✒ 서명하고 종 치기", "바로 습격이 시작돼요"));
-        PickMenu.open(p, Component.literal("📜 흉조 계약서"), "붙일 저주를 고르세요 · 저주가 많을수록 보상이 커져요", "", es, 0, i -> {
+        PickMenu.open(p, Component.literal("📜 흉조 계약서"), "붙일 저주를 고르세요 · 저주가 많을수록 보상이 커져요", "", es, PickMenu.themed(PickMenu.T_CONTRACT), i -> {
             if (i >= 0 && i < Curse.values().length) {
                 PICK.put(p.getUUID(), mask ^ (1 << i));
                 openContract(p, bell);

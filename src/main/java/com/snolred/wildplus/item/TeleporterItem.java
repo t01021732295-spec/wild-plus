@@ -34,13 +34,19 @@ public class TeleporterItem extends Item {
             List<PickMenu.Entry> entries = new ArrayList<>();
             List<UUID> ids = new ArrayList<>();
             for (ServerPlayer p : others) {
+                String dim = switch (p.level().dimension().identifier().toString()) {
+                    case "minecraft:overworld" -> "오버월드";
+                    case "minecraft:the_nether" -> "네더";
+                    case "minecraft:the_end" -> "엔드";
+                    default -> p.level().dimension().identifier().getPath();
+                };
+                String dist = p.level() == sp.level() ? (int) Math.sqrt(p.blockPosition().distSqr(sp.blockPosition())) + "칸 거리" : "다른 차원";
                 entries.add(new PickMenu.Entry(p.getName().getString(),
-                        p.level().dimension().identifier().getPath() + " · " + p.blockPosition().getX() + ", "
-                                + p.blockPosition().getY() + ", " + p.blockPosition().getZ()));
+                        dim + " · " + p.blockPosition().getX() + ", " + p.blockPosition().getY() + ", " + p.blockPosition().getZ() + " · " + dist));
                 ids.add(p.getUUID());
             }
             PickMenu.open(sp, Component.translatable("item.wildplus.teleporter"), "누구에게 갈까요? (1회용)",
-                    "지금 접속한 다른 유저가 없어요.", entries, 0,
+                    "지금 접속한 다른 유저가 없어요.", entries, PickMenu.themed(PickMenu.T_TELEPORT),
                     i -> {
                         sp.closeContainer();
                         ServerPlayer target = sp.level().getServer().getPlayerList().getPlayer(ids.get(i));

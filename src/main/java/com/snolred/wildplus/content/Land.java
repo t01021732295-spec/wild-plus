@@ -189,8 +189,14 @@ public final class Land {
             LAST_SEEN.put(p.getUUID(), now);
             if (o != null) {
                 boolean mine = o.equals(p.getUUID());
-                p.sendOverlayMessage(Component.literal(mine ? "🏠 내 땅" : "🏠 " + ownerName(s, o) + "의 땅")
-                        .withStyle(mine ? ChatFormatting.GREEN : ChatFormatting.GOLD));
+                boolean wasMine = before.equals(p.getUUID().toString());
+                if (mine && !wasMine) {
+                    title(p, "🏠 내 땅", "어서 와요, " + p.getGameProfile().name() + " 님");
+                    edgeGlow(p);
+                } else {
+                    p.sendOverlayMessage(Component.literal(mine ? "🏠 내 땅" : "🏠 " + ownerName(s, o) + "의 땅")
+                            .withStyle(mine ? ChatFormatting.GREEN : ChatFormatting.GOLD));
+                }
             } else if (!before.isEmpty()) {
                 p.sendOverlayMessage(Component.literal("🌲 주인 없는 땅").withStyle(ChatFormatting.GRAY));
             }
@@ -319,6 +325,8 @@ public final class Land {
         me.putString("name", p.getGameProfile().name());
         ContentData.get(s).dirty();
         if ((at.getX() >> 4) == (p.getBlockX() >> 4) && (at.getZ() >> 4) == (p.getBlockZ() >> 4)) showBorder(p);
+        placePosts(p.level(), at, p.getUUID(), false);
+        title(p, "🏠 내 땅이 됐어요!", "모서리에 경계 기둥을 세웠어요 · /land 로 관리");
         p.level().playSound(null, p.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.8F, 1.2F);
         p.sendSystemMessage(Component.literal(String.format("🏠 땅을 샀어요! (%,d동 · 이제 땅 %d칸 · 재산세 하루 %,d동)",
                 price, owned(p.getUUID()), UPKEEP * owned(p.getUUID()))).withStyle(ChatFormatting.GREEN));
@@ -340,12 +348,91 @@ public final class Land {
         chunks(s).remove(k);
         ContentData.get(s).dirty();
         com.snolred.wildplus.economy.WildData.get(s).addBalance(p.getUUID(), REFUND);
+        placePosts(p.level(), at, p.getUUID(), false);
         p.sendSystemMessage(Component.literal(String.format("🏠 땅을 팔았어요 (%,d동은 통장으로)", REFUND)).withStyle(ChatFormatting.YELLOW));
         return true;
     }
 
     public static String ownerNameOf(MinecraftServer s, UUID id) {
         return ownerName(s, id);
+    }
+
+    // ───────── 3.9 경계 기둥 ─────────
+    private static boolean ownedBy(Level level, int cx, int cz, UUID id) {
+        return id.equals(CHUNKS.get(level.dimension().identifier() + "|" + cx + "|" + cz));
+    }
+
+    /**
+     * 청크 꼭짓점(vx, vz)마다 이 주인의 땅 모양을 보고 기둥을 세우거나 치운다.
+     * 둘레 4청크 중 내 땅이 1 · 3개이거나 대각선 2개면 모서리 → 기둥 하나 (내 땅 청크 쪽 칸에).
+     */
+    private static int vertex(ServerLevel level, int vx, int vz, UUID id, boolean force) {
+        int[][] around = {{vx - 1, vz - 1}, {vx, vz - 1}, {vx - 1, vz}, {vx, vz}};
+        boolean[] mine = new boolean[4];
+        int n = 0;
+        for (int i = 0; i < 4; i++) if (mine[i] = ownedBy(level, around[i][0], around[i][1], id)) n++;
+        boolean corner = n == 1 || n == 3 || (n == 2 && mine[0] == mine[3]);
+        int keep = -1;
+        if (corner) for (int i = 0; i < 4; i++) if (mine[i]) { keep = i; break; }
+        int placed = 0;
+        for (int i = 0; i < 4; i++) {
+            int cx = around[i][0], cz = around[i][1];
+            UUID o = CHUNKS.get(level.dimension().identifier() + "|" + cx + "|" + cz);
+            if (o != null && !o.equals(id)) continue; // 남의 땅 기둥은 건드리지 않음
+            int bx = cx == vx ? vx * 16 : vx * 16 - 1, bz = cz == vz ? vz * 16 : vz * 16 - 1;
+            if (!level.hasChunk(cx, cz)) continue;
+            BlockPos found = null;
+            for (int y = level.getMinY(); y < level.getMaxY(); y++) {
+                BlockPos q = new BlockPos(bx, y, bz);
+                if (level.getBlockState(q).is(com.snolred.wildplus.registry.ModBlocks10.LAND_POST.get())) {
+                    found = q;
+                    break;
+                }
+            }
+            if (i != keep) {
+                if (found != null) level.removeBlock(found, false);
+                continue;
+            }
+            if (found != null && !force) continue;
+            if (found != null) level.removeBlock(found, false);
+            BlockPos top = level.getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new BlockPos(bx, 0, bz));
+            if (!level.getBlockState(top).canBeReplaced() || !level.getBlockState(top.above()).canBeReplaced()) continue;
+            if (!level.getFluidState(top).isEmpty()) continue;
+            level.setBlock(top, com.snolred.wildplus.registry.ModBlocks10.LAND_POST.get().defaultBlockState()
+                    .setValue(com.snolred.wildplus.block.LandPostBlock.COLOR, com.snolred.wildplus.block.LandPostBlock.colorOf(id)), 3);
+            level.sendParticles(ParticleTypes.HAPPY_VILLAGER, bx + 0.5, top.getY() + 1.2, bz + 0.5, 12, 0.3, 0.8, 0.3, 0);
+            placed++;
+        }
+        return placed;
+    }
+
+    /** 이 청크의 네 꼭짓점 기둥 정리 (사기 · 팔기 · 다시 세우기) */
+    public static int placePosts(ServerLevel level, BlockPos at, UUID id, boolean force) {
+        int cx = at.getX() >> 4, cz = at.getZ() >> 4, n = 0;
+        for (int dx = 0; dx <= 1; dx++) for (int dz = 0; dz <= 1; dz++) n += vertex(level, cx + dx, cz + dz, id, force);
+        return n;
+    }
+
+    /** 화면 가운데 큰 글씨 */
+    private static void title(ServerPlayer p, String big, String small) {
+        p.connection.send(new net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket(5, 40, 15));
+        p.connection.send(new net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket(Component.literal(small).withStyle(ChatFormatting.GRAY)));
+        p.connection.send(new net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket(Component.literal(big).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD)));
+    }
+
+    /** 내 땅에 들어설 때: 지금 청크 중 내 땅 바깥쪽 경계선만 잠깐 빛나게 */
+    private static void edgeGlow(ServerPlayer p) {
+        ServerLevel lv = p.level();
+        int cx = p.getBlockX() >> 4, cz = p.getBlockZ() >> 4;
+        UUID me = p.getUUID();
+        double y = p.getY() + 0.3;
+        int mx = cx << 4, mz = cz << 4;
+        for (int i = 0; i <= 16; i += 2) {
+            if (!ownedBy(lv, cx, cz - 1, me)) lv.sendParticles(p, ParticleTypes.WAX_ON, true, true, mx + i, y, mz, 2, 0, 0.4, 0, 0);
+            if (!ownedBy(lv, cx, cz + 1, me)) lv.sendParticles(p, ParticleTypes.WAX_ON, true, true, mx + i, y, mz + 16, 2, 0, 0.4, 0, 0);
+            if (!ownedBy(lv, cx - 1, cz, me)) lv.sendParticles(p, ParticleTypes.WAX_ON, true, true, mx, y, mz + i, 2, 0, 0.4, 0, 0);
+            if (!ownedBy(lv, cx + 1, cz, me)) lv.sendParticles(p, ParticleTypes.WAX_ON, true, true, mx + 16, y, mz + i, 2, 0, 0.4, 0, 0);
+        }
     }
 
     /** 지금 청크 테두리를 잠깐 표시 */
@@ -374,8 +461,31 @@ public final class Land {
         List<PickMenu.Entry> e = new ArrayList<>();
         List<Runnable> act = new ArrayList<>();
         String hereText = here == null ? "주인 없는 땅" : here.equals(me) ? "내 땅" : ownerName(s, here) + "의 땅";
-        e.add(new PickMenu.Entry("📍 여기: " + hereText, "테두리 보기"));
+        // 3.9 지도: 둘레 9×9 청크 (0 빈 땅 · 1 내 땅 · 2 친구 땅 · 3 남의 땅) + 정보 (ThemedScreen 이 그림)
+        StringBuilder map = new StringBuilder("MAP:");
+        int cx = p.getBlockX() >> 4, cz = p.getBlockZ() >> 4;
+        String dim = p.level().dimension().identifier() + "|";
+        for (int dz = -4; dz <= 4; dz++) {
+            for (int dx = -4; dx <= 4; dx++) {
+                UUID o = CHUNKS.get(dim + (cx + dx) + "|" + (cz + dz));
+                map.append(o == null ? '0' : o.equals(me) ? '1' : isMember(s, o, me) || isMember(s, me, o) ? '2' : '3');
+            }
+        }
+        int friends = mine.getListOrEmpty("members").size();
+        int debt = mine.getIntOr("debt", 0);
+        map.append("|여기=").append(hereText)
+                .append("|내 땅=").append(n).append("칸")
+                .append("|재산세=").append(String.format("%,d동/일", UPKEEP * n))
+                .append("|친구=").append(friends).append("명")
+                .append("|").append(debt > 0 ? "밀린 세금=" + debt + "일 (" + MAX_DEBT + "일이면 풀림)" : "다음 땅=" + String.format("%,d동", nextPrice(me)));
+        e.add(PickMenu.Entry.of(PickMenu.K_INFO, "지도", map.toString()));
+        act.add(() -> {});
+        e.add(new PickMenu.Entry("📍 테두리 보기", "빛나는 선"));
         act.add(() -> showBorder(p));
+        if (here != null && here.equals(me)) {
+            e.add(new PickMenu.Entry("🚩 경계 기둥 다시 세우기", "네 모서리"));
+            act.add(() -> placePosts(p.level(), p.blockPosition(), me, true));
+        }
         if (here == null) {
             e.add(new PickMenu.Entry("🏠 이 땅 사기", String.format("%,d동", nextPrice(me))));
             act.add(() -> buy(p));
@@ -384,26 +494,23 @@ public final class Land {
             act.add(() -> sell(p));
         }
         int access = mine.getIntOr("access", ACCESS_ALL);
-        e.add(new PickMenu.Entry("🚪 출입: " + ACCESS_NAME[access], "누르면 바뀜"));
+        e.add(new PickMenu.Entry("🚪 출입: " + ACCESS_NAME[access], "바꾸기"));
         act.add(() -> {
             mine.putInt("access", (access + 1) % 3);
             ContentData.get(s).dirty();
         });
         boolean build = mine.getBooleanOr("build", false);
-        e.add(new PickMenu.Entry("⛏ 블록 부수기·놓기: " + (build ? "모두 허용" : "친구만"), "누르면 바뀜"));
+        e.add(new PickMenu.Entry("⛏ 짓기: " + (build ? "모두 허용" : "친구만"), "바꾸기"));
         act.add(() -> {
             mine.putBoolean("build", !build);
             ContentData.get(s).dirty();
         });
         boolean use = mine.getBooleanOr("use", false);
-        e.add(new PickMenu.Entry("📦 상자·문·기계 사용: " + (use ? "모두 허용" : "친구만"), "누르면 바뀜"));
+        e.add(new PickMenu.Entry("📦 상자·문 사용: " + (use ? "모두 허용" : "친구만"), "바꾸기"));
         act.add(() -> {
             mine.putBoolean("use", !use);
             ContentData.get(s).dirty();
         });
-        e.add(new PickMenu.Entry(String.format("📜 내 땅 %d칸 · 세금 %,d/일", n, UPKEEP * n),
-                mine.getIntOr("debt", 0) > 0 ? "⚠ " + mine.getIntOr("debt", 0) + "일 밀림" : ""));
-        act.add(() -> {});
         ListTag members = mine.getListOrEmpty("members");
         List<String> names = new ArrayList<>();
         for (Tag t : members) if (t instanceof StringTag st) names.add(st.value());
@@ -411,7 +518,7 @@ public final class Land {
             String nm = ContentData.get(s).player("land_owner", UUID.fromString(id)).getStringOr("name", null);
             ServerPlayer on = s.getPlayerList().getPlayer(UUID.fromString(id));
             String shown = on != null ? on.getGameProfile().name() : nm != null ? nm : mine.getCompoundOrEmpty("member_names").getStringOr(id, "?");
-            e.add(new PickMenu.Entry("👥 친구: " + shown, "누르면 빼기"));
+            e.add(new PickMenu.Entry("👥 친구: " + shown, "빼기"));
             act.add(() -> {
                 ListTag l = mine.getListOrEmpty("members");
                 l.removeIf(t -> t instanceof StringTag st && st.value().equals(id));
@@ -419,8 +526,8 @@ public final class Land {
                 ContentData.get(s).dirty();
             });
         }
-        PickMenu.open(p, Component.literal("🏠 부동산"), "친구 추가: /land trust 이름",
-                "", e, 0, i -> {
+        PickMenu.open(p, Component.literal("내 땅 관리"), "친구 추가: /land trust 이름",
+                "", e, PickMenu.themed(PickMenu.T_LAND), i -> {
                     if (i >= 0 && i < act.size()) act.get(i).run();
                     open(p);
                 }, null, pl -> true);

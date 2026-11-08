@@ -127,7 +127,7 @@ public final class OmenAltar {
                     new ItemStack(i == 0 ? Items.IRON_BLOCK : i == 1 ? Items.GOLDEN_APPLE : i == 2 ? Items.ARROW : i == 3 ? Items.EMERALD : Items.SHIELD),
                     i < st ? PickMenu.K_ROW : PickMenu.K_INFO));
         }
-        PickMenu.open(p, Component.literal("☠ 흉조 제단 · 마을 수호"), "주변 48칸 마을에 효과", "", es, 0, i -> {}, null,
+        PickMenu.open(p, Component.literal("흉조 제단 · 마을 수호"), "주변 48칸 마을에 효과", "", es, PickMenu.themed(PickMenu.T_ALTAR), i -> {}, null,
                 q -> q.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) < 64);
     }
 

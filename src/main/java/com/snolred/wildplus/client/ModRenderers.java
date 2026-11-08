@@ -41,6 +41,7 @@ public final class ModRenderers {
         // 3.8 흉조: 바닐라 변명자 모델 + 두건/철모(모자 층) + 소품
         event.registerEntityRenderer(ModEntities.SMUGGLER.get(), ctx -> new OmenIllager(ctx, tex("illager_smuggler"), IllagerPropsLayer.SMUGGLER));
         event.registerEntityRenderer(ModEntities.MERCENARY.get(), ctx -> new OmenIllager(ctx, tex("illager_mercenary"), IllagerPropsLayer.MERCENARY));
+        event.registerEntityRenderer(ModEntities.PRISONER.get(), PrisonerRenderer::new);
         // 보스: 바닐라 모델 + 전용 텍스처
         event.registerEntityRenderer(ModEntities.TITAN_BOSS.get(), ctx -> new net.minecraft.client.renderer.entity.RavagerRenderer(ctx) {
             @Override

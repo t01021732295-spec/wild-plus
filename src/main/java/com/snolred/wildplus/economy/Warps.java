@@ -92,12 +92,14 @@ public final class Warps {
         for (WildData.Warp w : targets) {
             String who = w.ownerName.isEmpty() ? "공용" : w.ownerName;
             entries.add(new PickMenu.Entry((w.isPublic ? "" : "[비공개] ") + w.name,
-                    who + " · " + dimName(w.dimension) + " " + w.pos.getX() + ", " + w.pos.getY() + ", " + w.pos.getZ()));
+                    who + " · " + dimName(w.dimension) + " " + w.pos.getX() + ", " + w.pos.getY() + ", " + w.pos.getZ() + "\n"
+                            + (w.dimension.equals(player.level().dimension().identifier().toString())
+                            ? (int) Math.sqrt(w.pos.distSqr(player.blockPosition())) + "칸" : dimName(w.dimension))));
         }
         boolean owner = here.owner.equals(player.getUUID());
         boolean rename = canRename(here, player);
         if (rename) LAST_OPENED.put(player.getUUID(), here.id);
-        int flags = (owner ? PickMenu.FLAG_CAN_TOGGLE : 0) | (here.isPublic ? PickMenu.FLAG_PUBLIC : 0) | (rename ? PickMenu.FLAG_CAN_RENAME : 0);
+        int flags = PickMenu.themed(PickMenu.T_WARP) | (owner ? PickMenu.FLAG_CAN_TOGGLE : 0) | (here.isPublic ? PickMenu.FLAG_PUBLIC : 0) | (rename ? PickMenu.FLAG_CAN_RENAME : 0);
         BlockPos herePos = here.pos;
         PickMenu.open(player, Component.translatable("container.wildplus.warp", here.name),
                 "현재 위치: " + here.name + (here.isPublic ? " (공개)" : " (비공개)"),

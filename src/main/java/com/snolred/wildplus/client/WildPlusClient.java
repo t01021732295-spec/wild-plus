@@ -32,7 +32,8 @@ public class WildPlusClient {
         event.register(com.snolred.wildplus.registry.ModMenus.VENDING.get(), VendingScreen::new);
         // 3.4: 부동산 중개소는 매물 카드 화면, 나머지는 목록 화면
         event.<com.snolred.wildplus.menu.PickMenu, net.minecraft.client.gui.screens.inventory.AbstractContainerScreen<com.snolred.wildplus.menu.PickMenu>>register(
-                com.snolred.wildplus.registry.ModMenus.PICK.get(), (m, inv, t) -> (m.flags & com.snolred.wildplus.menu.PickMenu.FLAG_REALTY) != 0
+                com.snolred.wildplus.registry.ModMenus.PICK.get(), (m, inv, t) -> com.snolred.wildplus.menu.PickMenu.theme(m.flags) != 0 ? new ThemedScreen(m, inv, t)
+                        : (m.flags & com.snolred.wildplus.menu.PickMenu.FLAG_REALTY) != 0
                         ? new RealtyScreen(m, inv, t) : (m.flags & com.snolred.wildplus.menu.PickMenu.FLAG_PIANO) != 0 ? new PianoScreen(m, inv, t)
                         : (m.flags & com.snolred.wildplus.menu.PickMenu.FLAG_GUESTBOOK) != 0 ? new GuestbookScreen(m, inv, t)
                         : (m.flags & com.snolred.wildplus.menu.PickMenu.FLAG_DERBY_BET) != 0 ? new BettingScreen(m, inv, t)

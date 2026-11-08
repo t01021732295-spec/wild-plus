@@ -292,7 +292,7 @@ public final class Contest {
         long day = Math.floorDiv(clock(server), 24000L);
         rows.add(PickMenu.Entry.of(PickMenu.K_INFO, "오늘은 " + (day + 1) + "일차 " + weekdayName(day) + "요일",
                 "다음 금요일까지 " + Math.floorMod(FRI - Math.floorMod(day, 7), 7) + "일"));
-        PickMenu.open(p, Component.literal("🏆 주말 대회 게시판"), header, "아직 참가자가 없어요 — 지금 바로 점수를 내 보세요!", rows, 0, i -> {}, null,
+        PickMenu.open(p, Component.literal("🏆 주말 대회 게시판"), header, "아직 참가자가 없어요 — 지금 바로 점수를 내 보세요!", rows, PickMenu.themed(PickMenu.T_CONTEST), i -> {}, null,
                 pl -> pl.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) < 64.0);
     }
 

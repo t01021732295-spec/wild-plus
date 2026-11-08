@@ -9,7 +9,7 @@
   - `.github/workflows/build.yml`: 빌드 → 서버 스모크 테스트 → 클라이언트 실행 후 스크린샷(`shot-*.png`)
   - 결과는 `ci-log` 브랜치(status.txt · build-errors.txt · server-tail.txt · client-filtered.txt · shot-*.png)
   - jar 는 릴리스 `latest` 에 `wildplus-<버전>.jar` 로 올라감
-- 버전: `gradle.properties` 의 `mod_version` (최근 3.9.0)
+- 버전: `gradle.properties` 의 `mod_version` (최근 3.9.1)
 - 새 push 는 진행 중인 CI 를 취소함. 문서만 바꿀 땐 커밋 메시지에 `[skip ci]`.
 - API 확인용 `probe.yml`: `.github/probe-classes.txt`(javap 클래스) · `probe-grep.txt` · `probe-javap.txt`(정규식) 를 고치고
   `gh api -X POST repos/t01021732295-spec/wild-plus/actions/workflows/probe.yml/dispatches -f ref=main` → 결과는 `ci-probe` 브랜치 `probe.txt`
@@ -18,7 +18,7 @@
 
 ## 데이터 생성 (파이썬)
 - `cd tools && python3 gen_data.py` → 모델 · 블록상태 · 언어(ko_kr/en_us) · 레시피 · 루트테이블 · 태그 · 구조물 생성
-  - `data_v2 … data_v29` 를 차례로 부름. 새 기능은 **아직 없는 번호**의 `data_vNN.py` 를 추가하고 gen_data 끝에 연결 (ModItemsNN · ModBlocksNN 도 마찬가지 — 먼저 ls 로 확인).
+  - `data_v2 … data_v30` 를 차례로 부름. 새 기능은 **아직 없는 번호**의 `data_vNN.py` 를 추가하고 gen_data 끝에 연결 (ModItemsNN · ModBlocksNN 도 마찬가지 — 먼저 ls 로 확인).
   - 텍스처: `gen_textures.py` (`textures_v*`)
 - **주의:** 구조물 재생성은 결과가 매번 조금 달라짐 → 생성 후 바꾸려던 구조물만 남기고 나머지는
   `git checkout src/main/resources/data/wildplus/structure/<이름>.nbt` 로 되돌리기.
@@ -36,6 +36,8 @@
 - 집 꾸미기(3.3): `block/FurnitureBlock`(Kind 별 기능) · `FurnitureBedBlock` · `entity/SeatEntity` · `home/HouseKitItem` · `home/HomeShop` · `client/HousePreview`
 - 여러 칸 블록: `block/BigBlock`(본체가 모델 전체를 그림) + `BigPartBlock`(보이지 않는 부속 칸, 클릭/부수기 전달)
 - 화면 공통: `client/UiKit` · `UiButton` · `menu/PickMenu`(목록/상점 진열장 화면)
+  · 3.9 시설별 테마 화면 `client/ThemedScreen` — 서버가 `PickMenu.themed(PickMenu.T_…)` 를 flags 에 넣으면 그 모양으로 (약국 · 기상 · 땅 · 워프 · 대회 · 순간이동기 · 계약서 · 감옥 · 제단)
+- 땅(부동산): `content/Land` — 사면 모서리에 `block/LandPostBlock`(주인 색 8가지) 자동 · 내 땅 들어서면 큰 제목 · 감옥 포로 그림은 `entity/PrisonerEntity`(저장 안 함, `Prisoners.sync`)
 - 물가(3.7): `economy/Prices.x()` — 모든 값을 3배(100만동 이상은 2배)로. 새 가격도 이걸로 감싸기
 - 흉조(3.8): `omen/` — `OmenRaids`(바닐라 습격 + 계약서 저주 · 테마 · 연쇄 · 기여도 보상) · `OmenEvents`(투척병 · 양조 세기 · /omen)
   · `Prisoners`(올가미 → 감옥: 몸값/전향/심문) · `CounterRaid`(전초 기지 역습격 · 점령) · `Smugglers`(흉조 때만 오는 상인) · `OmenAltar`(마을 수호 게이지)

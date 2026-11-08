@@ -24,6 +24,18 @@ public class PickMenu extends AbstractContainerMenu {
     public static final int FLAG_CAN_TOGGLE = 1, FLAG_PUBLIC = 2, FLAG_CAN_RENAME = 4;
     /** 화면 테마: 투기장(콜로세움) · 진열장(유리 케이스 격자) */
     public static final int FLAG_ARENA = 8, FLAG_SHOP = 16, FLAG_JOB = 32, FLAG_REALTY = 64, FLAG_PIANO = 128, FLAG_GUESTBOOK = 256, FLAG_DERBY_BET = 512, FLAG_STABLE = 1024, FLAG_VILLAGE = 2048;
+    /** 3.9 시설별 테마 화면 (ThemedScreen): flags 의 12~15번째 비트 */
+    public static final int THEME_SHIFT = 12;
+    public static final int T_PHARMACY = 1, T_WEATHER = 2, T_LAND = 3, T_WARP = 4, T_CONTEST = 5, T_TELEPORT = 6, T_CONTRACT = 7, T_PRISON = 8, T_ALTAR = 9;
+
+    public static int theme(int flags) {
+        return (flags >> THEME_SHIFT) & 15;
+    }
+
+    /** flags 에 섞어 넣을 테마 값 */
+    public static int themed(int id) {
+        return id << THEME_SHIFT;
+    }
 
     /** 한 줄: 이름 · 부가 설명 · (진열장 화면용) 아이템 그림 · 모양(K_…) */
     public record Entry(String title, String sub, ItemStack icon, int kind) {

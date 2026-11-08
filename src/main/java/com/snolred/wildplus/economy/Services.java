@@ -43,6 +43,19 @@ public final class Services {
                 new Buff("광전사 (3분)", com.snolred.wildplus.registry.ModEffects.BERSERK, 0, 180, 120));
     }
 
+    private static final net.minecraft.world.item.Item[] ICON = {
+            net.minecraft.world.item.Items.SUGAR, net.minecraft.world.item.Items.GOLDEN_PICKAXE, net.minecraft.world.item.Items.GOLDEN_CARROT,
+            net.minecraft.world.item.Items.MAGMA_CREAM, net.minecraft.world.item.Items.PUFFERFISH, net.minecraft.world.item.Items.BLAZE_POWDER,
+            net.minecraft.world.item.Items.IRON_CHESTPLATE, net.minecraft.world.item.Items.RABBIT_FOOT, net.minecraft.world.item.Items.GHAST_TEAR,
+            net.minecraft.world.item.Items.DIAMOND_PICKAXE, net.minecraft.world.item.Items.IRON_BLOCK, net.minecraft.world.item.Items.GOLD_INGOT,
+            net.minecraft.world.item.Items.NETHERITE_AXE};
+    private static final String[] DESC = {
+            "걸음이 빨라져요. 먼 길 갈 때 좋아요.", "캐는 속도가 빨라져요. 광산 갈 때 필수!", "어두운 곳도 환하게 보여요.",
+            "불과 용암 피해를 막아요. 네더 탐험용.", "물속에서 숨을 오래 참아요.", "근접 공격 피해가 세져요.",
+            "받는 피해가 줄어요.", "낚시 · 보물 운이 좋아져요.", "체력이 조금씩 차요.",
+            "캐는 속도가 40% 빨라져요.", "방어력 +4 · 방어 강도 +2.", "몬스터를 잡으면 은화 1~3개가 나와요.",
+            "더 세게 싸우지만 받는 피해도 25% 늘어요."};
+
     private static boolean near(Player p, BlockPos pos) {
         return p.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) < 64.0;
     }
@@ -51,11 +64,16 @@ public final class Services {
         List<Buff> list = buffs();
         List<PickMenu.Entry> entries = new ArrayList<>();
         int off = com.snolred.wildplus.omen.Discounts.pct(player, pos);
-        for (Buff b : list) entries.add(new PickMenu.Entry(b.name(), String.format("%,d동", com.snolred.wildplus.omen.Discounts.apply(b.price(), off))));
-        entries.add(new PickMenu.Entry("체력·배고픔 가득 채우기", String.format("%,d동", com.snolred.wildplus.omen.Discounts.apply(com.snolred.wildplus.economy.Prices.x(80L), off))));
-        PickMenu.open(player, Component.translatable("container.wildplus.pharmacy"), "고르면 바로 결제돼요 (가방 동전·주머니에서)"
+        for (int k = 0; k < list.size(); k++) {
+            Buff b = list.get(k);
+            entries.add(new PickMenu.Entry(b.name(), String.format("%,d동", com.snolred.wildplus.omen.Discounts.apply(b.price(), off)) + "\n" + (k < DESC.length ? DESC[k] : ""),
+                    new net.minecraft.world.item.ItemStack(k < ICON.length ? ICON[k] : net.minecraft.world.item.Items.GLASS_BOTTLE), PickMenu.K_ROW));
+        }
+        entries.add(new PickMenu.Entry("체력·배고픔 가득 채우기", String.format("%,d동", com.snolred.wildplus.omen.Discounts.apply(com.snolred.wildplus.economy.Prices.x(80L), off))
+                + "\n체력과 배고픔을 한 번에 가득 채워요. 긴 탐험 뒤에 딱!", new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.GOLDEN_APPLE), PickMenu.K_ROW));
+        PickMenu.open(player, Component.translatable("container.wildplus.pharmacy"), "가방 동전·주머니에서 결제"
                         + com.snolred.wildplus.omen.Discounts.tag(off),
-                "", entries, 0, i -> {
+                "", entries, PickMenu.themed(PickMenu.T_PHARMACY), i -> {
                     long price = com.snolred.wildplus.omen.Discounts.apply(i < list.size() ? list.get(i).price() : com.snolred.wildplus.economy.Prices.x(80L), off);
                     if (!Coins.pay(player, price)) {
                         player.sendOverlayMessage(Component.translatable("message.wildplus.service.no_money", price).withStyle(ChatFormatting.RED));
@@ -90,8 +108,8 @@ public final class Services {
         List<PickMenu.Entry> entries = new ArrayList<>();
         int off = com.snolred.wildplus.omen.Discounts.pct(player, pos);
         for (Weather w : list) entries.add(new PickMenu.Entry(w.name(), String.format("%,d동", com.snolred.wildplus.omen.Discounts.apply(w.price(), off))));
-        PickMenu.open(player, Component.translatable("container.wildplus.weather_station"), "날씨·시간은 모두에게 적용돼요" + com.snolred.wildplus.omen.Discounts.tag(off),
-                "", entries, 0, i -> {
+        PickMenu.open(player, Component.translatable("container.wildplus.weather_station"), "고르면 바로 바뀌어요" + com.snolred.wildplus.omen.Discounts.tag(off),
+                "", entries, PickMenu.themed(PickMenu.T_WEATHER), i -> {
                     Weather w = list.get(i);
                     long wp = com.snolred.wildplus.omen.Discounts.apply(w.price(), off);
                     if (!Coins.pay(player, wp)) {
