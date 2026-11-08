@@ -1209,6 +1209,7 @@ jobs:
         continue-on-error: true
         timeout-minutes: 25
         env:
+          WILDPLUS_UITEST: '1'
           LIBGL_ALWAYS_SOFTWARE: '1'
           MC_QUICKPLAY: wildtest
         run: |
@@ -1236,6 +1237,7 @@ jobs:
             cmd "/weather clear"
             # 약국 · 기상
             cmd "/tp @s 396.5 120 -8.3 0 20"
+            cmd "/wildplus uitest brew"; sleep 2; shot v40-brew; esc
             cmd "/wildplus uitest pharmacy"; shot v39-pharmacy
             xdotool mousemove 520 258; sleep 0.5; xdotool click 1; sleep 1; shot v39-pharmacy-pick
             esc

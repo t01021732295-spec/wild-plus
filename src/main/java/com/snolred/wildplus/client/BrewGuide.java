@@ -93,6 +93,7 @@ public final class BrewGuide {
     static void onInit(ScreenEvent.Init.Post event) {
         if (!(event.getScreen() instanceof BrewingStandScreen s)) return;
         if (ROWS.isEmpty()) build();
+        if (System.getenv("WILDPLUS_UITEST") != null) open = true;
         int left = (s.width - 176) / 2, top = (s.height - 166) / 2;
         event.addListener(UiButton.of(left + 126, top - 15, 50, 14, "제조법", UiButton.STEEL, () -> open = !open));
     }

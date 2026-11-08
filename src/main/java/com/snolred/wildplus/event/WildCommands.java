@@ -142,6 +142,10 @@ public final class WildCommands {
                     var front = at.relative(p.getDirection(), 3);
                     switch (com.mojang.brigadier.arguments.StringArgumentType.getString(ctx, "what")) {
                         case "pharmacy" -> com.snolred.wildplus.economy.Services.openPharmacy(p, at);
+                        case "brew" -> {
+                            p.level().setBlockAndUpdate(front, net.minecraft.world.level.block.Blocks.BREWING_STAND.defaultBlockState());
+                            if (p.level().getBlockEntity(front) instanceof net.minecraft.world.MenuProvider m) p.openMenu(m);
+                        }
                         case "weather" -> com.snolred.wildplus.economy.Services.openWeather(p, at);
                         case "landbuy" -> com.snolred.wildplus.content.Land.debugLand(p);
                         case "land" -> com.snolred.wildplus.content.Land.open(p);
