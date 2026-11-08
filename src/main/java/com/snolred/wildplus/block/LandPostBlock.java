@@ -34,6 +34,22 @@ public class LandPostBlock extends Block {
         b.add(COLOR);
     }
 
+    /** 주인 색 (tools/data_v30.py POST_COLORS 와 같은 순서) */
+    public static final int[] RGB = {0x46AA5A, 0x4678DC, 0xDC4646, 0xF0BE32, 0xA050D2, 0x28BEBE, 0xF08228, 0xEB6EAA};
+
+    /** 기둥 위로 주인 색 빛기둥 (멀리서도 보이게 · 화면 쪽에서만 그림) */
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, net.minecraft.util.RandomSource r) {
+        int c = RGB[state.getValue(COLOR)];
+        if (r.nextFloat() < 0.6F) {
+            level.addParticle(new net.minecraft.core.particles.DustParticleOptions(c, 1.6F), pos.getX() + 0.5 + (r.nextFloat() - 0.5F) * 0.2,
+                    pos.getY() + 2.1 + r.nextFloat() * 5.0, pos.getZ() + 0.5 + (r.nextFloat() - 0.5F) * 0.2, 0, 0.02, 0);
+        }
+        if (r.nextFloat() < 0.15F) {
+            level.addParticle(net.minecraft.core.particles.ParticleTypes.END_ROD, pos.getX() + 0.5, pos.getY() + 2.0, pos.getZ() + 0.5, 0, 0.06, 0);
+        }
+    }
+
     public static int colorOf(UUID owner) {
         return Math.floorMod(owner.hashCode(), 8);
     }

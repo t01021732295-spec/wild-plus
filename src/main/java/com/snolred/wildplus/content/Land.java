@@ -165,9 +165,54 @@ public final class Land {
     }
 
     // ───────── 출입 · 안내 · 유지비 ─────────
+    /**
+     * 3.9.4 누가 봐도 주인 있는 땅: 둘레 5×5 청크 중 주인 있는 땅의 바깥 경계선을 주인 색 빛 울타리로,
+     * 땅 안에는 주인 색 반짝이가 떠다님 (1.5초마다 · 그 사람 화면에만 보냄).
+     */
+    private static void showClaims(ServerPlayer p) {
+        ServerLevel lv = p.level();
+        if (CHUNKS.isEmpty()) return;
+        String dim = lv.dimension().identifier() + "|";
+        int pcx = p.getBlockX() >> 4, pcz = p.getBlockZ() >> 4;
+        var r = p.getRandom();
+        for (int cx = pcx - 2; cx <= pcx + 2; cx++) {
+            for (int cz = pcz - 2; cz <= pcz + 2; cz++) {
+                UUID o = CHUNKS.get(dim + cx + "|" + cz);
+                if (o == null || !lv.hasChunk(cx, cz)) continue;
+                int col = com.snolred.wildplus.block.LandPostBlock.RGB[com.snolred.wildplus.block.LandPostBlock.colorOf(o)];
+                var dust = new net.minecraft.core.particles.DustParticleOptions(col, 1.3F);
+                int mx = cx << 4, mz = cz << 4;
+                boolean n = !o.equals(CHUNKS.get(dim + cx + "|" + (cz - 1))), sth = !o.equals(CHUNKS.get(dim + cx + "|" + (cz + 1)));
+                boolean w = !o.equals(CHUNKS.get(dim + (cx - 1) + "|" + cz)), e = !o.equals(CHUNKS.get(dim + (cx + 1) + "|" + cz));
+                for (int i = 0; i <= 16; i += 2) {
+                    if (n) fence(p, lv, dust, mx + i, mz);
+                    if (sth) fence(p, lv, dust, mx + i, mz + 16);
+                    if (w) fence(p, lv, dust, mx, mz + i);
+                    if (e) fence(p, lv, dust, mx + 16, mz + i);
+                }
+                for (int k = 0; k < 4; k++) {
+                    double x = mx + r.nextDouble() * 16, z = mz + r.nextDouble() * 16;
+                    int y = lv.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (int) x, (int) z);
+                    if (Math.abs(y - p.getY()) > 24) continue;
+                    lv.sendParticles(p, dust, false, false, x, y + 0.4 + r.nextDouble() * 1.5, z, 1, 0.1, 0.2, 0.1, 0);
+                }
+            }
+        }
+    }
+
+    private static void fence(ServerPlayer p, ServerLevel lv, net.minecraft.core.particles.ParticleOptions dust, double x, double z) {
+        int bx = (int) Math.floor(x), bz = (int) Math.floor(z);
+        if (!lv.hasChunk(bx >> 4, bz >> 4)) return;
+        int y = lv.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, bx, bz);
+        if (Math.abs(y - p.getY()) > 24) return;
+        lv.sendParticles(p, dust, false, false, x, y + 0.25, z, 1, 0, 0, 0, 0);
+        lv.sendParticles(p, dust, false, false, x, y + 1.0, z, 1, 0, 0, 0, 0);
+    }
+
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer p) || p.tickCount % 10 != 0) return;
+        if (p.tickCount % 30 == 0) showClaims(p);
         MinecraftServer s = p.level().getServer();
         UUID o = ownerAt(p.level(), p.blockPosition());
         // 출입 금지 땅이면 직전 위치로 밀어냄
