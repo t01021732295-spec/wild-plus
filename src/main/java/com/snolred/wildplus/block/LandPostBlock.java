@@ -41,11 +41,11 @@ public class LandPostBlock extends Block {
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, net.minecraft.util.RandomSource r) {
         int c = RGB[state.getValue(COLOR)];
-        if (r.nextFloat() < 0.6F) {
-            level.addParticle(new net.minecraft.core.particles.DustParticleOptions(c, 1.6F), pos.getX() + 0.5 + (r.nextFloat() - 0.5F) * 0.2,
-                    pos.getY() + 2.1 + r.nextFloat() * 5.0, pos.getZ() + 0.5 + (r.nextFloat() - 0.5F) * 0.2, 0, 0.02, 0);
+        for (int k = 0; k < 4; k++) {
+            level.addParticle(new net.minecraft.core.particles.DustParticleOptions(c, 2.5F), pos.getX() + 0.5 + (r.nextFloat() - 0.5F) * 0.3,
+                    pos.getY() + 2.1 + r.nextFloat() * 8.0, pos.getZ() + 0.5 + (r.nextFloat() - 0.5F) * 0.3, 0, 0.03, 0);
         }
-        if (r.nextFloat() < 0.15F) {
+        if (r.nextFloat() < 0.4F) {
             level.addParticle(net.minecraft.core.particles.ParticleTypes.END_ROD, pos.getX() + 0.5, pos.getY() + 2.0, pos.getZ() + 0.5, 0, 0.06, 0);
         }
     }

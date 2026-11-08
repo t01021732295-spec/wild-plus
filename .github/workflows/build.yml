@@ -1249,6 +1249,8 @@ jobs:
             cmd "/wildplus uitest landbuy"; shot v39-land-title
             cmd "/tp @s 643.5 124 13.5 -135 25"; sleep 3
             xdotool key F1 || true; shot v39-land-posts; xdotool key F1 || true
+            cmd "/tp @s 633.5 122 4.5 -60 12"; sleep 4
+            xdotool key F1 || true; shot v39-land-fence; xdotool key F1 || true
             cmd "/tp @s 648.5 121 8.5 0 10"
             cmd "/wildplus uitest land"; shot v39-land; esc
             # 순간이동 지점 (서버 테스트에서 놓은 두 지점)
