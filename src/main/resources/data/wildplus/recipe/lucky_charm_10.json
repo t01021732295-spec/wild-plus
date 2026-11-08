@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "CCC",
+    "CCC",
+    "CCC"
+  ],
+  "key": {
+    "C": "wildplus:lucky_charm_9"
+  },
+  "result": {
+    "id": "wildplus:lucky_charm_10",
+    "count": 1
+  }
+}

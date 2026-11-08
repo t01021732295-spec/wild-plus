@@ -26,7 +26,7 @@ public final class Enhance {
             Map.entry("protection", 15), Map.entry("fire_protection", 15), Map.entry("blast_protection", 15),
             Map.entry("projectile_protection", 15), Map.entry("feather_falling", 15), Map.entry("piercing", 15), Map.entry("breach", 15),
             Map.entry("fire_aspect", 15), Map.entry("punch", 15), Map.entry("knockback", 15),
-            Map.entry("armor_piercing", 15));
+            Map.entry("armor_piercing", 15), Map.entry("bow_looting", 15));
 
     public static final long BASE_COST = 200;
 

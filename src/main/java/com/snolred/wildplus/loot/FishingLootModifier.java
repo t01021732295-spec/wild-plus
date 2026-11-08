@@ -55,11 +55,21 @@ public class FishingLootModifier extends LootModifier {
                 ? sp : null;
         int bait = angler != null ? com.snolred.wildplus.event.FishingPlus.bait(angler.getOffhandItem()) : 0;
 
-        // 침몰한 보물상자 (탁 트인 물에서만)
-        if (openWater && random.nextFloat() < rod.chest()) {
+        // 침몰한 보물상자: 3.9부터 "보물" 갈래에 포함 — 바닐라가 보물(이름표 · 안장 · 앵무조개 껍데기 · 마법 부여된 책 · 활 · 낚싯대)을
+        // 골랐으면 절반은 보물상자로, 아니면 낚싯대 확률 × 행운(바다의 행운 · 행운 효과 · 행운의 부적)으로 보물상자 (탁 트인 물에서만)
+        boolean vanillaTreasure = false;
+        for (ItemStack s : loot) {
+            if (s.is(net.minecraft.world.item.Items.NAME_TAG) || s.is(net.minecraft.world.item.Items.SADDLE) || s.is(net.minecraft.world.item.Items.NAUTILUS_SHELL)
+                    || s.is(net.minecraft.world.item.Items.ENCHANTED_BOOK) || s.is(net.minecraft.world.item.Items.BOW) || s.is(net.minecraft.world.item.Items.FISHING_ROD)) {
+                vanillaTreasure = true;
+            }
+        }
+        float luck = Math.max(0F, ctx.getLuck());
+        float chestChance = Math.min(0.6F, rod.chest() * (1F + 0.2F * luck));
+        if (openWater && (vanillaTreasure ? random.nextFloat() < 0.5F : random.nextFloat() < chestChance)) {
             loot.clear();
             loot.add(com.snolred.wildplus.item.SunkenChestItem.make(com.snolred.wildplus.item.SunkenChestItem.roll(random,
-                    rod.grade() * (angler == null ? 0.5F : 1F))));
+                    rod.grade() * (1F + 0.05F * luck) * (angler == null ? 0.5F : 1F))));
             return loot;
         }
 
@@ -86,7 +96,7 @@ public class FishingLootModifier extends LootModifier {
         int g = com.snolred.wildplus.event.FishingPlus.rollGrade(random, m);
         ItemStack caught = loot.get(fishIndex);
         com.snolred.wildplus.economy.Grade.apply(caught, g);
-        if (random.nextFloat() < rod.twin()) {
+        if (random.nextFloat() < rod.twin() || (angler != null && com.snolred.wildplus.event.LuckyCharms.doubleFish(angler))) {
             loot.add(caught.copy());
         }
         if (angler != null) {

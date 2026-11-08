@@ -1,26 +1,26 @@
 package com.snolred.wildplus.item;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.jspecify.annotations.Nullable;
 
-/** 행운의 부적: 인벤토리에 있으면 행운 효과 (상자·낚시 보상이 좋아짐) */
+/**
+ * 행운의 부적 (3.9: 1~10단계). 같은 단계 9개를 제작대에 꽉 채우면 다음 단계 1개.
+ * 효과는 가방 속 가장 높은 단계 하나만 적용 (event.LuckyCharms). 출하 상자에 팔 수 있다.
+ */
 public class LuckyCharmItem extends Item {
+    public final int tier;
+
     public LuckyCharmItem(Properties properties) {
-        super(properties);
+        this(properties, 1);
     }
 
-    @Override
-    public void inventoryTick(ItemStack stack, ServerLevel level, Entity entity, @Nullable EquipmentSlot slot) {
-        if (entity instanceof Player player && level.getGameTime() % 80 == 0) {
-            player.addEffect(new MobEffectInstance(MobEffects.LUCK, 20 * 6, 0, true, false, true));
-        }
+    public LuckyCharmItem(Properties properties, int tier) {
+        super(properties);
+        this.tier = tier;
+    }
+
+    public static int tierOf(ItemStack s) {
+        return s.getItem() instanceof LuckyCharmItem c ? c.tier : 0;
     }
 
     @Override

@@ -107,6 +107,10 @@ public class AutoFisherBlockEntity extends MachineBlockEntity {
         }
         server.playSound(null, pos, SoundEvents.FISHING_BOBBER_SPLASH, SoundSource.BLOCKS, 0.4F, 1.0F);
         // 낚싯대 내구도
+        if (rod.has(net.minecraft.core.component.DataComponents.UNBREAKABLE)) {
+            be.setChanged();
+            return; // 3.9 내구도 무한 낚싯대
+        }
         rod.setDamageValue(rod.getDamageValue() + 1);
         if (rod.getDamageValue() >= rod.getMaxDamage()) {
             be.items.set(0, ItemStack.EMPTY);

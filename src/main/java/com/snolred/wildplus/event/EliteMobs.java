@@ -132,13 +132,13 @@ public final class EliteMobs {
         };
     }
 
-    /** 난이도별 정예 확률 */
+    /** 난이도별 정예 확률 (3.9 하향: 10/15/25% → 5/8/12%) */
     public static double baseChance(Difficulty d) {
         return switch (d) {
             case PEACEFUL -> 0.0;
-            case EASY -> 0.10;
-            case NORMAL -> 0.15;
-            case HARD -> 0.25;
+            case EASY -> 0.05;
+            case NORMAL -> 0.08;
+            case HARD -> 0.12;
         };
     }
 
@@ -158,7 +158,7 @@ public final class EliteMobs {
         }
         double chance = baseChance(level.getDifficulty());
         if (!level.canSeeSky(mob.blockPosition())) chance *= 0.5;
-        if (bloodMoon) chance = Math.min(0.6, chance * 2.0);
+        if (bloodMoon) chance = Math.min(0.35, chance * 2.0);
         if (natural && level.getRandom().nextDouble() < chance) makeElite(mob, bloodMoon ? 2 : 1);
     }
 

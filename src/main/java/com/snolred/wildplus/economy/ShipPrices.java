@@ -92,6 +92,11 @@ public final class ShipPrices {
         put(m, com.snolred.wildplus.registry.ModItems17.YARN.get(), 90); put(m, com.snolred.wildplus.registry.ModItems17.CLOTH.get(), 500);
         put(m, com.snolred.wildplus.registry.ModItems17.GOLDEN_EGG.get(), 8000);
         com.snolred.wildplus.cooking.Cooking.prices(m); // 요리: 재료값 × 2.5
+        // 3.9 행운의 부적: 1단계 1,000동 · 단계마다 9배 (합친 값 그대로) · 최대 2,000만동
+        for (int t = 1; t <= 10; t++) {
+            long won = Math.min(20_000_000L, 1_000L * (long) Math.pow(9, t - 1));
+            put(m, com.snolred.wildplus.registry.ModItems21.charm(t), (int) (won * 100));
+        }
         table = m;
         return m;
     }

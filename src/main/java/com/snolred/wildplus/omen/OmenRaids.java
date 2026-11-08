@@ -273,9 +273,16 @@ public final class OmenRaids {
             return;
         }
         if (r.isLoss() || r.isStopped()) {
+            if (r.isStopped() && r.getGroupsSpawned() == 0) {
+                refund(level, st);
+                lose(level, st, "우민이 들어올 자리를 못 찾아 습격이 취소됐어요 (흉조를 돌려줬어요)");
+                return;
+            }
             lose(level, st, r.isStopped() ? "습격이 멈췄어요" : "마을이 함락됐어요");
             return;
         }
+        // 3.9: 우민이 나올 자리를 바닐라가 못 찾으면(빽빽한 마을 · 좁은 시뮬레이션 거리) 습격이 멈추거나 계속 비어 있음 → 대신 찾아 줌
+        if (r.getTotalRaidersAlive() == 0) ensureSpawnPos(level, r, now);
         if (st.timeEnd > 0 && now > st.timeEnd) {
             r.stop();
             lose(level, st, "⏱ 시간 제한 15분을 넘겼어요");
@@ -447,6 +454,51 @@ public final class OmenRaids {
         }
         WINDOWS.add(w);
         save(server);
+    }
+
+    private static java.lang.reflect.Field waveField;
+
+    /** 다음 웨이브가 나올 자리: 마을 중심에서 16~40칸, 지면 위 두 칸이 비고 몹이 움직이는(엔티티 틱) 곳 */
+    @SuppressWarnings("unchecked")
+    private static void ensureSpawnPos(ServerLevel level, Raid r, long now) {
+        try {
+            if (waveField == null) {
+                waveField = Raid.class.getDeclaredField("waveSpawnPos");
+                waveField.setAccessible(true);
+            }
+            java.util.Optional<BlockPos> cur = (java.util.Optional<BlockPos>) waveField.get(r);
+            if (cur != null && cur.isPresent() && level.isPositionEntityTicking(cur.get())) return;
+            BlockPos c = r.getCenter();
+            var rnd = level.getRandom();
+            for (int i = 0; i < 48; i++) {
+                double ang = rnd.nextDouble() * Math.PI * 2, d = 16 + rnd.nextDouble() * 24;
+                int x = c.getX() + (int) Math.round(Math.cos(ang) * d), z = c.getZ() + (int) Math.round(Math.sin(ang) * d);
+                if (!level.hasChunksAt(x - 10, z - 10, x + 10, z + 10)) continue;
+                BlockPos at = level.getHeightmapPos(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, new BlockPos(x, 0, z));
+                if (Math.abs(at.getY() - c.getY()) > 40 || !level.isPositionEntityTicking(at)) continue;
+                if (!level.getBlockState(at.below()).isFaceSturdy(level, at.below(), net.minecraft.core.Direction.UP)) continue;
+                if (!level.getBlockState(at).getCollisionShape(level, at).isEmpty() || !level.getBlockState(at.above()).getCollisionShape(level, at.above()).isEmpty()
+                        || !level.getFluidState(at).isEmpty()) {
+                    continue;
+                }
+                waveField.set(r, java.util.Optional.of(at));
+                if (now % 200 == 0) com.snolred.wildplus.WildPlus.LOGGER.info("Omen raid {}: wave spawn pos set to {} (groups {})", r.getCenter(), at, r.getGroupsSpawned());
+                return;
+            }
+            if (now % 200 == 0) com.snolred.wildplus.WildPlus.LOGGER.warn("Omen raid {}: no spawn pos found (groups {})", r.getCenter(), r.getGroupsSpawned());
+        } catch (ReflectiveOperationException | RuntimeException e) {
+            if (now % 1200 == 0) com.snolred.wildplus.WildPlus.LOGGER.warn("Omen raid spawn helper failed: {}", e.toString());
+        }
+    }
+
+    /** 습격이 한 번도 못 나오고 멈췄으면 근처 사람에게 흉조를 돌려줌 */
+    private static void refund(ServerLevel level, State st) {
+        for (ServerPlayer p : level.players()) {
+            if (p.distanceToSqr(st.center.getX(), st.center.getY(), st.center.getZ()) > 112 * 112) continue;
+            p.addEffect(new MobEffectInstance(MobEffects.BAD_OMEN, 120000, Math.max(0, st.level - 1)));
+            if (st.theme != Theme.NONE) p.getPersistentData().putString(Omen.THEME_KEY, st.theme.name());
+            break;
+        }
     }
 
     private static void lose(ServerLevel level, State st, String why) {

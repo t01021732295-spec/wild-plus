@@ -11,7 +11,7 @@
   "item.wildplus.bloodsteel_leggings": "Bloodsteel Leggings",
   "item.wildplus.bloodsteel_boots": "Bloodsteel Boots",
   "item.wildplus.recall_scroll": "Scroll of Recall",
-  "item.wildplus.lucky_charm": "Lucky Charm",
+  "item.wildplus.lucky_charm": "Lucky Charm I",
   "item.wildplus.traveler_ration": "Traveler's Ration",
   "item.wildplus.chili_seeds": "Chili Seeds",
   "item.wildplus.chili": "Chili",
@@ -915,5 +915,15 @@
   "item.wildplus.frozen_omen": "Frozen Omen",
   "item.wildplus.deep_omen": "Abyssal Omen",
   "item.wildplus.wraith_omen": "Wraith Omen",
-  "item.wildplus.golden_omen": "Golden Omen"
+  "item.wildplus.golden_omen": "Golden Omen",
+  "enchantment.wildplus.bow_looting": "Bow Looting",
+  "item.wildplus.lucky_charm_2": "Lucky Charm II",
+  "item.wildplus.lucky_charm_3": "Lucky Charm III",
+  "item.wildplus.lucky_charm_4": "Lucky Charm IV",
+  "item.wildplus.lucky_charm_5": "Lucky Charm V",
+  "item.wildplus.lucky_charm_6": "Lucky Charm VI",
+  "item.wildplus.lucky_charm_7": "Lucky Charm VII",
+  "item.wildplus.lucky_charm_8": "Lucky Charm VIII",
+  "item.wildplus.lucky_charm_9": "Lucky Charm IX",
+  "item.wildplus.lucky_charm_10": "Lucky Charm X"
 }

@@ -89,7 +89,7 @@ public final class Trials {
 
     private static final java.util.Set<String> ATTACK = java.util.Set.of("sharpness", "smite", "bane_of_arthropods", "looting", "fire_aspect",
             "knockback", "sweeping_edge", "breach", "density", "impaling", "armor_piercing");
-    private static final java.util.Set<String> BOW = java.util.Set.of("power", "punch", "piercing");
+    private static final java.util.Set<String> BOW = java.util.Set.of("power", "punch", "piercing", "bow_looting");
 
     /** 이 장비 · 인챈트에 맞는 시련 종류 */
     public static Kind kindFor(ItemStack s, String ench) {

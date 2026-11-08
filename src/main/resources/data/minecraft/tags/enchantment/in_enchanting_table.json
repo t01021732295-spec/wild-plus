@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "wildplus:armor_piercing"
+    "wildplus:armor_piercing",
+    "wildplus:bow_looting"
   ]
 }

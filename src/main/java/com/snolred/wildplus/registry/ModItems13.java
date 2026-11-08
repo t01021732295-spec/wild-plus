@@ -23,13 +23,13 @@ public final class ModItems13 {
             p -> new TieredRodItem(p.durability(1400).enchantable(25).rarity(Rarity.RARE), 2));
     // 강화형 (강화대 승급, 인챈트 유지): 스텔라 루비 · 스카이 사파이어 · 로열 에메랄드
     public static final DeferredItem<TieredRodItem> STELLAR_RUBY_FISHING_ROD = ITEMS.registerItem("stellar_ruby_fishing_rod",
-            p -> new TieredRodItem(p.durability(3000).enchantable(22).rarity(Rarity.EPIC).fireResistant(), 3));
+            p -> new TieredRodItem(p.durability(3000).enchantable(22).rarity(Rarity.EPIC).component(net.minecraft.core.component.DataComponents.UNBREAKABLE, net.minecraft.util.Unit.INSTANCE).fireResistant(), 3));
     public static final DeferredItem<TieredRodItem> SKY_SAPPHIRE_FISHING_ROD = ITEMS.registerItem("sky_sapphire_fishing_rod",
-            p -> new TieredRodItem(p.durability(3000).enchantable(22).rarity(Rarity.EPIC), 3));
+            p -> new TieredRodItem(p.durability(3000).enchantable(22).rarity(Rarity.EPIC).component(net.minecraft.core.component.DataComponents.UNBREAKABLE, net.minecraft.util.Unit.INSTANCE), 3));
     public static final DeferredItem<TieredRodItem> ROYAL_EMERALD_FISHING_ROD = ITEMS.registerItem("royal_emerald_fishing_rod",
-            p -> new TieredRodItem(p.durability(3000).enchantable(28).rarity(Rarity.EPIC).fireResistant(), 3));
+            p -> new TieredRodItem(p.durability(3000).enchantable(28).rarity(Rarity.EPIC).component(net.minecraft.core.component.DataComponents.UNBREAKABLE, net.minecraft.util.Unit.INSTANCE).fireResistant(), 3));
     public static final DeferredItem<TieredRodItem> DRAGON_FISHING_ROD = ITEMS.registerItem("dragon_fishing_rod",
-            p -> new TieredRodItem(p.durability(4000).enchantable(22).rarity(Rarity.EPIC).fireResistant(), 4));
+            p -> new TieredRodItem(p.durability(4000).enchantable(22).rarity(Rarity.EPIC).component(net.minecraft.core.component.DataComponents.UNBREAKABLE, net.minecraft.util.Unit.INSTANCE).fireResistant(), 4));
 
     // 미끼 (왼손에 들고 낚시하면 한 마리마다 하나씩)
     public static final DeferredItem<Item> WORM = ITEMS.registerSimpleItem("worm");

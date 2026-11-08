@@ -180,4 +180,40 @@ public final class Bows {
         }
         level.sendParticles(ParticleTypes.CRIT, t.getX(), t.getY() + t.getBbHeight() * 0.7, t.getZ(), 5, 0.2, 0.2, 0.2, 0.2);
     }
+
+    // ───────── 3.9 활 약탈 (활 전용 약탈 인챈트) ─────────
+    public static final net.minecraft.resources.ResourceKey<net.minecraft.world.item.enchantment.Enchantment> BOW_LOOTING =
+            net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.ENCHANTMENT, com.snolred.wildplus.WildPlus.id("bow_looting"));
+
+    /** 활 약탈 단계 (활을 든 손 기준, 없으면 0) */
+    public static int bowLooting(net.minecraft.world.entity.player.Player p) {
+        var reg = p.level().registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT);
+        var h = reg.get(BOW_LOOTING);
+        if (h.isEmpty()) return 0;
+        int lv = 0;
+        for (net.minecraft.world.item.ItemStack s : new net.minecraft.world.item.ItemStack[]{p.getMainHandItem(), p.getOffhandItem()}) {
+            if (s.getItem() instanceof net.minecraft.world.item.BowItem) {
+                lv = Math.max(lv, net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(h.get(), s));
+            }
+        }
+        return lv;
+    }
+
+    /** 화살로 잡은 몹: 떨군 물건마다 0~단계 개 더 (바닐라 약탈과 같은 방식, 장비는 제외) */
+    @SubscribeEvent
+    public static void onArrowKillDrops(net.neoforged.neoforge.event.entity.living.LivingDropsEvent event) {
+        if (!(event.getSource().getDirectEntity() instanceof AbstractArrow) || !(event.getSource().getEntity() instanceof net.minecraft.world.entity.player.Player p)
+                || event.getEntity() instanceof net.minecraft.world.entity.player.Player) {
+            return;
+        }
+        int lv = bowLooting(p);
+        if (lv <= 0) return;
+        var rnd = p.getRandom();
+        for (net.minecraft.world.entity.item.ItemEntity it : event.getDrops()) {
+            net.minecraft.world.item.ItemStack s = it.getItem();
+            if (s.isDamageableItem() || s.getMaxStackSize() <= 1) continue;
+            int add = rnd.nextInt(lv + 1);
+            if (add > 0) s.setCount(Math.min(s.getMaxStackSize(), s.getCount() + add));
+        }
+    }
 }

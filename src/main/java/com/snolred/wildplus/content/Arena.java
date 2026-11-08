@@ -708,6 +708,10 @@ public final class Arena {
     public static void onDeath(LivingDeathEvent event) {
         if (!(event.getEntity() instanceof ServerPlayer p) || !inMatch(p.getUUID())) return;
         event.setCanceled(true);
+        // 3.9: 체력이 0인 채로 두면 "살아 있지 않음"으로 남아 진짜로 죽고(죽음 화면), 아이템을 떨구지 않은 채 부활해서
+        //      본인 장비 경기에서 가방이 통째로 사라졌음 → 먼저 체력을 채운다
+        p.setHealth(p.getMaxHealth());
+        p.clearFire();
         if (phase == Phase.FIGHT && !DOWN.contains(p.getUUID())) {
             p.level().playSound(null, p.blockPosition(), SoundEvents.PLAYER_DEATH, SoundSource.PLAYERS, 1F, 1F);
             ((ServerLevel) p.level()).sendParticles(ParticleTypes.POOF, p.getX(), p.getY() + 1, p.getZ(), 30, 0.4, 0.8, 0.4, 0.05);

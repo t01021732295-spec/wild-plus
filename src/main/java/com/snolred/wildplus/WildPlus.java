@@ -57,6 +57,7 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModItems18.init();
         com.snolred.wildplus.registry.ModBlocks9.init();
         com.snolred.wildplus.registry.ModItems20.init();
+        com.snolred.wildplus.registry.ModItems21.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
@@ -125,6 +126,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.omen.CounterRaid.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.omen.Smugglers.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.omen.OmenAltar.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.LuckyCharms.class);
 
         modContainer.registerConfig(ModConfig.Type.SYNCED, WildConfig.SPEC);
     }
