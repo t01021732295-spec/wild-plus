@@ -47,8 +47,8 @@ public final class ModItems22 {
         return ITEMS.registerSimpleItem("void_" + name + "_blank", p -> p.stacksTo(1).rarity(Rarity.RARE).fireResistant());
     }
 
-    /** 공격력 9 · 속도 1.8 */
-    public static final DeferredItem<Item> VOID_SWORD = ITEMS.registerItem("void_sword", p -> new Item(full(p.sword(VOID_TOOL, 3.0F, -2.2F))));
+    /** 공격력 10.5 · 속도 1.9 */
+    public static final DeferredItem<Item> VOID_SWORD = ITEMS.registerItem("void_sword", p -> new Item(full(p.sword(VOID_TOOL, 4.5F, -2.1F))));
     public static final DeferredItem<Item> VOID_PICKAXE = ITEMS.registerItem("void_pickaxe", p -> new Item(full(p.pickaxe(VOID_TOOL, 1.0F, -2.8F))));
     public static final DeferredItem<Item> VOID_AXE = ITEMS.registerItem("void_axe", p -> new Item(full(p.axe(VOID_TOOL, 5.0F, -3.0F))));
     public static final DeferredItem<Item> VOID_SHOVEL = ITEMS.registerItem("void_shovel", p -> new Item(full(p.shovel(VOID_TOOL, 1.5F, -3.0F))));
@@ -64,7 +64,7 @@ public final class ModItems22 {
     public static final DeferredItem<Item> VOID_LEGGINGS = ITEMS.registerItem("void_leggings", p -> new Item(full(p.humanoidArmor(VOID_ARMOR, ArmorType.LEGGINGS))));
     public static final DeferredItem<Item> VOID_BOOTS = ITEMS.registerItem("void_boots", p -> new Item(full(p.humanoidArmor(VOID_ARMOR, ArmorType.BOOTS))));
     public static final DeferredItem<com.snolred.wildplus.item.WildBowItem> VOID_BOW = ITEMS.registerItem("void_bow",
-            p -> new com.snolred.wildplus.item.WildBowItem(full(p.durability(4000).enchantable(1)), "void", 1.75F, 1.6F));
+            p -> new com.snolred.wildplus.item.WildBowItem(full(p.durability(4000).enchantable(1)), "void", 2.0F, 1.8F));
 
     public static final DeferredItem<Item> SWORD_BLANK = blank("sword"), PICKAXE_BLANK = blank("pickaxe"), AXE_BLANK = blank("axe"), SHOVEL_BLANK = blank("shovel"),
             HOE_BLANK = blank("hoe"), BOW_BLANK = blank("bow"), HELMET_BLANK = blank("helmet"), CHESTPLATE_BLANK = blank("chestplate"),

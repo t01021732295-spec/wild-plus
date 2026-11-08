@@ -68,6 +68,8 @@ public final class VoidGear {
     private record Replant(ServerLevel level, BlockPos pos, BlockState state) {}
 
     private static final Map<UUID, State> STATES = new HashMap<>();
+    private static final Map<UUID, Integer> MARKS = new HashMap<>();
+    private static final int MARK_TICKS = 100;
     private static final List<Replant> REPLANT = new ArrayList<>();
     private static boolean areaBreaking;
 
@@ -195,6 +197,9 @@ public final class VoidGear {
             }
         }
         if (target instanceof Player p && pieces(p) >= 4) event.setAmount(event.getAmount() * 0.9F);
+        if (target.level() instanceof ServerLevel lv && lv.getServer().getTickCount() < MARKS.getOrDefault(target.getUUID(), 0)) {
+            event.setAmount(event.getAmount() * (target instanceof Mob m && FrostBurst.boss(m) ? 1.08F : 1.15F));
+        }
     }
 
     @SubscribeEvent
@@ -202,20 +207,42 @@ public final class VoidGear {
         LivingEntity target = event.getEntity();
         if (!(target.level() instanceof ServerLevel level)) return;
         if (event.getSource().getDirectEntity() instanceof AbstractArrow a) {
-            if ("void".equals(a.getPersistentData().getStringOr(Bows.BOW_TAG, "")) && !(target instanceof Mob m && FrostBurst.boss(m))) {
-                target.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 20, 1));
-                level.sendParticles(ParticleTypes.PORTAL, target.getX(), target.getY() + 0.5, target.getZ(), 16, 0.3, 0.4, 0.3, 0.2);
+            if (!"void".equals(a.getPersistentData().getStringOr(Bows.BOW_TAG, "")) || !(a.getOwner() instanceof ServerPlayer owner)) return;
+            mark(level, target, owner);
+            if (!(target instanceof Mob m && FrostBurst.boss(m))) target.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 20, 1));
+            for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(3.0))) {
+                if (e != owner && (e == target || e instanceof Enemy)) magic(level, e, owner, 8.0F);
+            }
+            level.sendParticles(ParticleTypes.REVERSE_PORTAL, target.getX(), target.getY() + 0.5, target.getZ(), 40, 1.2, 0.5, 1.2, 0.1);
+            level.playSound(null, target.blockPosition(), SoundEvents.ENDERMAN_HURT, SoundSource.PLAYERS, 0.5F, 1.4F);
+            // 귀환: 플레이어가 주울 수 있는 화살만 (무한 · 다중 발사 복사본 제외), 종류와 효과 그대로
+            if (a.pickup == AbstractArrow.Pickup.ALLOWED) {
+                a.pickup = AbstractArrow.Pickup.DISALLOWED;
+                ItemStack back = a.getPickupItemStackOrigin().copyWithCount(1);
+                if (!owner.getInventory().add(back)) owner.spawnAtLocation(level, back);
             }
             return;
         }
         if (!(event.getSource().getEntity() instanceof ServerPlayer p) || event.getSource().getDirectEntity() != p || !p.getMainHandItem().is(VOID_SWORD.get())) return;
+        mark(level, target, p);
         State s = state(p);
         if (++s.hits < 3) return;
         s.hits = 0;
-        magic(level, target, p, 6.0F);
-        level.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), 1, 0, 0, 0, 0);
-        level.sendParticles(ParticleTypes.REVERSE_PORTAL, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), 24, 0.4, 0.4, 0.4, 0.1);
+        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(3.0))) {
+            if (e != p && (e == target || e instanceof Enemy)) magic(level, e, p, 12.0F);
+        }
+        level.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), 3, 1.0, 0.2, 1.0, 0);
+        level.sendParticles(ParticleTypes.REVERSE_PORTAL, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), 30, 1.0, 0.4, 1.0, 0.1);
         level.playSound(null, target.blockPosition(), SoundEvents.ENDERMAN_HURT, SoundSource.PLAYERS, 0.5F, 1.7F);
+    }
+
+    /** 균열 표식: 5초간 받는 피해 +15% (보스 +8%) */
+    private static void mark(ServerLevel level, LivingEntity e, Player owner) {
+        if (e == owner) return;
+        int now = level.getServer().getTickCount();
+        MARKS.put(e.getUUID(), now + MARK_TICKS);
+        if (MARKS.size() > 256) MARKS.values().removeIf(t -> t <= now);
+        level.sendParticles(ParticleTypes.WITCH, e.getX(), e.getY() + e.getBbHeight() * 0.8, e.getZ(), 4, 0.25, 0.25, 0.25, 0.01);
     }
 
     @SubscribeEvent
