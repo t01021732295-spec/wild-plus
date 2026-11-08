@@ -1,0 +1,2 @@
+client/event/ScreenEvent\$(Render\$Post|Init\$Post|Render|Init|MouseScrolled\$Pre|MouseScrolled|BackgroundRendered)\.class
+client/event/ScreenEvent\.class

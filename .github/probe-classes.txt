@@ -1,8 +1,0 @@
-net.neoforged.neoforge.client.event.ScreenEvent$Render$Post
-net.neoforged.neoforge.client.event.ScreenEvent$Init$Post
-net.neoforged.neoforge.client.event.ScreenEvent$Render
-net.neoforged.neoforge.client.event.ScreenEvent$Init
-net.neoforged.neoforge.client.event.ScreenEvent$MouseScrolled$Pre
-net.neoforged.neoforge.client.event.ScreenEvent$MouseScrolled
-net.neoforged.neoforge.client.event.ScreenEvent
-net.minecraft.client.gui.screens.inventory.AbstractContainerScreen
