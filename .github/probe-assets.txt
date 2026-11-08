@@ -1,5 +1,1 @@
-net/minecraft/world/entity/raid/Raid.class
-net/minecraft/world/entity/raid/Raids.class
-net/minecraft/world/effect/RaidOmenMobEffect.class
-net/minecraft/world/effect/BadOmenMobEffect.class
-net/minecraft/world/entity/raid/Raider.class
+assets/minecraft/textures/entity/enderdragon/dragon.png

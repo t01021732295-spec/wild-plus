@@ -1,0 +1,5 @@
+world/level/levelgen/feature/(EndSpike|Spike)[A-Za-z]*\.class
+entity/boss/enderdragon/EndCrystal\.class
+entity/boss/enderdragon/phases/EnderDragonPhase\.class
+end/EndDragonFight\.class
+DragonFight\.class
