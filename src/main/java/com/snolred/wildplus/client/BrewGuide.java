@@ -21,7 +21,7 @@ public final class BrewGuide {
 
     private record Row(ItemStack icon, Component label, boolean header) {}
 
-    private static final int PW = 150, PH = 190, ROW = 16, HEAD = 18;
+    private static final int PH = 190, ROW = 16, HEAD = 18;
     private static final List<Row> ROWS = new ArrayList<>();
     private static boolean open;
     private static int scroll;
@@ -90,6 +90,11 @@ public final class BrewGuide {
         row("minecraft:phantom_membrane", "망령의 흉조");
     }
 
+    /** 양조대를 가리지 않도록 창이 좁으면 패널도 좁게 */
+    private static int width(BrewingStandScreen s) {
+        return Math.max(96, Math.min(150, (s.width - 176) / 2 - 6));
+    }
+
     private static int visible() {
         return (PH - 28) / ROW;
     }
@@ -107,7 +112,7 @@ public final class BrewGuide {
     static void onRender(ScreenEvent.Render.Post event) {
         if (!open || !(event.getScreen() instanceof BrewingStandScreen s)) return;
         GuiGraphicsExtractor g = event.getGuiGraphics();
-        int x = Math.max(2, (s.width - 176) / 2 - PW - 4), y = (s.height - PH) / 2;
+        int PW = width(s), x = Math.max(2, (s.width - 176) / 2 - PW - 4), y = (s.height - PH) / 2;
         UiKit.card(g, x, y, PW, PH, UiKit.PAPER, UiKit.LINE);
         UiKit.bold(g, "포션 제조법", x + 8, y + 7, UiKit.INK);
         int max = Math.max(0, ROWS.size() - visible());
@@ -133,7 +138,7 @@ public final class BrewGuide {
     @SubscribeEvent
     static void onScroll(ScreenEvent.MouseScrolled.Pre event) {
         if (!open || !(event.getScreen() instanceof BrewingStandScreen s)) return;
-        int x = Math.max(2, (s.width - 176) / 2 - PW - 4), y = (s.height - PH) / 2;
+        int PW = width(s), x = Math.max(2, (s.width - 176) / 2 - PW - 4), y = (s.height - PH) / 2;
         if (event.getMouseX() < x || event.getMouseX() > x + PW || event.getMouseY() < y || event.getMouseY() > y + PH) return;
         scroll = Math.max(0, Math.min(Math.max(0, ROWS.size() - visible()), scroll - (int) Math.signum(event.getScrollDeltaY())));
         event.setCanceled(true);

@@ -73,7 +73,7 @@ public final class PotionEvents41 {
             m.snapTo(q.getX() + 0.5, q.getY(), q.getZ() + 0.5, 0F, 0F);
             m.setNoAi(true);
             m.setSilent(true);
-            m.setInvulnerable(true);
+            m.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 80, 255, false, false));
             m.setInvisible(true);
             m.setGlowingTag(true);
             m.getPersistentData().putBoolean(ORE_MARK, true);
