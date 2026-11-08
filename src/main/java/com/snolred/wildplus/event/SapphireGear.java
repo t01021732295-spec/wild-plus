@@ -36,7 +36,7 @@ import net.neoforged.neoforge.event.tick.PlayerTickEvent;
  *  - 괭이 "물의 축복": 웅크리고 들면 주변 4칸 작물이 빨리 자라고 경작지가 촉촉해짐
  *  - 갑옷 2부위: 수중 호흡 + 돌고래의 가호 / 4부위: 받는 피해 10% 감소, 때린 적 얼림, 낙하 피해 절반
  * 스카이 사파이어(용의 깃털로 승급): 내구도 무한 · 불에 안 탐 · 위 능력 강화
- *  - 검: 공격력 8 · 속도 2.0, 공중에서 때리면 1.5배 (급강하 일격), 서리 폭발 40% · 피해 6
+ *  - 검: 공격력 8 · 속도 2.0, 공중에서 때리면 1.5배 (급강하 일격), 빙결 폭발 확정 (event.FrostBurst)
  *  - 흉갑: 겉날개 겸용
  *  - 2부위: 저항 I + 수중 호흡 / 4부위: + 신속 I · 돌고래의 가호 · 낙하 피해 없음
  */
@@ -183,7 +183,11 @@ public final class SapphireGear {
         target.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 1));
         // 스카이 사파이어 검: 실명 (3초)
         if (sky) target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 60, 0));
-        if (player.getRandom().nextFloat() >= (sky ? 0.4F : 0.25F)) return;
+        if (sky) { // 3.9.8: 빙결 폭발 확정
+            FrostBurst.burst(level, player, target, true);
+            return;
+        }
+        if (player.getRandom().nextFloat() >= 0.25F) return;
         bursting = true;
         try {
             level.sendParticles(ParticleTypes.SNOWFLAKE, target.getX(), target.getY() + 0.6, target.getZ(), 50, 1.5, 0.5, 1.5, 0.05);

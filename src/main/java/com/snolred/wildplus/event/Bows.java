@@ -146,7 +146,7 @@ public final class Bows {
         }
     }
 
-    /** 사파이어 활 화살: 구속 II · 얼림 / 스카이 사파이어: 구속 III · 얼림 + 주변 2칸 서리 */
+    /** 사파이어 활 화살: 구속 II · 얼림 / 스카이 사파이어: 빙결 폭발 (FrostBurst) */
     @SubscribeEvent
     public static void onSapphireHit(LivingDamageEvent.Post event) {
         if (!(event.getSource().getDirectEntity() instanceof AbstractArrow a)) return;
@@ -154,15 +154,13 @@ public final class Bows {
         if (!bow.equals("sapphire") && !bow.equals("sky_sapphire")) return;
         LivingEntity t = event.getEntity();
         if (!(t.level() instanceof ServerLevel level)) return;
-        boolean sky = bow.equals("sky_sapphire");
-        t.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, sky ? 100 : 60, sky ? 2 : 1));
-        t.setTicksFrozen(Math.max(t.getTicksFrozen(), t.getTicksRequiredToFreeze() + (sky ? 80 : 40)));
-        level.sendParticles(ParticleTypes.SNOWFLAKE, t.getX(), t.getY() + t.getBbHeight() * 0.6, t.getZ(), sky ? 24 : 10, 0.4, 0.4, 0.4, 0.03);
-        if (sky) {
-            for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, t.getBoundingBox().inflate(2.0))) {
-                if (e != t && e instanceof Enemy) e.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 1));
-            }
+        if (bow.equals("sky_sapphire")) { // 3.9.8: 빙결 폭발 확정 (검보다 지속 짧음)
+            if (a.getOwner() instanceof net.minecraft.world.entity.player.Player owner) FrostBurst.burst(level, owner, t, false);
+            return;
         }
+        t.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 60, 1));
+        t.setTicksFrozen(Math.max(t.getTicksFrozen(), t.getTicksRequiredToFreeze() + 40));
+        level.sendParticles(ParticleTypes.SNOWFLAKE, t.getX(), t.getY() + t.getBbHeight() * 0.6, t.getZ(), 10, 0.4, 0.4, 0.4, 0.03);
     }
 
     /** 스텔라 루비 활 화살: 맞으면 방어 무시 고정 피해 3 */
