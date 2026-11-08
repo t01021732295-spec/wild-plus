@@ -60,7 +60,7 @@ public final class VoidGear {
     private static final int LEAP_CD = 160, RESCUE_CD = 3600, SURGE = 60;
 
     private static final class State {
-        boolean sneak;
+        boolean sneak, arrowRest;
         int leapReady, rescueReady, surgeUntil, hits;
         Vec3 safe;
     }
@@ -210,11 +210,15 @@ public final class VoidGear {
             if (!"void".equals(a.getPersistentData().getStringOr(Bows.BOW_TAG, "")) || !(a.getOwner() instanceof ServerPlayer owner)) return;
             mark(level, target, owner);
             if (!(target instanceof Mob m && FrostBurst.boss(m))) target.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 20, 1));
-            for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(3.0))) {
-                if (e != owner && (e == target || e instanceof Enemy)) magic(level, e, owner, 8.0F);
+            State st = state(owner);
+            st.arrowRest = !st.arrowRest;
+            if (st.arrowRest) { // 공허 화살: 한 번 터지고 다음 한 번은 쉼
+                for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(3.0))) {
+                    if (e != owner && (e == target || e instanceof Enemy)) magic(level, e, owner, 8.0F);
+                }
+                level.sendParticles(ParticleTypes.REVERSE_PORTAL, target.getX(), target.getY() + 0.5, target.getZ(), 40, 1.2, 0.5, 1.2, 0.1);
+                level.playSound(null, target.blockPosition(), SoundEvents.ENDERMAN_HURT, SoundSource.PLAYERS, 0.5F, 1.4F);
             }
-            level.sendParticles(ParticleTypes.REVERSE_PORTAL, target.getX(), target.getY() + 0.5, target.getZ(), 40, 1.2, 0.5, 1.2, 0.1);
-            level.playSound(null, target.blockPosition(), SoundEvents.ENDERMAN_HURT, SoundSource.PLAYERS, 0.5F, 1.4F);
             // 귀환: 플레이어가 주울 수 있는 화살만 (무한 · 다중 발사 복사본 제외), 종류와 효과 그대로
             if (a.pickup == AbstractArrow.Pickup.ALLOWED) {
                 a.pickup = AbstractArrow.Pickup.DISALLOWED;

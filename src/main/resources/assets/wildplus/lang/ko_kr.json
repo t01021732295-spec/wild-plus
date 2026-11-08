@@ -1186,7 +1186,7 @@
   "item.wildplus.void_hoe_blank": "미완성 공허 괭이",
   "tooltip.wildplus.void_hoe_blank": "강화대에서 공허 심장과 돈으로 완성",
   "item.wildplus.void_bow": "공허 활",
-  "tooltip.wildplus.void_bow": "당김 2배 · 피해 1.8배 · 내구도 무한\n맞은 자리 주변 3칸 방어 무시 피해 8 · 균열 표식 · 벽 1겹 관통 · 띄우기\n귀환: 맞히면 화살이 그대로 돌아옴 (특수 화살 포함)",
+  "tooltip.wildplus.void_bow": "당김 2배 · 피해 1.8배 · 내구도 무한\n공허 화살: 2번 맞힐 때 1번, 주변 3칸 방어 무시 피해 8 · 균열 표식 · 벽 1겹 관통 · 띄우기\n귀환: 맞히면 화살이 그대로 돌아옴 (특수 화살 포함)",
   "item.wildplus.void_bow_blank": "미완성 공허 활",
   "tooltip.wildplus.void_bow_blank": "강화대에서 공허 심장과 돈으로 완성",
   "item.wildplus.void_helmet": "공허 투구",
