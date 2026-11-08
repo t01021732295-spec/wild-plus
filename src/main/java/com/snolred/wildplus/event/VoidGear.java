@@ -175,7 +175,8 @@ public final class VoidGear {
 
     @SubscribeEvent
     public static void onEndermanTarget(LivingChangeTargetEvent event) {
-        if (event.getEntity() instanceof net.minecraft.world.entity.monster.EnderMan e && event.getNewAboutToBeSetTarget() instanceof Player p
+        LivingEntity e = event.getEntity();
+        if (e.getType() == net.minecraft.world.entity.EntityTypes.ENDERMAN && event.getNewAboutToBeSetTarget() instanceof Player p
                 && pieces(p) >= 2 && e.getLastHurtByMob() != p) event.setCanceled(true); // 먼저 때리면 반격은 함
     }
 
