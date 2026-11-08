@@ -157,7 +157,7 @@ public final class EliteMobs {
             mob.addEffect(new MobEffectInstance(MobEffects.SPEED, 20 * 60 * 10, 0));
         }
         double chance = baseChance(level.getDifficulty());
-        if (!level.canSeeSky(mob.blockPosition())) chance *= 0.5;
+        if (!level.canSeeSky(mob.blockPosition())) chance *= 0.2; // 3.9.3: 지하는 땅 위의 1/5 (예전 1/2 에서 60% 더 줄임)
         if (bloodMoon) chance = Math.min(0.35, chance * 2.0);
         if (natural && level.getRandom().nextDouble() < chance) makeElite(mob, bloodMoon ? 2 : 1);
     }

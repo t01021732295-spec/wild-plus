@@ -23,6 +23,9 @@ public final class InfoHud {
         event.registerAbove(VanillaGuiLayers.CAMERA_OVERLAYS, WildPlus.id("info_hud"), InfoHud::render);
     }
 
+    private static int moneyTick = -1000;
+    private static String moneyText = "0";
+
     private static void render(GuiGraphicsExtractor g, DeltaTracker delta) {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer player = mc.player;
@@ -49,8 +52,12 @@ public final class InfoHud {
             w = Math.max(w, mc.font.width(line2));
         }
         // 소지금 (가방 동전 + 동전 주머니 + 통장)
-        Component line3 = Component.translatable("hud.wildplus.money",
-                String.format("%,d", com.snolred.wildplus.economy.Coins.totalValue(player) + com.snolred.wildplus.net.BankSync.clientBank));
+        // 3.9.3: 가방을 매 화면마다 세지 않고 0.5초마다 한 번만 셈
+        if (player.tickCount != moneyTick && (player.tickCount - moneyTick >= 10 || player.tickCount < moneyTick)) {
+            moneyTick = player.tickCount;
+            moneyText = String.format("%,d", com.snolred.wildplus.economy.Coins.totalValue(player) + com.snolred.wildplus.net.BankSync.clientBank);
+        }
+        Component line3 = Component.translatable("hud.wildplus.money", moneyText);
         w = Math.max(w, mc.font.width(line3));
         int lines = 2 + (line2 == null ? 0 : 1);
         int h = lines * 11 + 5;

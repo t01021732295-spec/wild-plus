@@ -154,6 +154,9 @@ def export(name, fn, lat0, lat1, dep0, dep1, height):
     (ROOT / f"blockstates/{name}.json").write_text(json.dumps({"variants": {
         f"facing={f}": ({"model": f"wildplus:block/{name}", "y": r} if r else {"model": f"wildplus:block/{name}"}) for f, r in rot.items()}}, indent=2))
     (ROOT / f"items/{name}.json").write_text(json.dumps({"model": {"type": "minecraft:model", "model": f"wildplus:block/{name}"}}, indent=2))
+    # 3.9.3: 쓰는 만큼만 남기기 (512 그대로 두면 블록 아틀라스가 몇 배로 커져 렉)
+    import shrink_atlas
+    shrink_atlas.shrink(name)
     return len(elements)
 
 

@@ -9,7 +9,7 @@
   - `.github/workflows/build.yml`: 빌드 → 서버 스모크 테스트 → 클라이언트 실행 후 스크린샷(`shot-*.png`)
   - 결과는 `ci-log` 브랜치(status.txt · build-errors.txt · server-tail.txt · client-filtered.txt · shot-*.png)
   - jar 는 릴리스 `latest` 에 `wildplus-<버전>.jar` 로 올라감
-- 버전: `gradle.properties` 의 `mod_version` (최근 3.9.2)
+- 버전: `gradle.properties` 의 `mod_version` (최근 3.9.3)
 - 새 push 는 진행 중인 CI 를 취소함. 문서만 바꿀 땐 커밋 메시지에 `[skip ci]`.
 - API 확인용 `probe.yml`: `.github/probe-classes.txt`(javap 클래스) · `probe-grep.txt` · `probe-javap.txt`(정규식) 를 고치고
   `gh api -X POST repos/t01021732295-spec/wild-plus/actions/workflows/probe.yml/dispatches -f ref=main` → 결과는 `ci-probe` 브랜치 `probe.txt`
@@ -25,6 +25,7 @@
 - 3D 블록 디자인: `kitchen_design.py`(조리기구) · `restaurant_design.py`(식당) · `furniture_design.py`(가구) · `house_design.py`(집 외형 도안)
   → `kitchen_models.export(이름, 도안, lat0, lat1, dep0, dep1, 높이)` 가 모델 JSON + 512 아틀라스 텍스처로 변환
   (도안 좌표: x 오른쪽, y 위, +z 정면, 16 = 1칸, 모델 범위 -16..32 → 32 넘으면 위쪽을 눌러 담음)
+  → 3.9.3부터 export 끝에 `shrink_atlas.shrink()` 가 512 텍스처를 쓰는 만큼만 잘라 UV 를 맞춤 (512 그대로 두면 블록 아틀라스가 커져 렉 · 메모리)
 - 집 구조물(실제 블록): `house_structures.py` → `data/wildplus/structure/house/*.nbt`
 - 도안 미리보기: `cosmetic_design.render()` / `sheet()` 로 PNG 를 그려 사용자에게 보여 줌
 
