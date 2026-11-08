@@ -415,7 +415,7 @@ public final class Land {
 
     /** 화면 가운데 큰 글씨 */
     private static void title(ServerPlayer p, String big, String small) {
-        p.connection.send(new net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket(5, 40, 15));
+        p.connection.send(new net.minecraft.network.protocol.game.ClientboundSetTitlesAnimationPacket(5, 70, 20));
         p.connection.send(new net.minecraft.network.protocol.game.ClientboundSetSubtitleTextPacket(Component.literal(small).withStyle(ChatFormatting.GRAY)));
         p.connection.send(new net.minecraft.network.protocol.game.ClientboundSetTitleTextPacket(Component.literal(big).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD)));
     }
@@ -496,17 +496,17 @@ public final class Land {
                 .append("|").append(debt > 0 ? "밀린 세금=" + debt + "일 (" + MAX_DEBT + "일이면 풀림)" : "다음 땅=" + String.format("%,d동", nextPrice(me)));
         e.add(PickMenu.Entry.of(PickMenu.K_INFO, "지도", map.toString()));
         act.add(() -> {});
-        e.add(new PickMenu.Entry("📍 테두리 보기", "빛나는 선"));
+        e.add(new PickMenu.Entry("📍 테두리 보기", ""));
         act.add(() -> showBorder(p));
         if (here != null && here.equals(me)) {
-            e.add(new PickMenu.Entry("🚩 경계 기둥 다시 세우기", "네 모서리"));
+            e.add(new PickMenu.Entry("🚩 경계 기둥 다시 세우기", ""));
             act.add(() -> placePosts(p.level(), p.blockPosition(), me, true));
         }
         if (here == null) {
             e.add(new PickMenu.Entry("🏠 이 땅 사기", String.format("%,d동", nextPrice(me))));
             act.add(() -> buy(p));
         } else if (here.equals(me)) {
-            e.add(new PickMenu.Entry("💸 이 땅 팔기", String.format("%,d동 돌려받음", REFUND)));
+            e.add(new PickMenu.Entry("💸 이 땅 팔기", String.format("+%,d동", REFUND)));
             act.add(() -> sell(p));
         }
         int access = mine.getIntOr("access", ACCESS_ALL);

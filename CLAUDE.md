@@ -9,7 +9,7 @@
   - `.github/workflows/build.yml`: 빌드 → 서버 스모크 테스트 → 클라이언트 실행 후 스크린샷(`shot-*.png`)
   - 결과는 `ci-log` 브랜치(status.txt · build-errors.txt · server-tail.txt · client-filtered.txt · shot-*.png)
   - jar 는 릴리스 `latest` 에 `wildplus-<버전>.jar` 로 올라감
-- 버전: `gradle.properties` 의 `mod_version` (최근 3.9.1)
+- 버전: `gradle.properties` 의 `mod_version` (최근 3.9.2)
 - 새 push 는 진행 중인 CI 를 취소함. 문서만 바꿀 땐 커밋 메시지에 `[skip ci]`.
 - API 확인용 `probe.yml`: `.github/probe-classes.txt`(javap 클래스) · `probe-grep.txt` · `probe-javap.txt`(정규식) 를 고치고
   `gh api -X POST repos/t01021732295-spec/wild-plus/actions/workflows/probe.yml/dispatches -f ref=main` → 결과는 `ci-probe` 브랜치 `probe.txt`

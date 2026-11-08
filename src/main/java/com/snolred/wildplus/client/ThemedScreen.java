@@ -244,6 +244,14 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
         return out;
     }
 
+    /** 여러 줄 가운데 정렬 (줄마다 10칸씩 내려감) */
+    private static void centerLines(GuiGraphicsExtractor g, String s, int maxW, int cx, int y, int c) {
+        for (String l : wrap(s, maxW)) {
+            UiKit.center(g, l, cx, y, c);
+            y += 11;
+        }
+    }
+
     private static String fit(String s, int maxW) {
         var font = UiKit.font();
         while (font.width(s) > maxW && s.length() > 2) s = s.substring(0, s.length() - 2) + "…";
@@ -290,7 +298,7 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
                     }
                     UiKit.text(g, "가격 " + ls[0], x + 220, y + 154, 0xFF1E8A5E);
                 }
-                UiKit.text(g, menu.header, x + 60, y + h - 18, 0xFF3C6E5E);
+                UiKit.text(g, menu.header, x + (pages() > 1 ? 92 : 60), y + h - 18, 0xFF3C6E5E);
             }
             case PickMenu.T_WEATHER -> {
                 Minecraft mc = Minecraft.getInstance();
@@ -362,7 +370,7 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
                 UiKit.round(g, x, y, w, h, 4, 0xFF5A78C8);
                 UiKit.roundGradient(g, x + 2, y + 2, w - 4, h - 4, 3, 0xFF1A1E2C, 0xFF262C40);
                 if (menu.entries.isEmpty()) {
-                    for (String l : wrap(menu.empty, w - 40)) UiKit.center(g, l, x + w / 2, y + 80, 0xFF9CB0E0);
+                    centerLines(g, menu.empty, w - 60, x + w / 2, y + 80, 0xFF9CB0E0);
                 }
             }
             case PickMenu.T_CONTEST -> {
@@ -391,7 +399,7 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
                 UiKit.round(g, x + 190, y + 30, w - 202, h - 40, 1, 0xFFFFEBA0);
                 UiKit.circle(g, x + 190 + (w - 202) / 2 - 3, y + 26, 7, 0xFF3A78DC);
                 int ny = y + 40;
-                for (String l : wrap(menu.header.replace(" · ", "\n"), w - 220)) {
+                for (String l : wrap(menu.header.replaceFirst(" · ", "\n"), w - 220)) {
                     UiKit.text(g, l, x + 198, ny, 0xFF5A3A14);
                     ny += 11;
                 }
@@ -399,7 +407,7 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
             case PickMenu.T_TELEPORT -> {
                 UiKit.round(g, x, y, w, h, 4, 0xFFA064E6);
                 UiKit.roundGradient(g, x + 2, y + 2, w - 4, h - 4, 3, 0xFF22183A, 0xFF34244E);
-                if (menu.entries.isEmpty()) for (String l : wrap(menu.empty, w - 40)) UiKit.center(g, l, x + w / 2, y + 80, 0xFFC8B4F0);
+                if (menu.entries.isEmpty()) centerLines(g, menu.empty, w - 60, x + w / 2, y + 80, 0xFFC8B4F0);
             }
             case PickMenu.T_CONTRACT -> {
                 UiKit.round(g, x, y, w, h, 6, 0xFF785A32);
@@ -444,7 +452,7 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
             default -> {}
         }
         if (menu.entries.isEmpty() && theme != PickMenu.T_WARP && theme != PickMenu.T_TELEPORT && theme != PickMenu.T_CONTEST && theme != PickMenu.T_PRISON) {
-            for (String l : wrap(menu.empty, w - 40)) UiKit.center(g, l, x + w / 2, y + 90, 0xFF808080);
+            centerLines(g, menu.empty, w - 60, x + w / 2, y + 90, 0xFF808080);
         }
     }
 
@@ -518,7 +526,7 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
                     UiKit.round(g, x, y, cw, ch, 3, sel ? 0xFF36A07C : hover ? 0xFF9CD8C2 : 0xFFC8DCD4);
                     UiKit.round(g, x + 1, y + 1, cw - 2, ch - 2, 3, 0xFFFFFFFF);
                     icon(g, e.icon(), x + cw / 2 - 8, y + 3, 1F);
-                    UiKit.center(g, fit(strip(e.title()), cw - 4), x + cw / 2, y + 22, 0xFF284038);
+                    UiKit.center(g, fit(strip(e.title()).replaceAll("\\s*\\(.*\\)$", ""), cw - 4), x + cw / 2, y + 22, 0xFF284038);
                     String price = lines(e)[0];
                     int pw = font.width(price) + 8;
                     UiKit.round(g, x + cw / 2 - pw / 2, y + 34, pw, 11, 3, 0xFFE2F6EE);
@@ -552,9 +560,10 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
                     String t = e.title();
                     int c = t.contains("팔기") ? 0xFFF0C8BE : t.contains("사기") || t.contains("기둥") || t.contains("테두리") ? 0xFFC0E2B4 : 0xFFE6DCC4;
                     UiKit.round(g, x, y, cw, ch, 3, hover ? UiKit.darker(c, 0.1F) : c);
-                    UiKit.text(g, fit(t, cw - 70), x + 6, y + 4, 0xFF46301A);
-                    String sub = e.sub();
-                    if (!sub.isEmpty()) UiKit.right(g, fit(sub, 64), x + cw - 6, y + 4, 0xFF8C6E46);
+                    String sub = e.sub().isEmpty() ? "" : fit(e.sub(), 60);
+                    int sw = sub.isEmpty() ? 0 : font.width(sub) + 8;
+                    UiKit.text(g, fit(t, cw - 12 - sw), x + 6, y + 4, 0xFF46301A);
+                    if (!sub.isEmpty()) UiKit.right(g, sub, x + cw - 6, y + 4, 0xFF8C6E46);
                 }
                 case PickMenu.T_WARP -> {
                     boolean first = index == 0;

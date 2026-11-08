@@ -1246,7 +1246,7 @@ jobs:
             cmd "/fill 636 119 -4 676 119 36 minecraft:grass_block"
             cmd "/fill 636 120 -4 676 127 36 minecraft:air"
             sleep 2
-            cmd "/wildplus uitest landbuy"; sleep 2; shot v39-land-title
+            cmd "/wildplus uitest landbuy"; shot v39-land-title
             cmd "/tp @s 643.5 124 13.5 -135 25"; sleep 3
             xdotool key F1 || true; shot v39-land-posts; xdotool key F1 || true
             cmd "/tp @s 648.5 121 8.5 0 10"
@@ -1261,6 +1261,7 @@ jobs:
             # 순간이동기 (다른 유저가 없을 때)
             cmd "/clear @s"
             cmd "/give @s wildplus:teleporter"
+            cmd "/tp @s 380.5 125 -8.3 0 -60"
             xdotool key 1; sleep 0.5; xdotool click 3; shot v39-teleporter; esc
             cmd "/clear @s"
             # 우민 감옥: 놓기 → 포로 셋 → 바깥 모습 · 감옥 화면 · 포로 화면
