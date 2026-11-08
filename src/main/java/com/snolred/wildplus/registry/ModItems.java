@@ -90,7 +90,7 @@ public final class ModItems {
     public static final DeferredItem<RecallScrollItem> RECALL_SCROLL = ITEMS.registerItem("recall_scroll",
             RecallScrollItem::new, p -> p.stacksTo(16).rarity(Rarity.RARE));
     public static final DeferredItem<LuckyCharmItem> LUCKY_CHARM = ITEMS.registerItem("lucky_charm",
-            LuckyCharmItem::new, p -> p.stacksTo(1).rarity(Rarity.EPIC));
+            LuckyCharmItem::new, p -> p.stacksTo(64).rarity(Rarity.EPIC));
     public static final DeferredItem<Item> TRAVELER_RATION = ITEMS.registerSimpleItem("traveler_ration",
             p -> p.food(new FoodProperties.Builder().nutrition(8).saturationModifier(1.0F).build(),
                     Consumables.defaultFood()

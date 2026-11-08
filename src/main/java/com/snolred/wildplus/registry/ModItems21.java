@@ -16,7 +16,7 @@ public final class ModItems21 {
         for (int t = 2; t <= 10; t++) {
             final int tier = t;
             CHARMS.add(ITEMS.registerItem("lucky_charm_" + t, p -> new LuckyCharmItem(p, tier),
-                    p -> p.stacksTo(1).fireResistant().rarity(tier >= 8 ? Rarity.EPIC : tier >= 4 ? Rarity.RARE : Rarity.UNCOMMON)));
+                    p -> p.stacksTo(64).fireResistant().rarity(tier >= 8 ? Rarity.EPIC : tier >= 4 ? Rarity.RARE : Rarity.UNCOMMON)));
         }
     }
 

@@ -31,7 +31,7 @@ FRAME = [None, GOLD, GOLD, GOLD, GOLD, GOLD, ROSE, ROSE, PLATINUM, PLATINUM, GOL
 
 
 def ship(t):
-    return min(3_000_000, 150 * 9 ** (t - 1))  # 3.9.3: 85% 내림
+    return min(4_000_000, 200 * 9 ** (t - 1))  # 3.9.4: 처음 값의 20%
 
 
 def charm_textures():
