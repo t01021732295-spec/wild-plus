@@ -7,8 +7,8 @@ from data_v2 import ASSETS, i, write
 # 주인 색 (LandPostBlock.colorOf 순서)
 POST_COLORS = [(70, 170, 90), (70, 120, 220), (220, 70, 70), (240, 190, 50), (160, 80, 210), (40, 190, 190), (240, 130, 40), (235, 110, 170)]
 
-LANG_KO = {"block.wildplus.land_post": "땅 경계 기둥", "entity.wildplus.illager_prisoner": "우민 포로"}
-LANG_EN = {"block.wildplus.land_post": "Land Post", "entity.wildplus.illager_prisoner": "Illager Prisoner"}
+LANG_KO = {"block.wildplus.land_post": "땅 경계 기둥", "entity.wildplus.illager_prisoner": "우민 포로", "affix.wildplus.cataclysm": "대재앙"}
+LANG_EN = {"block.wildplus.land_post": "Land Post", "entity.wildplus.illager_prisoner": "Illager Prisoner", "affix.wildplus.cataclysm": "Cataclysm"}
 
 
 def build(lang_ko, lang_en):

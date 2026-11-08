@@ -56,7 +56,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  * 체력 3배 · 공격력 2배 · 방어 +6 · 강도 +2 · 밀침 저항 · 이동 +10% · 금색 이름표.
  * 특수 능력 1개 (블러드문 2개): 공용 능력 + 몬스터별 고유 능력 (고유 능력이 나올 확률 50%).
  *  공용: 화염 · 흡혈 · 가시 · 질풍 · 거인 · 맹독 · 소환사 · 철벽 · 폭발 · 빙결 · 광폭 · 재생 · 순간이동
- *  좀비 계열: 무리 대장 · 감염 / 활 · 쇠뇌: 명사수 · 연사 / 크리퍼: 대폭발 · 그림자 / 거미: 거미줄 · 도약
+ *  좀비 계열: 무리 대장 · 감염 / 활 · 쇠뇌: 명사수 · 연사 / 크리퍼: 대폭발 · 그림자 · 대재앙 / 거미: 거미줄 · 도약
  *  엔더맨: 공간 왜곡 / 마녀: 저주 / 전사(변명자 · 위더 스켈레톤 · 피글린 야수): 회전 베기 · 갑옷 파괴
  * 원거리 · 폭발 · 물약 피해에도 공격 능력(화염 · 흡혈 · 맹독 · 빙결)이 적용된다.
  */
@@ -78,7 +78,7 @@ public final class EliteMobs {
         FROST, BERSERK, REGENERATING, BLINK,
         HORDE(Group.ZOMBIE), INFECT(Group.ZOMBIE),
         SNIPER(Group.ARCHER), VOLLEY(Group.ARCHER),
-        MEGA_BLAST(Group.CREEPER), STEALTH(Group.CREEPER),
+        MEGA_BLAST(Group.CREEPER), STEALTH(Group.CREEPER), CATACLYSM(Group.CREEPER),
         WEBBER(Group.SPIDER), LEAPER(Group.SPIDER),
         WARP(Group.ENDERMAN),
         HEXER(Group.WITCH),
@@ -219,20 +219,33 @@ public final class EliteMobs {
             case SNIPER -> addModifier(mob.getAttribute(Attributes.FOLLOW_RANGE), "elite_sniper_range", 16.0, AttributeModifier.Operation.ADD_VALUE);
             case HORDE -> mob.getPersistentData().putBoolean(HORDE_PENDING, true);
             case MEGA_BLAST -> setCreeperRadius(mob, 6);
+            case CATACLYSM -> { // 3.9.5 대재앙: 대폭발(6)보다 큰 범위 9 · 피해 1.3배 · 대신 터지기 전 1.5배 오래 부풂
+                setCreeperRadius(mob, 9);
+                setIntField(mob, "maxSwell", 45);
+                addModifier(mob.getAttribute(Attributes.MAX_HEALTH), "elite_cataclysm_health", 0.5, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+            }
             case STEALTH -> mob.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, MobEffectInstance.INFINITE_DURATION, 0, false, false));
             case WEBBER, LEAPER -> addModifier(mob.getAttribute(Attributes.MOVEMENT_SPEED), "elite_spider", 0.15, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
             default -> {}
         }
     }
 
-    /** 크리퍼 폭발 범위 (기본 3) */
+    /** 크리퍼 폭발 범위 (기본 3 · 더 큰 값만 받음: 대폭발 + 대재앙이 같이 붙으면 대재앙) */
     private static void setCreeperRadius(Mob mob, int r) {
+        setIntField(mob, "explosionRadius", r, true);
+    }
+
+    private static void setIntField(Mob mob, String name, int v) {
+        setIntField(mob, name, v, false);
+    }
+
+    private static void setIntField(Mob mob, String name, int v, boolean onlyRaise) {
         try {
             for (Class<?> c = mob.getClass(); c != null; c = c.getSuperclass()) {
                 for (java.lang.reflect.Field f : c.getDeclaredFields()) {
-                    if (f.getName().equals("explosionRadius") && f.getType() == int.class) {
+                    if (f.getName().equals(name) && f.getType() == int.class) {
                         f.setAccessible(true);
-                        f.setInt(mob, r);
+                        if (!onlyRaise || f.getInt(mob) < v) f.setInt(mob, v);
                         return;
                     }
                 }
@@ -252,6 +265,9 @@ public final class EliteMobs {
     public static void onIncoming(LivingIncomingDamageEvent event) {
         if (!(event.getSource().getEntity() instanceof LivingEntity attacker) || !isElite(attacker)) return;
         Entity direct = event.getSource().getDirectEntity();
+        if (direct == attacker && hasAffix(attacker, Affix.CATACLYSM) && event.getSource().is(net.minecraft.tags.DamageTypeTags.IS_EXPLOSION)) {
+            event.setAmount(event.getAmount() * 1.3F);
+        }
         if (direct instanceof AbstractArrow && hasAffix(attacker, Affix.SNIPER)) event.setAmount(event.getAmount() * 1.6F);
         if (direct == attacker && hasAffix(attacker, Affix.SUNDER) && event.getEntity() instanceof Player) event.setAmount(event.getAmount() * 1.3F);
     }

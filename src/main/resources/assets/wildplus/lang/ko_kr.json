@@ -1151,5 +1151,6 @@
   "item.wildplus.lucky_charm_10": "행운의 부적 X",
   "tooltip.wildplus.lucky_charm_10": "가지고 있으면: 행운 VI · 모든 효과 · 황금 오라 (32칸 안 친구 행운 II)\n최고 단계 · 출하 4,000,000동 · 가방 속 가장 높은 단계 하나만 적용",
   "block.wildplus.land_post": "땅 경계 기둥",
-  "entity.wildplus.illager_prisoner": "우민 포로"
+  "entity.wildplus.illager_prisoner": "우민 포로",
+  "affix.wildplus.cataclysm": "대재앙"
 }

@@ -927,5 +927,6 @@
   "item.wildplus.lucky_charm_9": "Lucky Charm IX",
   "item.wildplus.lucky_charm_10": "Lucky Charm X",
   "block.wildplus.land_post": "Land Post",
-  "entity.wildplus.illager_prisoner": "Illager Prisoner"
+  "entity.wildplus.illager_prisoner": "Illager Prisoner",
+  "affix.wildplus.cataclysm": "Cataclysm"
 }
