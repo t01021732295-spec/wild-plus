@@ -578,6 +578,12 @@ public final class OmenRaids {
         }
     }
 
+    /** 테스트용 (/wildplus uitest contract): 저주 두 장을 붙인 계약서 */
+    public static void debugContract(ServerPlayer p) {
+        PICK.put(p.getUUID(), 0b000101);
+        openContract(p, p.blockPosition());
+    }
+
     static void openContract(ServerPlayer p, BlockPos bell) {
         int mask = PICK.getOrDefault(p.getUUID(), 0);
         // 계약서를 읽는 동안 습격 징조 카운트다운을 1분으로 늘려 줌

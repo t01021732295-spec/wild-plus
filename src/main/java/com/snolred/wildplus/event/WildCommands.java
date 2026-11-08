@@ -121,6 +121,29 @@ public final class WildCommands {
                             com.snolred.wildplus.net.CosmeticSync.broadcast(p.level().getServer());
                             return 1;
                         })))))
+                .then(Commands.literal("uitest").then(Commands.argument("what", com.mojang.brigadier.arguments.StringArgumentType.word()).executes(ctx -> {
+                    var p = ctx.getSource().getPlayerOrException();
+                    var at = p.blockPosition();
+                    var front = at.relative(p.getDirection(), 3);
+                    switch (com.mojang.brigadier.arguments.StringArgumentType.getString(ctx, "what")) {
+                        case "pharmacy" -> com.snolred.wildplus.economy.Services.openPharmacy(p, at);
+                        case "weather" -> com.snolred.wildplus.economy.Services.openWeather(p, at);
+                        case "landbuy" -> com.snolred.wildplus.content.Land.debugLand(p);
+                        case "land" -> com.snolred.wildplus.content.Land.open(p);
+                        case "contest" -> com.snolred.wildplus.content.Contest.openBoard(p, at);
+                        case "contract" -> com.snolred.wildplus.omen.OmenRaids.debugContract(p);
+                        case "prisonfill" -> com.snolred.wildplus.omen.Prisoners.debugFill(p, front);
+                        case "prison" -> com.snolred.wildplus.omen.Prisoners.open(p, front);
+                        case "altar" -> {
+                            com.snolred.wildplus.omen.OmenAltar.debugPoints(p.level().getServer(), at, 34);
+                            com.snolred.wildplus.omen.OmenAltar.open(p, at);
+                        }
+                        default -> {
+                            return 0;
+                        }
+                    }
+                    return 1;
+                })))
                 .then(Commands.literal("arenamap").then(Commands.argument("t", com.mojang.brigadier.arguments.IntegerArgumentType.integer(0, 9)).executes(ctx -> {
                     com.snolred.wildplus.content.Arena.debugBuild(ctx.getSource().getPlayerOrException(),
                             com.mojang.brigadier.arguments.IntegerArgumentType.getInteger(ctx, "t"));

@@ -389,7 +389,7 @@ jobs:
 
       - name: Client visual test
         id: client
-        if: steps.smoke.outcome == 'success' && !contains(github.event.head_commit.message, '[quick]')
+        if: steps.smoke.outcome == 'success' && !contains(github.event.head_commit.message, '[quick]') && !contains(github.event.head_commit.message, '[focus]')
         continue-on-error: true
         timeout-minutes: 60
         env:
@@ -1202,6 +1202,85 @@ jobs:
             pkill -f java || true
           ' || true
           ls -la shot-world.png || true
+
+      - name: Client focus test (3.9 화면만)
+        id: focus
+        if: steps.smoke.outcome == 'success' && contains(github.event.head_commit.message, '[focus]')
+        continue-on-error: true
+        timeout-minutes: 25
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          MC_QUICKPLAY: wildtest
+        run: |
+          sudo apt-get update -q && sudo apt-get install -y -q xvfb libgl1-mesa-dri mesa-vulkan-drivers libvulkan1 imagemagick x11-utils xdotool
+          mkdir -p run/saves && cp -r run/world run/saves/wildtest
+          pip install -q nbtlib
+          python3 - <<'PY'
+          import nbtlib
+          f = nbtlib.load('run/saves/wildtest/level.dat')
+          d = f['Data'] if 'Data' in f else f
+          d['allowCommands'] = nbtlib.Byte(1)
+          f.save()
+          PY
+          printf 'onboardAccessibility:false\npauseOnLostFocus:false\nlang:ko_kr\nguiScale:2\n' > run/options.txt
+          xvfb-run -a -s "-screen 0 1280x720x24+32 +extension GLX +render -noreset" bash -c '
+            ./gradlew runClient --no-daemon > client.log 2>&1 &
+            for i in $(seq 1 90); do sleep 5; grep -q -E "logged in with entity id|Loaded [0-9]+ advancements|joined the game" client.log && break; done
+            sleep 40
+            cmd() { xdotool key t; sleep 1; xdotool type --delay 40 "$1"; sleep 0.5; xdotool key Return; sleep 1.5; }
+            shot() { sleep 2; import -window root "shot-$1.png" || true; }
+            esc() { xdotool key Escape; sleep 1; }
+            cmd "/effect give @s minecraft:resistance 900 255 true"
+            cmd "/gamemode creative"
+            cmd "/time set noon"
+            cmd "/weather clear"
+            # 약국 · 기상
+            cmd "/tp @s 396.5 120 -8.3 0 20"
+            cmd "/wildplus uitest pharmacy"; shot v39-pharmacy
+            xdotool mousemove 520 258; sleep 0.5; xdotool click 1; sleep 1; shot v39-pharmacy-pick
+            esc
+            cmd "/wildplus uitest weather"; shot v39-weather; esc
+            # 땅: 사기 → 경계 기둥 · 지도
+            cmd "/tp @s 648.5 121 8.5 0 10"
+            sleep 6
+            cmd "/fill 636 119 -4 676 119 36 minecraft:grass_block"
+            cmd "/fill 636 120 -4 676 127 36 minecraft:air"
+            sleep 2
+            cmd "/wildplus uitest landbuy"; sleep 2; shot v39-land-title
+            cmd "/tp @s 643.5 124 13.5 -135 25"; sleep 3
+            xdotool key F1 || true; shot v39-land-posts; xdotool key F1 || true
+            cmd "/tp @s 648.5 121 8.5 0 10"
+            cmd "/wildplus uitest land"; shot v39-land; esc
+            # 순간이동 지점 (서버 테스트에서 놓은 두 지점)
+            cmd "/tp @s 380.5 120 -8.3 0 20"
+            sleep 3; xdotool click 3; shot v39-warp; esc
+            # 대회 게시판 · 계약서 · 제단
+            cmd "/wildplus uitest contest"; shot v39-contest; esc
+            cmd "/wildplus uitest contract"; shot v39-contract; esc
+            cmd "/wildplus uitest altar"; shot v39-altar; esc
+            # 순간이동기 (다른 유저가 없을 때)
+            cmd "/clear @s"
+            cmd "/give @s wildplus:teleporter"
+            xdotool key 1; sleep 0.5; xdotool click 3; shot v39-teleporter; esc
+            cmd "/clear @s"
+            # 우민 감옥: 놓기 → 포로 셋 → 바깥 모습 · 감옥 화면 · 포로 화면
+            cmd "/tp @s 600.5 121 0.5 180 0"
+            sleep 6
+            cmd "/fill 594 119 -8 606 119 4 minecraft:grass_block"
+            cmd "/fill 594 120 -8 606 124 4 minecraft:air"
+            cmd "/setblock 600 120 -3 wildplus:illager_prison[facing=south]"
+            cmd "/tp @s 600.5 120 0.5 180 0"
+            cmd "/wildplus uitest prisonfill"; sleep 3
+            cmd "/tp @s 600.5 121.2 1.8 180 12"; sleep 3
+            xdotool key F1 || true; shot v39-prison-world; xdotool key F1 || true
+            cmd "/tp @s 602.8 121.5 0.2 150 12"; sleep 3
+            xdotool key F1 || true; shot v39-prison-world2; xdotool key F1 || true
+            cmd "/tp @s 600.5 120 0.5 180 0"
+            cmd "/wildplus uitest prison"; shot v39-prison
+            xdotool mousemove 398 360; sleep 0.5; xdotool click 1; sleep 1.5; shot v39-prison-pick
+            esc
+            pkill -f java || true
+          ' || true
 
       - name: Publish logs for debugging
         if: always()

@@ -161,6 +161,23 @@ public final class Prisoners {
         return (t.getBooleanOr("elite", false) ? "정예 " : "") + LassoItem.nameOf(t.getStringOr("type", "")) + " 포로";
     }
 
+    /** 테스트용 (/wildplus uitest prison): 포로 셋을 바로 가둠 */
+    public static void debugFill(ServerPlayer p, BlockPos pos) {
+        MinecraftServer s = p.level().getServer();
+        String k = key(p.level(), pos);
+        List<CompoundTag> ps = new ArrayList<>();
+        String[] types = {"minecraft:pillager", "minecraft:vindicator", "minecraft:evoker"};
+        for (int i = 0; i < types.length; i++) {
+            CompoundTag t = new CompoundTag();
+            t.putString("type", types[i]);
+            t.putBoolean("elite", i == 1);
+            t.putInt("stamina", 3 - i);
+            t.putString("by", p.getUUID().toString());
+            ps.add(t);
+        }
+        store(s, k, ps);
+    }
+
     // ───────── 열기 ─────────
     public static void open(ServerPlayer p, BlockPos pos) {
         ServerLevel level = p.level();

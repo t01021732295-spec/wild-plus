@@ -83,6 +83,15 @@ public final class OmenAltar {
     }
 
     // ───────── 바치기 · 보기 ─────────
+    /** 테스트용: 제단 점수 바로 넣기 (/wildplus uitest) */
+    public static void debugPoints(MinecraftServer s, BlockPos pos, int points) {
+        CompoundTag t = root(s).getCompoundOrEmpty(key(pos));
+        t.putLong("pos", pos.asLong());
+        t.putInt("points", points);
+        root(s).put(key(pos), t);
+        ContentData.get(s).dirty();
+    }
+
     public static void open(ServerPlayer p, BlockPos pos) {
         ServerLevel level = p.level();
         if (level.dimension() != net.minecraft.world.level.Level.OVERWORLD) {

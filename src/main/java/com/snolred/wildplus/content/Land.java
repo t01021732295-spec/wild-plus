@@ -447,6 +447,22 @@ public final class Land {
         }
     }
 
+    /** 테스트용 (/wildplus uitest land): 지금 청크 + 동쪽 청크를 사고, 남쪽 청크는 가짜 주인 땅으로 */
+    public static void debugLand(ServerPlayer p) {
+        MinecraftServer s = p.level().getServer();
+        com.snolred.wildplus.economy.WildData.get(s).addBalance(p.getUUID(), nextPrice(p.getUUID()) * 3);
+        buyAt(p, p.blockPosition());
+        buyAt(p, p.blockPosition().east(16));
+        UUID other = UUID.nameUUIDFromBytes("wildplus-uitest".getBytes());
+        String k = key(p.level(), p.blockPosition().south(16));
+        if (!CHUNKS.containsKey(k)) {
+            CHUNKS.put(k, other);
+            chunks(s).putString(k, other.toString());
+            owner(s, other).putString("name", "이웃");
+            ContentData.get(s).dirty();
+        }
+    }
+
     // ───────── 관리 창 ─────────
     public static void open(ServerPlayer p, BlockPos ignored) {
         open(p);
