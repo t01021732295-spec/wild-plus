@@ -441,8 +441,32 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
             // 가격 (보유 · 착용이면 초록 글씨)
             String price = !state.isEmpty() ? state : entry.sub().isEmpty() ? "무료" : entry.sub();
             int pc = !state.isEmpty() ? 0xFF7CE08A : 0xFFFFD25A;
+            price = shortPrice(price, w - 2);
             g.text(font, price, x + (w - font.width(price)) / 2, ty + 9, pc, true);
         }
+    }
+
+    /**
+     * 3.9.4: 진열장 칸 아래 가격 줄이 옆 칸을 덮지 않게.
+     * 설명이 붙은 긴 줄("설명 · 흉조 병 3개 · 남은 1")은 값 · 남은 개수만 남기고 (전체는 마우스를 올리면 보임), 그래도 길면 …로 자른다.
+     */
+    static String shortPrice(String price, int maxW) {
+        var font = UiKit.font();
+        if (font.width(price) <= maxW) return price;
+        if (price.contains(" · ")) {
+            StringBuilder b = new StringBuilder();
+            for (String seg : price.split(" · ")) {
+                if (seg.matches(".*\\d.*(동|개).*") || seg.startsWith("남은") || seg.equals("품절")) {
+                    seg = seg.replace("흉조 병 ", "병 ");
+                    if (!b.isEmpty()) b.append(" · ");
+                    b.append(seg);
+                }
+            }
+            if (!b.isEmpty()) price = b.toString();
+            if (font.width(price) > maxW && price.contains(" · ")) price = price.substring(0, price.indexOf(" · "));
+        }
+        while (font.width(price) > maxW && price.length() > 2) price = price.substring(0, price.length() - 2) + "…";
+        return price;
     }
 
     @Override
