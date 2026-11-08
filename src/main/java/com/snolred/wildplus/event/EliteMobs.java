@@ -199,7 +199,7 @@ public final class EliteMobs {
         mob.setCustomName(Component.literal("[").append(label).append("] ")
                 .append(Component.translatable("entity.wildplus.elite_prefix", mob.getType().getDescription()))
                 .withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
-        mob.setCustomNameVisible(true);
+        mob.setCustomNameVisible(!hasAffix(mob, Affix.STEALTH)); // 3.9.5: 그림자는 이름도 숨김 (가까이 와야 드러남)
         mob.setPersistenceRequired();
     }
 
@@ -422,6 +422,8 @@ public final class EliteMobs {
             Player near = level.getNearestPlayer(mob, 6.0);
             if (near != null) mob.removeEffect(MobEffects.INVISIBILITY);
             else if (!mob.hasEffect(MobEffects.INVISIBILITY)) mob.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, MobEffectInstance.INFINITE_DURATION, 0, false, false));
+            // 3.9.5: 이름표 때문에 멀리서 · 벽 너머로 보이던 문제 → 모습과 함께 이름도 6칸 안에서만
+            if (mob.isCustomNameVisible() != (near != null)) mob.setCustomNameVisible(near != null);
         }
         if (hasAffix(mob, Affix.LEAPER) && mob.tickCount % 60 == 7 && mob.getTarget() != null && mob.onGround()) {
             LivingEntity t = mob.getTarget();
