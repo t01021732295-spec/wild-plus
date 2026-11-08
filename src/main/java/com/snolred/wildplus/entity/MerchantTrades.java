@@ -169,11 +169,11 @@ public final class MerchantTrades {
         sell(o, ModItems3.GACHA_MACHINE.get(), 1, 120);
         sell(o, ModItems4.SHIPPING_BIN.get(), 1, 20, 4);
         sell(o, ModItems4.EXCHANGE.get(), 1, 50, 4);
-        sell(o, ModItems4.ATM.get(), 1, 200, 2);
+        sell(o, ModItems24.ATM_TALL.get(), 1, 200, 2);
         sell(o, ModItems4.STOCK_TERMINAL.get(), 1, 200, 2);
         sell(o, ModItems4.BOUNTY_BOARD.get(), 1, 30, 4);
         sell(o, ModItems4.CHUNK_LOADER.get(), 1, 100, 8);
-        sell(o, ModItems4.PHARMACY.get(), 1, 150, 2);
+        sell(o, ModItems24.PHARMACY_RACK.get(), 1, 150, 2);
         sell(o, ModItems4.WEATHER_STATION.get(), 1, 300, 2);
         sell(o, ModItems5.CASINO_TABLE.get(), 1, 500, 2);
         sell(o, com.snolred.wildplus.registry.ModItems6.HALL_OF_FAME.get(), 1, 1000, 1);

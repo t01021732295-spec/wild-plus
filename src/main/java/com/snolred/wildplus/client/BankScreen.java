@@ -15,6 +15,10 @@ public class BankScreen extends AbstractContainerScreen<BankMenu> {
     private static final int W = 240, H = 228;
     private static final int SX = 12, SY = 24, SW = W - 24, SH = 170; // 화면 영역
     private UiButton sendButton;
+    private final java.util.List<UiButton> mainBtns = new java.util.ArrayList<>(), loanBtns = new java.util.ArrayList<>();
+    private UiButton tab0, tab1, tab2, takeBtn, repayBtn, termBtn;
+    private int tab, scroll;
+    private static final int HIST_ROWS = 6;
 
     public BankScreen(BankMenu menu, Inventory inv, Component title) {
         super(menu, inv, title, W, H);
@@ -40,6 +44,41 @@ public class BankScreen extends AbstractContainerScreen<BankMenu> {
         btn("+1000", BankMenu.AMT_1000, x + 72, y + 164, 38, UiButton.WHITE);
         btn("0", BankMenu.AMT_RESET, x + 113, y + 164, 16, UiButton.WHITE);
         sendButton = btn("보내기", BankMenu.SEND, x + 140, y + 154, 60, UiButton.BLUE);
+        mainBtns.clear();
+        for (var w : children()) if (w instanceof UiButton b) mainBtns.add(b);
+        loanBtns.clear();
+        loanBtns.add(btn("+10만", BankMenu.LOAN_100K, x, y + 118, 44, UiButton.WHITE));
+        loanBtns.add(btn("+100만", BankMenu.LOAN_1M, x + 48, y + 118, 48, UiButton.WHITE));
+        loanBtns.add(btn("+1000만", BankMenu.LOAN_10M, x + 100, y + 118, 52, UiButton.WHITE));
+        loanBtns.add(btn("0", BankMenu.LOAN_RESET, x + 156, y + 118, 24, UiButton.WHITE));
+        termBtn = btn("7일", BankMenu.LOAN_TERM, x + 184, y + 118, 24, UiButton.STEEL);
+        loanBtns.add(termBtn);
+        takeBtn = btn("대출 받기", BankMenu.LOAN_TAKE, x, y + 158, 100, UiButton.BLUE);
+        repayBtn = btn("전액 상환 (수수료 1%)", BankMenu.LOAN_REPAY, x + 106, y + 158, 100, UiButton.ORANGE);
+        loanBtns.add(takeBtn);
+        loanBtns.add(repayBtn);
+        tab0 = addRenderableWidget(UiButton.of(leftPos + 112, topPos + 5, 36, 14, "이체", UiButton.STEEL, () -> setTab(0)));
+        tab1 = addRenderableWidget(UiButton.of(leftPos + 150, topPos + 5, 36, 14, "내역", UiButton.STEEL, () -> setTab(1)));
+        tab2 = addRenderableWidget(UiButton.of(leftPos + 188, topPos + 5, 36, 14, "대출", UiButton.STEEL, () -> setTab(2)));
+        setTab(tab);
+    }
+
+    private void setTab(int t) {
+        tab = t;
+        for (UiButton b : mainBtns) b.visible = t == 0;
+        for (UiButton b : loanBtns) b.visible = t == 2;
+        tab0.setSelected(t == 0);
+        tab1.setSelected(t == 1);
+        tab2.setSelected(t == 2);
+    }
+
+    @Override
+    public boolean mouseScrolled(double mx, double my, double dx, double dy) {
+        if (tab == 1) {
+            scroll = Math.max(0, Math.min(Math.max(0, menu.history.size() - HIST_ROWS), scroll - (int) Math.signum(dy)));
+            return true;
+        }
+        return super.mouseScrolled(mx, my, dx, dy);
     }
 
     private UiButton btn(String label, int id, int x, int y, int w, UiButton.Style style) {
@@ -55,6 +94,9 @@ public class BankScreen extends AbstractContainerScreen<BankMenu> {
     protected void containerTick() {
         super.containerTick();
         sendButton.active = !menu.names.isEmpty() && menu.amount() > 0 && menu.amount() <= menu.balance();
+        termBtn.setMessage(net.minecraft.network.chat.Component.literal(menu.term() + "일"));
+        takeBtn.active = menu.debt() <= 0 && menu.ask() > 0 && menu.streak() < 7;
+        repayBtn.active = menu.debt() > 0 && menu.balance() >= menu.debt() + menu.debt() / 100;
     }
 
     @Override
@@ -74,11 +116,11 @@ public class BankScreen extends AbstractContainerScreen<BankMenu> {
         UiKit.roundGradient(g, x + SX + 5, y + SY + 4, SW - 10, 36, 2, 0xFF3B7BEA, 0xFF1E4FB8);
         g.fill(x + SX + 6, y + SY + 5, x + SX + SW - 6, y + SY + 6, 0x44FFFFFF);
         // 구역 구분선
-        UiKit.hline(g, x + SX + 4, y + 98, SW - 8, 0xFFCCD5E2);
-        UiKit.hline(g, x + SX + 4, y + 131, SW - 8, 0xFFCCD5E2);
-        UiKit.hline(g, x + SX + 4, y + 184, SW - 8, 0xFFCCD5E2);
+        if (tab == 0) UiKit.hline(g, x + SX + 4, y + 98, SW - 8, 0xFFCCD5E2);
+        if (tab == 0) UiKit.hline(g, x + SX + 4, y + 131, SW - 8, 0xFFCCD5E2);
+        if (tab == 0) UiKit.hline(g, x + SX + 4, y + 184, SW - 8, 0xFFCCD5E2);
         // 송금 대상 표시칸
-        UiKit.card(g, x + SX + 4 + 18, y + 144, 92, 16, 0xFFFFFFFF, 0xFFB5BDC8);
+        if (tab == 0) UiKit.card(g, x + SX + 4 + 18, y + 144, 92, 16, 0xFFFFFFFF, 0xFFB5BDC8);
         // 아래 하드웨어: 카드 투입구 · 명세표 · 지폐 배출구
         int hy = y + SY + SH + 6;
         UiKit.round(g, x + 14, hy, 66, 22, 2, 0xFF7E8692);
@@ -105,6 +147,13 @@ public class BankScreen extends AbstractContainerScreen<BankMenu> {
         UiKit.big(g, bal, sx + 6, SY + 20, 2, 0xFFFFFFFF);
         UiKit.text(g, "동", sx + 8 + UiKit.bigWidth(bal, 2), SY + 28, 0xFFD6E4FF);
         UiKit.right(g, String.format("현금 %,d동", menu.cash()), SX + SW - 10, SY + 30, 0xFFFFE08A);
+        int hyy = SY + SH + 6;
+        UiKit.text(g, "카드", 24, hyy + 2, 0xFF3A414B);
+        UiKit.text(g, "명세표", 96, hyy + 2, 0xFF3A414B);
+        UiKit.text(g, "현금", 166, hyy + 2, 0xFFC9CED6);
+        UiKit.right(g, String.format("국고 %,d", menu.treasury()), 222, hyy + 2, 0xFF8A929D);
+        if (tab == 1) { history(g, sx); return; }
+        if (tab == 2) { loans(g, sx); return; }
         // 입금
         UiKit.bold(g, "입금", sx, 68, UiKit.INK);
         UiKit.text(g, "가방·동전 주머니의 동전을 통장으로", sx + 26, 68, UiKit.INK_SOFT);
@@ -121,12 +170,41 @@ public class BankScreen extends AbstractContainerScreen<BankMenu> {
         long inc = menu.incomeToday();
         UiKit.text(g, String.format("오늘 소득 %,d동 · 세금 %,d동", inc, menu.taxToday()), sx, 186, 0xFF8A3A3A);
         UiKit.right(g, String.format("세율 %d%%", Tax.currentRate(inc)), SX + SW - 6, 186, 0xFF8A3A3A);
-        // 하드웨어 라벨
-        int hy = SY + SH + 6;
-        UiKit.text(g, "카드", 24, hy + 2, 0xFF3A414B);
-        UiKit.text(g, "명세표", 96, hy + 2, 0xFF3A414B);
-        UiKit.text(g, "현금", 166, hy + 2, 0xFFC9CED6);
-        UiKit.right(g, String.format("국고 %,d", menu.treasury()), 222, hy + 2, 0xFF8A929D);
+    }
+
+    private void history(GuiGraphicsExtractor g, int sx) {
+        UiKit.bold(g, "입출금 내역 (최근 50건)", sx, 68, UiKit.INK);
+        if (menu.history.isEmpty()) {
+            UiKit.text(g, "아직 내역이 없어요", sx, 90, UiKit.INK_SOFT);
+            return;
+        }
+        scroll = Math.min(scroll, Math.max(0, menu.history.size() - HIST_ROWS));
+        for (int i = 0; i < HIST_ROWS && scroll + i < menu.history.size(); i++) {
+            String[] f = menu.history.get(scroll + i).split("\\|", 4);
+            if (f.length < 4) continue;
+            int ry = 82 + i * 20;
+            long d = Long.parseLong(f[2]);
+            UiKit.text(g, f[0] + "일차", sx, ry, UiKit.INK_SOFT);
+            UiKit.text(g, UiKit.font().plainSubstrByWidth(f[1], 100), sx + 44, ry, UiKit.INK);
+            UiKit.right(g, String.format("%+,d동", d), SX + SW - 6, ry, d >= 0 ? 0xFF1E8A4C : 0xFFC92A31);
+            UiKit.right(g, String.format("잔액 %,d", Long.parseLong(f[3])), SX + SW - 6, ry + 9, UiKit.INK_SOFT);
+            UiKit.hline(g, sx, ry + 18, SW - 8, 0xFFDCE0E6);
+        }
+    }
+
+    private void loans(GuiGraphicsExtractor g, int sx) {
+        UiKit.bold(g, "대출", sx, 68, UiKit.INK);
+        UiKit.right(g, String.format("신용점수 %d", menu.credit()), SX + SW - 6, 68, menu.credit() >= 700 ? 0xFF1E8A4C : menu.credit() >= 500 ? UiKit.INK : 0xFFC92A31);
+        boolean owe = menu.debt() > 0;
+        UiKit.text(g, String.format("한도 %,d동 · 금리 하루 %.2f%%", menu.loanLimit(), menu.rate() / 100.0), sx, 80, UiKit.INK_SOFT);
+        if (owe) {
+            UiKit.bold(g, String.format("남은 빚 %,d동", menu.debt()), sx, 94, 0xFFC92A31);
+            UiKit.text(g, String.format("매일 %,d동 자동 상환 · %d일 남음", menu.pay(), menu.days()), sx, 106, UiKit.INK);
+            if (menu.streak() > 0) UiKit.text(g, String.format("연체 %d일째", menu.streak()), sx, 146, 0xFFC92A31);
+        } else {
+            UiKit.bold(g, String.format("신청 금액 %,d동", menu.ask()), sx, 94, 0xFF1E4FB8);
+            UiKit.text(g, menu.pay() > 0 ? String.format("예상 매일 상환 %,d동 (%d일)", menu.pay(), menu.term()) : "금액을 고르면 상환액이 나와요", sx, 106, UiKit.INK);
+        }
     }
 
     @Override

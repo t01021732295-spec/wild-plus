@@ -30,9 +30,14 @@ public class BankMenu extends AbstractContainerMenu {
     public static final int DEP_ALL = 0, DEP_100 = 1, DEP_10 = 2;
     public static final int WD_10 = 10, WD_100 = 11, WD_1000 = 12, WD_ALL = 13, WD_10K = 14, WD_100K = 15;
     public static final int AMT_10 = 20, AMT_100 = 21, AMT_1000 = 22, AMT_RESET = 23, PREV = 24, NEXT = 25, SEND = 26;
-    public static final int D_BAL = 0, D_CASH = 2, D_AMT = 4, D_TARGET = 6, D_INCOME = 7, D_TAX = 9, D_TREASURY = 11, DATA = 13;
+    public static final int D_BAL = 0, D_CASH = 2, D_AMT = 4, D_TARGET = 6, D_INCOME = 7, D_TAX = 9, D_TREASURY = 11, D_LIMIT = 13, D_DEBT = 15, D_PAY = 17, D_ASK = 19, D_CREDIT = 21, D_DAYS = 22, D_STREAK = 23, D_RATE = 24, D_TERM = 25, DATA = 26;
+    public static final int LOAN_100K = 30, LOAN_1M = 31, LOAN_10M = 32, LOAN_RESET = 33, LOAN_TERM = 34, LOAN_TAKE = 35, LOAN_REPAY = 36;
 
     public final List<String> names;
+    /** "일차|내용|금액|잔액" 최신순 */
+    public final List<String> history;
+    private long ask;
+    private int term = 7;
     private final List<UUID> ids;
     private final ContainerData data;
     private final @Nullable ServerPlayer player;
@@ -47,6 +52,10 @@ public class BankMenu extends AbstractContainerMenu {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < n; i++) list.add(buf.readUtf());
         this.names = list;
+        int h = buf.readVarInt();
+        List<String> hist = new ArrayList<>();
+        for (int i = 0; i < h; i++) hist.add(buf.readUtf());
+        this.history = hist;
         this.ids = List.of();
         this.player = null;
         this.pos = null;
@@ -54,16 +63,28 @@ public class BankMenu extends AbstractContainerMenu {
         addDataSlots(data);
     }
 
-    private BankMenu(int id, ServerPlayer player, BlockPos pos, List<String> names, List<UUID> ids) {
+    private BankMenu(int id, ServerPlayer player, BlockPos pos, List<String> names, List<UUID> ids, List<String> history) {
         super(ModMenus.BANK.get(), id);
         this.player = player;
         this.pos = pos;
         this.names = names;
+        this.history = history;
         this.ids = ids;
         this.data = new ContainerData() {
             @Override
             public int get(int index) {
                 if (index == D_TARGET) return target;
+                net.minecraft.server.MinecraftServer srv = player.level().getServer();
+                UUID uid = player.getUUID();
+                com.snolred.wildplus.economy.WildData.get(srv);
+                switch (index) {
+                    case D_CREDIT -> { return com.snolred.wildplus.economy.Loans.credit(srv, uid); }
+                    case D_DAYS -> { return com.snolred.wildplus.economy.Loans.daysLeft(srv, uid); }
+                    case D_STREAK -> { return com.snolred.wildplus.economy.Loans.streak(srv, uid); }
+                    case D_RATE -> { return com.snolred.wildplus.economy.Loans.debt(srv, uid) > 0 ? com.snolred.wildplus.economy.Loans.activeRate(srv, uid) : com.snolred.wildplus.economy.Loans.rate(com.snolred.wildplus.economy.Loans.credit(srv, uid)); }
+                    case D_TERM -> { return term; }
+                    default -> { }
+                }
                 int base = index < D_TARGET ? index / 2 * 2 : D_INCOME + (index - D_INCOME) / 2 * 2;
                 boolean hi = (index - base) == 1;
                 net.minecraft.server.MinecraftServer server = player.level().getServer();
@@ -73,6 +94,11 @@ public class BankMenu extends AbstractContainerMenu {
                 else if (base == D_AMT) v = amount;
                 else if (base == D_INCOME) v = com.snolred.wildplus.economy.Tax.today(server, player.getUUID())[0];
                 else if (base == D_TAX) v = com.snolred.wildplus.economy.Tax.today(server, player.getUUID())[1];
+                else if (base == D_LIMIT) v = com.snolred.wildplus.economy.Loans.limit(server, player.getUUID());
+                else if (base == D_DEBT) v = com.snolred.wildplus.economy.Loans.debt(server, player.getUUID());
+                else if (base == D_PAY) v = com.snolred.wildplus.economy.Loans.debt(server, player.getUUID()) > 0 ? com.snolred.wildplus.economy.Loans.payment(server, player.getUUID())
+                        : ask > 0 ? com.snolred.wildplus.economy.Loans.annuity(ask, com.snolred.wildplus.economy.Loans.rate(com.snolred.wildplus.economy.Loans.credit(server, player.getUUID())), term) : 0;
+                else if (base == D_ASK) v = ask;
                 else v = WildData.get(server).treasury;
                 return (int) (hi ? Math.min(32767, v / 10000) : v % 10000);
             }
@@ -97,10 +123,13 @@ public class BankMenu extends AbstractContainerMenu {
                 ids.add(p.getUUID());
             }
         }
-        player.openMenu(new SimpleMenuProvider((id, inv, p) -> new BankMenu(id, player, pos, names, ids),
+        List<String> hist = com.snolred.wildplus.economy.BankLog.lines(player.level().getServer(), player.getUUID());
+        player.openMenu(new SimpleMenuProvider((id, inv, p) -> new BankMenu(id, player, pos, names, ids, hist),
                 Component.translatable("container.wildplus.bank")), buf -> {
             buf.writeVarInt(names.size());
             names.forEach(buf::writeUtf);
+            buf.writeVarInt(hist.size());
+            hist.forEach(buf::writeUtf);
         });
     }
 
@@ -115,6 +144,15 @@ public class BankMenu extends AbstractContainerMenu {
     public long incomeToday() { return read(D_INCOME); }
     public long taxToday() { return read(D_TAX); }
     public long treasury() { return read(D_TREASURY); }
+    public long loanLimit() { return read(D_LIMIT); }
+    public long debt() { return read(D_DEBT); }
+    public long pay() { return read(D_PAY); }
+    public long ask() { return read(D_ASK); }
+    public int credit() { return data.get(D_CREDIT); }
+    public int days() { return data.get(D_DAYS); }
+    public int streak() { return data.get(D_STREAK); }
+    public int rate() { return data.get(D_RATE); }
+    public int term() { return data.get(D_TERM); }
 
     @Override
     public boolean clickMenuButton(Player who, int id) {
@@ -125,6 +163,7 @@ public class BankMenu extends AbstractContainerMenu {
             case DEP_ALL, DEP_100, DEP_10 -> {
                 long want = id == DEP_ALL ? Coins.totalValue(sp) : id == DEP_100 ? 100 : 10;
                 if (want > 0 && Coins.pay(sp, want)) {
+                    wd.reason = "입금";
                     wd.addBalance(me, want);
                     ding(sp, 1.2F);
                 } else {
@@ -142,6 +181,7 @@ public class BankMenu extends AbstractContainerMenu {
                     default -> 1000;
                 };
                 if (want > 0 && bal >= want) {
+                    wd.reason = "출금";
                     wd.addBalance(me, -want);
                     Coins.refund(sp, want);
                     ding(sp, 0.9F);
@@ -161,8 +201,19 @@ public class BankMenu extends AbstractContainerMenu {
                     sp.sendOverlayMessage(Component.translatable("message.wildplus.bank.no_balance").withStyle(ChatFormatting.RED));
                     return true;
                 }
+                var srvL = sp.level().getServer();
+                if (com.snolred.wildplus.economy.Loans.locked(srvL, me)) {
+                    sp.sendOverlayMessage(Component.literal("대출 연체 7일 이상: 송금할 수 없어요").withStyle(ChatFormatting.RED));
+                    return true;
+                }
+                if (wd.balance(me) - amount < com.snolred.wildplus.economy.Loans.debt(srvL, me)) {
+                    sp.sendOverlayMessage(Component.literal("대출 중에는 남은 빚만큼 잔액을 남겨야 해요").withStyle(ChatFormatting.RED));
+                    return true;
+                }
                 UUID to = ids.get(target);
+                wd.reason = "송금 → " + names.get(target);
                 wd.addBalance(me, -amount);
+                wd.reason = "받음 ← " + sp.getName().getString();
                 wd.addBalance(to, amount);
                 sp.sendSystemMessage(Component.translatable("message.wildplus.bank.sent", names.get(target), amount).withStyle(ChatFormatting.GOLD));
                 ServerPlayer other = sp.level().getServer().getPlayerList().getPlayer(to);
@@ -171,6 +222,28 @@ public class BankMenu extends AbstractContainerMenu {
                 }
                 ding(sp, 1.5F);
                 amount = 0;
+            }
+            case LOAN_100K -> ask = Math.min(com.snolred.wildplus.economy.Loans.limit(sp.level().getServer(), me), ask + 100_000);
+            case LOAN_1M -> ask = Math.min(com.snolred.wildplus.economy.Loans.limit(sp.level().getServer(), me), ask + 1_000_000);
+            case LOAN_10M -> ask = Math.min(com.snolred.wildplus.economy.Loans.limit(sp.level().getServer(), me), ask + 10_000_000);
+            case LOAN_RESET -> ask = 0;
+            case LOAN_TERM -> term = term == 7 ? 14 : 7;
+            case LOAN_TAKE -> {
+                if (com.snolred.wildplus.economy.Loans.take(sp, ask, term)) {
+                    sp.sendSystemMessage(Component.literal(String.format("🏦 %,d동을 대출받았어요 (%d일 상환)", ask, term)).withStyle(ChatFormatting.GOLD));
+                    ask = 0;
+                    ding(sp, 1.4F);
+                } else {
+                    sp.sendOverlayMessage(Component.literal("대출을 받을 수 없어요").withStyle(ChatFormatting.RED));
+                }
+            }
+            case LOAN_REPAY -> {
+                if (com.snolred.wildplus.economy.Loans.repayAll(sp)) {
+                    sp.sendSystemMessage(Component.literal("🏦 대출을 전액 상환했어요").withStyle(ChatFormatting.GREEN));
+                    ding(sp, 1.6F);
+                } else {
+                    sp.sendOverlayMessage(Component.literal("잔액이 부족하거나 빚이 없어요").withStyle(ChatFormatting.RED));
+                }
             }
             default -> {
                 return false;

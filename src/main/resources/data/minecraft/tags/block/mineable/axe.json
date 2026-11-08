@@ -61,6 +61,7 @@
     "wildplus:project_board",
     "wildplus:donation_box",
     "wildplus:scoreboard",
-    "wildplus:finish_post"
+    "wildplus:finish_post",
+    "wildplus:pharmacy_rack"
   ]
 }

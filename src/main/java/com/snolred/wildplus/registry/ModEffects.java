@@ -54,6 +54,19 @@ public final class ModEffects {
                     .addAttributeModifier(Attributes.MAX_HEALTH, WildPlus.id("effect.glass_cannon_hp"), -0.4,
                             AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
 
+    // 4.1 신규 효과
+    public static final DeferredHolder<MobEffect, MobEffect> VOID_EVADE = EFFECTS.register("void_evade", () -> new Simple(MobEffectCategory.BENEFICIAL, 0x7A46D2));
+    public static final DeferredHolder<MobEffect, MobEffect> HEAL_AURA = EFFECTS.register("heal_aura", () -> new Simple(MobEffectCategory.BENEFICIAL, 0xF27896));
+    public static final DeferredHolder<MobEffect, MobEffect> IRON_WALL = EFFECTS.register("iron_wall",
+            () -> new Simple(MobEffectCategory.BENEFICIAL, 0x8C96AA)
+                    .addAttributeModifier(Attributes.ARMOR, WildPlus.id("effect.iron_wall"), 6.0, AttributeModifier.Operation.ADD_VALUE)
+                    .addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, WildPlus.id("effect.iron_wall_kb"), 1.0, AttributeModifier.Operation.ADD_VALUE));
+    public static final DeferredHolder<MobEffect, MobEffect> ORE_SIGHT = EFFECTS.register("ore_sight", () -> new Simple(MobEffectCategory.BENEFICIAL, 0x5AD2DC));
+    public static final DeferredHolder<MobEffect, MobEffect> TIME_WARP = EFFECTS.register("time_warp",
+            () -> new Simple(MobEffectCategory.BENEFICIAL, 0xFAC85A)
+                    .addAttributeModifier(Attributes.MOVEMENT_SPEED, WildPlus.id("effect.time_warp"), 0.3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL)
+                    .addAttributeModifier(Attributes.ATTACK_SPEED, WildPlus.id("effect.time_warp_as"), 0.3, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+
     // ───────── 물약 ─────────
     private static DeferredHolder<Potion, Potion> potion(String name, DeferredHolder<MobEffect, ? extends MobEffect> effect, int seconds, int amp) {
         return POTIONS.register(name, () -> new Potion("wildplus_" + name, new MobEffectInstance(effect, seconds * 20, amp)));
@@ -68,6 +81,16 @@ public final class ModEffects {
     public static final DeferredHolder<Potion, Potion> BERSERK_POTION = potion("berserk", BERSERK, 120, 0);
     public static final DeferredHolder<Potion, Potion> GLASS_CANNON_POTION = potion("glass_cannon", GLASS_CANNON, 90, 0);
     public static final DeferredHolder<Potion, Potion> LIFESTEAL_POTION = potion("lifesteal", LIFESTEAL, 120, 0);
+    public static final DeferredHolder<Potion, Potion> VOID_EVADE_POTION = potion("void_evade", VOID_EVADE, 180, 0);
+    public static final DeferredHolder<Potion, Potion> LONG_VOID_EVADE_POTION = potion("long_void_evade", VOID_EVADE, 360, 0);
+    public static final DeferredHolder<Potion, Potion> HEAL_AURA_POTION = potion("heal_aura", HEAL_AURA, 120, 0);
+    public static final DeferredHolder<Potion, Potion> LONG_HEAL_AURA_POTION = potion("long_heal_aura", HEAL_AURA, 240, 0);
+    public static final DeferredHolder<Potion, Potion> IRON_WALL_POTION = potion("iron_wall", IRON_WALL, 180, 0);
+    public static final DeferredHolder<Potion, Potion> LONG_IRON_WALL_POTION = potion("long_iron_wall", IRON_WALL, 360, 0);
+    public static final DeferredHolder<Potion, Potion> ORE_SIGHT_POTION = potion("ore_sight", ORE_SIGHT, 120, 0);
+    public static final DeferredHolder<Potion, Potion> LONG_ORE_SIGHT_POTION = potion("long_ore_sight", ORE_SIGHT, 240, 0);
+    public static final DeferredHolder<Potion, Potion> TIME_WARP_POTION = potion("time_warp", TIME_WARP, 60, 0);
+    public static final DeferredHolder<Potion, Potion> LONG_TIME_WARP_POTION = potion("long_time_warp", TIME_WARP, 120, 0);
 
     static class Simple extends MobEffect {
         Simple(MobEffectCategory category, int color) {

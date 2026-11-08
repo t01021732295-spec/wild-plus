@@ -152,6 +152,10 @@ public final class Luxury {
     }
 
     public static void open(ServerPlayer p, BlockPos pos) {
+        if (com.snolred.wildplus.economy.Loans.locked(p.level().getServer(), p.getUUID())) {
+            p.sendOverlayMessage(net.minecraft.network.chat.Component.literal("대출 연체 7일 이상: 명품관을 이용할 수 없어요").withStyle(net.minecraft.ChatFormatting.RED));
+            return;
+        }
         List<Good> list = goods(p);
         List<PickMenu.Entry> entries = new ArrayList<>();
         for (Good g : list) {

@@ -72,7 +72,12 @@ public final class BrewGuide {
         potion("wildplus:gold_coin", "wildplus_greed");
         potion("minecraft:iron_ingot", "wildplus_ironskin");
         potion("wildplus:raw_mythril", "wildplus_miners_focus");
+        potion("wildplus:void_shard", "wildplus_void_evade");
+        potion("minecraft:golden_apple", "wildplus_heal_aura");
+        potion("minecraft:diamond", "wildplus_ore_sight");
+        potion("minecraft:clock", "wildplus_time_warp");
         head("물약 변환 (모드)");
+        row("minecraft:netherite_scrap", "강철 피부 → 철벽의 숨결");
         row("wildplus:jade", "광전사 → 유리 대포");
         row("minecraft:fermented_spider_eye", "철피부 → 취약");
         row("minecraft:fermented_spider_eye", "흡혈 → 출혈");

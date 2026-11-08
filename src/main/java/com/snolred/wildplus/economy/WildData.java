@@ -28,6 +28,7 @@ public class WildData extends SavedData {
             new SavedDataType<>(Identifier.fromNamespaceAndPath("wildplus", "wildplus_world"), WildData::new, CODEC);
 
     public static WildData get(MinecraftServer server) {
+        lastServer = server;
         return server.overworld().getDataStorage().computeIfAbsent(TYPE);
     }
 
@@ -62,9 +63,15 @@ public class WildData extends SavedData {
         return bank.getOrDefault(player, 0L);
     }
 
+    /** 4.1 입출금 내역에 남길 이름 (addBalance 한 번에 쓰이고 지워짐) */
+    public String reason = "정산";
+    private static net.minecraft.server.MinecraftServer lastServer;
+
     public void addBalance(UUID player, long delta) {
         bank.put(player, Math.max(0L, balance(player) + delta));
         setDirty();
+        if (delta != 0 && lastServer != null) com.snolred.wildplus.economy.BankLog.add(lastServer, player, reason, delta, balance(player));
+        reason = "정산";
     }
 
     // ───────── 주식 ─────────

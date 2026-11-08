@@ -37,6 +37,7 @@ public final class EconomyTick {
         } else if (day > data.lastInterestDay) {
             data.lastInterestDay = day;
             payInterest(server, data);
+            com.snolred.wildplus.economy.Loans.dailyTick(server);
         }
     }
 
@@ -46,6 +47,7 @@ public final class EconomyTick {
             long gross = Math.min(INTEREST_CAP * (1 + rank), e.getValue() * (100 + 20L * rank) / 10000);
             if (gross <= 0) continue;
             long interest = com.snolred.wildplus.economy.Tax.collect(server, e.getKey(), gross);
+            data.reason = "예금 이자";
             data.addBalance(e.getKey(), interest);
             ServerPlayer p = server.getPlayerList().getPlayer(e.getKey());
             if (p != null) {
