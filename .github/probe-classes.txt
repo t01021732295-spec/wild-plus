@@ -1,4 +1,0 @@
-net.minecraft.client.renderer.entity.EnderDragonRenderer
-net.minecraft.client.renderer.entity.state.EnderDragonRenderState
-net.minecraft.world.entity.boss.enderdragon.EnderDragon
-net.minecraft.world.level.dimension.end.EndDragonFight
