@@ -85,6 +85,7 @@ public final class OmenRaids {
         final List<UUID> allies = new ArrayList<>();
         ServerBossEvent info, board;
         boolean ended;
+        long victoryAt = -1;
 
         double mult() {
             return (1.0 + Omen.curseBonus(curses) + theme.bonus) * STREAK[Math.min(streak, 4)];
@@ -268,10 +269,32 @@ public final class OmenRaids {
     private static void tickState(ServerLevel level, State st, long now) {
         MinecraftServer server = level.getServer();
         Raid r = st.raid;
+        // 3.9.4: 테마 몹(심해 드라운드 · 화염 블레이즈 …)도 습격 몹으로 — 마을로 쳐들어오고, 다 잡아야 승리
+        List<Mob> allies = allies(level, st, now);
         if (r.isVictory()) {
-            win(level, st);
+            if (allies.isEmpty() || (st.victoryAt >= 0 && now - st.victoryAt > 2400)) {
+                win(level, st);
+                return;
+            }
+            if (st.victoryAt < 0) {
+                st.victoryAt = now;
+                for (ServerPlayer p : level.players()) {
+                    if (p.distanceToSqr(st.center.getX(), st.center.getY(), st.center.getZ()) > 112 * 112) continue;
+                    p.sendSystemMessage(Component.literal("☠ 우민은 다 물리쳤어요! 남은 " + st.theme.title + " 몹 " + allies.size() + "마리를 잡아야 승리예요 (빛나는 몹)")
+                            .withStyle(ChatFormatting.GOLD));
+                }
+            }
+            for (Mob m : allies) {
+                m.addEffect(new MobEffectInstance(MobEffects.GLOWING, 60, 0, false, false));
+                steer(level, st, m);
+            }
+            long sec = Math.max(0, (2400 - (now - st.victoryAt)) / 20);
+            st.info.setName(Component.literal(String.format("☠ 흉조 %s · %s · 우민 전멸! · 남은 테마 몹 %d · %d:%02d 안에", roman(st.level), st.theme.title,
+                    allies.size(), sec / 60, sec % 60)).withStyle(ChatFormatting.GOLD));
+            st.info.setProgress(Math.max(0F, 1F - (now - st.victoryAt) / 2400F));
             return;
         }
+        for (Mob m : allies) steer(level, st, m);
         if (r.isLoss() || r.isStopped()) {
             if (r.isStopped() && r.getGroupsSpawned() == 0) {
                 refund(level, st);
@@ -307,8 +330,9 @@ public final class OmenRaids {
         int villagersNow = level.getEntitiesOfClass(AbstractVillager.class, new AABB(st.center).inflate(64)).size();
         StringBuilder sb = new StringBuilder("☠ 흉조 ").append(roman(st.level));
         if (st.theme != Theme.NONE) sb.append(" · ").append(st.theme.title);
-        sb.append(String.format(" · 웨이브 %d/%d · 남은 우민 %d · 주민 %d/%d · ×%.2f", Math.min(r.getGroupsSpawned(), waves), waves, alive,
-                villagersNow, st.villagers, st.mult()));
+        sb.append(String.format(" · 웨이브 %d/%d · 남은 우민 %d", Math.min(r.getGroupsSpawned(), waves), waves, alive));
+        if (!allies.isEmpty()) sb.append(" + 테마 몹 ").append(allies.size());
+        sb.append(String.format(" · 주민 %d/%d · ×%.2f", villagersNow, st.villagers, st.mult()));
         if (st.streak > 1) sb.append(" · 연쇄 ").append(st.streak);
         if (st.timeEnd > 0) {
             long sec = Math.max(0, (st.timeEnd - now) / 20);
@@ -333,6 +357,47 @@ public final class OmenRaids {
         st.board.setProgress(top.isEmpty() ? 0F : Math.min(1F, top.get(0).getValue() / Math.max(1F, total)));
         sync(st.info, near);
         sync(st.board, near);
+    }
+
+    /** 살아 있는 테마 몹 (서버를 다시 켜도 이어지게, 10초마다 둘레에서 다시 찾음) */
+    private static List<Mob> allies(ServerLevel level, State st, long now) {
+        if (now % 200 == 0) {
+            for (Mob m : level.getEntitiesOfClass(Mob.class, new AABB(st.center).inflate(160),
+                    m -> m.getPersistentData().getIntOr(Omen.ALLY, -1) == st.id)) {
+                if (!st.allies.contains(m.getUUID())) st.allies.add(m.getUUID());
+            }
+        }
+        List<Mob> out = new ArrayList<>();
+        st.allies.removeIf(u -> {
+            Entity e = level.getEntity(u);
+            if (e == null) return !level.isLoaded(st.center); // 안 보이는 건 청크가 내려간 경우만 남겨 둠
+            if (!(e instanceof Mob m) || !m.isAlive()) return true;
+            out.add(m);
+            return false;
+        });
+        return out;
+    }
+
+    /** 테마 몹 몰기: 주민 · 철 골렘 · 플레이어를 노리고, 노릴 게 없으면 마을 가운데로 */
+    private static void steer(ServerLevel level, State st, Mob m) {
+        LivingEntity t = m.getTarget();
+        if (t != null && t.isAlive() && t.distanceToSqr(m) < 40 * 40) return;
+        LivingEntity best = null;
+        double bd = 40 * 40;
+        for (LivingEntity c : level.getEntitiesOfClass(LivingEntity.class, m.getBoundingBox().inflate(32),
+                c -> c.isAlive() && (c instanceof AbstractVillager || c instanceof IronGolem
+                        || (c instanceof Player pl && !pl.isCreative() && !pl.isSpectator())))) {
+            double d = c.distanceToSqr(m);
+            if (d < bd) {
+                bd = d;
+                best = c;
+            }
+        }
+        if (best != null) {
+            m.setTarget(best);
+        } else if (m.distanceToSqr(st.center.getX() + 0.5, st.center.getY(), st.center.getZ() + 0.5) > 10 * 10) {
+            m.getNavigation().moveTo(st.center.getX() + 0.5, st.center.getY(), st.center.getZ() + 0.5, 1.1);
+        }
     }
 
     private static void sync(ServerBossEvent bar, List<ServerPlayer> near) {
