@@ -277,8 +277,8 @@ def data():
     merge_tag(t / "item/enchantable/durability.json", b)
     merge_tag(t / "item/enchantable/vanishing.json", b)
     merge_tag(MC.parent / "c/tags/block/ores.json", [i("void_ore")])
-    write(DATA / "worldgen/feature/ore_void.json", {"type": "minecraft:ore", "config": {"size": 4, "discard_chance_on_air_exposure": 0.0, "targets": [
-        {"target": {"predicate_type": "minecraft:block_match", "block": "minecraft:end_stone"}, "state": {"Name": i("void_ore")}}]}})
+    write(DATA / "worldgen/feature/ore_void.json", {"type": "minecraft:ore", "size": 4, "discard_chance_on_air_exposure": 0.0, "targets": [
+        {"target": {"predicate_type": "minecraft:block_match", "block": "minecraft:end_stone"}, "state": i("void_ore")}]})
     write(DATA / "worldgen/placed_feature/ore_void.json", placed(i("ore_void"), 5, {"type": "minecraft:uniform", "min_inclusive": {"absolute": 10}, "max_inclusive": {"absolute": 75}}))
     write(DATA / "neoforge/biome_modifier/add_void_ore.json", {"type": "neoforge:add_features",
         "biomes": ["minecraft:end_highlands", "minecraft:end_midlands"], "features": i("ore_void"), "step": "underground_ores"})
