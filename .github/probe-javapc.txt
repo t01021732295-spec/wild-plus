@@ -1,4 +1,0 @@
-net.minecraft.world.entity.raid.Raid
-net.minecraft.world.entity.raid.Raids
-net.minecraft.world.effect.RaidOmenMobEffect
-net.minecraft.world.effect.BadOmenMobEffect

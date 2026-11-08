@@ -1,3 +1,0 @@
-data/minecraft/enchantment/looting.json
-data/minecraft/enchantment/power.json
-data/minecraft/tags/item/enchantable/bow.json

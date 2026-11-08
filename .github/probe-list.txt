@@ -1,2 +1,0 @@
-enchantment/
-loot_table/gameplay/fishing
