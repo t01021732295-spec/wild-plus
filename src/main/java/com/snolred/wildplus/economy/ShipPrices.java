@@ -92,10 +92,11 @@ public final class ShipPrices {
         put(m, com.snolred.wildplus.registry.ModItems17.YARN.get(), 90); put(m, com.snolred.wildplus.registry.ModItems17.CLOTH.get(), 500);
         put(m, com.snolred.wildplus.registry.ModItems17.GOLDEN_EGG.get(), 8000);
         com.snolred.wildplus.cooking.Cooking.prices(m); // 요리: 재료값 × 2.5
-        // 3.9 행운의 부적: 단계마다 9배 (합친 값 그대로) / 3.9.3 처음 값의 15% → 3.9.4 20% (1단계 200동 · 최대 400만동)
+        // 3.9 행운의 부적: 들어간 I단계 개수 × 200동 (최대 400만동) / 3.9.6 합성 개수 II·III 9개, IV·V 3개, VI~X 2개 (tools/data_v29.py COST 와 같게)
+        long ones = 1;
         for (int t = 1; t <= 10; t++) {
-            long won = Math.min(4_000_000L, 200L * (long) Math.pow(9, t - 1));
-            put(m, com.snolred.wildplus.registry.ModItems21.charm(t), (int) (won * 100));
+            if (t >= 2) ones *= t <= 3 ? 9 : t <= 5 ? 3 : 2;
+            put(m, com.snolred.wildplus.registry.ModItems21.charm(t), (int) (Math.min(4_000_000L, 200L * ones) * 100));
         }
         table = m;
         return m;

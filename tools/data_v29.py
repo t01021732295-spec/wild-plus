@@ -1,4 +1,4 @@
-"""3.9 데이터 (data_v29): 활 약탈 인챈트 · 행운의 부적 2~10단계 (모델 · 텍스처 · 9개 합성 레시피 · 언어)."""
+"""3.9 데이터 (data_v29): 활 약탈 인챈트 · 행운의 부적 2~10단계 (모델 · 텍스처 · 합성 레시피 · 언어)."""
 import json
 
 from PIL import Image
@@ -30,8 +30,27 @@ ROSE = ((255, 200, 190), (225, 140, 130), (130, 70, 70))
 FRAME = [None, GOLD, GOLD, GOLD, GOLD, GOLD, ROSE, ROSE, PLATINUM, PLATINUM, GOLD]
 
 
+# 3.9.6: 그 단계를 만드는 데 드는 아래 단계 개수 (II·III 9개 / IV·V 3개 / VI~X 2개) → X단계 = I단계 23,328개
+COST = [0, 0, 9, 9, 3, 3, 2, 2, 2, 2, 2]
+PATTERN = {9: ["CCC", "CCC", "CCC"], 3: ["CCC"], 2: ["CC"]}
+
+
+def total(t):
+    """t단계 1개에 들어가는 I단계 개수"""
+    n = 1
+    for c in COST[2:t + 1]:
+        n *= c
+    return n
+
+
+def how(t):
+    """t단계로 올리는 방법 (툴팁)"""
+    c = COST[t]
+    return f"{c}개를 제작대에 {'채우면' if c == 9 else '나란히 놓으면'} {ROMAN[t]}단계"
+
+
 def ship(t):
-    return min(4_000_000, 200 * 9 ** (t - 1))  # 3.9.4: 처음 값의 20%
+    return min(4_000_000, 200 * total(t))  # 3.9.4: I단계 200동 · 3.9.6: 들어간 I단계 개수만큼 (ShipPrices 와 같은 식)
 
 
 def charm_textures():
@@ -65,12 +84,12 @@ def charm_textures():
 LANG_KO = {
     "enchantment.wildplus.bow_looting": "활 약탈",
     "item.wildplus.lucky_charm": "행운의 부적 I",
-    "tooltip.wildplus.lucky_charm": f"가지고 있으면: {TIER_INFO[1]}\n9개를 제작대에 채우면 II단계 · 출하 {ship(1):,}동 · 가방 속 가장 높은 단계 하나만 적용",
+    "tooltip.wildplus.lucky_charm": f"가지고 있으면: {TIER_INFO[1]}\n{how(2)} · 출하 {ship(1):,}동 · 가방 속 가장 높은 단계 하나만 적용",
 }
 LANG_EN = {"enchantment.wildplus.bow_looting": "Bow Looting", "item.wildplus.lucky_charm": "Lucky Charm I"}
 for t in range(2, 11):
     LANG_KO[f"item.wildplus.lucky_charm_{t}"] = f"행운의 부적 {ROMAN[t]}"
-    nxt = f"9개를 제작대에 채우면 {ROMAN[t + 1]}단계 · " if t < 10 else "최고 단계 · "
+    nxt = f"{how(t + 1)} · " if t < 10 else "최고 단계 · "
     LANG_KO[f"tooltip.wildplus.lucky_charm_{t}"] = f"가지고 있으면: {TIER_INFO[t]}\n{nxt}출하 {ship(t):,}동 · 가방 속 가장 높은 단계 하나만 적용"
     LANG_EN[f"item.wildplus.lucky_charm_{t}"] = f"Lucky Charm {ROMAN[t]}"
 
@@ -99,7 +118,7 @@ def build(lang_ko, lang_en):
     for t in range(2, 11):
         simple(f"lucky_charm_{t}")
         prev = i("lucky_charm") if t == 2 else i(f"lucky_charm_{t - 1}")
-        write(DATA / f"recipe/lucky_charm_{t}.json", shaped(["CCC", "CCC", "CCC"], {"C": prev}, i(f"lucky_charm_{t}"), category="misc"))
+        write(DATA / f"recipe/lucky_charm_{t}.json", shaped(PATTERN[COST[t]], {"C": prev}, i(f"lucky_charm_{t}"), category="misc"))
     ko = {**lang_ko, **LANG_KO}
     for r in ("stellar_ruby", "sky_sapphire", "royal_emerald", "dragon"):
         k = f"tooltip.wildplus.{r}_fishing_rod"

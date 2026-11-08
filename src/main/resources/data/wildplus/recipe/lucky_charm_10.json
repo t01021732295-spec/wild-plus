@@ -2,9 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "pattern": [
-    "CCC",
-    "CCC",
-    "CCC"
+    "CC"
   ],
   "key": {
     "C": "wildplus:lucky_charm_9"
