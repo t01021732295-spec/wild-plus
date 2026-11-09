@@ -1,0 +1,2 @@
+data/minecraft/worldgen/biome/end_highlands.json
+data/minecraft/worldgen/biome/end_barrens.json
