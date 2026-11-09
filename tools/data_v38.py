@@ -36,10 +36,8 @@ def altar():
 KO = {"block.wildplus.lottery_machine": "복권 발매기", "tooltip.wildplus.lottery_machine": "즉석 복권 · 숫자 복권(토요일 오후 8시 45분 추첨)",
       "block.wildplus.fate_altar": "운명의 제단", "tooltip.wildplus.fate_altar": "장비를 들고 우클릭: 3~5만동에 랜덤 인챈트 1개 (1~15단계)",
       "tooltip.wildplus.lottery_ticket": "우클릭으로 긁기. 최고 500,000동!",
-      "tooltip.wildplus.void_pickaxe": "3×3 채굴 · 원석 자동 제련 (웅크리면 한 칸)
-웅크리고 우클릭: 엔더 상자로 바로 보내기",
-      "tooltip.wildplus.void_axe": "나무 통째로 베기 (웅크리면 한 칸)
-체력 30% 이하 적에게 피해 2배",
+      "tooltip.wildplus.void_pickaxe": "3×3 채굴 · 원석 자동 제련 (웅크리면 한 칸)\n웅크리고 우클릭: 엔더 상자로 바로 보내기",
+      "tooltip.wildplus.void_axe": "나무 통째로 베기 (웅크리면 한 칸)\n체력 30% 이하 적에게 피해 2배",
       "tooltip.wildplus.void_shovel": "5×5 채굴 · 채굴 속도 3배 (웅크리면 한 칸)",
       "tooltip.wildplus.void_hoe": "7×7 수확 · 자동으로 다시 심기 (웅크리면 한 칸)"}
 EN = {"block.wildplus.lottery_machine": "Lottery Machine", "block.wildplus.fate_altar": "Altar of Fate"}

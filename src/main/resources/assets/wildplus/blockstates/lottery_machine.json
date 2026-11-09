@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/lottery_machine"
+    },
+    "facing=east": {
+      "model": "wildplus:block/lottery_machine",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/lottery_machine",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/lottery_machine",
+      "y": 270
+    }
+  }
+}

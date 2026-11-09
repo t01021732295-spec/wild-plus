@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/fate_altar"
+    },
+    "facing=east": {
+      "model": "wildplus:block/fate_altar",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/fate_altar",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/fate_altar",
+      "y": 270
+    }
+  }
+}

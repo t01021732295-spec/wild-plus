@@ -1038,5 +1038,7 @@
   "biome.wildplus.void_crystal_plains": "Void Crystal Plains",
   "entity.wildplus.void_lord": "Void Lord",
   "item.wildplus.lord_sigil": "Lord's Sigil",
-  "block.wildplus.lord_altar": "Void Lord's Altar"
+  "block.wildplus.lord_altar": "Void Lord's Altar",
+  "block.wildplus.lottery_machine": "Lottery Machine",
+  "block.wildplus.fate_altar": "Altar of Fate"
 }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GRG",
+    "GPG",
+    "III"
+  ],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "R": "minecraft:redstone",
+    "P": "minecraft:paper",
+    "I": "minecraft:iron_block"
+  },
+  "result": {
+    "id": "wildplus:lottery_machine",
+    "count": 1
+  }
+}
