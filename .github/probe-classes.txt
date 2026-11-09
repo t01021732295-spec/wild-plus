@@ -1,2 +1,10 @@
-net.minecraft.core.registries.Registries
-net.minecraft.world.level.levelgen.feature.NoneFeatureConfiguration
+net.minecraft.client.sounds.SoundEngine
+net.minecraft.client.sounds.SoundBufferLibrary
+net.minecraft.client.resources.sounds.SoundInstance
+net.minecraft.client.resources.sounds.AbstractSoundInstance
+net.minecraft.client.resources.sounds.Sound
+net.minecraft.client.sounds.AudioStream
+net.minecraft.client.sounds.JOrbisAudioStream
+net.minecraft.client.sounds.LoopingAudioStream
+net.minecraft.client.sounds.SoundManager
+net.minecraft.client.sounds.WeighedSoundEvents
