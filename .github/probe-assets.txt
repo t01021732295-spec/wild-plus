@@ -1,10 +1,2 @@
-assets/minecraft/textures/entity/enderman/enderman.png
-assets/minecraft/textures/entity/enderman/enderman_eyes.png
-assets/minecraft/textures/entity/endermite/endermite.png
-assets/minecraft/textures/entity/phantom/phantom.png
-assets/minecraft/textures/entity/phantom/phantom_eyes.png
-assets/minecraft/textures/entity/endermite.png
-assets/minecraft/textures/entity/phantom.png
-assets/minecraft/textures/entity/phantom_eyes.png
-data/minecraft/worldgen/feature/end_spike.json
-data/minecraft/worldgen/configured_feature/end_spike.json
+assets/minecraft/textures/gui/sprites/boss_bar/purple_progress.png
+assets/minecraft/textures/gui/sprites/boss_bar/purple_background.png
