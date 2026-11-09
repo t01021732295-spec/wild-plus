@@ -1254,9 +1254,10 @@ jobs:
             # 4.4 엔드: 평원 지형 · 몬스터 · 공허 군주
             cmd "/gamemode creative"; cmd "/effect give @s minecraft:night_vision 200 0 true"
             cmd "/gamemode creative"; sleep 1
-            cmd "/execute at @s run summon wildplus:volcano_boss ~ ~-2 ~13"; sleep 4; shot m47-volcano; cmd "/kill @e[type=wildplus:volcano_boss]"
-            cmd "/execute at @s run summon wildplus:storm_king ~ ~-2 ~9"; sleep 4; shot m47-storm; cmd "/kill @e[type=wildplus:storm_king]"
-            cmd "/execute at @s run summon wildplus:cloud_sentinel ~-3 ~-2 ~6"; cmd "/execute at @s run summon wildplus:cloud_priest ~1 ~-2 ~7"; cmd "/execute at @s run summon wildplus:thunder_hawk ~3 ~0 ~7"; sleep 4; shot m47-mobs
+            cmd "/wildplus uitest endplains"; sleep 25
+            cmd "/execute at @s run summon wildplus:volcano_boss ^ ^-9 ^14"; sleep 3; shot m47-volcano; cmd "/kill @e[type=wildplus:volcano_boss]"
+            cmd "/execute at @s run summon wildplus:storm_king ^ ^-7 ^11"; sleep 3; shot m47-storm; cmd "/kill @e[type=wildplus:storm_king]"
+            cmd "/execute at @s run summon wildplus:cloud_sentinel ^-3 ^-4 ^7"; cmd "/execute at @s run summon wildplus:cloud_priest ^1 ^-4 ^8"; cmd "/execute at @s run summon wildplus:thunder_hawk ^4 ^-2 ^8"; sleep 3; shot m47-mobs
             cmd "/kill @e[type=wildplus:cloud_sentinel]"; cmd "/kill @e[type=wildplus:cloud_priest]"; cmd "/kill @e[type=wildplus:thunder_hawk]"
             cmd "/wildplus uitest endplains"; sleep 30
             shot end-plains
