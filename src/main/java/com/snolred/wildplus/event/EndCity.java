@@ -68,8 +68,8 @@ public final class EndCity {
     public static void onJoin(EntityJoinLevelEvent event) {
         Entity e = event.getEntity();
         if (e.getType() != EntityTypes.SHULKER || !(e.level() instanceof ServerLevel level) || level.dimension() != Level.END
-                || e.getTags().contains(SCALED) || !(e instanceof LivingEntity l)) return;
-        e.addTag(SCALED);
+                || e.getPersistentData().getBooleanOr(SCALED, false) || !(e instanceof LivingEntity l)) return;
+        e.getPersistentData().putBoolean(SCALED, true);
         AttributeInstance a = l.getAttribute(Attributes.MAX_HEALTH);
         if (a == null) return;
         a.setBaseValue(30.0 * (1.0 + 0.2 * kills(level)));
@@ -152,7 +152,7 @@ public final class EndCity {
             Mob m = EntityTypes.SHULKER.create(level, EntitySpawnReason.EVENT);
             if (m == null) continue;
             m.setPos(lock.getX() + q[0] + 0.5, lock.getY() - 1, lock.getZ() + q[1] + 0.5);
-            m.addTag(TAG);
+            m.getPersistentData().putBoolean(TAG, true);
             m.setPersistenceRequired();
             level.addFreshEntity(m);
         }
@@ -171,7 +171,7 @@ public final class EndCity {
             if (!level.isPositionEntityTicking(lock)) continue;
             int state = c.getIntOr("state", 0);
             if (state == 1) {
-                List<Mob> left = level.getEntitiesOfClass(Mob.class, new AABB(lock).inflate(40.0), m -> m.getTags().contains(TAG));
+                List<Mob> left = level.getEntitiesOfClass(Mob.class, new AABB(lock).inflate(40.0), m -> m.getPersistentData().getBooleanOr(TAG, false));
                 if (left.isEmpty()) {
                     reward(level, lock);
                     c.putInt("state", 2);
