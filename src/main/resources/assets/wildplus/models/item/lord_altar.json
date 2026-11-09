@@ -1,0 +1,6 @@
+{
+  "parent": "wildplus:block/lord_altar",
+  "textures": {
+    "layer0": "wildplus:item/lord_altar"
+  }
+}

@@ -388,6 +388,10 @@ jobs:
             sleep 3
             run "execute in minecraft:the_end run forceload add 816 592 846 622"
             sleep 25
+            run "execute in minecraft:the_end run summon wildplus:void_lord 830 100 610"
+            sleep 12
+            run "execute in minecraft:the_end run kill @e[type=wildplus:void_lord]"
+            sleep 2
             echo "say TEST void turf count"; sleep 1
             run "execute in minecraft:the_end run fill 816 45 592 846 80 622 minecraft:end_stone replace wildplus:void_turf"
             sleep 2

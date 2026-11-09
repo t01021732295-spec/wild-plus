@@ -1035,5 +1035,8 @@
   "block.wildplus.void_crystal_purple": "Purple Void Crystal",
   "item.wildplus.rift_dust": "Rift Dust",
   "item.wildplus.wraith_plume": "Wraith Plume",
-  "biome.wildplus.void_crystal_plains": "Void Crystal Plains"
+  "biome.wildplus.void_crystal_plains": "Void Crystal Plains",
+  "entity.wildplus.void_lord": "Void Lord",
+  "item.wildplus.lord_sigil": "Lord's Sigil",
+  "block.wildplus.lord_altar": "Void Lord's Altar"
 }

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:lord_shard",
+    "wildplus:lord_shard",
+    "wildplus:lord_shard",
+    "wildplus:lord_shard",
+    "wildplus:rift_dust",
+    "wildplus:rift_dust",
+    "wildplus:wraith_plume",
+    "wildplus:wraith_plume",
+    "wildplus:void_heart"
+  ],
+  "result": {
+    "id": "wildplus:lord_sigil",
+    "count": 1
+  }
+}

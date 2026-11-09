@@ -1306,5 +1306,9 @@
   "tooltip.wildplus.rift_dust": "균열 진드기가 남긴 가루\n공허 군주 소환 재료",
   "item.wildplus.wraith_plume": "망령 깃",
   "tooltip.wildplus.wraith_plume": "공허 망령의 깃털\n공허 군주 소환 재료",
-  "biome.wildplus.void_crystal_plains": "공허 수정 평원"
+  "biome.wildplus.void_crystal_plains": "공허 수정 평원",
+  "entity.wildplus.void_lord": "공허 군주",
+  "item.wildplus.lord_sigil": "군주의 인장",
+  "tooltip.wildplus.lord_sigil": "공허 수정 평원의 제단에 쓰면 공허 군주 소환\n게임 속 7일에 1번",
+  "block.wildplus.lord_altar": "공허 군주의 제단"
 }

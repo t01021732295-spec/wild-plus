@@ -63,6 +63,7 @@ public final class ModRenderers {
             }
         });
         event.registerEntityRenderer(ModEntities.VINE_BOSS.get(), ctx -> new IllagerTex(ctx, tex("boss/vine")));
+        event.registerEntityRenderer(ModEntities.VOID_LORD.get(), VoidLordRenderer::new);
         event.registerEntityRenderer(ModEntities.VOID_STALKER.get(), ctx -> new net.minecraft.client.renderer.entity.EndermanRenderer(ctx) {
             @Override
             public Identifier getTextureLocation(net.minecraft.client.renderer.entity.state.EndermanRenderState s) {

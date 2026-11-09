@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BCB",
+    "COC",
+    "BCB"
+  ],
+  "key": {
+    "B": "wildplus:void_brick",
+    "C": "wildplus:void_crystal_cyan",
+    "O": "minecraft:crying_obsidian"
+  },
+  "result": {
+    "id": "wildplus:lord_altar",
+    "count": 1
+  }
+}

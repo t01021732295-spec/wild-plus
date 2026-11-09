@@ -46,6 +46,9 @@ public final class ModEntities {
             com.snolred.wildplus.entity.SeatEntity::new, MobCategory.MISC, b -> b.sized(0.01F, 0.01F).noSummon().clientTrackingRange(8));
 
     // ───────── 3.8 흉조: 우민 용병 · 우민 밀수꾼 ─────────
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.VoidLordEntity>> VOID_LORD = ENTITIES.registerEntityType("void_lord",
+            com.snolred.wildplus.entity.VoidLordEntity::new, MobCategory.MONSTER, b -> b.sized(2.0F, 5.0F).fireImmune().clientTrackingRange(16));
+
     // ───────── 4.3 엔드 몬스터 ─────────
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.EndMobs.Stalker>> VOID_STALKER = ENTITIES.registerEntityType("void_stalker",
             com.snolred.wildplus.entity.EndMobs.Stalker::new, MobCategory.MONSTER, b -> b.sized(0.6F, 2.9F).eyeHeight(2.55F).clientTrackingRange(8));
@@ -100,6 +103,7 @@ public final class ModEntities {
         event.put(FISHER_MERCHANT.get(), merchant);
         event.put(BANKER_MERCHANT.get(), merchant);
         event.put(BANDIT.get(), BanditEntity.createAttributes().build());
+        event.put(VOID_LORD.get(), com.snolred.wildplus.entity.VoidLordEntity.attributes().build());
         event.put(VOID_STALKER.get(), com.snolred.wildplus.entity.EndMobs.Stalker.attributes().build());
         event.put(RIFT_MITE.get(), com.snolred.wildplus.entity.EndMobs.Mite.attributes().build());
         event.put(VOID_WRAITH.get(), com.snolred.wildplus.entity.EndMobs.Wraith.attributes().build());
