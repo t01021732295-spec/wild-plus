@@ -65,6 +65,7 @@ public class WildPlusClient {
         if (!(event.getEntity() instanceof net.minecraft.world.entity.LivingEntity le)
                 || le instanceof net.minecraft.world.entity.player.Player
                 || le instanceof net.minecraft.world.entity.decoration.ArmorStand || !le.isAlive()) return;
+        if (le instanceof com.snolred.wildplus.entity.MusicVisual) return;
         float hp = le.getHealth(), max = le.getMaxHealth();
         boolean hostile = le instanceof net.minecraft.world.entity.monster.Enemy;
         if (!hostile && hp >= max) return;

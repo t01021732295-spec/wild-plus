@@ -67,6 +67,7 @@ public final class Music {
     private static final Map<String, Path> BY_SHA = new HashMap<>();
     private static final Map<String, String> SHA_CACHE = new HashMap<>();
     private static final Map<String, Performance> PIANOS = new HashMap<>();
+    private static final Map<String, UUID> VISUALS = new HashMap<>();
 
     private static final class Performance {
         final ServerLevel level;
@@ -295,6 +296,7 @@ public final class Music {
         d.section(ACTIVE).remove(key);
         d.dirty();
         TOLD.remove(key);
+        dropVisual(lv.getServer(), key);
         PacketDistributor.sendToAllPlayers(new MusicNet.Stop(key));
     }
 
@@ -361,6 +363,7 @@ public final class Music {
         tickUploads(s);
         tickPianos();
         if (s.getTickCount() % 20 == 3) tickActive(s);
+        if (s.getTickCount() % 8 == 2) visuals(s);
     }
 
     private static void tickUploads(MinecraftServer s) {
@@ -396,6 +399,65 @@ public final class Music {
         });
     }
 
+    /** 재생 중인 플레이어마다 움직임용 받침을 유지하고 음표를 띄운다 */
+    private static void visuals(MinecraftServer s) {
+        CompoundTag act = ContentData.get(s).section(ACTIVE);
+        for (String key : new ArrayList<>(act.keySet())) {
+            if (!(act.get(key) instanceof CompoundTag t)) continue;
+            ServerLevel lv = null;
+            for (ServerLevel l : s.getAllLevels()) if (l.dimension().identifier().toString().equals(t.getStringOr("dim", ""))) lv = l;
+            BlockPos pos = BlockPos.of(t.getLongOr("pos", 0L));
+            if (lv == null || !lv.isLoaded(pos)) continue;
+            spawnVisual(key, lv, pos);
+            notes(lv, pos);
+        }
+    }
+
+    private static void notes(ServerLevel lv, BlockPos pos) {
+        var state = lv.getBlockState(pos);
+        if (!state.hasProperty(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING)) return;
+        var f = state.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING);
+        var side = f.getClockWise();
+        var r = lv.getRandom();
+        for (int sx : new int[] {-1, 1}) {
+            lv.sendParticles(ParticleTypes.NOTE, pos.getX() + 0.5 + side.getStepX() * sx * 1.1, pos.getY() + 2.2, pos.getZ() + 0.5 + side.getStepZ() * sx * 1.1, 0, r.nextDouble(), 0, 0, 1);
+        }
+    }
+
+    /** 받침이 없으면 만든다 */
+    static void spawnVisual(String key, ServerLevel lv, BlockPos pos) {
+        UUID id = VISUALS.get(key);
+        if (id != null && lv.getEntity(id) != null) return;
+        var state = lv.getBlockState(pos);
+        if (!state.hasProperty(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING)) return;
+        var m = com.snolred.wildplus.registry.ModEntities.MUSIC_VISUAL.get().create(lv, net.minecraft.world.entity.EntitySpawnReason.EVENT);
+        if (m == null) return;
+        float yaw = state.getValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING).toYRot();
+        m.snapTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, yaw, 0F);
+        m.setYHeadRot(yaw);
+        m.setYBodyRot(yaw);
+        lv.addFreshEntity(m);
+        VISUALS.put(key, m.getUUID());
+    }
+
+    private static void dropVisual(MinecraftServer s, String key) {
+        UUID id = VISUALS.remove(key);
+        if (id == null) return;
+        for (ServerLevel l : s.getAllLevels()) {
+            var e = l.getEntity(id);
+            if (e != null) e.discard();
+        }
+    }
+
+    /** 시험용: 눈앞에 플레이어를 놓고 움직임만 보여 준다 */
+    public static void debugVisual(ServerPlayer p) {
+        ServerLevel lv = (ServerLevel) p.level();
+        BlockPos at = p.blockPosition().relative(p.getDirection(), 4);
+        lv.setBlock(at, com.snolred.wildplus.registry.ModBlocks18.MUSIC_PLAYER.get().defaultBlockState().setValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING, p.getDirection().getOpposite()), 3);
+        spawnVisual("debug", lv, at);
+        notes(lv, at);
+    }
+
     private static void tickActive(MinecraftServer s) {
         ContentData d = ContentData.get(s);
         CompoundTag act = d.section(ACTIVE);
@@ -411,6 +473,7 @@ public final class Music {
                 act.remove(key);
                 d.dirty();
                 TOLD.remove(key);
+                dropVisual(s, key);
                 PacketDistributor.sendToAllPlayers(new MusicNet.Stop(key));
                 continue;
             }

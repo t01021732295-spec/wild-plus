@@ -191,6 +191,20 @@ public class GenModelRenderer<T extends Mob> extends MobRenderer<T, GenModelRend
         p.move(0F, Mth.sin(t * 0.09F) * (g.equals("cloud") ? 1.2F : 0.6F), 0F);
     }
 
+    /** 턴테이블이 돌고, 스피커가 박자처럼 들썩인다 */
+    public static void music(String g, State s, Pivot p) {
+        float t = s.ageInTicks, beat = Mth.sin(t * 0.8F);
+        float kick = beat * beat;
+        switch (g) {
+            case "disc" -> p.rotate(Axis.YP, t * 14F, 0F, 13F, 0F);
+            case "spkL" -> p.scale(1F + kick * 0.05F, -18F, 0F, 0F);
+            case "spkR" -> p.scale(1F + (1F - kick) * 0.05F, 18F, 0F, 0F);
+            case "coneL" -> p.scale(1F + kick * 0.18F, -18F, 22F, 8F);
+            case "coneR" -> p.scale(1F + (1F - kick) * 0.18F, 18F, 22F, 8F);
+            default -> {}
+        }
+    }
+
     public static void priest(String g, State s, Pivot p) {
         float t = s.ageInTicks;
         if (g.equals("ring")) p.rotate(Axis.ZP, t * 4F, 0F, 60F, -9F);

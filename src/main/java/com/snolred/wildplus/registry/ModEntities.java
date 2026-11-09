@@ -49,6 +49,9 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.VoidLordEntity>> VOID_LORD = ENTITIES.registerEntityType("void_lord",
             com.snolred.wildplus.entity.VoidLordEntity::new, MobCategory.MONSTER, b -> b.sized(2.0F, 5.0F).fireImmune().clientTrackingRange(16));
 
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.MusicVisual>> MUSIC_VISUAL = ENTITIES.registerEntityType("music_visual",
+            com.snolred.wildplus.entity.MusicVisual::new, MobCategory.MISC, b -> b.sized(0.2F, 0.2F).noSummon().clientTrackingRange(10));
+
     // ───────── 4.7 ─────────
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.VolcanoEntity>> VOLCANO_BOSS = ENTITIES.registerEntityType("volcano_boss",
             com.snolred.wildplus.entity.VolcanoEntity::new, MobCategory.MONSTER, b -> b.sized(3.0F, 5.0F).fireImmune().clientTrackingRange(16));
@@ -115,6 +118,7 @@ public final class ModEntities {
         event.put(FISHER_MERCHANT.get(), merchant);
         event.put(BANKER_MERCHANT.get(), merchant);
         event.put(BANDIT.get(), BanditEntity.createAttributes().build());
+        event.put(MUSIC_VISUAL.get(), com.snolred.wildplus.entity.MusicVisual.attributes().build());
         event.put(VOLCANO_BOSS.get(), com.snolred.wildplus.entity.VolcanoEntity.attributes().build());
         event.put(STORM_KING.get(), com.snolred.wildplus.entity.StormKingEntity.attributes().build());
         event.put(CLOUD_SENTINEL.get(), com.snolred.wildplus.entity.SkyMobs.Sentinel.attributes().build());

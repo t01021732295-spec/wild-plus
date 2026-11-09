@@ -64,6 +64,7 @@ public final class ModRenderers {
         });
         event.registerEntityRenderer(ModEntities.VINE_BOSS.get(), ctx -> new IllagerTex(ctx, tex("boss/vine")));
         event.registerEntityRenderer(ModEntities.VOID_LORD.get(), VoidLordRenderer::new);
+        event.registerEntityRenderer(ModEntities.MUSIC_VISUAL.get(), c -> new GenModelRenderer<>(c, "music_fx", 1.0F, 0F, GenModelRenderer::music));
         event.registerEntityRenderer(ModEntities.VOLCANO_BOSS.get(), c -> new GenModelRenderer<>(c, "volcano", 0.52F, 2.0F, GenModelRenderer::volcano));
         event.registerEntityRenderer(ModEntities.STORM_KING.get(), c -> new GenModelRenderer<>(c, "storm_king", 0.55F, 1.2F, GenModelRenderer::stormKing));
         event.registerEntityRenderer(ModEntities.CLOUD_SENTINEL.get(), c -> new GenModelRenderer<>(c, "cloud_sentinel", 0.62F, 0.6F, GenModelRenderer::sentinel));

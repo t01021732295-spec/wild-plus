@@ -92,6 +92,24 @@ def main():
     build("thunder_hawk", D.T, 0, hawk)
     build("cloud_sentinel", D.P, 0, sentinel)
     build("cloud_priest", D.A, 0, priest)
+    build_music()
+
+
+def build_music():
+    """음악 플레이어가 돌 때 움직이는 부분만: 판 · 스피커 몸통 · 콘 (data_v39.player 와 같은 자리)"""
+    from cosmetic_design import Box, solid as S
+    BK, BK2, DK, SI, RD = (44, 34, 34), (74, 56, 50), (30, 28, 36), (190, 198, 215), (200, 40, 50)
+    grooves = lambda f, u, v, w, h: (16, 16, 20) if ((u - 7) ** 2 + (v - 7) ** 2) % 9 < 6 else (60, 60, 70)
+    cone = lambda c: (lambda f, u, v, w, h: DK if ((u - c) ** 2 + (v - c) ** 2) < c * c - 1 else BK2)
+    bx = [Box(0, 0, 0, 1, 1, 1, lambda f, u, v, w, h: None), Box(-6, 13.1, -6, 12, .7, 12, grooves), Box(-1.5, 13.7, -1.5, 3, .8, 3, S(RD))]
+    for x in (-24, 12):
+        bx += [Box(x - .05, 0, -7.05, 12.1, 30.05, 14.1, S(BK)), Box(x + 2, 18, 7.1, 8, 8, .6, cone(4)), Box(x + 4, 20, 7.6, 4, 4, .5, S(SI)), Box(x + 3, 5, 7.1, 6, 6, .6, cone(3))]
+    def g(x, y, z, w, h, d, glow):
+        if w == 1 and h == 1 and x == 0: return "body"
+        if y >= 13 and -6.5 <= x and x + w <= 6.5: return "disc"
+        side = "L" if x < 0 else "R"
+        return ("spk" if d >= 10 else "cone") + side
+    build("music_fx", bx, 0, g)
 
 
 if __name__ == "__main__":

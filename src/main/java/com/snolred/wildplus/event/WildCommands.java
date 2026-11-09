@@ -143,6 +143,7 @@ public final class WildCommands {
                     switch (com.mojang.brigadier.arguments.StringArgumentType.getString(ctx, "what")) {
                         case "pharmacy" -> com.snolred.wildplus.economy.Services.openPharmacy(p, at);
                         case "endplains" -> VoidBiome.debugGoto(p);
+                        case "musicfx" -> com.snolred.wildplus.music.Music.debugVisual(p);
                         case "lottodraw" -> com.snolred.wildplus.economy.Lotto.draw(p.level().getServer());
                         case "endruin" -> VoidBiome.debugRuin(p);
                         case "brew" -> {
