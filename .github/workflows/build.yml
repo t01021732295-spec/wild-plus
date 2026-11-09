@@ -1253,9 +1253,9 @@ jobs:
             cmd "/tp @s 396.5 120 -8.3 0 20"
             # 4.4 엔드: 평원 지형 · 몬스터 · 공허 군주
             cmd "/gamemode creative"; cmd "/effect give @s minecraft:night_vision 200 0 true"
-            cmd "/execute in minecraft:the_end run tp @s 832 96 608 0 35"; sleep 22
-            xdotool key F1 || true; shot end-plains
-            cmd "/execute at @s run summon wildplus:void_lord ~ ~-6 ~14"; sleep 8; shot end-lord-1; sleep 2; shot end-lord-2
+            cmd "/wildplus uitest endplains"; sleep 30
+            shot end-plains
+            cmd "/execute at @s run summon wildplus:void_lord ^ ^-4 ^12"; sleep 6; shot end-lord-1; sleep 2; shot end-lord-2
             cmd "/kill @e[type=wildplus:void_lord]"; sleep 2
             cmd "/execute at @s run summon wildplus:void_stalker ~-3 ~-4 ~8"; cmd "/execute at @s run summon wildplus:void_wraith ~3 ~-2 ~8"; cmd "/execute at @s run summon wildplus:rift_mite ~ ~-4 ~6"; sleep 3; shot end-mobs
             xdotool key F1 || true
