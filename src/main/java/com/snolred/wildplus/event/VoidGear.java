@@ -159,7 +159,6 @@ public final class VoidGear {
         s.leapReady = now + (Engraves.has(p, "WARP") ? LEAP_CD * 3 / 5 : LEAP_CD);
         s.surgeUntil = now + SURGE;
         level.playSound(null, p.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.8F, 1.3F);
-        p.sendOverlayMessage(Component.literal("공허 도약! 3초 안의 첫 공격 피해 2배").withStyle(ChatFormatting.LIGHT_PURPLE));
     }
 
     private static void rescue(ServerLevel level, ServerPlayer p, State s, int now) {
@@ -172,7 +171,6 @@ public final class VoidGear {
         s.rescueReady = now + RESCUE_CD;
         level.sendParticles(ParticleTypes.REVERSE_PORTAL, p.getX(), p.getY() + 0.2, p.getZ(), 60, 1.0, 0.1, 1.0, 0.05);
         level.playSound(null, p.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 1.0F, 0.6F);
-        p.sendOverlayMessage(Component.literal("공허 생환! (다음 사용까지 3분)").withStyle(ChatFormatting.LIGHT_PURPLE));
     }
 
     @SubscribeEvent
@@ -232,7 +230,6 @@ public final class VoidGear {
                 level.sendParticles(ParticleTypes.EXPLOSION, target.getX(), target.getY() + 0.5, target.getZ(), 2, 0.6, 0.3, 0.6, 0);
                 level.playSound(null, target.blockPosition(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 0.8F, 1.5F);
                 level.playSound(null, target.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 0.45F, 1.8F);
-                owner.sendOverlayMessage(Component.literal("✦ 공허 화살 폭발!").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD));
             }
             // 귀환: 플레이어가 주울 수 있는 화살만 (무한 · 다중 발사 복사본 제외), 종류와 효과 그대로
             if (a.pickup == AbstractArrow.Pickup.ALLOWED) {
@@ -257,7 +254,6 @@ public final class VoidGear {
         burstFx(level, target, slashR, ParticleTypes.END_ROD);
         level.playSound(null, target.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 0.6F, 1.5F);
         level.playSound(null, target.blockPosition(), SoundEvents.ENDER_DRAGON_FLAP, SoundSource.PLAYERS, 1.0F, 0.8F);
-        p.sendOverlayMessage(Component.literal("✦ 공허 베기!").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD));
     }
 
     /** 바닥 고리 두 겹 + 위로 터지는 입자: 범위가 눈에 보이게 */
@@ -288,7 +284,6 @@ public final class VoidGear {
         if (fresh) {
             level.sendParticles(ParticleTypes.WITCH, e.getX(), e.getY() + e.getBbHeight() * 0.7, e.getZ(), 30, 0.4, 0.5, 0.4, 0.15);
             level.playSound(null, e.blockPosition(), SoundEvents.AMETHYST_CLUSTER_BREAK, SoundSource.PLAYERS, 1.0F, 0.6F);
-            if (owner instanceof ServerPlayer sp) sp.sendOverlayMessage(Component.literal("✧ 균열 표식").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD));
         }
     }
 

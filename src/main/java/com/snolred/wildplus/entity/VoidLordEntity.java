@@ -123,6 +123,11 @@ public class VoidLordEntity extends Monster {
     public void aiStep() {
         super.aiStep();
         if (!(level() instanceof ServerLevel level)) return;
+        if (isDeadOrDying()) { // 죽는 동안 다시 붙지 않게
+            bar.removeAllPlayers();
+            setDeltaMovement(Vec3.ZERO);
+            return;
+        }
         if (home == null) home = position();
         tickBar(level);
         tickWarns(level);
@@ -258,6 +263,12 @@ public class VoidLordEntity extends Monster {
         List<ServerPlayer> near = near(level, 72.0);
         for (ServerPlayer p : List.copyOf(bar.getPlayers())) if (!near.contains(p)) bar.removePlayer(p);
         for (ServerPlayer p : near) if (!bar.getPlayers().contains(p)) bar.addPlayer(p);
+    }
+
+    @Override
+    public void remove(RemovalReason reason) {
+        super.remove(reason);
+        bar.removeAllPlayers();
     }
 
     @Override
