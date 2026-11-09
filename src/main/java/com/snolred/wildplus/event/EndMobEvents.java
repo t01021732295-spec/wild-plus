@@ -20,6 +20,11 @@ public final class EndMobEvents {
     private EndMobEvents() {}
 
     @SubscribeEvent
+    public static void onLordHurt(net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent event) {
+        if (event.getEntity() instanceof com.snolred.wildplus.entity.VoidLordEntity l) event.setAmount(event.getAmount() * l.damageScale());
+    }
+
+    @SubscribeEvent
     public static void onHit(LivingDamageEvent.Post event) {
         if (event.getSource().getEntity() instanceof EndMobs.Stalker) EndMobs.onStalkerHit(event.getEntity());
         if (event.getSource().getEntity() instanceof EndMobs.Wraith && event.getEntity() instanceof ServerPlayer p) {

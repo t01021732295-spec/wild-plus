@@ -75,14 +75,20 @@ public class VoidLordEntity extends Monster {
         VoidLordEntity b = ModEntities.VOID_LORD.get().create(level, EntitySpawnReason.EVENT);
         if (b == null) return;
         int n = Math.max(1, level.players().stream().filter(p -> p.blockPosition().closerThan(altar, 64) && !p.isSpectator()).toList().size());
+        double want = BASE_HP * (1.0 + 0.3 * (n - 1));
         var hp = b.getAttribute(Attributes.MAX_HEALTH);
-        if (hp != null) hp.setBaseValue(BASE_HP * (1.0 + 0.3 * (n - 1)));
+        if (hp != null) hp.setBaseValue(want);
         b.setHealth(b.getMaxHealth());
+        b.getPersistentData().putFloat("wp_lord_scale", (float) Math.min(1.0, b.getMaxHealth() / want)); // 게임의 최대 체력 상한(1024)을 넘는 만큼 받는 피해를 줄임
         b.snapTo(altar.getX() + 0.5, altar.getY() + 4.0, altar.getZ() + 0.5, 0F, 0F);
         b.setCustomName(Component.literal("공허 군주").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD));
         level.addFreshEntity(b);
         level.playSound(null, altar, SoundEvents.ENDER_DRAGON_GROWL, SoundSource.HOSTILE, 3.0F, 0.5F);
         level.sendParticles(ParticleTypes.REVERSE_PORTAL, altar.getX() + 0.5, altar.getY() + 3.0, altar.getZ() + 0.5, 400, 3.0, 3.0, 3.0, 0.3);
+    }
+
+    public float damageScale() {
+        return getPersistentData().getFloatOr("wp_lord_scale", 1F);
     }
 
     @Override

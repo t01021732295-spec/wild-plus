@@ -1255,7 +1255,7 @@ jobs:
             cmd "/gamemode creative"; cmd "/effect give @s minecraft:night_vision 200 0 true"
             cmd "/wildplus uitest endplains"; sleep 30
             shot end-plains
-            cmd "/execute at @s run summon wildplus:void_lord ^ ^-4 ^12"; sleep 6; shot end-lord-1; sleep 2; shot end-lord-2
+            cmd "/execute at @s run summon wildplus:void_lord ^ ^-5 ^8"; sleep 6; shot end-lord-1; sleep 1; shot end-lord-2; sleep 1; shot end-lord-3
             cmd "/kill @e[type=wildplus:void_lord]"; sleep 2
             cmd "/execute at @s run summon wildplus:void_stalker ~-3 ~-4 ~8"; cmd "/execute at @s run summon wildplus:void_wraith ~3 ~-2 ~8"; cmd "/execute at @s run summon wildplus:rift_mite ~ ~-4 ~6"; sleep 3; shot end-mobs
             xdotool key F1 || true
