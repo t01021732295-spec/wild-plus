@@ -1,3 +1,8 @@
-net.minecraft.world.level.biome.TheEndBiomeSource
-net.minecraft.world.level.biome.BiomeSource
-net.minecraft.world.level.biome.Biomes
+net.minecraft.world.entity.monster.EnderMan
+net.minecraft.world.entity.monster.Endermite
+net.minecraft.world.entity.monster.Phantom
+net.minecraft.client.renderer.entity.EndermanRenderer
+net.minecraft.client.renderer.entity.EndermiteRenderer
+net.minecraft.client.renderer.entity.PhantomRenderer
+net.minecraft.world.level.levelgen.feature.Feature
+net.minecraft.world.level.levelgen.feature.FeaturePlaceContext
