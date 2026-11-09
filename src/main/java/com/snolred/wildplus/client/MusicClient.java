@@ -26,7 +26,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.valueproviders.ConstantFloat;
 import net.neoforged.fml.loading.FMLPaths;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 /** 4.6 음악 재생(클라이언트): 서버에서 받은 ogg 를 저장해 두고 블록 주변에서 재생. 거리 감쇠는 직접 계산 (스테레오 파일도 멀어지면 작아지게) */
 public final class MusicClient {
@@ -59,7 +58,7 @@ public final class MusicClient {
             } else {
                 boolean first = WAITING.values().stream().noneMatch(w -> w.sha().equals(p.sha()));
                 WAITING.put(p.key(), p);
-                if (first) PacketDistributor.sendToServer(new MusicNet.Request(p.sha()));
+                if (first) net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new MusicNet.Request(p.sha()));
             }
         } catch (Exception ignored) {
         }
@@ -96,7 +95,7 @@ public final class MusicClient {
     }
 
     public static void help() {
-        Minecraft.getInstance().setScreen(new MusicHelpScreen());
+        Minecraft.getInstance().gui.setScreen(new MusicHelpScreen());
     }
 
     private static void start(MusicNet.Play p, Path file) {
