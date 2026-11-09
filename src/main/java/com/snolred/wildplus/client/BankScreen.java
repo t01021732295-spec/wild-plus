@@ -28,9 +28,11 @@ public class BankScreen extends AbstractContainerScreen<BankMenu> {
     protected void init() {
         super.init();
         int x = leftPos + SX + 4, y = topPos;
-        btn("전부 입금", BankMenu.DEP_ALL, x, y + 78, 66, UiButton.GREEN);
-        btn("+10", BankMenu.DEP_10, x + 70, y + 78, 40, UiButton.WHITE);
-        btn("+100", BankMenu.DEP_100, x + 114, y + 78, 40, UiButton.WHITE);
+        btn("전부입금", BankMenu.DEP_ALL, x, y + 78, 50, UiButton.GREEN);
+        btn("+10", BankMenu.DEP_10, x + 54, y + 78, 30, UiButton.WHITE);
+        btn("+100", BankMenu.DEP_100, x + 88, y + 78, 34, UiButton.WHITE);
+        btn("+1만", BankMenu.DEP_10K, x + 126, y + 78, 34, UiButton.WHITE);
+        btn("+10만", BankMenu.DEP_100K, x + 164, y + 78, 36, UiButton.WHITE);
         btn("10", BankMenu.WD_10, x, y + 111, 24, UiButton.WHITE);
         btn("100", BankMenu.WD_100, x + 28, y + 111, 28, UiButton.WHITE);
         btn("1천", BankMenu.WD_1000, x + 60, y + 111, 28, UiButton.WHITE);

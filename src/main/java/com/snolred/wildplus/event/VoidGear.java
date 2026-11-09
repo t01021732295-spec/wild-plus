@@ -335,6 +335,16 @@ public final class VoidGear {
         ItemStack tool = event.getTool();
         if (tool.isEmpty() || !(event.getBreaker() instanceof ServerPlayer p)) return;
         BlockState state = event.getState();
+        if (tool.is(VOID_PICKAXE.get())) { // 원석 자동 제련
+            for (ItemEntity e : event.getDrops()) {
+                ItemStack d = e.getItem();
+                net.minecraft.world.item.Item out = d.is(net.minecraft.world.item.Items.RAW_IRON) ? net.minecraft.world.item.Items.IRON_INGOT
+                        : d.is(net.minecraft.world.item.Items.RAW_GOLD) ? net.minecraft.world.item.Items.GOLD_INGOT
+                        : d.is(net.minecraft.world.item.Items.RAW_COPPER) ? net.minecraft.world.item.Items.COPPER_INGOT
+                        : d.is(com.snolred.wildplus.registry.ModItems2.RAW_MYTHRIL.get()) ? com.snolred.wildplus.registry.ModItems2.MYTHRIL_INGOT.get() : null;
+                if (out != null) e.setItem(new ItemStack(out, d.getCount()));
+            }
+        }
         if (tool.is(VOID_PICKAXE.get()) && p.getPersistentData().getBooleanOr(ENDER_DROP, false)) {
             for (Iterator<ItemEntity> it = event.getDrops().iterator(); it.hasNext(); ) {
                 ItemEntity e = it.next();
@@ -377,21 +387,57 @@ public final class VoidGear {
         level.sendParticles(ParticleTypes.ELECTRIC_SPARK, e.getX(), y, e.getZ(), 1, 0.1, 0.05, 0.1, 0);
     }
 
-    /** 삽 · 괭이 5×5 (웅크리면 한 칸) */
+    /** 공허 도끼: 잎이 붙은 진짜 나무만 통째로 (웅크리면 한 칸) */
+    private static void fellTree(ServerLevel level, ServerPlayer player, BlockPos start) {
+        java.util.ArrayDeque<BlockPos> queue = new java.util.ArrayDeque<>();
+        java.util.LinkedHashSet<BlockPos> logs = new java.util.LinkedHashSet<>();
+        queue.add(start);
+        logs.add(start);
+        boolean leaves = false;
+        while (!queue.isEmpty() && logs.size() < 160) {
+            BlockPos q = queue.poll();
+            for (BlockPos n : BlockPos.betweenClosed(q.offset(-1, -1, -1), q.offset(1, 1, 1))) {
+                BlockState s = level.getBlockState(n);
+                if (s.is(BlockTags.LEAVES)) leaves = true;
+                else if (s.is(BlockTags.LOGS) && logs.add(n.immutable())) queue.add(n.immutable());
+            }
+        }
+        if (!leaves) return;
+        areaBreaking = true;
+        try {
+            for (BlockPos q : logs) if (!q.equals(start)) player.gameMode.destroyBlock(q);
+        } finally {
+            areaBreaking = false;
+        }
+    }
+
+    /** 공허 삽: 흙 · 모래류 채굴 속도 3배 */
+    @SubscribeEvent
+    public static void onBreakSpeed(net.neoforged.neoforge.event.entity.player.PlayerEvent.BreakSpeed event) {
+        if (event.getEntity().getMainHandItem().is(VOID_SHOVEL.get()) && event.getState().is(BlockTags.MINEABLE_WITH_SHOVEL)) event.setNewSpeed(event.getNewSpeed() * 3.0F);
+    }
+
+    /** 곡괭이 3×3 · 삽 5×5 · 괭이 7×7 (웅크리면 한 칸) */
     @SubscribeEvent
     public static void onBreak(BreakBlockEvent event) {
         if (areaBreaking || !(event.getPlayer() instanceof ServerPlayer player) || !(event.getLevel() instanceof ServerLevel level) || player.isShiftKeyDown()) return;
         ItemStack tool = player.getMainHandItem();
         BlockState state = event.getState();
         BlockPos c = event.getPos();
+        if (tool.is(VOID_AXE.get()) && state.is(BlockTags.LOGS)) {
+            fellTree(level, player, c);
+            return;
+        }
         boolean shovel = tool.is(VOID_SHOVEL.get()) && state.is(BlockTags.MINEABLE_WITH_SHOVEL);
         boolean hoe = tool.is(VOID_HOE.get()) && state.getBlock() instanceof CropBlock cb && cb.isMaxAge(state);
-        if (!shovel && !hoe) return;
+        boolean pick = tool.is(VOID_PICKAXE.get()) && state.is(BlockTags.MINEABLE_WITH_PICKAXE);
+        if (!shovel && !hoe && !pick) return;
+        int reach = pick ? 1 : hoe ? 3 : 2;
         Direction.Axis axis = hoe || Math.abs(player.getXRot()) > 45 ? Direction.Axis.Y : player.getDirection().getAxis();
         areaBreaking = true;
         try {
-            for (int a = -2; a <= 2; a++) {
-                for (int b = -2; b <= 2; b++) {
+            for (int a = -reach; a <= reach; a++) {
+                for (int b = -reach; b <= reach; b++) {
                     if (a == 0 && b == 0) continue;
                     BlockPos p = switch (axis) {
                         case Y -> c.offset(a, 0, b);
@@ -399,7 +445,8 @@ public final class VoidGear {
                         default -> c.offset(a, b, 0);
                     };
                     BlockState s = level.getBlockState(p);
-                    boolean ok = shovel ? s.is(BlockTags.MINEABLE_WITH_SHOVEL) && s.getDestroySpeed(level, p) >= 0
+                    boolean ok = pick ? s.is(BlockTags.MINEABLE_WITH_PICKAXE) && s.getDestroySpeed(level, p) >= 0 && level.getBlockEntity(p) == null && tool.isCorrectToolForDrops(s)
+                            : shovel ? s.is(BlockTags.MINEABLE_WITH_SHOVEL) && s.getDestroySpeed(level, p) >= 0
                             : s.getBlock() instanceof CropBlock cr && cr.isMaxAge(s);
                     if (ok) player.gameMode.destroyBlock(p);
                 }

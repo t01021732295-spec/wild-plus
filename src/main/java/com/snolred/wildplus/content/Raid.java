@@ -59,7 +59,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 /**
  * 주말 레이드: 레이드 제단에서 시작하는 협동 보스전. 보스는 게임 속 7일마다 바뀌고, 깰 때마다 단계가 오른다 (최대 10단계).
  * 체력은 참가 인원과 단계에 따라 늘어난다. 3페이즈(66% · 33%)마다 패턴이 바뀌고, 바닥에 표시되는 범위 공격을 피해야 한다.
- * 클리어하면 참가자 모두 각자 보상 (이번 주 첫 클리어는 전부, 그 뒤로는 일부). 피해량 1등은 MVP 보너스.
+ * 클리어하면 참가자 모두 각자 보상 (매주 또는 단계가 오를 때마다 첫 보상, 그 뒤로는 일부). 피해량 1등은 MVP 보너스.
  */
 public final class Raid {
     public enum Boss {
@@ -505,33 +505,38 @@ public final class Raid {
             ServerPlayer p = server.getPlayerList().getPlayer(id);
             if (p == null) continue;
             CompoundTag me = ContentData.get(server).player("raid_p", id);
-            boolean first = me.getLongOr("week", Long.MIN_VALUE) != week;
+            boolean first = me.getLongOr("week", Long.MIN_VALUE) != week || me.getIntOr("reward_tier", 0) < tier; // 단계가 오르면 다시 받을 수 있음
             me.putLong("week", week);
+            if (first) me.putInt("reward_tier", tier);
             me.putInt("clears", me.getIntOr("clears", 0) + 1);
             List<ItemStack> loot = new ArrayList<>();
             long coins;
             if (first) {
-                coins = (8 + 2L * tier) * 100;
-                loot.add(new ItemStack(ModItems7.RUBY.get(), 2 + tier / 3));
-                loot.add(new ItemStack(Items.DIAMOND, 2 + tier / 4));
+                coins = (8 + 2L * tier) * 300;
+                loot.add(new ItemStack(ModItems7.RUBY.get(), 6 + tier));
+                loot.add(new ItemStack(Items.DIAMOND, 6 + tier * 3 / 4));
                 loot.add(boss.trophy());
-                if (tier >= 5) loot.add(new ItemStack(Items.NETHERITE_SCRAP, 1 + tier / 5));
+                if (tier >= 5) loot.add(new ItemStack(Items.NETHERITE_SCRAP, 3 + tier * 3 / 5));
+                if (tier >= 6) {
+                    String[] pool = tier >= 9 ? new String[] {"ABYSS", "DEVOUR", "CHAIN", "WARP", "HEART"} : new String[] {"HARVEST", "FURY", "GUARD", "VIGOR", "RUSH"};
+                    loot.add(new ItemStack(com.snolred.wildplus.registry.ModItems25.STONES.get(pool[level.getRandom().nextInt(pool.length)]).get()));
+                }
                 p.giveExperiencePoints(300 + 50 * tier);
                 WeeklyGoals.addPoints(p, 60);
             } else {
-                coins = (2 + tier / 2L) * 100;
+                coins = (2 + tier / 2L) * 300;
                 if (level.getRandom().nextFloat() < 0.3F) loot.add(boss.trophy());
                 p.giveExperiencePoints(100);
             }
             if (id.equals(mvp)) {
-                coins += 500;
-                loot.add(new ItemStack(ModItems7.RUBY.get()));
-                p.sendSystemMessage(Component.literal("👑 MVP 보너스: 500동 + 루비").withStyle(ChatFormatting.GOLD));
+                coins += 1500;
+                loot.add(new ItemStack(ModItems7.RUBY.get(), 3));
+                p.sendSystemMessage(Component.literal("👑 MVP 보너스: 1,500동 + 루비 3개").withStyle(ChatFormatting.GOLD));
             }
             Coins.give(p, coins);
             for (ItemStack s : loot) if (!p.getInventory().add(s) && !s.isEmpty()) net.minecraft.world.Containers.dropItemStack(p.level(), p.getX(), p.getY(), p.getZ(), s);
-            p.sendSystemMessage(Component.literal(first ? String.format("이번 주 첫 클리어 보상: %,d동 · 루비 · 다이아몬드 · %s", coins, boss.trophy().getHoverName().getString())
-                    : String.format("반복 클리어 보상: %,d동 (이번 주 첫 보상은 이미 받았어요)", coins)).withStyle(ChatFormatting.GREEN));
+            p.sendSystemMessage(Component.literal(first ? String.format("이번 단계 첫 클리어 보상: %,d동 · 루비 · 다이아몬드 · %s", coins, boss.trophy().getHoverName().getString())
+                    : String.format("반복 클리어 보상: %,d동 (이 단계 보상은 이미 받았어요)", coins)).withStyle(ChatFormatting.GREEN));
             p.connection.send(new ClientboundSetTitleTextPacket(Component.literal("레이드 클리어!").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD)));
         }
         st.putInt("tier", Math.min(MAX_TIER, tier + 1));

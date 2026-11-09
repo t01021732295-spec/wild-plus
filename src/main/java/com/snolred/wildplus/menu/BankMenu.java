@@ -27,7 +27,7 @@ import org.jspecify.annotations.Nullable;
  * 송금은 은행 잔액에서 상대 계좌로 바로 들어간다 (상대가 접속 중일 때만 고를 수 있음).
  */
 public class BankMenu extends AbstractContainerMenu {
-    public static final int DEP_ALL = 0, DEP_100 = 1, DEP_10 = 2;
+    public static final int DEP_ALL = 0, DEP_100 = 1, DEP_10 = 2, DEP_10K = 3, DEP_100K = 4;
     public static final int WD_10 = 10, WD_100 = 11, WD_1000 = 12, WD_ALL = 13, WD_10K = 14, WD_100K = 15;
     public static final int AMT_10 = 20, AMT_100 = 21, AMT_1000 = 22, AMT_RESET = 23, PREV = 24, NEXT = 25, SEND = 26;
     public static final int D_BAL = 0, D_CASH = 2, D_AMT = 4, D_TARGET = 6, D_INCOME = 7, D_TAX = 9, D_TREASURY = 11, D_LIMIT = 13, D_DEBT = 15, D_PAY = 17, D_ASK = 19, D_CREDIT = 21, D_DAYS = 22, D_STREAK = 23, D_RATE = 24, D_TERM = 25, DATA = 26;
@@ -160,8 +160,8 @@ public class BankMenu extends AbstractContainerMenu {
         WildData wd = WildData.get(sp.level().getServer());
         UUID me = sp.getUUID();
         switch (id) {
-            case DEP_ALL, DEP_100, DEP_10 -> {
-                long want = id == DEP_ALL ? Coins.totalValue(sp) : id == DEP_100 ? 100 : 10;
+            case DEP_ALL, DEP_100, DEP_10, DEP_10K, DEP_100K -> {
+                long want = id == DEP_ALL ? Coins.totalValue(sp) : id == DEP_100K ? 100_000 : id == DEP_10K ? 10_000 : id == DEP_100 ? 100 : 10;
                 if (want > 0 && Coins.pay(sp, want)) {
                     wd.reason = "입금";
                     wd.addBalance(me, want);
