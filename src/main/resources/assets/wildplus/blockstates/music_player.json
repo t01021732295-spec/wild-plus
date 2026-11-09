@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/music_player"
+    },
+    "facing=east": {
+      "model": "wildplus:block/music_player",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/music_player",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/music_player",
+      "y": 270
+    }
+  }
+}

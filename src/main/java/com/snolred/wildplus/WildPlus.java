@@ -73,6 +73,8 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModItems27.init();
         com.snolred.wildplus.registry.ModBlocks17.init();
         com.snolred.wildplus.registry.ModItems28.init();
+        com.snolred.wildplus.registry.ModBlocks18.init();
+        com.snolred.wildplus.registry.ModItems29.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
@@ -82,6 +84,7 @@ public class WildPlus {
         modEventBus.addListener(com.snolred.wildplus.net.BankSync::register);
         modEventBus.addListener(com.snolred.wildplus.net.CosmeticSync::register);
         modEventBus.addListener(com.snolred.wildplus.net.DoubleJump::register);
+        modEventBus.addListener(com.snolred.wildplus.net.MusicNet::register);
         // 한 묶음 늘리기: 원래 64개씩 쌓이는 아이템을 99개까지 (마인크래프트가 허용하는 최대치)
         modEventBus.addListener(net.neoforged.bus.api.EventPriority.LOWEST,
                 (net.neoforged.neoforge.event.ModifyDefaultComponentsEvent e) -> e.modifyMatching(
@@ -118,6 +121,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.EndCity.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.EndMobEvents.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.Lotto.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.music.Music.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.PotionEvents41.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.EmeraldGear.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Soil.class);

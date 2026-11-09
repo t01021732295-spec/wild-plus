@@ -1040,5 +1040,8 @@
   "item.wildplus.lord_sigil": "Lord's Sigil",
   "block.wildplus.lord_altar": "Void Lord's Altar",
   "block.wildplus.lottery_machine": "Lottery Machine",
-  "block.wildplus.fate_altar": "Altar of Fate"
+  "block.wildplus.fate_altar": "Altar of Fate",
+  "block.wildplus.music_player": "Music Player",
+  "item.wildplus.custom_disc": "Custom Disc",
+  "item.wildplus.sheet_music": "Sheet Music"
 }

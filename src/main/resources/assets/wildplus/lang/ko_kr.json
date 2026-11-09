@@ -1314,5 +1314,11 @@
   "block.wildplus.lottery_machine": "복권 발매기",
   "tooltip.wildplus.lottery_machine": "즉석 복권 · 숫자 복권(토요일 오후 8시 45분 추첨)",
   "block.wildplus.fate_altar": "운명의 제단",
-  "tooltip.wildplus.fate_altar": "장비를 들고 우클릭: 3~5만동에 랜덤 인챈트 1개 (1~15단계)"
+  "tooltip.wildplus.fate_altar": "장비를 들고 우클릭: 3~5만동에 랜덤 인챈트 1개 (1~15단계)",
+  "block.wildplus.music_player": "음악 플레이어",
+  "tooltip.wildplus.music_player": "서버 폴더의 노래를 트는 플레이어\n사용법은 우클릭 → [사용법]",
+  "item.wildplus.custom_disc": "커스텀 음반",
+  "tooltip.wildplus.custom_disc": "음악 플레이어에서 곡을 담아요",
+  "item.wildplus.sheet_music": "악보",
+  "tooltip.wildplus.sheet_music": "음악 플레이어에서 곡을 담고\n들고 피아노를 우클릭하면 자동 연주"
 }

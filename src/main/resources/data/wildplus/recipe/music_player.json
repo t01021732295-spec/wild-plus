@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PNP",
+    "PJP",
+    "III"
+  ],
+  "key": {
+    "P": "#minecraft:planks",
+    "N": "minecraft:note_block",
+    "J": "minecraft:jukebox",
+    "I": "minecraft:iron_ingot"
+  },
+  "result": {
+    "id": "wildplus:music_player",
+    "count": 1
+  }
+}

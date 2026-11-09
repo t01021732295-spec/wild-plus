@@ -178,7 +178,9 @@ public class FurnitureBlock extends BigBlock implements EntityBlock {
                     if (!sp.getInventory().add(fill)) net.minecraft.world.Containers.dropItemStack(level, sp.getX(), sp.getY(), sp.getZ(), fill);
                 }
             }
-            case PIANO -> openPiano(sp, level, m);
+            case PIANO -> {
+                if (!com.snolred.wildplus.music.Music.tryPiano(sp, level, m)) openPiano(sp, level, m);
+            }
             case GRANDFATHER_CLOCK -> {
                 long t = level.getOverworldClockTime();
                 long day = t / 24000L + 1;
