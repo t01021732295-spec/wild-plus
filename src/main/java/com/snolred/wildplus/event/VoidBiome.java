@@ -20,6 +20,11 @@ public final class VoidBiome {
         holder = e.getServer().registryAccess().lookupOrThrow(Registries.BIOME).get(KEY).map(h -> (Holder<Biome>) h).orElse(null);
     }
 
+    @SubscribeEvent
+    public static void onStopped(net.neoforged.neoforge.event.server.ServerStoppedEvent e) {
+        holder = null; // 다른 세계에 이전 세계의 값이 섞이지 않게
+    }
+
     /** 시험용: 엔드에서 평원 지면이 깔린 곳을 찾아 그 위로 날아간다 */
     public static void debugGoto(net.minecraft.server.level.ServerPlayer p) {
         var end = p.level().getServer().getLevel(net.minecraft.world.level.Level.END);
