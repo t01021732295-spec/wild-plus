@@ -134,7 +134,7 @@ public final class Lotto {
         List<PickMenu.Entry> e = new ArrayList<>();
         for (int n = 1; n <= MAX; n++) {
             boolean on = set.contains(n);
-            e.add(new PickMenu.Entry((on ? "✔ " : "") + n, on ? "선택됨" : "누르면 선택", new ItemStack(on ? Items.LIME_DYE : Items.PAPER)));
+            e.add(new PickMenu.Entry((on ? "✔ " : "") + n, on ? "선택됨" : "누르면 선택", new ItemStack(on ? Items.EMERALD : Items.PAPER)));
         }
         boolean ready = set.size() == PICK;
         e.add(new PickMenu.Entry(ready ? "이 번호로 구매" : "5개를 골라 주세요", "10,000동", new ItemStack(ready ? Items.EMERALD : Items.BARRIER)));
