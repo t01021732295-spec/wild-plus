@@ -104,7 +104,7 @@ public final class MusicClient {
         try {
             Path d = FMLPaths.GAMEDIR.get().resolve("wildplus_music");
             Files.createDirectories(d);
-            net.minecraft.util.Util.getPlatform().openPath(d);
+            net.minecraft.util.Util.getPlatform().openUri(d.toUri());
         } catch (Exception ignored) {
         }
     }
