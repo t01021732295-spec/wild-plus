@@ -393,7 +393,7 @@ jobs:
             run "execute in minecraft:the_end run kill @e[type=wildplus:void_lord]"
             sleep 2
             echo "say TEST void turf count"; sleep 1
-            run "execute in minecraft:the_end run fill 816 45 592 846 80 622 minecraft:end_stone replace wildplus:void_turf"
+            run "execute in minecraft:the_end run fill 816 48 592 846 80 622 minecraft:end_stone replace wildplus:void_turf"
             sleep 2
             for m in void_stalker rift_mite void_wraith; do run "execute in minecraft:the_end run summon wildplus:$m 800 120 640"; done
             sleep 15
@@ -1251,6 +1251,14 @@ jobs:
             cmd "/weather clear"
             # 약국 · 기상
             cmd "/tp @s 396.5 120 -8.3 0 20"
+            # 4.4 엔드: 평원 지형 · 몬스터 · 공허 군주
+            cmd "/gamemode creative"; cmd "/effect give @s minecraft:night_vision 200 0 true"
+            cmd "/execute in minecraft:the_end run tp @s 832 96 608 0 35"; sleep 22
+            xdotool key F1 || true; shot end-plains
+            cmd "/execute at @s run summon wildplus:void_lord ~ ~-6 ~14"; sleep 8; shot end-lord-1; sleep 2; shot end-lord-2
+            cmd "/kill @e[type=wildplus:void_lord]"; sleep 2
+            cmd "/execute at @s run summon wildplus:void_stalker ~-3 ~-4 ~8"; cmd "/execute at @s run summon wildplus:void_wraith ~3 ~-2 ~8"; cmd "/execute at @s run summon wildplus:rift_mite ~ ~-4 ~6"; sleep 3; shot end-mobs
+            xdotool key F1 || true
             cmd "/wildplus uitest brew"; sleep 2; shot v40-brew; esc
             cmd "/wildplus uitest pharmacy"; shot v39-pharmacy
             xdotool mousemove 520 258; sleep 0.5; xdotool click 1; sleep 1; shot v39-pharmacy-pick
