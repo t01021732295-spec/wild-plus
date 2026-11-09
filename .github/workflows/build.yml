@@ -386,9 +386,11 @@ jobs:
             echo "say TEST void biome"; sleep 1
             run "execute in minecraft:the_end run locate biome wildplus:void_crystal_plains"
             sleep 3
-            run "execute in minecraft:the_end run forceload add 800 640"
-            sleep 3
-            run "execute in minecraft:the_end run place feature wildplus:void_plains 800 80 640"
+            run "execute in minecraft:the_end run forceload add 816 592 846 622"
+            sleep 25
+            echo "say TEST void turf count"; sleep 1
+            run "execute in minecraft:the_end run fill 816 45 592 846 80 622 minecraft:end_stone replace wildplus:void_turf"
+            sleep 2
             for m in void_stalker rift_mite void_wraith; do run "execute in minecraft:the_end run summon wildplus:$m 800 120 640"; done
             sleep 15
             sleep 10; echo "stop"
