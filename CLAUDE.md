@@ -47,6 +47,8 @@
 
 - 공허(4.0): `event/VoidGear`(장비 효과) · `AwakenedDragon`(각성의 핵 · 패턴 · 예고 장판 `warn`) · `VoidRuin`(열쇠 · 레버 · 문지기 · 재봉인, 좌표는 `tools/structures_v40.py` 와 일치) / 단계 텍스처는 `client/VoidDragonRenderer` + `mixin/EnderDragonRendererMixin`(드래곤 이름으로 단계 전달)
 
+- 엔드 2차(4.2~4.4): `event/Engraves`(각인석 11종, `ModItems25.STONES`, 저장은 RubyGear.ENGRAVE) · `event/EndCity`(셜커 스케일링, 시티 옆 금고실, 순찰) · 바이옴 `event/VoidBiome` + `mixin/TheEndBiomeSourceMixin`(엔드 바이옴은 코드 고정이라 믹스인) + `worldgen/VoidPlainsFeature`(26.3 Feature 는 인터페이스, 레지스트리 `Registries.FEATURE_TYPE`) · 몹 `entity/EndMobs` + `event/EndMobEvents` · 보스 `entity/VoidLordEntity` + `client/VoidLordRenderer`(상자를 코드로 그림) + `block/LordAltarBlock`. 최대 체력은 1024 상한이라 `wp_lord_scale` 로 받는 피해를 줄임. 시험 이동 `/wildplus uitest endplains`
+
 ## 커밋
 커밋 메시지 끝에:
 ```
