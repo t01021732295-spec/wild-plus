@@ -383,6 +383,9 @@ jobs:
             run "wildplus event stop"
             run "gamerule immediate_respawn true"
             run "gamerule doImmediateRespawn true"
+            echo "say TEST void biome"; sleep 1
+            run "execute in minecraft:the_end run locate biome wildplus:void_crystal_plains"
+            sleep 15
             sleep 10; echo "stop"
           ) | timeout 1200 ./gradlew runServer --no-daemon 2>&1 | tee server.log || true
           grep -q 'Done (' server.log

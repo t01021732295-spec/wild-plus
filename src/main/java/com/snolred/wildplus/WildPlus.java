@@ -104,6 +104,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.VoidGear.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.AwakenedDragon.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.VoidRuin.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.VoidBiome.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.PotionEvents41.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.EmeraldGear.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Soil.class);
