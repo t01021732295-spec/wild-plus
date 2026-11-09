@@ -61,7 +61,7 @@ public class VoidLordRenderer extends MobRenderer<VoidLordEntity, VoidLordRender
     }
 
     static final class Parts extends RenderLayer<State, Body> {
-        private static final int BONE = 0xDED6E2, BONE2 = 0xA094B0, VOID = 0x08050F, DARK = 0x120C20, DK2 = 0x281A46, FLESH = 0x461E6E, PUR = 0x9646F0, CYAN = 0x60F0F0, RED = 0xEB3C6E, WHITE = 0xFFFFFF;
+        private static final int BONE = 0x5E5468, BONE2 = 0x3E3648, VOID = 0x040208, DARK = 0x090510, DK2 = 0x140C24, FLESH = 0x22103A, PUR = 0x4E2090, CYAN = 0x2A9AA4, RED = 0xA81A44, WHITE = 0x8C8298, CORE = 0xB8F0F0;
         private final Body unit = new Body(bake(true));
         private PoseStack pose;
         private SubmitNodeCollector out;
@@ -151,7 +151,7 @@ public class VoidLordRenderer extends MobRenderer<VoidLordEntity, VoidLordRender
             float cs = 5 + b * 3.5F, cy = 50 + Mth.sin(b * Mth.PI) * 1.2F;
             d(-cs / 2 - 1, cy - cs / 2 - 1, -2, cs + 2, cs + 2, cs + 1, PUR, true);
             d(-cs / 2, cy - cs / 2, -1.5F, cs, cs, cs + 2.2F, CYAN, true);
-            d(-cs / 4, cy - cs / 4, -1, cs / 2, cs / 2, cs + 2.8F, WHITE, true);
+            d(-cs / 4, cy - cs / 4, -1, cs / 2, cs / 2, cs + 2.8F, CORE, true);
             for (int i = 0; i < 6; i++) {
                 float a = i * Mth.PI / 3F + t * 0.07F, r = cs / 2 + 4 + b * 2;
                 d(Mth.cos(a) * r - .7F, cy + Mth.sin(a) * r - .7F, 3 + b * 2, 1.4F, 1.4F, 1.4F, i % 2 == 0 ? RED : CYAN, true);
