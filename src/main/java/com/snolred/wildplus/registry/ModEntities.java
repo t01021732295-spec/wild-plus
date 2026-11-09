@@ -46,6 +46,14 @@ public final class ModEntities {
             com.snolred.wildplus.entity.SeatEntity::new, MobCategory.MISC, b -> b.sized(0.01F, 0.01F).noSummon().clientTrackingRange(8));
 
     // ───────── 3.8 흉조: 우민 용병 · 우민 밀수꾼 ─────────
+    // ───────── 4.3 엔드 몬스터 ─────────
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.EndMobs.Stalker>> VOID_STALKER = ENTITIES.registerEntityType("void_stalker",
+            com.snolred.wildplus.entity.EndMobs.Stalker::new, MobCategory.MONSTER, b -> b.sized(0.6F, 2.9F).eyeHeight(2.55F).clientTrackingRange(8));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.EndMobs.Mite>> RIFT_MITE = ENTITIES.registerEntityType("rift_mite",
+            com.snolred.wildplus.entity.EndMobs.Mite::new, MobCategory.MONSTER, b -> b.sized(0.4F, 0.3F).clientTrackingRange(8));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.EndMobs.Wraith>> VOID_WRAITH = ENTITIES.registerEntityType("void_wraith",
+            com.snolred.wildplus.entity.EndMobs.Wraith::new, MobCategory.MONSTER, b -> b.sized(0.9F, 0.5F).clientTrackingRange(8));
+
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.MercenaryEntity>> MERCENARY = ENTITIES.registerEntityType("illager_mercenary",
             com.snolred.wildplus.entity.MercenaryEntity::new, MobCategory.MISC, b -> b.sized(0.6F, 1.95F).clientTrackingRange(10));
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.SmugglerEntity>> SMUGGLER = ENTITIES.registerEntityType("illager_smuggler",
@@ -92,6 +100,9 @@ public final class ModEntities {
         event.put(FISHER_MERCHANT.get(), merchant);
         event.put(BANKER_MERCHANT.get(), merchant);
         event.put(BANDIT.get(), BanditEntity.createAttributes().build());
+        event.put(VOID_STALKER.get(), com.snolred.wildplus.entity.EndMobs.Stalker.attributes().build());
+        event.put(RIFT_MITE.get(), com.snolred.wildplus.entity.EndMobs.Mite.attributes().build());
+        event.put(VOID_WRAITH.get(), com.snolred.wildplus.entity.EndMobs.Wraith.attributes().build());
         event.put(MERCENARY.get(), com.snolred.wildplus.entity.MercenaryEntity.createAttributes().build());
         event.put(SMUGGLER.get(), com.snolred.wildplus.entity.SmugglerEntity.createAttributes().build());
         event.put(PRISONER.get(), Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 20.0).build());
@@ -101,6 +112,9 @@ public final class ModEntities {
     }
 
     public static void onSpawnPlacements(RegisterSpawnPlacementsEvent event) {
+        event.register(VOID_STALKER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(RIFT_MITE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        event.register(VOID_WRAITH.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(BANDIT.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
                 Monster::checkMonsterSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(GOLDEN_SLIME.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,

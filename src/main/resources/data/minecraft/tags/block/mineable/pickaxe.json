@@ -53,6 +53,9 @@
     "wildplus:void_ore",
     "wildplus:void_block",
     "wildplus:void_brick",
-    "wildplus:atm_tall"
+    "wildplus:atm_tall",
+    "wildplus:void_turf",
+    "wildplus:void_crystal_cyan",
+    "wildplus:void_crystal_purple"
   ]
 }

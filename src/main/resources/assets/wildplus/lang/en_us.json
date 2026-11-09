@@ -1026,5 +1026,14 @@
   "item.wildplus.engrave_fury": "Fury Engrave Stone",
   "item.wildplus.engrave_guard": "Guard Engrave Stone",
   "item.wildplus.engrave_vigor": "Vigor Engrave Stone",
-  "item.wildplus.engrave_rush": "Rush Engrave Stone"
+  "item.wildplus.engrave_rush": "Rush Engrave Stone",
+  "entity.wildplus.void_stalker": "Void Stalker",
+  "entity.wildplus.rift_mite": "Rift Mite",
+  "entity.wildplus.void_wraith": "Void Wraith",
+  "block.wildplus.void_turf": "Void Turf",
+  "block.wildplus.void_crystal_cyan": "Cyan Void Crystal",
+  "block.wildplus.void_crystal_purple": "Purple Void Crystal",
+  "item.wildplus.rift_dust": "Rift Dust",
+  "item.wildplus.wraith_plume": "Wraith Plume",
+  "biome.wildplus.void_crystal_plains": "Void Crystal Plains"
 }

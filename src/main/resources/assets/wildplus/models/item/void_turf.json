@@ -1,0 +1,6 @@
+{
+  "parent": "wildplus:block/void_turf",
+  "textures": {
+    "layer0": "wildplus:item/void_turf"
+  }
+}

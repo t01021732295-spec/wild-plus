@@ -95,7 +95,25 @@ public final class EndCity {
         Structure city = end.registryAccess().lookupOrThrow(Registries.STRUCTURE).getValueOrThrow(BuiltinStructures.END_CITY);
         for (ServerPlayer p : end.players()) {
             StructureStart start = end.structureManager().getStructureAt(p.blockPosition(), city);
-            if (start.isValid()) consider(end, d, start.getBoundingBox());
+            if (!start.isValid()) continue;
+            consider(end, d, start.getBoundingBox());
+            patrol(end, p);
+        }
+    }
+
+    /** 시티 순찰: 주변에 추적자가 3마리 미만이면 하나 부른다 */
+    private static void patrol(ServerLevel level, ServerPlayer p) {
+        if (level.getRandom().nextInt(4) != 0
+                || level.getEntitiesOfClass(com.snolred.wildplus.entity.EndMobs.Stalker.class, p.getBoundingBox().inflate(32.0)).size() >= 3) return;
+        for (int i = 0; i < 8; i++) {
+            double a = level.getRandom().nextDouble() * Math.PI * 2, r = 10 + level.getRandom().nextDouble() * 10;
+            BlockPos at = BlockPos.containing(p.getX() + Math.cos(a) * r, p.getY(), p.getZ() + Math.sin(a) * r);
+            if (!level.getBlockState(at.below()).isSolid() || !level.getBlockState(at).isAir() || !level.getBlockState(at.above()).isAir() || !level.getBlockState(at.above(2)).isAir()) continue;
+            Mob m = com.snolred.wildplus.registry.ModEntities.VOID_STALKER.get().create(level, EntitySpawnReason.MOB_SUMMONED);
+            if (m == null) return;
+            m.setPos(at.getX() + 0.5, at.getY(), at.getZ() + 0.5);
+            level.addFreshEntity(m);
+            return;
         }
     }
 

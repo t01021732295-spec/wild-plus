@@ -63,6 +63,24 @@ public final class ModRenderers {
             }
         });
         event.registerEntityRenderer(ModEntities.VINE_BOSS.get(), ctx -> new IllagerTex(ctx, tex("boss/vine")));
+        event.registerEntityRenderer(ModEntities.VOID_STALKER.get(), ctx -> new net.minecraft.client.renderer.entity.EndermanRenderer(ctx) {
+            @Override
+            public Identifier getTextureLocation(net.minecraft.client.renderer.entity.state.EndermanRenderState s) {
+                return tex("end/void_stalker");
+            }
+        });
+        event.registerEntityRenderer(ModEntities.RIFT_MITE.get(), ctx -> new net.minecraft.client.renderer.entity.EndermiteRenderer(ctx) {
+            @Override
+            public Identifier getTextureLocation(net.minecraft.client.renderer.entity.state.LivingEntityRenderState s) {
+                return tex("end/rift_mite");
+            }
+        });
+        event.registerEntityRenderer(ModEntities.VOID_WRAITH.get(), ctx -> new net.minecraft.client.renderer.entity.PhantomRenderer(ctx) {
+            @Override
+            public Identifier getTextureLocation(net.minecraft.client.renderer.entity.state.PhantomRenderState s) {
+                return tex("end/void_wraith");
+            }
+        });
         event.registerEntityRenderer(ModEntities.VOID_BOSS.get(), ctx -> new IllagerTex(ctx, tex("boss/void")));
         event.registerEntityRenderer(ModEntities.GOLD_BOSS.get(), ctx -> new IllagerTex(ctx, tex("boss/gold")));
         event.registerEntityRenderer(ModEntities.PHARAOH_BOSS.get(), ctx -> new net.minecraft.client.renderer.entity.HuskRenderer(ctx) {

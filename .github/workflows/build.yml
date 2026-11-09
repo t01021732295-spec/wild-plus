@@ -385,6 +385,11 @@ jobs:
             run "gamerule doImmediateRespawn true"
             echo "say TEST void biome"; sleep 1
             run "execute in minecraft:the_end run locate biome wildplus:void_crystal_plains"
+            sleep 3
+            run "execute in minecraft:the_end run forceload add 800 640"
+            sleep 3
+            run "execute in minecraft:the_end run place feature wildplus:void_plains 800 80 640"
+            for m in void_stalker rift_mite void_wraith; do run "execute in minecraft:the_end run summon wildplus:$m 800 120 640"; done
             sleep 15
             sleep 10; echo "stop"
           ) | timeout 1200 ./gradlew runServer --no-daemon 2>&1 | tee server.log || true

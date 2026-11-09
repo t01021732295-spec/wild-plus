@@ -67,6 +67,8 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModItems24.init();
         com.snolred.wildplus.registry.ModBlocks14.init();
         com.snolred.wildplus.registry.ModItems25.init();
+        com.snolred.wildplus.registry.ModBlocks15.init();
+        com.snolred.wildplus.registry.ModItems26.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
@@ -84,6 +86,7 @@ public class WildPlus {
         modEventBus.addListener(ModEntities::onSpawnPlacements);
         ModItems.ITEMS.register(modEventBus);
         ModLoot.MODIFIERS.register(modEventBus);
+        com.snolred.wildplus.registry.ModFeatures.TYPES.register(modEventBus);
         ModTabs.TABS.register(modEventBus);
 
         NeoForge.EVENT_BUS.register(BloodMoon.class);
@@ -109,6 +112,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.VoidBiome.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.Engraves.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.EndCity.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.EndMobEvents.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.PotionEvents41.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.EmeraldGear.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Soil.class);

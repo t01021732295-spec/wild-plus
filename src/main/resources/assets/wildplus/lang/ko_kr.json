@@ -1295,5 +1295,16 @@
   "item.wildplus.engrave_vigor": "활력 각인석",
   "tooltip.wildplus.engrave_vigor": "[공용] 강화대 재료 칸에 넣어 새김\n공허 장비 외 갑옷: 최대 체력 +2칸 (1번만)",
   "item.wildplus.engrave_rush": "질주 각인석",
-  "tooltip.wildplus.engrave_rush": "[공용] 강화대 재료 칸에 넣어 새김\n공허 장비 외 신발: 이동속도 +8%"
+  "tooltip.wildplus.engrave_rush": "[공용] 강화대 재료 칸에 넣어 새김\n공허 장비 외 신발: 이동속도 +8%",
+  "entity.wildplus.void_stalker": "공허 추적자",
+  "entity.wildplus.rift_mite": "균열 진드기",
+  "entity.wildplus.void_wraith": "공허 망령",
+  "block.wildplus.void_turf": "공허 지면",
+  "block.wildplus.void_crystal_cyan": "청록 공허 수정",
+  "block.wildplus.void_crystal_purple": "보라 공허 수정",
+  "item.wildplus.rift_dust": "균열 가루",
+  "tooltip.wildplus.rift_dust": "균열 진드기가 남긴 가루\n공허 군주 소환 재료",
+  "item.wildplus.wraith_plume": "망령 깃",
+  "tooltip.wildplus.wraith_plume": "공허 망령의 깃털\n공허 군주 소환 재료",
+  "biome.wildplus.void_crystal_plains": "공허 수정 평원"
 }
