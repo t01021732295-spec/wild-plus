@@ -76,12 +76,23 @@ public final class MusicNet {
         }
     }
 
+    public record OpenDir() implements CustomPacketPayload {
+        public static final Type<OpenDir> TYPE = new Type<>(WildPlus.id("music_open_dir"));
+        public static final StreamCodec<FriendlyByteBuf, OpenDir> CODEC = StreamCodec.unit(new OpenDir());
+
+        @Override
+        public Type<? extends CustomPacketPayload> type() {
+            return TYPE;
+        }
+    }
+
     public static void register(RegisterPayloadHandlersEvent event) {
         var r = event.registrar("1").optional();
         r.playToClient(Play.TYPE, Play.CODEC, MusicNet::onPlay);
         r.playToClient(Stop.TYPE, Stop.CODEC, MusicNet::onStop);
         r.playToClient(Chunk.TYPE, Chunk.CODEC, MusicNet::onChunk);
         r.playToClient(Help.TYPE, Help.CODEC, MusicNet::onHelp);
+        r.playToClient(OpenDir.TYPE, OpenDir.CODEC, (p, c) -> ClientBridge.openDir());
         r.playToServer(Request.TYPE, Request.CODEC, MusicNet::onRequest);
     }
 
@@ -117,6 +128,10 @@ public final class MusicNet {
 
         static void chunk(Chunk p) {
             com.snolred.wildplus.client.MusicClient.chunk(p);
+        }
+
+        static void openDir() {
+            com.snolred.wildplus.client.MusicClient.openDir();
         }
 
         static void help() {

@@ -61,6 +61,20 @@ public final class EndMobs {
         public static AttributeSupplier.Builder attributes() {
             return Endermite.createAttributes().add(Attributes.MAX_HEALTH, 12.0).add(Attributes.ATTACK_DAMAGE, 4.0);
         }
+
+        /** 무리로 다니면 소리가 끊임없이 겹쳐서: 걷는 소리 없음 · 울음은 작고 드물게 */
+        @Override
+        protected void playStepSound(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {}
+
+        @Override
+        public int getAmbientSoundInterval() {
+            return 400;
+        }
+
+        @Override
+        protected float getSoundVolume() {
+            return 0.25F;
+        }
     }
 
     public static class Wraith extends Phantom {

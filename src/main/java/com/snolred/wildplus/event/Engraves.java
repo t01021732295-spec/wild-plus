@@ -48,8 +48,13 @@ public final class Engraves {
         return voidArmor(s) || s.is(VOID_SWORD.get()) || s.is(VOID_BOW.get()) || s.is(VOID_PICKAXE.get()) || s.is(VOID_AXE.get()) || s.is(VOID_SHOVEL.get()) || s.is(VOID_HOE.get());
     }
 
+    /** 내구도가 있거나, 파괴 불가 장비(스텔라 루비 · 스카이 사파이어 · 로열 에메랄드 · 공허)면 장비 */
+    public static boolean gear(ItemStack s) {
+        return s.isDamageableItem() || s.has(DataComponents.UNBREAKABLE);
+    }
+
     private static boolean armor(ItemStack s) {
-        if (!s.isDamageableItem() || s.is(Items.ELYTRA)) return false;
+        if (!gear(s) || s.is(Items.ELYTRA)) return false;
         var eq = s.get(DataComponents.EQUIPPABLE);
         if (eq == null) return false;
         for (EquipmentSlot a : ARMOR) if (eq.slot() == a) return true;
@@ -62,7 +67,7 @@ public final class Engraves {
     }
 
     private static boolean tool(ItemStack s) {
-        return s.has(DataComponents.TOOL) && s.isDamageableItem() && !s.is(net.minecraft.tags.ItemTags.SWORDS);
+        return s.has(DataComponents.TOOL) && gear(s) && !s.is(net.minecraft.tags.ItemTags.SWORDS);
     }
 
     private static boolean weapon(ItemStack s) {

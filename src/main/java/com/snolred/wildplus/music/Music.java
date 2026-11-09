@@ -173,6 +173,7 @@ public final class Music {
         e.add(new PickMenu.Entry("음반에 곡 담기", "빈 음반을 들고 눌러요", new ItemStack(ModItems29.CUSTOM_DISC.get())));
         e.add(new PickMenu.Entry("악보에 곡 담기", "빈 악보를 들고 눌러요", new ItemStack(ModItems29.SHEET_MUSIC.get())));
         e.add(new PickMenu.Entry("사용법", "음악 · 악보 넣는 법", new ItemStack(Items.BOOK)));
+        e.add(new PickMenu.Entry("폴더 열기", "wildplus_music 폴더를 바로 열어요", new ItemStack(Items.CHEST)));
         PickMenu.open(p, Component.literal("🎵 음악 플레이어"), act.isEmpty() ? "멈춰 있어요" : "♪ " + title(act.getStringOr("name", "")), "", e, PickMenu.FLAG_SHOP, i -> {
             switch (i) {
                 case 0 -> pickSong(p, lv, pos, false, 0);
@@ -189,9 +190,13 @@ public final class Music {
                 }
                 case 5 -> pickSong(p, lv, pos, false, 1);
                 case 6 -> pickSong(p, lv, pos, true, 2);
-                default -> {
+                case 7 -> {
                     p.closeContainer();
                     PacketDistributor.sendToPlayer(p, new MusicNet.Help());
+                }
+                default -> {
+                    p.closeContainer();
+                    PacketDistributor.sendToPlayer(p, new MusicNet.OpenDir());
                 }
             }
         }, null, x -> x.blockPosition().closerThan(pos, 8));

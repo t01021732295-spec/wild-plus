@@ -91,7 +91,7 @@ def build(lang_ko, lang_en):
     write(DATA / "worldgen/placed_feature/void_plains.json", {"feature": i("void_plains"), "placement": []})
     write(DATA / "worldgen/biome/void_crystal_plains.json", {
         "attributes": {"minecraft:gameplay/natural_mob_spawns": {"argument": {"spawn_costs": {}, "spawns_by_category": {"monster": [
-            {"type": i("void_stalker"), "count": 2, "weight": 8}, {"type": i("rift_mite"), "count": 4, "weight": 6}, {"type": i("void_wraith"), "count": 1, "weight": 4}, {"type": "minecraft:enderman", "count": 4, "weight": 3}]}}, "modifier": "overlay"}},
+            {"type": i("void_stalker"), "count": 2, "weight": 8}, {"type": i("rift_mite"), "count": 2, "weight": 2}, {"type": i("void_wraith"), "count": 1, "weight": 4}, {"type": "minecraft:enderman", "count": 4, "weight": 3}]}}, "modifier": "overlay"}},
         "carvers": [], "downfall": 0.5, "effects": {"water_color": "#3f76e4"},
         "features": [[], [], [], [], ["minecraft:end_gateway_return"], [], [i("ore_void")], [], [], [i("void_plains")]],
         "has_precipitation": False, "temperature": 0.5})

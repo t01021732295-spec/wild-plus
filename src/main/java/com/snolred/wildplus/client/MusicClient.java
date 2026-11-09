@@ -94,6 +94,21 @@ public final class MusicClient {
         }
     }
 
+    /** 혼자 하는 세계면 폴더를 열고, 서버 접속 중이면 안내만 */
+    public static void openDir() {
+        Minecraft mc = Minecraft.getInstance();
+        if (!mc.hasSingleplayerServer()) {
+            if (mc.player != null) mc.player.sendOverlayMessage(net.minecraft.network.chat.Component.literal("서버의 폴더는 서버 컴퓨터에서 열어 주세요 (wildplus_music)").withStyle(net.minecraft.ChatFormatting.YELLOW));
+            return;
+        }
+        try {
+            Path d = FMLPaths.GAMEDIR.get().resolve("wildplus_music");
+            Files.createDirectories(d);
+            net.minecraft.util.Util.getPlatform().openPath(d);
+        } catch (Exception ignored) {
+        }
+    }
+
     public static void help() {
         Minecraft.getInstance().gui.setScreen(new MusicHelpScreen());
     }

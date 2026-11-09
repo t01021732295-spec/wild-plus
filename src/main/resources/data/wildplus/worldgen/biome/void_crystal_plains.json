@@ -12,8 +12,8 @@
             },
             {
               "type": "wildplus:rift_mite",
-              "count": 4,
-              "weight": 6
+              "count": 2,
+              "weight": 2
             },
             {
               "type": "wildplus:void_wraith",

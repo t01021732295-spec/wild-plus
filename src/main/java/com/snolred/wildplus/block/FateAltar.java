@@ -27,7 +27,7 @@ public final class FateAltar {
 
     public static void use(ServerPlayer p, BlockPos pos) {
         ItemStack stack = p.getItemInHand(InteractionHand.MAIN_HAND);
-        if (stack.isEmpty() || !stack.isDamageableItem()) {
+        if (stack.isEmpty() || !com.snolred.wildplus.event.Engraves.gear(stack)) {
             p.sendOverlayMessage(Component.literal("장비를 손에 들고 쓰세요 (3~5만동)").withStyle(ChatFormatting.RED));
             return;
         }
