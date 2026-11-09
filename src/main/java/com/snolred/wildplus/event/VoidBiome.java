@@ -48,6 +48,24 @@ public final class VoidBiome {
         com.snolred.wildplus.WildPlus.LOGGER.info("ENDPLAINS none after {}", checked);
     }
 
+    /** 시험용: 가장 가까운 공허 유적으로 순간이동 */
+    public static void debugRuin(net.minecraft.server.level.ServerPlayer p) {
+        var end = p.level().getServer().getLevel(net.minecraft.world.level.Level.END);
+        if (end == null) return;
+        var reg = end.registryAccess().lookupOrThrow(Registries.STRUCTURE);
+        var key = ResourceKey.create(Registries.STRUCTURE, Identifier.fromNamespaceAndPath("wildplus", "void_ruin"));
+        var found = end.getChunkSource().getGenerator().findNearestMapStructure(end, net.minecraft.core.HolderSet.direct(reg.getOrThrow(key)), new net.minecraft.core.BlockPos(0, 60, 0), 100, false);
+        if (found == null) {
+            com.snolred.wildplus.WildPlus.LOGGER.info("ENDRUIN none");
+            return;
+        }
+        var at = found.getFirst();
+        com.snolred.wildplus.WildPlus.LOGGER.info("ENDRUIN at {}", at);
+        p.getAbilities().flying = true;
+        p.onUpdateAbilities();
+        p.teleportTo(end, at.getX() + 0.5, 60.0, at.getZ() + 0.5, java.util.Set.of(), 0F, 20F, true);
+    }
+
     /** x, z 는 쿼트 좌표(블록÷4). 중앙 섬 부근은 제외 */
     public static boolean inZone(int x, int z) {
         if ((long) x * x + (long) z * z < 62_500L) return false; // 약 1000블록 안쪽

@@ -1253,6 +1253,9 @@ jobs:
             cmd "/tp @s 396.5 120 -8.3 0 20"
             # 4.4 엔드: 평원 지형 · 몬스터 · 공허 군주
             cmd "/gamemode creative"; cmd "/effect give @s minecraft:night_vision 200 0 true"
+            cmd "/wildplus uitest endruin"; sleep 45
+            for q in $(jps -q); do jstack $q >> jstack-end.txt 2>&1 || true; done
+            shot end-ruin
             cmd "/wildplus uitest endplains"; sleep 30
             shot end-plains
             cmd "/execute at @s run summon wildplus:void_lord ^ ^-5 ^8"; sleep 6; shot end-lord-1; sleep 1; shot end-lord-2; sleep 1; shot end-lord-3
@@ -1320,6 +1323,7 @@ jobs:
           [ -f client.log ] && grep -i -E "wildplus|missing|unable to|failed to load|exception|error|CHAT|System chat|HARVEST" client.log | grep -v -E "DEBUG|Masking|ALSA" | head -c 150000 > /tmp/pub/client-filtered.txt || true
           [ -f client.log ] && tail -c 60000 client.log > /tmp/pub/client-tail.txt || true
           cp shot-*.png /tmp/pub/ 2>/dev/null || true
+          cp jstack-*.txt /tmp/pub/ 2>/dev/null || true
           echo "build=${{ steps.build.outcome }} smoke=${{ steps.smoke.outcome }} sha=${{ github.sha }}" > /tmp/pub/status.txt
           cd /tmp/pub
           git init -q -b ci-log

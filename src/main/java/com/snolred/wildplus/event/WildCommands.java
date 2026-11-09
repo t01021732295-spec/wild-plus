@@ -143,6 +143,7 @@ public final class WildCommands {
                     switch (com.mojang.brigadier.arguments.StringArgumentType.getString(ctx, "what")) {
                         case "pharmacy" -> com.snolred.wildplus.economy.Services.openPharmacy(p, at);
                         case "endplains" -> VoidBiome.debugGoto(p);
+                        case "endruin" -> VoidBiome.debugRuin(p);
                         case "brew" -> {
                             p.level().setBlockAndUpdate(front, net.minecraft.world.level.block.Blocks.BREWING_STAND.defaultBlockState());
                             if (p.level().getBlockEntity(front) instanceof net.minecraft.world.MenuProvider m) p.openMenu(m);
