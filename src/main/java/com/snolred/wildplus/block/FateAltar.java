@@ -17,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
-/** 4.5 운명의 제단: 든 장비에 모든 인챈트 중 하나를 1~15단계로 붙인다 (3~5만동). 1~9단계 각 8% · 10~15단계 각 약 4.67% */
+/** 4.5 운명의 제단: 든 장비에 모든 인챈트 중 하나를 1~15단계로 붙인다 (2만 4천~4만동). 1~9단계 각 8% · 10~15단계 각 약 4.67% */
 public final class FateAltar {
     private FateAltar() {}
 
@@ -28,12 +28,12 @@ public final class FateAltar {
     public static void use(ServerPlayer p, BlockPos pos) {
         ItemStack stack = p.getItemInHand(InteractionHand.MAIN_HAND);
         if (stack.isEmpty() || !com.snolred.wildplus.event.Engraves.gear(stack)) {
-            p.sendOverlayMessage(Component.literal("장비를 손에 들고 쓰세요 (3~5만동)").withStyle(ChatFormatting.RED));
+            p.sendOverlayMessage(Component.literal("장비를 손에 들고 쓰세요 (2만 4천~4만동)").withStyle(ChatFormatting.RED));
             return;
         }
         ServerLevel lv = (ServerLevel) p.level();
         var r = p.getRandom();
-        long price = 30_000L + r.nextInt(20_001);
+        long price = 24_000L + r.nextInt(16_001);
         if (!Coins.pay(p, price)) {
             p.sendOverlayMessage(Component.literal(String.format("%,d동이 필요해요", price)).withStyle(ChatFormatting.RED));
             return;

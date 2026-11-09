@@ -3,10 +3,6 @@ package com.snolred.wildplus.economy;
 import com.snolred.wildplus.content.ContentData;
 import com.snolred.wildplus.menu.PickMenu;
 import com.snolred.wildplus.registry.ModItems4;
-import java.time.DayOfWeek;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,11 +22,12 @@ import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
-/** 4.5 복권 발매기: 즉석 복권 · 숫자 복권(1~25 중 5개). 추첨은 매주 토요일 오후 8시 45분(한국 시간), 꺼져 있었으면 다음에 켜질 때. */
+/** 4.5 복권 발매기: 즉석 복권 · 숫자 복권(1~25 중 5개). 추첨은 게임 속 토요일 오후 8시 45분, 그 시각을 건너뛰면 다음 확인 때. */
 public final class Lotto {
     private static final long TICKET = 10_000L, SCRATCH = 3_000L, BASE_JACKPOT = 50_000_000L;
     private static final int MAX = 25, PICK = 5;
-    private static final ZoneId KST = ZoneId.of("Asia/Seoul");
+    /** 첫 추첨: 6일차(토) 오후 8시 45분 — 오전 6시가 틱 0, 1시간 = 1000틱 */
+    private static final long FIRST_DRAW = 5L * 24_000L + 14_750L, WEEK = 7L * 24_000L;
     private static final Map<UUID, TreeSet<Integer>> PICKS = new HashMap<>();
 
     private Lotto() {}
@@ -59,7 +56,7 @@ public final class Lotto {
         e.add(new PickMenu.Entry("숫자 복권 · 직접 고르기", "10,000동\n1~25 중 5개를 직접 골라요", new ItemStack(Items.WRITABLE_BOOK)));
         e.add(new PickMenu.Entry("내 복권", "이번 회차에 산 번호 보기", new ItemStack(Items.BOOK)));
         e.add(new PickMenu.Entry("지난 추첨 결과", "최근 회차의 당첨 번호", new ItemStack(Items.CLOCK)));
-        String head = String.format("%d회차 · 잭팟 %,d동 · 토요일 오후 8시 45분 추첨", round(s), jackpot(s));
+        String head = String.format("%d회차 · 잭팟 %,d동 · 게임 속 토요일 오후 8시 45분 추첨", round(s), jackpot(s));
         PickMenu.open(p, Component.literal("복권 발매기"), head, "", e, PickMenu.FLAG_SHOP, i -> {
             switch (i) {
                 case 0 -> buyScratch(p);
@@ -173,11 +170,11 @@ public final class Lotto {
         p.closeContainer();
     }
 
-    private static long lastSlot() {
-        ZonedDateTime now = ZonedDateTime.now(KST);
-        ZonedDateTime t = now.with(TemporalAdjusters.previousOrSame(DayOfWeek.SATURDAY)).withHour(20).withMinute(45).withSecond(0).withNano(0);
-        if (t.isAfter(now)) t = t.minusWeeks(1);
-        return t.toInstant().toEpochMilli();
+    /** 지금까지 지나간 가장 최근 추첨 시각 (게임 시간: 틱 0 = 1일차(월) 오전 6시). 아직 첫 회 전이면 -1 */
+    private static long lastSlot(MinecraftServer s) {
+        long now = s.overworld().getOverworldClockTime();
+        long weeks = Math.floorDiv(now - FIRST_DRAW, WEEK);
+        return weeks < 0 ? -1L : FIRST_DRAW + weeks * WEEK;
     }
 
     @SubscribeEvent
@@ -185,12 +182,12 @@ public final class Lotto {
         MinecraftServer s = event.getServer();
         if (s.getTickCount() % 100 != 13) return;
         CompoundTag d = data(s);
-        long slot = lastSlot(), last = d.getLongOr("last", 0L);
-        if (last == 0L) {
-            d.putLong("last", slot);
+        long slot = lastSlot(s);
+        if (!d.contains("game_last")) {
+            d.putLong("game_last", slot);
             ContentData.get(s).dirty();
-        } else if (last < slot) {
-            d.putLong("last", slot);
+        } else if (d.getLongOr("game_last", -1L) < slot) {
+            d.putLong("game_last", slot);
             draw(s);
         }
     }
