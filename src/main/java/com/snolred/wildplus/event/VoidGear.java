@@ -156,7 +156,7 @@ public final class VoidGear {
         level.sendParticles(ParticleTypes.PORTAL, from.x, from.y + 1.0, from.z, 40, 0.3, 0.6, 0.3, 0.4);
         p.teleportTo(to.x, to.y, to.z);
         p.resetFallDistance();
-        s.leapReady = now + LEAP_CD;
+        s.leapReady = now + (Engraves.has(p, "WARP") ? LEAP_CD * 3 / 5 : LEAP_CD);
         s.surgeUntil = now + SURGE;
         level.playSound(null, p.blockPosition(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.8F, 1.3F);
         p.sendOverlayMessage(Component.literal("공허 도약! 3초 안의 첫 공격 피해 2배").withStyle(ChatFormatting.LIGHT_PURPLE));
@@ -217,6 +217,18 @@ public final class VoidGear {
                     if (e != owner && (e == target || e instanceof Enemy)) magic(level, e, owner, 8.0F);
                 }
                 burstFx(level, target, 3.0, ParticleTypes.REVERSE_PORTAL);
+                if ("CHAIN".equals(RubyGear.engraving(owner.getMainHandItem())) || "CHAIN".equals(RubyGear.engraving(owner.getOffhandItem()))) {
+                    LivingEntity next = null;
+                    double bd = Double.MAX_VALUE;
+                    for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(8.0))) {
+                        double dd = e.distanceToSqr(target);
+                        if (e != owner && e != target && e instanceof Enemy && dd > 9.0 && dd < bd) { bd = dd; next = e; }
+                    }
+                    if (next != null) {
+                        magic(level, next, owner, 8.0F);
+                        burstFx(level, next, 2.0, ParticleTypes.REVERSE_PORTAL);
+                    }
+                }
                 level.sendParticles(ParticleTypes.EXPLOSION, target.getX(), target.getY() + 0.5, target.getZ(), 2, 0.6, 0.3, 0.6, 0);
                 level.playSound(null, target.blockPosition(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.PLAYERS, 0.8F, 1.5F);
                 level.playSound(null, target.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 0.45F, 1.8F);
@@ -235,12 +247,14 @@ public final class VoidGear {
         State s = state(p);
         if (++s.hits < 3) return;
         s.hits = 0;
-        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(3.0))) {
-            if (e != p && (e == target || e instanceof Enemy)) magic(level, e, p, 12.0F);
+        boolean abyss = "ABYSS".equals(RubyGear.engraving(p.getMainHandItem()));
+        double slashR = abyss ? 5.0 : 3.0;
+        for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(slashR))) {
+            if (e != p && (e == target || e instanceof Enemy)) magic(level, e, p, abyss ? 15.6F : 12.0F);
         }
         level.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), 8, 1.4, 0.3, 1.4, 0);
         level.sendParticles(ParticleTypes.SONIC_BOOM, target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), 1, 0, 0, 0, 0);
-        burstFx(level, target, 3.0, ParticleTypes.END_ROD);
+        burstFx(level, target, slashR, ParticleTypes.END_ROD);
         level.playSound(null, target.blockPosition(), SoundEvents.WARDEN_SONIC_BOOM, SoundSource.PLAYERS, 0.6F, 1.5F);
         level.playSound(null, target.blockPosition(), SoundEvents.ENDER_DRAGON_FLAP, SoundSource.PLAYERS, 1.0F, 0.8F);
         p.sendOverlayMessage(Component.literal("✦ 공허 베기!").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD));
@@ -258,6 +272,11 @@ public final class VoidGear {
         }
         level.sendParticles(ParticleTypes.ELECTRIC_SPARK, at.getX(), at.getY() + at.getBbHeight() * 0.5, at.getZ(), 50, 1.0, 0.9, 1.0, 0.35);
         level.sendParticles(ParticleTypes.PORTAL, at.getX(), at.getY() + at.getBbHeight() * 0.5, at.getZ(), 90, 0.5, 0.7, 0.5, 1.2);
+    }
+
+    /** 이 적에게 균열 표식이 걸려 있나 */
+    public static boolean marked(LivingEntity e) {
+        return e.level() instanceof ServerLevel lv && lv.getServer().getTickCount() < MARKS.getOrDefault(e, 0);
     }
 
     /** 균열 표식: 5초간 받는 피해 +15% (보스 +8%) */

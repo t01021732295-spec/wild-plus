@@ -1013,5 +1013,18 @@
   "item.minecraft.potion.effect.wildplus_long_time_warp": "Potion of Time Warp",
   "item.minecraft.splash_potion.effect.wildplus_long_time_warp": "Splash Potion of Time Warp",
   "item.minecraft.lingering_potion.effect.wildplus_long_time_warp": "Lingering Potion of Time Warp",
-  "item.minecraft.tipped_arrow.effect.wildplus_long_time_warp": "Arrow of Time Warp"
+  "item.minecraft.tipped_arrow.effect.wildplus_long_time_warp": "Arrow of Time Warp",
+  "item.wildplus.void_feather": "Void Feather",
+  "item.wildplus.lord_shard": "Lord's Crown Shard",
+  "block.wildplus.vault_lock": "Vault Lock",
+  "item.wildplus.engrave_abyss": "Abyss Engrave Stone",
+  "item.wildplus.engrave_devour": "Devour Engrave Stone",
+  "item.wildplus.engrave_chain": "Chain Engrave Stone",
+  "item.wildplus.engrave_warp": "Warp Engrave Stone",
+  "item.wildplus.engrave_heart": "Heart Engrave Stone",
+  "item.wildplus.engrave_harvest": "Harvest Engrave Stone",
+  "item.wildplus.engrave_fury": "Fury Engrave Stone",
+  "item.wildplus.engrave_guard": "Guard Engrave Stone",
+  "item.wildplus.engrave_vigor": "Vigor Engrave Stone",
+  "item.wildplus.engrave_rush": "Rush Engrave Stone"
 }

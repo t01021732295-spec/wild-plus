@@ -65,6 +65,8 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModItems23.init();
         com.snolred.wildplus.registry.ModBlocks13.init();
         com.snolred.wildplus.registry.ModItems24.init();
+        com.snolred.wildplus.registry.ModBlocks14.init();
+        com.snolred.wildplus.registry.ModItems25.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
@@ -105,6 +107,8 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.AwakenedDragon.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.VoidRuin.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.VoidBiome.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.Engraves.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.EndCity.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.PotionEvents41.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.EmeraldGear.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Soil.class);

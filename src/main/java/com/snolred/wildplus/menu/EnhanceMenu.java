@@ -38,7 +38,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
         if (mat.is(com.snolred.wildplus.registry.ModItems8.LICH_ORB.get())) return "LICH";
         if (mat.is(com.snolred.wildplus.registry.ModItems8.FROST_CROWN.get())) return "FROST";
         if (mat.is(com.snolred.wildplus.registry.ModItems6.LORD_HEART.get())) return "BLOOD";
-        return "";
+        return com.snolred.wildplus.registry.ModItems25.kind(mat);
     }
 
     public static String engraveName(String kind) {
@@ -47,7 +47,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
             case "LICH" -> "망령 각인";
             case "FROST" -> "서리 각인";
             case "BLOOD" -> "핏빛 각인";
-            default -> "";
+            default -> com.snolred.wildplus.event.Engraves.name(kind);
         };
     }
     public static final int MAT_X = 10, MAT_Y = 92;
@@ -99,7 +99,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
         if (com.snolred.wildplus.registry.ModItems9.upgrades().containsKey(stack.getItem())) out.add(BTN_STAR);
         if (stack.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SWORD.get())
                 && com.snolred.wildplus.event.RubyGear.trueLevel(stack) < 4) out.add(BTN_TRUE_DMG);
-        if (com.snolred.wildplus.event.RubyGear.isStar(stack) && com.snolred.wildplus.event.RubyGear.engraving(stack).isEmpty()) out.add(BTN_ENGRAVE);
+        if ((com.snolred.wildplus.event.RubyGear.isStar(stack) || com.snolred.wildplus.event.Engraves.engravable(stack)) && com.snolred.wildplus.event.RubyGear.engraving(stack).isEmpty()) out.add(BTN_ENGRAVE);
         if (com.snolred.wildplus.event.RubyGear.lifestealable(stack)
                 && com.snolred.wildplus.event.RubyGear.lifesteal(stack) < LIFESTEAL_MAX) out.add(BTN_LIFESTEAL);
         return out;
@@ -137,10 +137,15 @@ public class EnhanceMenu extends AbstractContainerMenu {
         }
         if (id == BTN_ENGRAVE) {
             String kind = engraveKind(input.getItem(1));
-            if (!com.snolred.wildplus.event.RubyGear.isStar(stack) || !com.snolred.wildplus.event.RubyGear.engraving(stack).isEmpty()) return true;
+            if (!com.snolred.wildplus.event.RubyGear.engraving(stack).isEmpty()) return true;
             if (kind.isEmpty()) {
-                sp.sendOverlayMessage(Component.literal("재료 칸에 레이드 전리품이나 핏빛 군주의 심장을 넣으세요")
+                sp.sendOverlayMessage(Component.literal("재료 칸에 각인석이나 레이드 전리품을 넣으세요")
                         .withStyle(ChatFormatting.RED));
+                return true;
+            }
+            boolean newKind = !com.snolred.wildplus.registry.ModItems25.kind(input.getItem(1)).isEmpty();
+            if (newKind ? !com.snolred.wildplus.event.Engraves.can(stack, kind) : !com.snolred.wildplus.event.RubyGear.isStar(stack)) {
+                sp.sendOverlayMessage(Component.literal("이 장비에는 새길 수 없는 각인이에요").withStyle(ChatFormatting.RED));
                 return true;
             }
             if (!Coins.pay(sp, ENGRAVE_COST)) {

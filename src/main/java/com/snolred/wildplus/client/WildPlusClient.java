@@ -121,7 +121,8 @@ public class WildPlusClient {
                 case "TITAN" -> "✦ 대지 각인: 낙하 피해 없음 · 밀려나지 않음";
                 case "LICH" -> "✦ 망령 각인: 처치하면 체력 회복 · 경험치 1.5배";
                 case "BLOOD" -> "✦ 핏빛 각인: 준 피해의 15% 흡혈 · 체력 절반 이하면 힘 I";
-                default -> "✦ 서리 각인: 때린 적 구속 II · 나를 때린 적 구속";
+                case "FROST" -> "✦ 서리 각인: 때린 적 구속 II · 나를 때린 적 구속";
+                default -> com.snolred.wildplus.event.Engraves.text(eng);
             };
             event.getToolTip().add(1, Component.literal(text).withStyle(ChatFormatting.AQUA));
         }

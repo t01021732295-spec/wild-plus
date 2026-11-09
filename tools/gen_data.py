@@ -391,6 +391,8 @@ def main():
     data_v33.build(json.loads((_A / "lang/ko_kr.json").read_text()), json.loads((_A / "lang/en_us.json").read_text()))
     import data_v34
     data_v34.build(json.loads((_A / "lang/ko_kr.json").read_text()), json.loads((_A / "lang/en_us.json").read_text()))
+    import data_v35
+    data_v35.build(json.loads((_A / "lang/ko_kr.json").read_text()), json.loads((_A / "lang/en_us.json").read_text()))
     import structures_v40
     structures_v40.build()
     n = sum(1 for _ in RES.rglob("*.json"))
