@@ -105,10 +105,21 @@ public final class Tower {
             new Theme("해저 궁전", Blocks.PRISMARINE_BRICKS, Blocks.DARK_PRISMARINE, Blocks.PRISMARINE, Blocks.DARK_PRISMARINE, Blocks.SEA_LANTERN),
             new Theme("끝의 도시", Blocks.PURPUR_BLOCK, Blocks.END_STONE_BRICKS, Blocks.PURPUR_BLOCK, Blocks.PURPUR_PILLAR, Blocks.END_ROD),
             new Theme("황금 왕좌", Blocks.POLISHED_BLACKSTONE_BRICKS, Blocks.GILDED_BLACKSTONE, Blocks.POLISHED_BLACKSTONE, Blocks.CHISELED_POLISHED_BLACKSTONE, Blocks.SHROOMLIGHT),
+            // 4.7 61층부터
+            new Theme("천공 성채", Blocks.QUARTZ_BRICKS, Blocks.SMOOTH_QUARTZ, Blocks.QUARTZ_PILLAR, Blocks.CHISELED_QUARTZ_BLOCK, Blocks.SEA_LANTERN),
+            new Theme("공허의 회랑", Blocks.OBSIDIAN, Blocks.CRYING_OBSIDIAN, Blocks.BLACKSTONE, Blocks.PURPUR_PILLAR, Blocks.END_ROD),
+            new Theme("화염 전장", Blocks.BLACKSTONE, Blocks.MAGMA_BLOCK, Blocks.BASALT, Blocks.POLISHED_BASALT, Blocks.SHROOMLIGHT),
+            new Theme("심판의 정상", Blocks.PURPUR_BLOCK, Blocks.GOLD_BLOCK, Blocks.QUARTZ_BRICKS, Blocks.CHISELED_QUARTZ_BLOCK, Blocks.SEA_LANTERN),
     };
 
+    /** 1~60층은 6테마, 61층부터는 천공 · 공허 · 전장 · 정상이 10층씩 돈다 */
+    private static int themeIndex(int f) {
+        int x = Math.max(1, f);
+        return x <= 60 ? (x - 1) / 10 : 6 + ((x - 61) / 10) % 4;
+    }
+
     public static String themeName(int f) {
-        return THEMES[((Math.max(1, f) - 1) / 10) % THEMES.length].name();
+        return THEMES[themeIndex(f)].name();
     }
 
     // ───────── 시작 ─────────
@@ -169,7 +180,7 @@ public final class Tower {
 
     // ───────── 투기장 짓기 ─────────
     private static void build(ServerLevel lv, int f) {
-        Theme t = THEMES[((f - 1) / 10) % THEMES.length];
+        Theme t = THEMES[themeIndex(f)];
         BlockState air = Blocks.AIR.defaultBlockState(), barrier = Blocks.BARRIER.defaultBlockState();
         int cx = CENTER.getX(), cy = CENTER.getY(), cz = CENTER.getZ();
         for (int dx = -R - 1; dx <= R + 1; dx++) {
@@ -201,6 +212,14 @@ public final class Tower {
 
     // ───────── 몬스터 ─────────
     private static List<EntityType<? extends Mob>> pool(int f) {
+        if (f > 60) {
+            return switch ((f - 61) / 10 % 4) {
+                case 0 -> List.of(com.snolred.wildplus.registry.ModEntities.CLOUD_SENTINEL.get(), com.snolred.wildplus.registry.ModEntities.THUNDER_HAWK.get(), com.snolred.wildplus.registry.ModEntities.CLOUD_PRIEST.get());
+                case 1 -> List.of(com.snolred.wildplus.registry.ModEntities.VOID_STALKER.get(), com.snolred.wildplus.registry.ModEntities.RIFT_MITE.get(), com.snolred.wildplus.registry.ModEntities.VOID_WRAITH.get());
+                case 2 -> List.of(EntityTypes.WITHER_SKELETON, EntityTypes.BLAZE, EntityTypes.RAVAGER, EntityTypes.PIGLIN_BRUTE, EntityTypes.EVOKER);
+                default -> List.of(com.snolred.wildplus.registry.ModEntities.CLOUD_SENTINEL.get(), com.snolred.wildplus.registry.ModEntities.CLOUD_PRIEST.get(), com.snolred.wildplus.registry.ModEntities.VOID_STALKER.get(), EntityTypes.WITHER_SKELETON, EntityTypes.RAVAGER);
+            };
+        }
         List<EntityType<? extends Mob>> p = new ArrayList<>(List.of(EntityTypes.ZOMBIE, EntityTypes.SKELETON, EntityTypes.SPIDER));
         if (f >= 4) p.addAll(List.of(EntityTypes.HUSK, EntityTypes.STRAY, EntityTypes.CAVE_SPIDER));
         if (f >= 8) p.addAll(List.of(EntityTypes.VINDICATOR, EntityTypes.WITCH, EntityTypes.PILLAGER));
@@ -258,7 +277,9 @@ public final class Tower {
         int n = Math.min(12, 2 + floor / 3 + ACTIVE.size());
         if (floor % 5 == 0) n = Math.max(2, n / 2);
         for (int i = 0; i < n; i++) spawn(lv, pool.get(r.nextInt(pool.size())), r);
-        if (floor % 10 == 0) {
+        if (floor > 60 && floor % 10 == 0) {
+            highBoss(lv, r);
+        } else if (floor % 10 == 0) {
             // 테마마다 전용 보스 (고유 생김새 + 고유 패턴)
             int kind = ((floor - 1) / 10) % THEMES.length;
             Mob big = spawn(lv, bossType(kind), r);
@@ -300,6 +321,37 @@ public final class Tower {
             }
         }
         floorStart = lv.getGameTime();
+    }
+
+    /** 4.7 70층 기사왕 · 80층 문지기 · 90층 화산 거신 · 100층 공허 군주, 그 뒤로는 반복 */
+    private static void highBoss(ServerLevel lv, RandomSource r) {
+        int slot = (floor / 10 - 7) % 4;
+        EntityType<? extends Mob> type;
+        String name;
+        switch (slot) {
+            case 0 -> { type = com.snolred.wildplus.registry.ModEntities.STORM_KING.get(); name = "폭풍의 기사왕"; }
+            case 1 -> { type = com.snolred.wildplus.registry.ModEntities.VOID_BOSS.get(); name = "공허의 문지기"; }
+            case 2 -> { type = com.snolred.wildplus.registry.ModEntities.VOLCANO_BOSS.get(); name = "화산 거신"; }
+            default -> { type = com.snolred.wildplus.registry.ModEntities.VOID_LORD.get(); name = "공허 군주"; }
+        }
+        Mob big = spawn(lv, type, r);
+        if (big == null) return;
+        if (big instanceof com.snolred.wildplus.entity.VoidLordEntity) {
+            AttributeInstance a = big.getAttribute(Attributes.MAX_HEALTH);
+            if (a != null) a.setBaseValue(1500.0);
+            big.setHealth(big.getMaxHealth());
+            big.getPersistentData().putFloat("wp_lord_scale", 0.35F); // 체력 상한 1024 를 넘는 몫만큼 받는 피해를 줄임
+        } else {
+            set(big, Attributes.MAX_HEALTH, 3.0 + ACTIVE.size() * 0.6);
+            big.setHealth(big.getMaxHealth());
+        }
+        big.setCustomName(Component.literal("👑 " + name + " · " + floor + "층").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+        big.setCustomNameVisible(true);
+        for (UUID id : ACTIVE) {
+            ServerPlayer p = lv.getServer().getPlayerList().getPlayer(id);
+            if (p != null) p.connection.send(new ClientboundSetTitleTextPacket(Component.literal("👑 " + name).withStyle(ChatFormatting.RED, ChatFormatting.BOLD)));
+        }
+        lv.playSound(null, CENTER.above(), SoundEvents.WITHER_SPAWN, SoundSource.HOSTILE, 0.8F, 0.9F);
     }
 
     // ───────── 틱 ─────────
@@ -422,6 +474,13 @@ public final class Tower {
                 if (floor >= 10) loot.add(new ItemStack(ModItems7.RUBY.get(), floor / 10));
                 if (floor % 15 == 0) loot.add(EventBottleItem.of(null));
                 if (floor >= 30 && floor % 10 == 0) loot.add(new ItemStack(Items.NETHERITE_SCRAP));
+                if (floor > 60) {
+                    loot.add(new ItemStack(com.snolred.wildplus.registry.ModItems22.VOID_SHARD.get(), floor / 10));
+                    if (floor % 10 == 0) {
+                        String[] pool = floor >= 90 ? new String[] {"ABYSS", "DEVOUR", "CHAIN", "WARP", "HEART"} : new String[] {"HARVEST", "FURY", "GUARD", "VIGOR", "RUSH"};
+                        loot.add(new ItemStack(com.snolred.wildplus.registry.ModItems25.STONES.get(pool[server.overworld().getRandom().nextInt(pool.length)]).get()));
+                    }
+                }
             }
             for (ItemStack s : loot) if (!p.getInventory().add(s) && !s.isEmpty()) net.minecraft.world.Containers.dropItemStack(p.level(), p.getX(), p.getY(), p.getZ(), s);
             p.heal(p.getMaxHealth() * 0.3F);

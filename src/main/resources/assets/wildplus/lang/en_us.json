@@ -1043,5 +1043,11 @@
   "block.wildplus.fate_altar": "Altar of Fate",
   "block.wildplus.music_player": "Music Player",
   "item.wildplus.custom_disc": "Custom Disc",
-  "item.wildplus.sheet_music": "Sheet Music"
+  "item.wildplus.sheet_music": "Sheet Music",
+  "entity.wildplus.volcano_boss": "Volcano Colossus",
+  "entity.wildplus.storm_king": "Storm King",
+  "entity.wildplus.cloud_sentinel": "Cloud Sentinel",
+  "entity.wildplus.thunder_hawk": "Thunder Hawk",
+  "entity.wildplus.cloud_priest": "Cloud Priest",
+  "item.wildplus.volcano_heart": "Molten Heart"
 }

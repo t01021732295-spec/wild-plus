@@ -65,7 +65,8 @@ public final class Raid {
     public enum Boss {
         TITAN("대지의 거신", "땅 내리치기 · 지진 돌진 / 낙석 / 광폭화 + 약탈자 호위", 700, 16, 2.0F, BossEvent.BossBarColor.YELLOW),
         LICH("망령 군주", "송곳니 · 영혼 사슬 / 순간이동 · 번개 / 위더 스켈레톤 · 암흑", 520, 10, 1.8F, BossEvent.BossBarColor.PURPLE),
-        FROST("서리 여왕", "얼음 화살 · 서리 폭발 / 얼음 감옥 · 얼음 가시 / 눈보라 + 호위병", 560, 10, 1.9F, BossEvent.BossBarColor.BLUE);
+        FROST("서리 여왕", "얼음 화살 · 서리 폭발 / 얼음 감옥 · 얼음 가시 / 눈보라 + 호위병", 560, 10, 1.9F, BossEvent.BossBarColor.BLUE),
+        VOLCANO("화산 거신", "용암 웅덩이 · 바위 투척 / 대분화 / 냉각 때 약점 노출(받는 피해 2배)", 640, 14, 1.0F, BossEvent.BossBarColor.RED);
 
         public final String title, patterns;
         public final int health, damage;
@@ -86,6 +87,7 @@ public final class Raid {
                 case TITAN -> com.snolred.wildplus.registry.ModEntities.TITAN_BOSS.get();
                 case LICH -> com.snolred.wildplus.registry.ModEntities.LICH_BOSS.get();
                 case FROST -> com.snolred.wildplus.registry.ModEntities.FROST_BOSS.get();
+                case VOLCANO -> com.snolred.wildplus.registry.ModEntities.VOLCANO_BOSS.get();
             };
         }
 
@@ -94,6 +96,7 @@ public final class Raid {
                 case TITAN -> ModItems8.TITAN_CORE.get();
                 case LICH -> ModItems8.LICH_ORB.get();
                 case FROST -> ModItems8.FROST_CROWN.get();
+                case VOLCANO -> com.snolred.wildplus.registry.ModItems30.VOLCANO_HEART.get();
             });
         }
     }
@@ -141,7 +144,7 @@ public final class Raid {
     private Raid() {}
 
     public static Boss bossOfWeek() {
-        return Boss.values()[(int) Math.floorMod(ContentData.week(), 3L)];
+        return Boss.values()[(int) Math.floorMod(ContentData.week(), (long) Boss.values().length)];
     }
 
     public static boolean active() {
@@ -567,6 +570,10 @@ public final class Raid {
                 floor = net.minecraft.world.level.block.Blocks.SMOOTH_BASALT; accent = net.minecraft.world.level.block.Blocks.POLISHED_BASALT;
                 wall = net.minecraft.world.level.block.Blocks.BASALT; pillar = net.minecraft.world.level.block.Blocks.POLISHED_BLACKSTONE_BRICKS;
                 light = net.minecraft.world.level.block.Blocks.SHROOMLIGHT;
+            }
+            case VOLCANO -> {
+                floor = net.minecraft.world.level.block.Blocks.BLACKSTONE; accent = net.minecraft.world.level.block.Blocks.MAGMA_BLOCK;
+                wall = net.minecraft.world.level.block.Blocks.BASALT; pillar = net.minecraft.world.level.block.Blocks.POLISHED_BLACKSTONE; light = net.minecraft.world.level.block.Blocks.SHROOMLIGHT;
             }
             case LICH -> {
                 floor = net.minecraft.world.level.block.Blocks.DEEPSLATE_TILES; accent = net.minecraft.world.level.block.Blocks.SCULK;

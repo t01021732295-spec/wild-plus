@@ -1320,5 +1320,12 @@
   "item.wildplus.custom_disc": "커스텀 음반",
   "tooltip.wildplus.custom_disc": "음악 플레이어에서 곡을 담아요",
   "item.wildplus.sheet_music": "악보",
-  "tooltip.wildplus.sheet_music": "음악 플레이어에서 곡을 담고\n들고 피아노를 우클릭하면 자동 연주"
+  "tooltip.wildplus.sheet_music": "음악 플레이어에서 곡을 담고\n들고 피아노를 우클릭하면 자동 연주",
+  "entity.wildplus.volcano_boss": "화산 거신",
+  "entity.wildplus.storm_king": "폭풍의 기사왕",
+  "entity.wildplus.cloud_sentinel": "구름 파수병",
+  "entity.wildplus.thunder_hawk": "천둥매",
+  "entity.wildplus.cloud_priest": "구름 사제",
+  "item.wildplus.volcano_heart": "거신의 녹은 심장",
+  "tooltip.wildplus.volcano_heart": "화산 거신 레이드 전리품"
 }

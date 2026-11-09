@@ -49,6 +49,18 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.VoidLordEntity>> VOID_LORD = ENTITIES.registerEntityType("void_lord",
             com.snolred.wildplus.entity.VoidLordEntity::new, MobCategory.MONSTER, b -> b.sized(2.0F, 5.0F).fireImmune().clientTrackingRange(16));
 
+    // ───────── 4.7 ─────────
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.VolcanoEntity>> VOLCANO_BOSS = ENTITIES.registerEntityType("volcano_boss",
+            com.snolred.wildplus.entity.VolcanoEntity::new, MobCategory.MONSTER, b -> b.sized(3.0F, 5.0F).fireImmune().clientTrackingRange(16));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.StormKingEntity>> STORM_KING = ENTITIES.registerEntityType("storm_king",
+            com.snolred.wildplus.entity.StormKingEntity::new, MobCategory.MONSTER, b -> b.sized(1.4F, 4.8F).fireImmune().clientTrackingRange(16));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.SkyMobs.Sentinel>> CLOUD_SENTINEL = ENTITIES.registerEntityType("cloud_sentinel",
+            com.snolred.wildplus.entity.SkyMobs.Sentinel::new, MobCategory.MONSTER, b -> b.sized(0.8F, 2.4F).clientTrackingRange(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.SkyMobs.Hawk>> THUNDER_HAWK = ENTITIES.registerEntityType("thunder_hawk",
+            com.snolred.wildplus.entity.SkyMobs.Hawk::new, MobCategory.MONSTER, b -> b.sized(1.2F, 0.6F).clientTrackingRange(10));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.SkyMobs.Priest>> CLOUD_PRIEST = ENTITIES.registerEntityType("cloud_priest",
+            com.snolred.wildplus.entity.SkyMobs.Priest::new, MobCategory.MONSTER, b -> b.sized(0.8F, 2.6F).clientTrackingRange(10));
+
     // ───────── 4.3 엔드 몬스터 ─────────
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.EndMobs.Stalker>> VOID_STALKER = ENTITIES.registerEntityType("void_stalker",
             com.snolred.wildplus.entity.EndMobs.Stalker::new, MobCategory.MONSTER, b -> b.sized(0.6F, 2.9F).eyeHeight(2.55F).clientTrackingRange(8));
@@ -103,6 +115,11 @@ public final class ModEntities {
         event.put(FISHER_MERCHANT.get(), merchant);
         event.put(BANKER_MERCHANT.get(), merchant);
         event.put(BANDIT.get(), BanditEntity.createAttributes().build());
+        event.put(VOLCANO_BOSS.get(), com.snolred.wildplus.entity.VolcanoEntity.attributes().build());
+        event.put(STORM_KING.get(), com.snolred.wildplus.entity.StormKingEntity.attributes().build());
+        event.put(CLOUD_SENTINEL.get(), com.snolred.wildplus.entity.SkyMobs.Sentinel.attributes().build());
+        event.put(THUNDER_HAWK.get(), com.snolred.wildplus.entity.SkyMobs.Hawk.attributes().build());
+        event.put(CLOUD_PRIEST.get(), com.snolred.wildplus.entity.SkyMobs.Priest.attributes().build());
         event.put(VOID_LORD.get(), com.snolred.wildplus.entity.VoidLordEntity.attributes().build());
         event.put(VOID_STALKER.get(), com.snolred.wildplus.entity.EndMobs.Stalker.attributes().build());
         event.put(RIFT_MITE.get(), com.snolred.wildplus.entity.EndMobs.Mite.attributes().build());

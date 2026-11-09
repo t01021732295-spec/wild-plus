@@ -64,6 +64,11 @@ public final class ModRenderers {
         });
         event.registerEntityRenderer(ModEntities.VINE_BOSS.get(), ctx -> new IllagerTex(ctx, tex("boss/vine")));
         event.registerEntityRenderer(ModEntities.VOID_LORD.get(), VoidLordRenderer::new);
+        event.registerEntityRenderer(ModEntities.VOLCANO_BOSS.get(), c -> new GenModelRenderer<>(c, "volcano", 0.52F, 2.0F, GenModelRenderer::volcano));
+        event.registerEntityRenderer(ModEntities.STORM_KING.get(), c -> new GenModelRenderer<>(c, "storm_king", 0.55F, 1.2F, GenModelRenderer::stormKing));
+        event.registerEntityRenderer(ModEntities.CLOUD_SENTINEL.get(), c -> new GenModelRenderer<>(c, "cloud_sentinel", 0.62F, 0.6F, GenModelRenderer::sentinel));
+        event.registerEntityRenderer(ModEntities.THUNDER_HAWK.get(), c -> new GenModelRenderer<>(c, "thunder_hawk", 0.55F, 0.6F, GenModelRenderer::hawk));
+        event.registerEntityRenderer(ModEntities.CLOUD_PRIEST.get(), c -> new GenModelRenderer<>(c, "cloud_priest", 0.6F, 0.6F, GenModelRenderer::priest));
         event.registerEntityRenderer(ModEntities.VOID_STALKER.get(), ctx -> new net.minecraft.client.renderer.entity.EndermanRenderer(ctx) {
             @Override
             public Identifier getTextureLocation(net.minecraft.client.renderer.entity.state.EndermanRenderState s) {

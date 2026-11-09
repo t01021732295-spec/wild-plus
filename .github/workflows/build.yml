@@ -1253,9 +1253,12 @@ jobs:
             cmd "/tp @s 396.5 120 -8.3 0 20"
             # 4.4 엔드: 평원 지형 · 몬스터 · 공허 군주
             cmd "/gamemode creative"; cmd "/effect give @s minecraft:night_vision 200 0 true"
-            cmd "/wildplus uitest endruin"; sleep 45
-            for q in $(jps -q); do jstack $q >> jstack-end.txt 2>&1 || true; done
-            shot end-ruin
+            cmd "/gamemode creative"; cmd "/tp @s 0 150 0 0 25"; sleep 3
+            cmd "/fill -14 148 8 14 148 40 minecraft:stone"; sleep 2
+            cmd "/summon wildplus:volcano_boss 0 149 22"; sleep 4; shot m47-volcano; cmd "/kill @e[type=wildplus:volcano_boss]"
+            cmd "/summon wildplus:storm_king 0 149 18"; sleep 4; shot m47-storm; cmd "/kill @e[type=wildplus:storm_king]"
+            cmd "/summon wildplus:cloud_sentinel -3 149 12"; cmd "/summon wildplus:cloud_priest 0 149 12"; cmd "/summon wildplus:thunder_hawk 3 152 12"; sleep 4; shot m47-mobs
+            cmd "/kill @e[type=wildplus:cloud_sentinel]"; cmd "/kill @e[type=wildplus:cloud_priest]"; cmd "/kill @e[type=wildplus:thunder_hawk]"
             cmd "/wildplus uitest endplains"; sleep 30
             shot end-plains
             cmd "/execute at @s run summon wildplus:void_lord ^ ^-5 ^8"; sleep 6; shot end-lord-1; sleep 1; shot end-lord-2; sleep 1; shot end-lord-3
