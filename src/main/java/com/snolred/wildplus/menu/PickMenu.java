@@ -25,6 +25,8 @@ public class PickMenu extends AbstractContainerMenu {
     /** 화면 테마: 투기장(콜로세움) · 진열장(유리 케이스 격자) */
     public static final int FLAG_ARENA = 8, FLAG_SHOP = 16, FLAG_JOB = 32, FLAG_REALTY = 64, FLAG_PIANO = 128, FLAG_GUESTBOOK = 256, FLAG_DERBY_BET = 512, FLAG_STABLE = 1024, FLAG_VILLAGE = 2048;
     /** 3.9 시설별 테마 화면 (ThemedScreen): flags 의 12~15번째 비트 */
+    /** 4.8 거래소 전용 모양 (FLAG_SHOP 과 함께): 차양 노점 · 나무 상자 진열 */
+    public static final int FLAG_MARKET = 1 << 16;
     public static final int THEME_SHIFT = 12;
     public static final int T_PHARMACY = 1, T_WEATHER = 2, T_LAND = 3, T_WARP = 4, T_CONTEST = 5, T_TELEPORT = 6, T_CONTRACT = 7, T_PRISON = 8, T_ALTAR = 9;
 

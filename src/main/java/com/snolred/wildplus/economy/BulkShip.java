@@ -65,7 +65,7 @@ public final class BulkShip {
                     out ? "제외됨 · 누르면 다시 팔아요" : String.format("%,d동 · 누르면 제외", v[1] / 100), new ItemStack(i)));
         }
         final long sum = total;
-        PickMenu.open(p, Component.literal("📦 일괄 출하"), String.format("합계 %,d동 · 장비와 인챈트된 물건은 빠져요", total / 100), "", e, PickMenu.FLAG_SHOP, idx -> {
+        PickMenu.open(p, Component.literal("📦 일괄 출하"), String.format("합계 %,d동 · 장비와 인챈트된 물건은 빠져요", total / 100), "", e, PickMenu.FLAG_SHOP | PickMenu.FLAG_MARKET, idx -> {
             if (idx == 0) {
                 if (sum > 0) sell(p);
                 p.closeContainer();

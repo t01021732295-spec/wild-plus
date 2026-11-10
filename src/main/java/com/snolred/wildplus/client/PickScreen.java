@@ -23,7 +23,7 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
             UiButton.Shape.PAPER);
     private static final UiButton.Style ARENA_KEY = new UiButton.Style(0xFFC9A86A, 0xFF8E6A32, 0xFF3E2A10, 0xFFFFF4DA, true,
             UiButton.Shape.SOFT);
-    private final boolean arena, shop, job;
+    private final boolean arena, shop, job, market;
     /** 알바 게시판: 코르크판에 꽂힌 메모지 */
     private static final UiButton.Style JOB_NOTE = new UiButton.Style(0xFFFFF6D8, 0xFFF4E4B0, 0xFFB8925A, 0xFF3A2A14, false, UiButton.Shape.PAPER);
     /** 투기장 판 화면 (설정 ◀▶ · 팀 판 · 큰 버튼): 칸 모양이 하나라도 있으면 */
@@ -54,6 +54,7 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
                         : (menu.flags & PickMenu.FLAG_CAN_TOGGLE) != 0 ? 222 : (menu.flags & PickMenu.FLAG_ARENA) != 0 ? 206 : 200);
         this.arena = (menu.flags & PickMenu.FLAG_ARENA) != 0;
         this.shop = (menu.flags & PickMenu.FLAG_SHOP) != 0;
+        this.market = (menu.flags & PickMenu.FLAG_MARKET) != 0;
         this.job = (menu.flags & PickMenu.FLAG_JOB) != 0;
         this.panel = arena && menu.entries.stream().anyMatch(e -> e.kind() != PickMenu.K_ROW);
         this.W = this.imageWidth;
@@ -266,6 +267,10 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
     public void extractBackground(GuiGraphicsExtractor g, int mouseX, int mouseY, float partialTick) {
         super.extractBackground(g, mouseX, mouseY, partialTick);
         int x = leftPos, y = topPos;
+        if (market) {
+            stall(g, x, y);
+            return;
+        }
         if (shop) {
             showroom(g, x, y);
             return;
@@ -360,6 +365,24 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
     }
 
     /** 명품관: 짙은 원목 테 · 어두운 벽지 · 위에서 비추는 조명 · 금 간판 */
+    /** 4.8 거래소: 빨강 · 흰 줄무늬 차양 아래 종이 벽과 나무 바닥 */
+    private void stall(GuiGraphicsExtractor g, int x, int y) {
+        UiKit.device(g, x, y, W, H, 0xFF8A5A2E, 0xFF4A2E14);
+        g.fillGradient(x + 4, y + 4, x + W - 4, y + H - 4, 0xFFF6E9CC, 0xFFE6D2A8);
+        for (int py = y + 40; py < y + H - 28; py += 14) g.fill(x + 6, py, x + W - 6, py + 1, 0x14805A2A); // 판자 결
+        // 차양
+        for (int sx = x + 4, k = 0; sx < x + W - 4; sx += 14, k++) {
+            int ex = Math.min(sx + 14, x + W - 4), c = k % 2 == 0 ? 0xFFC43434 : 0xFFF4EEE2;
+            g.fillGradient(sx, y + 4, ex, y + 28, c, UiKit.darker(c, 0.12F));
+            g.fill(sx + 2, y + 28, ex - 2, y + 31, c);
+            g.fill(sx + 4, y + 31, ex - 4, y + 33, c);
+        }
+        g.fill(x + 4, y + 33, x + W - 4, y + 35, 0x22000000);
+        // 아래 나무 바닥 띠
+        g.fillGradient(x + 4, y + H - 26, x + W - 4, y + H - 4, 0xFF9A6C38, 0xFF6B4726);
+        g.fill(x + 4, y + H - 26, x + W - 4, y + H - 25, 0xFFD9B070);
+    }
+
     private void showroom(GuiGraphicsExtractor g, int x, int y) {
         UiKit.device(g, x, y, W, H, 0xFF6A3E22, 0xFF2E1A0E);
         g.fillGradient(x + 4, y + 4, x + W - 4, y + H - 4, 0xFF2B1D2E, 0xFF140C16);
@@ -400,28 +423,52 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
             int x = getX(), y = getY(), w = getWidth();
             boolean hover = isHoveredOrFocused();
             int gh = 46; // 유리 높이
-            // 그림자 + 금 받침대
-            g.fill(x + 1, y + gh + 9, x + w + 1, y + gh + 12, 0x66000000);
-            g.fillGradient(x, y + gh, x + w, y + gh + 10, 0xFFE8C060, 0xFF8E6416);
-            g.fill(x, y + gh, x + w, y + gh + 1, 0xFFFFF0B0);
-            // 유리 안쪽 (벨벳 뒷벽)
-            g.fillGradient(x + 2, y + 2, x + w - 2, y + gh, 0xFF3A1430, 0xFF1C0A18);
-            g.fillGradient(x + 6, y + gh - 10, x + w - 6, y + gh, 0xFF7A1840, 0xFF4A0C26); // 벨벳 쿠션
-            // 물건 (2배, 마우스 올리면 살짝 떠오름)
-            int bob = hover ? -2 : 0;
-            g.pose().pushMatrix();
-            g.pose().translate(x + w / 2F - 16, y + 8 + bob);
-            g.pose().scale(2F, 2F);
-            g.item(entry.icon(), 0, 0);
-            g.pose().popMatrix();
-            // 유리: 옅은 푸른 막 + 사선 반사 + 테
-            g.fill(x + 2, y + 2, x + w - 2, y + gh, 0x1AB8E4FF);
-            for (int k = 0; k < 14; k++) g.fill(x + 6 + k, y + 4 + k * 2, x + 9 + k, y + 6 + k * 2, 0x30FFFFFF);
-            g.fill(x + w - 10, y + 4, x + w - 8, y + gh - 4, 0x26FFFFFF);
-            int rim = hover ? 0xFFFFE27A : 0xFFB89040;
-            UiKit.outline(g, x + 1, y + 1, w - 2, gh, rim);
-            g.fill(x, y, x + w, y + 2, rim);
-            if (hover) UiKit.outline(g, x - 1, y - 1, w + 2, CASE_H + 2, 0x88FFE27A);
+            if (market) {
+                boolean sign = entry.kind() == PickMenu.K_SMALL;
+                g.fill(x + 1, y + gh + 9, x + w + 1, y + gh + 12, 0x33000000);
+                if (sign) { // 메뉴 버튼: 청록 나무 간판
+                    g.fillGradient(x, y + 2, x + w, y + gh + 10, hover ? 0xFF3A97A8 : 0xFF2F7F8F, 0xFF1E5563);
+                    UiKit.outline(g, x + 2, y + 4, w - 4, gh + 4, 0xFFF6E9CC);
+                    g.fill(x + w / 2 - 12, y - 1, x + w / 2 - 10, y + 3, 0xFF6B4726);
+                    g.fill(x + w / 2 + 10, y - 1, x + w / 2 + 12, y + 3, 0xFF6B4726);
+                } else { // 나무 상자
+                    g.fillGradient(x, y + 2, x + w, y + gh, 0xFFC89A5E, 0xFF9A6C38);
+                    g.fillGradient(x + 3, y + 5, x + w - 3, y + gh - 2, 0xFF6B4726, 0xFF4A2F16);
+                    for (int k = 1; k < 4; k++) g.fill(x + 3, y + 5 + k * 10, x + w - 3, y + 6 + k * 10, 0x22000000);
+                    g.fillGradient(x - 1, y + gh, x + w + 1, y + gh + 10, 0xFFD9B070, 0xFFA87A40);
+                    g.fill(x - 1, y + gh, x + w + 1, y + gh + 1, 0xFFF2D9A0);
+                }
+                int bob2 = hover ? -2 : 0;
+                g.pose().pushMatrix();
+                g.pose().translate(x + w / 2F - 16, y + 9 + bob2);
+                g.pose().scale(2F, 2F);
+                g.item(entry.icon(), 0, 0);
+                g.pose().popMatrix();
+                if (hover) UiKit.outline(g, x - 1, y + 1, w + 2, gh + 10, 0xFFFFF0C8);
+            } else {
+                // 그림자 + 금 받침대
+                g.fill(x + 1, y + gh + 9, x + w + 1, y + gh + 12, 0x66000000);
+                g.fillGradient(x, y + gh, x + w, y + gh + 10, 0xFFE8C060, 0xFF8E6416);
+                g.fill(x, y + gh, x + w, y + gh + 1, 0xFFFFF0B0);
+                // 유리 안쪽 (벨벳 뒷벽)
+                g.fillGradient(x + 2, y + 2, x + w - 2, y + gh, 0xFF3A1430, 0xFF1C0A18);
+                g.fillGradient(x + 6, y + gh - 10, x + w - 6, y + gh, 0xFF7A1840, 0xFF4A0C26); // 벨벳 쿠션
+                // 물건 (2배, 마우스 올리면 살짝 떠오름)
+                int bob = hover ? -2 : 0;
+                g.pose().pushMatrix();
+                g.pose().translate(x + w / 2F - 16, y + 8 + bob);
+                g.pose().scale(2F, 2F);
+                g.item(entry.icon(), 0, 0);
+                g.pose().popMatrix();
+                // 유리: 옅은 푸른 막 + 사선 반사 + 테
+                g.fill(x + 2, y + 2, x + w - 2, y + gh, 0x1AB8E4FF);
+                for (int k = 0; k < 14; k++) g.fill(x + 6 + k, y + 4 + k * 2, x + 9 + k, y + 6 + k * 2, 0x30FFFFFF);
+                g.fill(x + w - 10, y + 4, x + w - 8, y + gh - 4, 0x26FFFFFF);
+                int rim = hover ? 0xFFFFE27A : 0xFFB89040;
+                UiKit.outline(g, x + 1, y + 1, w - 2, gh, rim);
+                g.fill(x, y, x + w, y + 2, rim);
+                if (hover) UiKit.outline(g, x - 1, y - 1, w + 2, CASE_H + 2, 0x88FFE27A);
+            }
             // 이름표: 이모지 · 상태 괄호 떼고 두 줄까지
             String name = entry.title();
             String state = "";
@@ -437,12 +484,12 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
             String l1 = name;
             while (font.width(l1) > w - 2 && l1.length() > 1) l1 = l1.substring(0, l1.length() - 2) + "…";
             int ty = y + gh + 13;
-            g.text(font, l1, x + (w - font.width(l1)) / 2, ty, 0xFFF4E9D8, false);
+            g.text(font, l1, x + (w - font.width(l1)) / 2, ty, market ? 0xFF3A2A14 : 0xFFF4E9D8, false);
             // 가격 (보유 · 착용이면 초록 글씨)
             String price = !state.isEmpty() ? state : entry.sub().isEmpty() ? "무료" : entry.sub();
-            int pc = !state.isEmpty() ? 0xFF7CE08A : 0xFFFFD25A;
+            int pc = market ? 0xFFA8321E : !state.isEmpty() ? 0xFF7CE08A : 0xFFFFD25A;
             price = shortPrice(price, w - 2);
-            g.text(font, price, x + (w - font.width(price)) / 2, ty + 9, pc, true);
+            g.text(font, price, x + (w - font.width(price)) / 2, ty + 9, pc, !market);
         }
     }
 
@@ -494,6 +541,16 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
                     UiKit.center(g, "완료", sx + 16, sy + 5, 0xFF2E8A3E);
                 }
             }
+            return;
+        }
+        if (market) {
+            String t = this.title.getString();
+            int tw = Math.max(UiKit.font().width(t) + 4, UiKit.font().width(menu.header));
+            UiKit.round(g, 8, 5, tw + 12, 25, 2, 0xF04A2E14);
+            UiKit.bold(g, t, 14, 8, 0xFFFFF0C8);
+            UiKit.text(g, menu.header, 14, 19, 0xFFE8CFA0);
+            UiKit.text(g, (page + 1) + " / " + pages(), 60, H - 19, 0xFFFFF0C8);
+            UiKit.right(g, t.contains("거래소") ? "수수료 5% · 대금은 통장으로" : t.contains("출하") ? "누르면 제외 / 다시 포함" : "", W - 10, H - 19, 0xFFFFF0C8);
             return;
         }
         if (shop) {

@@ -75,12 +75,12 @@ public final class Market {
         List<Listing> list = all(s);
         list.sort(byPrice ? Comparator.comparingLong(Listing::price) : Comparator.comparingLong((Listing l) -> -Long.parseLong(l.id())));
         List<PickMenu.Entry> e = new ArrayList<>();
-        e.add(new PickMenu.Entry("판매 등록", "손에 든 물건을 올려요 · 수수료 5% · 최대 " + MAX_PER_PLAYER + "건", new ItemStack(Items.WRITABLE_BOOK)));
-        e.add(new PickMenu.Entry("내 판매 목록", "누르면 판매를 취소하고 돌려받아요", new ItemStack(Items.CHEST)));
-        e.add(new PickMenu.Entry("정렬: " + (byPrice ? "싼 순" : "최신순"), "누르면 바뀌어요", new ItemStack(Items.HOPPER)));
-        e.add(new PickMenu.Entry("일괄 출하", "가방의 팔 수 있는 물건을 한 번에", new ItemStack(Items.GOLD_INGOT)));
+        e.add(new PickMenu.Entry("판매 등록", "손에 든 물건을 올려요 · 수수료 5% · 최대 " + MAX_PER_PLAYER + "건", new ItemStack(Items.WRITABLE_BOOK)), PickMenu.K_SMALL));
+        e.add(new PickMenu.Entry("내 판매 목록", "누르면 판매를 취소하고 돌려받아요", new ItemStack(Items.CHEST)), PickMenu.K_SMALL));
+        e.add(new PickMenu.Entry("정렬: " + (byPrice ? "싼 순" : "최신순"), "누르면 바뀌어요", new ItemStack(Items.HOPPER)), PickMenu.K_SMALL));
+        e.add(new PickMenu.Entry("일괄 출하", "가방의 팔 수 있는 물건을 한 번에", new ItemStack(Items.GOLD_INGOT)), PickMenu.K_SMALL));
         for (Listing l : list) e.add(entry(l, p, s));
-        PickMenu.open(p, Component.literal("🏪 거래소"), list.size() + "건 판매 중 · 물건을 누르면 사요", "", e, PickMenu.FLAG_SHOP, i -> {
+        PickMenu.open(p, Component.literal("🏪 거래소"), list.size() + "건 판매 중 · 물건을 누르면 사요", "", e, PickMenu.FLAG_SHOP | PickMenu.FLAG_MARKET, i -> {
             switch (i) {
                 case 0 -> startSell(p, pos);
                 case 1 -> mine(p, pos);
@@ -149,7 +149,7 @@ public final class Market {
         List<Listing> list = all(s).stream().filter(l -> l.seller().equals(p.getUUID())).toList();
         List<PickMenu.Entry> e = new ArrayList<>();
         for (Listing l : list) e.add(entry(l, p, s));
-        PickMenu.open(p, Component.literal("내 판매 목록"), list.size() + "/" + MAX_PER_PLAYER + "건 · 누르면 취소", "올린 물건이 없어요", e, PickMenu.FLAG_SHOP, i -> {
+        PickMenu.open(p, Component.literal("내 판매 목록"), list.size() + "/" + MAX_PER_PLAYER + "건 · 누르면 취소", "올린 물건이 없어요", e, PickMenu.FLAG_SHOP | PickMenu.FLAG_MARKET, i -> {
             if (i >= 0 && i < list.size()) buy(p, pos, list.get(i));
         }, null, x -> near(p, pos));
     }
@@ -179,7 +179,7 @@ public final class Market {
         e.add(new PickMenu.Entry("0으로", "가격 초기화", new ItemStack(Items.BARRIER)));
         e.add(new PickMenu.Entry(price > 0 ? "이 가격에 등록" : "가격을 정해 주세요", String.format("%,d동 · 팔리면 %,d동 입금", price, price - price * FEE_PCT / 100), new ItemStack(price > 0 ? Items.EMERALD_BLOCK : Items.STONE)));
         String what = hand.isEmpty() ? "(손이 비었어요)" : hand.getHoverName().getString() + " ×" + hand.getCount();
-        PickMenu.open(p, Component.literal("판매 등록"), what + " · " + String.format("%,d동", price), "", e, PickMenu.FLAG_SHOP, i -> {
+        PickMenu.open(p, Component.literal("판매 등록"), what + " · " + String.format("%,d동", price), "", e, PickMenu.FLAG_SHOP | PickMenu.FLAG_MARKET, i -> {
             if (i < STEPS.length) {
                 PRICE.put(p.getUUID(), Math.min(MAX_PRICE, price + STEPS[i]));
                 priceMenu(p, pos);
