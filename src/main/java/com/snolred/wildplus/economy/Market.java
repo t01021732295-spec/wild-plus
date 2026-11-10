@@ -177,7 +177,7 @@ public final class Market {
         ItemStack[] icon = {new ItemStack(Items.COPPER_INGOT), new ItemStack(Items.IRON_INGOT), new ItemStack(Items.GOLD_INGOT), new ItemStack(Items.DIAMOND), new ItemStack(Items.EMERALD)};
         for (int i = 0; i < STEPS.length; i++) e.add(new PickMenu.Entry(label[i], "가격 올리기", icon[i]));
         e.add(new PickMenu.Entry("0으로", "가격 초기화", new ItemStack(Items.BARRIER)));
-        e.add(new PickMenu.Entry(price > 0 ? "이 가격에 등록" : "가격을 정해 주세요", String.format("%,d동\n팔리면 %,d동 입금", price, price - price * FEE_PCT / 100), new ItemStack(price > 0 ? Items.LIME_CONCRETE : Items.GRAY_CONCRETE)));
+        e.add(new PickMenu.Entry(price > 0 ? "이 가격에 등록" : "가격을 정해 주세요", String.format("%,d동\n팔리면 %,d동 입금", price, price - price * FEE_PCT / 100), new ItemStack(price > 0 ? Items.EMERALD_BLOCK : Items.STONE)));
         String what = hand.isEmpty() ? "(손이 비었어요)" : hand.getHoverName().getString() + " ×" + hand.getCount();
         PickMenu.open(p, Component.literal("판매 등록"), what + " · " + String.format("%,d동", price), "", e, PickMenu.FLAG_SHOP, i -> {
             if (i < STEPS.length) {

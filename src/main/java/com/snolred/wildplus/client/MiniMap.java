@@ -265,7 +265,7 @@ public final class MiniMap {
     private static void render(GuiGraphicsExtractor g, DeltaTracker delta) {
         Minecraft mc = Minecraft.getInstance();
         LocalPlayer p = mc.player;
-        if (p == null || mc.level == null || !ClientConfig.MINIMAP.getAsBoolean() || mc.options.hideGui) return;
+        if (p == null || mc.level == null || !ClientConfig.MINIMAP.getAsBoolean()) return;
         int size = CELLS * PX, scale = ZOOMS[zoom];
         int ox = g.guiWidth() - size - 6, oy = p.getActiveEffects().isEmpty() ? 6 : 58;
         UiKit.circle(g, ox - 2, oy - 2, size + 4, 0xFFE8BA46);
