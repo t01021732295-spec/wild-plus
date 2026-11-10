@@ -143,6 +143,15 @@ public final class WildCommands {
                     switch (com.mojang.brigadier.arguments.StringArgumentType.getString(ctx, "what")) {
                         case "pharmacy" -> com.snolred.wildplus.economy.Services.openPharmacy(p, at);
                         case "endplains" -> VoidBiome.debugGoto(p);
+                        case "market" -> {
+                            p.level().setBlock(front, com.snolred.wildplus.registry.ModBlocks19.MARKET_STALL.get().defaultBlockState().setValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING, p.getDirection().getOpposite()), 3);
+                            com.snolred.wildplus.economy.Market.open(p, front);
+                        }
+                        case "bulkship" -> {
+                            p.getInventory().add(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.WHEAT, 64));
+                            p.getInventory().add(new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.IRON_INGOT, 23));
+                            com.snolred.wildplus.economy.BulkShip.open(p, front);
+                        }
                         case "musicfx" -> com.snolred.wildplus.music.Music.debugVisual(p);
                         case "lottodraw" -> com.snolred.wildplus.economy.Lotto.draw(p.level().getServer());
                         case "endruin" -> VoidBiome.debugRuin(p);

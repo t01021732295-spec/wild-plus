@@ -84,6 +84,17 @@ public final class Land {
         for (String k : c.keySet()) c.getString(k).ifPresent(v -> CHUNKS.put(k, UUID.fromString(v)));
     }
 
+    /** 이 사람이 이 차원에 가진 땅의 청크 좌표들 (미니맵용) */
+    public static java.util.List<int[]> chunksOf(UUID id, String dim) {
+        java.util.List<int[]> out = new java.util.ArrayList<>();
+        for (var e : CHUNKS.entrySet()) {
+            if (!e.getValue().equals(id)) continue;
+            String[] k = e.getKey().split("\\|");
+            if (k.length == 3 && k[0].equals(dim)) out.add(new int[] {Integer.parseInt(k[1]), Integer.parseInt(k[2])});
+        }
+        return out;
+    }
+
     public static UUID ownerAt(Level level, BlockPos pos) {
         return CHUNKS.get(key(level, pos));
     }

@@ -21,6 +21,11 @@ public final class ClientConfig {
             .translation("wildplus.configuration.healthBars")
             .define("healthBars", true);
 
+    public static final ModConfigSpec.BooleanValue MINIMAP = BUILDER
+            .comment("오른쪽 위에 미니맵 표시")
+            .translation("wildplus.configuration.minimap")
+            .define("minimap", true);
+
     public static final ModConfigSpec SPEC = BUILDER.build();
 
     private ClientConfig() {}
