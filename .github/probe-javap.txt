@@ -1,1 +1,1 @@
-ClientPacketDistributor|sendToServer
+RegisterKeyMappingsEvent|ClientTickEvent|ClientPlayerNetworkEvent
