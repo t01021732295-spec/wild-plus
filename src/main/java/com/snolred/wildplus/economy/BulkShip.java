@@ -57,12 +57,12 @@ public final class BulkShip {
         long total = 0;
         for (Item i : order) if (!ex.contains(key(i))) total += m.get(i)[1];
         List<PickMenu.Entry> e = new ArrayList<>();
-        e.add(new PickMenu.Entry("전부 팔기", String.format("합계 %,d동\n세금은 팔 때 계산돼요", total / 100), new ItemStack(Items.EMERALD)));
+        e.add(new PickMenu.Entry("전부 팔기", String.format("합계 %,d동 · 세금은 팔 때 계산돼요", total / 100), new ItemStack(Items.EMERALD)));
         for (Item i : order) {
             long[] v = m.get(i);
             boolean out = ex.contains(key(i));
             e.add(new PickMenu.Entry((out ? "✕ " : "") + new ItemStack(i).getHoverName().getString() + " ×" + v[0],
-                    out ? "제외됨 · 누르면 다시 팔아요" : String.format("%,d동\n누르면 제외", v[1] / 100), new ItemStack(i)));
+                    out ? "제외됨 · 누르면 다시 팔아요" : String.format("%,d동 · 누르면 제외", v[1] / 100), new ItemStack(i)));
         }
         final long sum = total;
         PickMenu.open(p, Component.literal("📦 일괄 출하"), String.format("합계 %,d동 · 장비와 인챈트된 물건은 빠져요", total / 100), "", e, PickMenu.FLAG_SHOP, idx -> {

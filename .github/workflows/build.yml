@@ -1254,10 +1254,11 @@ jobs:
             # 4.4 엔드: 평원 지형 · 몬스터 · 공허 군주
             cmd "/gamemode creative"; cmd "/effect give @s minecraft:night_vision 200 0 true"
             cmd "/gamemode creative"; sleep 1
-            sleep 6; shot v48-minimap
-            xdotool key m; sleep 2; shot v48-bigmap; esc
             cmd "/wildplus uitest market"; sleep 2; shot v48-market; esc
             cmd "/wildplus uitest bulkship"; sleep 2; shot v48-bulk; esc
+            cmd "/wildplus uitest musichelp"; sleep 2; shot v48-help; esc
+            xdotool key --clearmodifiers m; sleep 3; shot v48-bigmap
+            cmd "/wildplus uitest endplains"; sleep 1
             cmd "/wildplus uitest endplains"; sleep 25
             cmd "/execute at @s run summon wildplus:volcano_boss ^ ^-9 ^14"; sleep 3; shot m47-volcano; cmd "/kill @e[type=wildplus:volcano_boss]"
             cmd "/execute at @s run summon wildplus:storm_king ^ ^-7 ^11"; sleep 3; shot m47-storm; cmd "/kill @e[type=wildplus:storm_king]"
