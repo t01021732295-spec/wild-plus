@@ -30,9 +30,7 @@ def stall():
     return b
 
 
-KO = {"block.wildplus.market_stall": "거래소", "tooltip.wildplus.market_stall": "플레이어끼리 물건을 사고파는 곳
-대금은 통장으로 · 수수료 5%
-일괄 출하도 여기서",
+KO = {"block.wildplus.market_stall": "거래소", "tooltip.wildplus.market_stall": "플레이어끼리 물건을 사고파는 곳\n대금은 통장으로 · 수수료 5%\n일괄 출하도 여기서",
       "key.wildplus.map": "큰 지도 열기", "key.wildplus.map_in": "미니맵 확대", "key.wildplus.map_out": "미니맵 축소", "key.category.wildplus.main": "야생 플러스",
       "wildplus.configuration.minimap": "미니맵 표시"}
 EN = {"block.wildplus.market_stall": "Market Stall", "key.wildplus.map": "Open Map", "key.wildplus.map_in": "Minimap Zoom In", "key.wildplus.map_out": "Minimap Zoom Out", "key.category.wildplus.main": "Wild Plus",

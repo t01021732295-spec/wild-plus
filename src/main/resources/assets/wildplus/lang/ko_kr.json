@@ -1327,5 +1327,12 @@
   "entity.wildplus.thunder_hawk": "천둥매",
   "entity.wildplus.cloud_priest": "구름 사제",
   "item.wildplus.volcano_heart": "거신의 녹은 심장",
-  "tooltip.wildplus.volcano_heart": "화산 거신 레이드 전리품"
+  "tooltip.wildplus.volcano_heart": "화산 거신 레이드 전리품",
+  "block.wildplus.market_stall": "거래소",
+  "tooltip.wildplus.market_stall": "플레이어끼리 물건을 사고파는 곳\n대금은 통장으로 · 수수료 5%\n일괄 출하도 여기서",
+  "key.wildplus.map": "큰 지도 열기",
+  "key.wildplus.map_in": "미니맵 확대",
+  "key.wildplus.map_out": "미니맵 축소",
+  "key.category.wildplus.main": "야생 플러스",
+  "wildplus.configuration.minimap": "미니맵 표시"
 }

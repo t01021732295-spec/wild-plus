@@ -63,6 +63,7 @@
     "wildplus:scoreboard",
     "wildplus:finish_post",
     "wildplus:pharmacy_rack",
-    "wildplus:music_player"
+    "wildplus:music_player",
+    "wildplus:market_stall"
   ]
 }

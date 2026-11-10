@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "WWW",
+    "PCP",
+    "PGP"
+  ],
+  "key": {
+    "W": "#minecraft:wool",
+    "P": "#minecraft:planks",
+    "C": "minecraft:chest",
+    "G": "minecraft:gold_block"
+  },
+  "result": {
+    "id": "wildplus:market_stall",
+    "count": 1
+  }
+}

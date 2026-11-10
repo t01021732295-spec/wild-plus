@@ -1049,5 +1049,11 @@
   "entity.wildplus.cloud_sentinel": "Cloud Sentinel",
   "entity.wildplus.thunder_hawk": "Thunder Hawk",
   "entity.wildplus.cloud_priest": "Cloud Priest",
-  "item.wildplus.volcano_heart": "Molten Heart"
+  "item.wildplus.volcano_heart": "Molten Heart",
+  "block.wildplus.market_stall": "Market Stall",
+  "key.wildplus.map": "Open Map",
+  "key.wildplus.map_in": "Minimap Zoom In",
+  "key.wildplus.map_out": "Minimap Zoom Out",
+  "key.category.wildplus.main": "Wild Plus",
+  "wildplus.configuration.minimap": "Show minimap"
 }
