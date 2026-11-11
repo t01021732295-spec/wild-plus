@@ -17,6 +17,10 @@ public final class WildCommands {
             ctx.getSource().sendSuccess(() -> Component.translatable("commands.wildplus.guide"), false);
             return 1;
         }));
+        event.getDispatcher().register(Commands.literal("dex").executes(ctx -> {
+            com.snolred.wildplus.content.Codex.open(ctx.getSource().getPlayerOrException());
+            return 1;
+        }));
         event.getDispatcher().register(Commands.literal("cookbook").executes(ctx -> {
             ctx.getSource().getPlayerOrException().getInventory().add(com.snolred.wildplus.economy.Cookbook.create());
             ctx.getSource().sendSuccess(() -> Component.translatable("commands.wildplus.cookbook"), false);
@@ -144,6 +148,10 @@ public final class WildCommands {
                         case "pharmacy" -> com.snolred.wildplus.economy.Services.openPharmacy(p, at);
                         case "endplains" -> VoidBiome.debugGoto(p);
                         case "musichelp" -> net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(p, new com.snolred.wildplus.net.MusicNet.Help());
+                        case "dex" -> com.snolred.wildplus.content.Codex.debug(p);
+                        case "dexcat" -> com.snolred.wildplus.content.Codex.debugPage(p, 0);
+                        case "dexach" -> com.snolred.wildplus.content.Codex.debugPage(p, 1);
+                        case "dextitle" -> com.snolred.wildplus.content.Codex.debugPage(p, 2);
                         case "market" -> {
                             p.level().setBlock(front, com.snolred.wildplus.registry.ModBlocks19.MARKET_STALL.get().defaultBlockState().setValue(net.minecraft.world.level.block.HorizontalDirectionalBlock.FACING, p.getDirection().getOpposite()), 3);
                             com.snolred.wildplus.economy.Market.open(p, front);

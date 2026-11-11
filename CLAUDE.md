@@ -49,6 +49,8 @@
 
 - 엔드 2차(4.2~4.4): `event/Engraves`(각인석 11종, `ModItems25.STONES`, 저장은 RubyGear.ENGRAVE) · `event/EndCity`(셜커 스케일링, 시티 옆 금고실, 순찰) · 바이옴 `event/VoidBiome` + `mixin/TheEndBiomeSourceMixin`(엔드 바이옴은 코드 고정이라 믹스인) + `worldgen/VoidPlainsFeature`(26.3 Feature 는 인터페이스, 레지스트리 `Registries.FEATURE_TYPE`) · 몹 `entity/EndMobs` + `event/EndMobEvents` · 보스 `entity/VoidLordEntity` + `client/VoidLordRenderer`(상자를 코드로 그림) + `block/LordAltarBlock`. 최대 체력은 1024 상한이라 `wp_lord_scale` 로 받는 피해를 줄임. 시험 이동 `/wildplus uitest endplains`
 
+- 도감 · 업적 · 칭호(4.9): `content/Codex` — 분류 7개(`CATS`) · 업적(`ACHS`) · 통계는 `Codex.add(p, "이름", n)` / `Codex.max` 로 다른 시스템에서 넣음 · 화면은 모험 수첩(`ModItems32`) 우클릭 또는 `/dex` · 시험 `/wildplus uitest dex|dexcat|dexach|dextitle`
+
 ## 커밋
 커밋 메시지 끝에:
 ```

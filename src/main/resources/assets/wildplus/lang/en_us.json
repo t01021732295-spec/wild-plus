@@ -1055,5 +1055,6 @@
   "key.wildplus.map_in": "Minimap Zoom In",
   "key.wildplus.map_out": "Minimap Zoom Out",
   "key.category.wildplus.main": "Wild Plus",
-  "wildplus.configuration.minimap": "Show minimap"
+  "wildplus.configuration.minimap": "Show minimap",
+  "item.wildplus.adventure_journal": "Adventure Journal"
 }

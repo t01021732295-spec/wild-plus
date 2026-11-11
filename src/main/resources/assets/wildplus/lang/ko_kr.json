@@ -1334,5 +1334,7 @@
   "key.wildplus.map_in": "미니맵 확대",
   "key.wildplus.map_out": "미니맵 축소",
   "key.category.wildplus.main": "야생 플러스",
-  "wildplus.configuration.minimap": "미니맵 표시"
+  "wildplus.configuration.minimap": "미니맵 표시",
+  "item.wildplus.adventure_journal": "모험 수첩",
+  "tooltip.wildplus.adventure_journal": "들고 우클릭: 도감 · 업적 · 칭호\n(/dex 로도 열려요)"
 }

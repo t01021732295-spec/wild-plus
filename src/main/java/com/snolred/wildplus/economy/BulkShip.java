@@ -101,6 +101,7 @@ public final class BulkShip {
         long net = Loans.garnish(s, p.getUUID(), Tax.collect(s, p.getUUID(), coins));
         wd.reason = "일괄 출하";
         wd.addBalance(p.getUUID(), net);
+        com.snolred.wildplus.content.Codex.add(p, "ship", net);
         p.sendSystemMessage(Component.literal(String.format("📦 %d개 출하 · %,d동 − 세금 등 %,d동 = %,d동 (통장 입금)", sold, coins, coins - net, net)).withStyle(ChatFormatting.GOLD));
         p.level().playSound(null, p.blockPosition(), SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.8F, 0.9F);
     }

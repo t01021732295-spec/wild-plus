@@ -183,6 +183,7 @@ public class ShippingBinBlockEntity extends BlockEntity implements net.minecraft
         long net = com.snolred.wildplus.economy.Loans.garnish(server.getServer(), owner, com.snolred.wildplus.economy.Tax.collect(server.getServer(), owner, coins));
         com.snolred.wildplus.economy.WildData.get(server.getServer()).reason = "출하 정산";
         WildData.get(server.getServer()).addBalance(owner, net);
+        com.snolred.wildplus.content.Codex.add(server.getServer(), owner, "ship", net);
         ServerPlayer p = server.getServer().getPlayerList().getPlayer(owner);
         if (p != null) {
             p.sendSystemMessage(Component.translatable("message.wildplus.shipping.sold", sold, coins, coins - net, net).withStyle(ChatFormatting.GOLD));

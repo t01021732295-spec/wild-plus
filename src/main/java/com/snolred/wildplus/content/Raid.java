@@ -512,6 +512,7 @@ public final class Raid {
             me.putLong("week", week);
             if (first) me.putInt("reward_tier", tier);
             me.putInt("clears", me.getIntOr("clears", 0) + 1);
+            Codex.add(p, "raid", 1);
             List<ItemStack> loot = new ArrayList<>();
             long coins;
             if (first) {

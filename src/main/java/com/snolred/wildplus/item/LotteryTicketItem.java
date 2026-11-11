@@ -43,6 +43,7 @@ public class LotteryTicketItem extends Item {
             } else {
                 // 복권 당첨금은 세금 없이, 동전으로 바로 가방에 (가방이 꽉 차면 발밑에)
                 Coins.give(sp, prize);
+                com.snolred.wildplus.content.Codex.add(sp, "lotto", 1);
                 sp.inventoryMenu.broadcastChanges();
                 sp.sendOverlayMessage(Component.translatable("message.wildplus.lottery.win", String.format("%,d", prize)).withStyle(ChatFormatting.GOLD));
                 sp.sendSystemMessage(Component.translatable("message.wildplus.lottery.win", String.format("%,d", prize)).withStyle(ChatFormatting.GOLD));

@@ -235,6 +235,7 @@ public final class Lotto {
         UUID id = UUID.fromString(t.getStringOr("u", ""));
         wd.reason = "숫자 복권 당첨";
         wd.addBalance(id, amount);
+        com.snolred.wildplus.content.Codex.add(s, id, "lotto", 1);
         ServerPlayer on = s.getPlayerList().getPlayer(id);
         if (on != null) on.sendSystemMessage(Component.literal(String.format("🎉 숫자 복권 %s  %,d동이 통장에 들어왔어요", why, amount)).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD));
     }

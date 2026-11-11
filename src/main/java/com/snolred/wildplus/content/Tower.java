@@ -170,6 +170,7 @@ public final class Tower {
             double a = i++ * Math.PI * 2 / Math.max(1, ACTIVE.size());
             p.teleportTo(lv, CENTER.getX() + 0.5 + Math.cos(a) * 2, CENTER.getY() + 1, CENTER.getZ() + 0.5 + Math.sin(a) * 2, Set.of(), p.getYRot(), 0F, true);
             p.connection.send(new ClientboundSetTitleTextPacket(Component.literal(floor + "층").withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD)));
+            Codex.max(p, "tower", floor);
             p.sendOverlayMessage(Component.literal(themeName(floor) + (floor % 10 == 0 ? " · 큰 보스!" : floor % 5 == 0 ? " · 정예 보스" : ""))
                     .withStyle(ChatFormatting.GRAY));
         }

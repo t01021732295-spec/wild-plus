@@ -45,6 +45,12 @@ public class CookingMenu extends AbstractContainerMenu {
             public boolean mayPlace(ItemStack s) {
                 return false;
             }
+
+            @Override
+            public void onTake(Player pl, ItemStack s) {
+                if (pl instanceof ServerPlayer sp) com.snolred.wildplus.content.Codex.add(sp, "cook", Math.max(1, s.getCount()));
+                super.onTake(pl, s);
+            }
         });
         addStandardInventorySlots(inv, 18, INV_Y);
         addDataSlots(data);
@@ -71,6 +77,7 @@ public class CookingMenu extends AbstractContainerMenu {
         ItemStack copy = s.copy();
         if (index < 8) {
             if (!moveItemStackTo(s, 8, this.slots.size(), true)) return ItemStack.EMPTY;
+            if (index == 7 && player instanceof ServerPlayer sp && copy.getCount() > s.getCount()) com.snolred.wildplus.content.Codex.add(sp, "cook", copy.getCount() - s.getCount());
         } else if (CookingStationBlockEntity.fuelTicks(s) > 0 && !s.is(net.minecraft.world.item.Items.STICK) && moveItemStackTo(s, 6, 7, false)) {
             // 연료 칸으로
         } else if (!moveItemStackTo(s, 0, 6, false)) {

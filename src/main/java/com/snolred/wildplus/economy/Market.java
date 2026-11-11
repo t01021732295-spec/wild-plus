@@ -129,6 +129,7 @@ public final class Market {
         WildData wd = WildData.get(s);
         wd.reason = "거래소 판매";
         wd.addBalance(l.seller(), net);
+        com.snolred.wildplus.content.Codex.add(s, l.seller(), "market", 1);
         String what = l.stack().getHoverName().getString() + (l.stack().getCount() > 1 ? " ×" + l.stack().getCount() : "");
         ServerPlayer seller = s.getPlayerList().getPlayer(l.seller());
         if (seller != null) {
