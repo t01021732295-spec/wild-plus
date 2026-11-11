@@ -60,6 +60,8 @@
     "wildplus:lord_altar",
     "wildplus:lottery_machine",
     "wildplus:fate_altar",
-    "wildplus:jangdok"
+    "wildplus:jangdok",
+    "wildplus:kalpa_ore",
+    "wildplus:kalpa_block"
   ]
 }

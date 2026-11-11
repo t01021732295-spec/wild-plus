@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": "wildplus:kalpa_stone"
+  },
+  "result": {
+    "id": "wildplus:kalpa_block",
+    "count": 1
+  }
+}

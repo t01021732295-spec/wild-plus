@@ -1254,11 +1254,17 @@ jobs:
             # 4.4 엔드: 평원 지형 · 몬스터 · 공허 군주
             cmd "/gamemode creative"; cmd "/effect give @s minecraft:night_vision 200 0 true"
             cmd "/gamemode creative"; sleep 1
-            cmd "/fill 391 120 -5 401 123 -3 air"
-            cmd "/setblock 392 120 -4 wildplus:beehive_box[facing=north]"; cmd "/setblock 394 120 -4 wildplus:drying_rack[facing=north]"
-            cmd "/setblock 396 120 -4 wildplus:jangdok[facing=north]"; cmd "/setblock 399 120 -4 wildplus:fish_farm[facing=north]"
+            # 5.0 생활 시설 · 겁화 갑옷 (하늘 위 빈 발판에서)
+            cmd "/fill 388 199 -12 404 199 2 minecraft:smooth_stone"
+            cmd "/tp @s 396.5 200 -9.5 0 15"
+            cmd "/setblock 392 200 -5 wildplus:beehive_box[facing=north]"; cmd "/setblock 394 200 -5 wildplus:drying_rack[facing=north]"
+            cmd "/setblock 396 200 -5 wildplus:jangdok[facing=north]"; cmd "/setblock 399 200 -5 wildplus:fish_farm[facing=north]"
             cmd "/season"; sleep 1; shot v50-life
-            cmd "/fill 391 120 -5 401 123 -3 air"
+            cmd "/item replace entity @s armor.head with wildplus:kalpa_helmet"; cmd "/item replace entity @s armor.chest with wildplus:kalpa_chestplate"
+            cmd "/item replace entity @s armor.legs with wildplus:kalpa_leggings"; cmd "/item replace entity @s armor.feet with wildplus:kalpa_boots"
+            cmd "/item replace entity @s weapon.mainhand with wildplus:kalpa_sword"
+            xdotool key F5; sleep 1; shot v50-kalpa-back; xdotool key F5; sleep 1; shot v50-kalpa-front; xdotool key F5; sleep 1
+            cmd "/clear @s"; cmd "/tp @s 396.5 120 -8.3 0 20"
             cmd "/wildplus uitest dex"; sleep 2; shot v49-dex; esc
             cmd "/wildplus uitest dexcat"; sleep 2; shot v49-dexcat; esc
             cmd "/wildplus uitest dexach"; sleep 2; shot v49-dexach; esc

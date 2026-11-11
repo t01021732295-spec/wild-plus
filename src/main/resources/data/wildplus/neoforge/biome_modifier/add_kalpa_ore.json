@@ -1,0 +1,6 @@
+{
+  "type": "neoforge:add_features",
+  "biomes": "#minecraft:is_nether",
+  "features": "wildplus:ore_kalpa",
+  "step": "underground_ores"
+}

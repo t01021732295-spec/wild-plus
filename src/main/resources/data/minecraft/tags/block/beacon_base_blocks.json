@@ -3,6 +3,7 @@
   "values": [
     "wildplus:ruby_block",
     "wildplus:sapphire_block",
-    "wildplus:void_block"
+    "wildplus:void_block",
+    "wildplus:kalpa_block"
   ]
 }

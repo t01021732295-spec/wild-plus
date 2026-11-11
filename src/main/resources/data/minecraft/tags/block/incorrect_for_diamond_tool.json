@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "wildplus:void_ore"
+    "wildplus:void_ore",
+    "wildplus:kalpa_ore"
   ]
 }

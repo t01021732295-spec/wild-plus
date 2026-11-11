@@ -352,7 +352,7 @@ public final class VoidGear {
                 if (left.isEmpty()) it.remove();
                 else e.setItem(left);
             }
-        } else if (tool.is(VOID_HOE.get()) && state.getBlock() instanceof CropBlock crop && crop.isMaxAge(state)) {
+        } else if ((tool.is(VOID_HOE.get()) || tool.is(com.snolred.wildplus.registry.ModItems34.KALPA_HOE.get())) && state.getBlock() instanceof CropBlock crop && crop.isMaxAge(state)) {
             Item seed = crop.asItem();
             for (ItemEntity e : event.getDrops()) {
                 if (e.getItem().is(seed)) {
@@ -414,7 +414,7 @@ public final class VoidGear {
     /** 공허 삽: 흙 · 모래류 채굴 속도 3배 */
     @SubscribeEvent
     public static void onBreakSpeed(net.neoforged.neoforge.event.entity.player.PlayerEvent.BreakSpeed event) {
-        if (event.getEntity().getMainHandItem().is(VOID_SHOVEL.get()) && event.getState().is(BlockTags.MINEABLE_WITH_SHOVEL)) event.setNewSpeed(event.getNewSpeed() * 3.0F);
+        if ((event.getEntity().getMainHandItem().is(VOID_SHOVEL.get()) || event.getEntity().getMainHandItem().is(com.snolred.wildplus.registry.ModItems34.KALPA_SHOVEL.get())) && event.getState().is(BlockTags.MINEABLE_WITH_SHOVEL)) event.setNewSpeed(event.getNewSpeed() * 3.0F);
     }
 
     /** 곡괭이 3×3 · 삽 5×5 · 괭이 7×7 (웅크리면 한 칸) */
@@ -424,15 +424,16 @@ public final class VoidGear {
         ItemStack tool = player.getMainHandItem();
         BlockState state = event.getState();
         BlockPos c = event.getPos();
-        if (tool.is(VOID_AXE.get()) && state.is(BlockTags.LOGS)) {
+        boolean kalpa = KalpaGear.tool(tool);
+        if ((tool.is(VOID_AXE.get()) || tool.is(com.snolred.wildplus.registry.ModItems34.KALPA_AXE.get())) && state.is(BlockTags.LOGS)) {
             fellTree(level, player, c);
             return;
         }
-        boolean shovel = tool.is(VOID_SHOVEL.get()) && state.is(BlockTags.MINEABLE_WITH_SHOVEL);
-        boolean hoe = tool.is(VOID_HOE.get()) && state.getBlock() instanceof CropBlock cb && cb.isMaxAge(state);
-        boolean pick = tool.is(VOID_PICKAXE.get()) && state.is(BlockTags.MINEABLE_WITH_PICKAXE);
+        boolean shovel = (tool.is(VOID_SHOVEL.get()) || tool.is(com.snolred.wildplus.registry.ModItems34.KALPA_SHOVEL.get())) && state.is(BlockTags.MINEABLE_WITH_SHOVEL);
+        boolean hoe = (tool.is(VOID_HOE.get()) || tool.is(com.snolred.wildplus.registry.ModItems34.KALPA_HOE.get())) && state.getBlock() instanceof CropBlock cb && cb.isMaxAge(state);
+        boolean pick = (tool.is(VOID_PICKAXE.get()) || tool.is(com.snolred.wildplus.registry.ModItems34.KALPA_PICKAXE.get())) && state.is(BlockTags.MINEABLE_WITH_PICKAXE);
         if (!shovel && !hoe && !pick) return;
-        int reach = pick ? 1 : hoe ? 3 : 2;
+        int reach = pick ? (kalpa ? 2 : 1) : hoe ? 3 : 2;
         Direction.Axis axis = hoe || Math.abs(player.getXRot()) > 45 ? Direction.Axis.Y : player.getDirection().getAxis();
         areaBreaking = true;
         try {

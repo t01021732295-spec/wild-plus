@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:raw_kalpa",
+    "wildplus:raw_kalpa",
+    "wildplus:raw_kalpa",
+    "wildplus:raw_kalpa",
+    "wildplus:ember_shard",
+    "wildplus:ember_shard",
+    "wildplus:ember_shard",
+    "wildplus:ember_shard"
+  ],
+  "result": {
+    "id": "wildplus:kalpa_stone",
+    "count": 1
+  }
+}

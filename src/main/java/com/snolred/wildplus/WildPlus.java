@@ -81,6 +81,8 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModItems32.init();
         com.snolred.wildplus.registry.ModBlocks20.init();
         com.snolred.wildplus.registry.ModItems33.init();
+        com.snolred.wildplus.registry.ModBlocks21.init();
+        com.snolred.wildplus.registry.ModItems34.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
@@ -132,6 +134,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.Market.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Codex.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.Seasons.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.KalpaGear.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.BulkShip.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.net.MapNet.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.PotionEvents41.class);

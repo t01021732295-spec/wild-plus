@@ -116,7 +116,10 @@ public final class ModRenderers {
     static void addLayers(EntityRenderersEvent.AddLayers event) {
         for (var skin : event.getSkins()) {
             net.minecraft.client.renderer.entity.player.AvatarRenderer<net.minecraft.client.player.AbstractClientPlayer> r = event.getPlayerRenderer(skin);
-            if (r != null) r.addLayer(new CosmeticLayer(r));
+            if (r != null) {
+                r.addLayer(new CosmeticLayer(r));
+                r.addLayer(new KalpaArmorLayer(r));
+            }
         }
     }
 

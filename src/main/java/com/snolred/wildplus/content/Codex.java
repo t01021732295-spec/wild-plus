@@ -70,13 +70,13 @@ public final class Codex {
                     + "bibimbap fruit_salad kimchi wine beer makgeolli ginseng_wine butter_cookie cheesecake custard_pudding carbonara cream_stew egg_toast "
                     + "doenjang_stew sweet_potato_mattang honey_hotteok radish_soup melon_bingsu soy_braised_beef roasted_sweet_potato honey_ginseng_tea raisin_bread spicy_pork")),
             new Cat("광물 · 보석", "wildplus:ruby", "캐거나 제련해서 얻어요", false, w("raw_mythril mythril_ingot jade ruby sapphire blood_shard bloodsteel_ingot stellar_core life_crystal life_essence "
-                    + "void_shard raw_void_stone void_stone rift_dust")),
+                    + "void_shard raw_void_stone void_stone rift_dust ember_shard raw_kalpa kalpa_stone")),
             new Cat("장비", "wildplus:ruby_sword", "제작하거나 강화해서 얻어요", false, w("bloodsteel_sword bloodsteel_chestplate mythril_sword mythril_chestplate jade_sword jade_chestplate ruby_sword ruby_chestplate "
                     + "star_ruby_sword star_ruby_chestplate sapphire_sword sapphire_chestplate sky_sapphire_sword sky_sapphire_chestplate emerald_sword emerald_chestplate "
                     + "royal_emerald_sword royal_emerald_chestplate void_sword void_chestplate mythril_bow ruby_bow star_ruby_bow sapphire_bow sky_sapphire_bow emerald_bow "
-                    + "royal_emerald_bow void_bow jade_fishing_rod dragon_fishing_rod drill")),
+                    + "royal_emerald_bow void_bow jade_fishing_rod dragon_fishing_rod drill kalpa_sword kalpa_chestplate kalpa_bow")),
             new Cat("전리품 · 각인", "wildplus:lord_heart", "보스나 유적에서 얻어요", false, w("lord_heart titan_core lich_orb frost_crown dragon_plume void_heart void_feather void_key lord_shard lord_sigil "
-                    + "wraith_plume volcano_heart awakening_core_1 awakening_core_2 awakening_core_3 awakening_core_4 awakening_core_5 "
+                    + "wraith_plume volcano_heart kalpa_horn awakening_core_1 awakening_core_2 awakening_core_3 awakening_core_4 awakening_core_5 "
                     + "engrave_abyss engrave_devour engrave_chain engrave_warp engrave_heart engrave_harvest engrave_fury engrave_guard engrave_vigor engrave_rush")),
             new Cat("몬스터", "minecraft:bone", "직접 쓰러뜨리면 등록돼요", true, w("bandit bandit_boss wanted golden_slime treasure_rabbit illager_mercenary void_stalker rift_mite void_wraith "
                     + "cloud_sentinel thunder_hawk cloud_priest blood_lord dungeon_guardian titan_boss lich_boss frost_boss vine_boss pharaoh_boss flame_boss abyss_boss "
