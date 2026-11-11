@@ -229,8 +229,8 @@ public final class KalpaGear {
     public static void onMobDrops(net.neoforged.neoforge.event.entity.living.LivingDropsEvent event) {
         LivingEntity e = event.getEntity();
         if (!(event.getSource().getEntity() instanceof ServerPlayer) || !(e.level() instanceof ServerLevel level)) return;
-        float chance = e instanceof net.minecraft.world.entity.monster.Blaze ? 0.25F : e instanceof net.minecraft.world.entity.monster.MagmaCube ? 0.08F
-                : e.getType() == net.minecraft.world.entity.EntityType.WITHER_SKELETON ? 0.30F : 0F;
+        String id = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(e.getType()).toString();
+        float chance = id.equals("minecraft:blaze") ? 0.25F : id.equals("minecraft:magma_cube") ? 0.08F : id.equals("minecraft:wither_skeleton") ? 0.30F : 0F;
         if (chance > 0 && level.getRandom().nextFloat() < chance) {
             event.getDrops().add(new ItemEntity(level, e.getX(), e.getY(), e.getZ(), new ItemStack(EMBER_SHARD.get())));
         }
