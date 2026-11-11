@@ -1,4 +1,4 @@
-"""5.0 네더 도안: 겁화 장비 · 겁화의 군주 · 잿불 사냥개 · 용암 거북 · 재의 주술사 · 흑요 골렘 · 겁화의 성채 · 잿불 감시탑."""
+"""5.0 네더 도안: 겁화 장비 · 겁화의 군주 · 잿불 사냥개 · 용암 거북 · 재의 주술사 · 흑요석 골렘 · 겁화의 성채 · 잿불 감시탑."""
 import math
 import random
 import sys
@@ -46,35 +46,134 @@ class M:
 
 
 # ───────── 겁화 장비 (마네킹 착용) ─────────
-def gear():
-    m = M()
-    m.b += mannequin()
+PL = (30, 22, 28); PL2 = (46, 34, 42); PL3 = (18, 12, 16)
+
+
+def plate(trim=GD, seam=False, glow=False):
+    """매끈한 검은 판금: 위쪽 반사광 · 금테 · (seam) 가운데 진홍 이음매와 흰 불씨"""
+    def f(face, u, v, w, h):
+        if trim and (v == 0 or v == h - 1 or u in (0, w - 1)):
+            return GD2 if v == h - 1 else trim
+        if seam and face in ("front", "back") and u in ((w - 1) // 2, w // 2):
+            return WH if v % 4 == 2 else CR2
+        if glow and (u + v) % 6 == 0 and face == "front":
+            return CR
+        return PL2 if v == 1 else PL3 if v >= h - 2 else PL
+    return f
+
+
+def cape(f, u, v, w, h):
+    t = v / max(1, h - 1)
+    if v >= h - 2:
+        return None if (u * 3 + v) % 4 == 0 else (WH if v == h - 1 else EM)
+    if u in (0, w - 1) or v == 0:
+        return GD
+    if v >= h - 5:
+        return mix(CR2, EM, (v - (h - 5)) / 3)
+    return mix(CR, (96, 10, 24), t) if u % 3 else (120, 14, 28)
+
+
+def sword(m, x, y, z):
     a = m.a
-    # 투구: 검은 강철 + 금테 + 뒤로 휜 뿔 한 쌍 + 이마 불씨
-    a(-4.6, 23.6, -4.6, 9.2, 9, 9.2, lambda f, u, v, w, h: None if (f == "front" and 3 <= v <= 5 and 2 <= u <= 6) else forged(1, trim=GD if v == 0 else None)(f, u, v, w, h))
-    a(-1, 31, 4.4, 2, 2.4, .6, WH); a(-.5, 28.4, 4.5, 1, 2.6, .5, GD)
+    a(x - .7, y, z - .7, 1.4, 6, 1.4, lambda f, u, v, w, h: GD if v % 2 else PL3)             # 손잡이
+    a(x - 1, y - 1.6, z - 1, 2, 1.6, 2, CR2); a(x - .5, y - 1.2, z + .9, 1, .8, .4, WH)       # 자루 끝 보석
+    a(x - 1.6, y + 6, z - 1, 3.2, 1.6, 2, GD)                                                 # 코등이
     for s in (-1, 1):
-        for i, (dx, dy, w) in enumerate([(4.6, 30, 2.2), (6, 32, 1.8), (6.8, 34.4, 1.4), (6.6, 36.8, 1)]):
-            a(s * dx - (w if s < 0 else 0), dy, -2 - i * .6, w, 2.8, w, BONE if i > 1 else ASH2)
-    # 흉갑: 가슴 가운데 흰 불 핵 + 금 갈비
-    a(-4.5, 11.6, -2.5, 9, 12.6, 5, forged(3, trim=None))
-    a(-1.5, 17, 2.5, 3, 3, .5, GD); a(-1, 17.5, 2.7, 2, 2, .5, WH)
-    for i in range(3):
-        a(-3.6, 15 + i * 2.2, 2.5, 2, .8, .4, GD); a(1.6, 15 + i * 2.2, 2.5, 2, .8, .4, GD)
-    a(-4.5, 11.2, -2.5, 9, 1.4, 5, CR)
-    # 견갑 + 팔
+        a(x + s * 1.4 - (2.6 if s < 0 else 0), y + 6.2, z - .7, 2.6, 1.1, 1.4, GD, ("z", s * 28, (x + s * 1.4, y + 6.6, z)))
+        a(x + s * 3.6 - (1 if s < 0 else 0), y + 7.6, z - .5, 1, 1.6, 1, BONE)
+    a(x - 1.7, y + 7.6, z - .45, 3.4, 21, .9, lambda f, u, v, w, h: (WH if v % 5 else GD) if u in ((w - 1) // 2, w // 2) else mix(CR2, (110, 12, 26), v / h))  # 날 + 흰 불 홈
+    for i in range(6):                                                                        # 불꽃 톱니
+        a(x + 1.7, y + 9 + i * 3.2, z - .35, .9 + (i % 2) * .5, 1.8, .7, EM if i % 2 else WH)
+    a(x - 1.2, y + 28.6, z - .45, 2.4, 2, .9, CR2); a(x - .6, y + 30.6, z - .45, 1.2, 1.8, .9, WH)
+
+
+def bow(m, x, y, z):
+    a = m.a
+    a(x - .8, y - 2.5, z - .8, 1.6, 5, 1.6, lambda f, u, v, w, h: GD if v in (0, h - 1) else PL)
     for s in (-1, 1):
-        x = 4 if s > 0 else -8.6
-        a(x, 21, -2.8, 4.6, 4, 5.6, forged(5 + s, trim=GD))
-        a(x + (3.6 if s > 0 else -.6), 23.6, -1, 1.6, 3, 2, BONE)
-        a(x + .1, 12, -2.3, 4.4, 5, 4.6, forged(7 + s))
-    # 각반 + 장화 + 허리 천
+        for i, (ang, ln) in enumerate([(14, 6), (34, 5.4), (58, 4.4)]):
+            px, py = x - sum([0, 1.3, 3.9][:i + 1][-1:]), y + s * (2.5 + [0, 5.6, 9.8][i])
+            a(px - .7, py if s > 0 else py - ln, z - .6, 1.4, ln, 1.2, CR if i == 1 else PL2, ("z", s * ang, (px, py, z)))
+        a(x - 8.4, y + s * 17 - .8, z - .5, 1.6, 1.6, 1, GD); a(x - 8.2, y + s * 18.2 - .5, z - .4, 1, 1, .8, WH)
+    a(x - 7.9, y - 17, z - .1, .25, 34, .25, WH)                                              # 시위
+    a(x - 8.5, y - .2, z - .2, 13, .45, .45, BONE); a(x + 4.5, y - .7, z - .6, 2.4, 1.4, 1.2, flame(2)); a(x + 6.9, y - .4, z - .3, 1.2, .8, .6, WH)
+
+
+def gear(weapon=True):
+    m = M(-3)
+    m.b += [Box(q.x0, q.y0 - 3, q.z0, q.w, q.h, q.d, q.paint) for q in mannequin()]
+    a = m.a
+    # 투구: 닫힌 면갑, 이글거리는 눈 틈, 금 이마 장식, 불꽃 볏, 뒤로 휜 뿔
+    def helm(f, u, v, w, h):
+        if f == "front":
+            if v == 4 and u in (2, 3, 5, 6):
+                return WH
+            if v == 5 and u in (2, 3, 5, 6):
+                return EM
+            if u == 4 and 3 <= v <= 7:
+                return PL3
+            if v == 2 or (v == 3 and u in (1, 7)):
+                return GD
+            if v >= 6 and u in (1, 7):
+                return CR
+            if v == 8:
+                return GD2
+        if f == "top" and u in (4,):
+            return CR2
+        return plate(trim=None)(f, u, v, w, h)
+    a(-4.6, 23.6, -4.6, 9.2, 9, 9.2, helm)
+    a(-1, 30.4, 4.5, 2, 3, .6, GD); a(-.5, 31.4, 4.9, 1, 1.4, .5, WH)
+    for i in range(7):                                                                        # 불꽃 볏
+        a(-.6, 32.6, 3.4 - i * 1.3, 1.2, 1.6 + i * .75, 1.3, mix(GD, CR2, i / 6) if i % 2 else mix(WH, EM, i / 6))
+    for s in (-1, 1):
+        for i, (dx, dy, dz, w) in enumerate([(4.4, 29.6, -1, 2.4), (5.8, 31, -2.2, 2), (6.6, 33, -3.6, 1.6), (6.6, 35.2, -5, 1.2), (6, 37, -6, .8)]):
+            a(s * dx - (w if s < 0 else 0), dy, dz, w, 2.6, w, GD if i == 1 else PL2 if i == 0 else BONE)
+    # 흉갑: V자 금 갈비 + 가운데 흰 불 핵
+    def chest(f, u, v, w, h):
+        if f == "front":
+            cx = abs(u - (w - 1) / 2)
+            if abs(v - 4) + cx < 1.2:
+                return WH
+            if abs(v - 4) + cx < 2.4:
+                return GD
+            if abs(v - 4) + cx < 3.3:
+                return CR2
+            if v in (7, 9, 11) and cx > 1 and int(cx) == (v - 5) // 2:
+                return GD
+            if v == 0:
+                return GD
+            if v >= 7 and cx < .6:
+                return CR2 if v % 2 else WH
+        if f == "back" and u in (4, 5):
+            return CR2 if v % 3 else WH
+        return plate(trim=None)(f, u, v, w, h)
+    a(-4.6, 11.6, -2.6, 9.2, 12.8, 5.2, chest)
+    a(-5, 11, -2.9, 10, 2, 5.8, plate()); a(-1.3, 11.2, 2.9, 2.6, 1.6, .5, GD); a(-.6, 11.6, 3.2, 1.2, .8, .4, WH)   # 허리띠 · 버클
+    # 견갑 3단 + 가시 · 팔 보호대 · 건틀릿
+    for s in (-1, 1):
+        x = 4 if s > 0 else -8.8
+        a(x - (0 if s > 0 else .4), 20.6, -3.2, 5.2, 2.2, 6.4, plate()); a(x + (.5 if s > 0 else 0), 22.6, -2.8, 4.3, 1.8, 5.6, plate(trim=CR2)); a(x + (1 if s > 0 else .6), 24.2, -2.2, 3.2, 1.4, 4.4, plate())
+        a(x + (3.4 if s > 0 else .4), 25.4, -.6, 1, 2.6, 1.2, BONE, ("z", -s * 24, (x + 2.4, 25.4, 0)))
+        a(x + .15, 16.4, -2.3, 4.5, 4, 4.6, plate(trim=None, seam=False)); a(x + .05, 12, -2.4, 4.7, 4.2, 4.8, plate(seam=True)); a(x + .4, 11.4, 2.3, 3.8, 1.2, .5, GD)
+        # 허리 옆 판 (타셋)
+        a(s * 4.4 - (3 if s < 0 else 0), 6.4, -2.6, 3, 5.4, 5.2, plate(trim=GD, seam=False), ("z", s * 14, (s * 4.4, 11.6, 0)))
+    # 다리: 허벅지 판 · 무릎 가시 · 정강이 · 금 발끝
     for x in (-4.3, .1):
-        a(x, 0, -2.4, 4.2, 9, 4.8, forged(9, trim=None)); a(x, 0, -2.4, 4.2, 2, 5.6, BK2); a(x + 1.1, 6, 2.4, 2, 2.4, .5, GD)
-    a(-2, 6, 2.5, 4, 6, .5, lambda f, u, v, w, h: None if (v == h - 1 and u % 2) else (GD if u in (0, w - 1) else CR))
-    # 대검: 진홍 → 흰 날, 금 코등이
-    a(9.2, 9, 1, 1.2, 5, 1.2, BK2); a(7.4, 14, .6, 4.8, 1.2, 2, GD); a(9.3, 8, 1.1, 1, 1, 1, CR2)
-    a(8.6, 15.2, 1.2, 2.4, 20, .8, blade); a(9.2, 35.2, 1.2, 1.2, 2, .8, WH)
+        a(x, 7, -2.3, 4.2, 5, 4.6, plate(trim=None)); a(x - .1, 0, -2.5, 4.4, 6.2, 5, plate(trim=None, seam=True)); a(x - .2, 5.4, -2.6, 4.6, .9, 5.2, GD); a(x + .7, 5.6, 2.3, 2.8, 2.2, .9, GD); a(x + 1.5, 7.2, 2.7, 1.2, 1.6, .7, BONE)
+        a(x - .1, 0, 2.3, 4.4, 1.6, 1.6, GD2)
+    a(-1.8, 5, 2.7, 3.6, 6.6, .5, lambda f, u, v, w, h: None if (v == h - 1 and u % 2) else (GD if u in (0, w - 1) else CR2 if v % 3 else CR))
+    # 망토: 진홍 + 금테 + 타오르는 끝자락
+    a(-5.4, 2.4, -3.6, 10.8, 21, .7, cape, ("x", 8, (0, 23.4, -3.2)))
+    a(-5.6, 22.6, -3.8, 11.2, 1.4, 1.4, GD)
+    if weapon:
+        sword(m, 10.4, 9.4, 1.6)
+    return m.b
+
+
+def weapons():
+    m = M(0)
+    sword(m, -7, 0, 0)
+    bow(m, 11, 16, 0)
     return m.b
 
 
@@ -186,23 +285,73 @@ def turtle():
 
 
 def shaman():
-    m = M(0)
+    """재의 주술사: 숫양 해골 가면 · 겹겹이 해진 재빛 도포 · 사슬 향로 지팡이 · 주위를 도는 부적 · 등 뒤 깃발 · 재 구름 위에 떠 있음"""
+    m = M(-4)
     a = m.a
-    robe = lambda f, u, v, w, h: None if (v == h - 1 and u % 2) else (GD2 if v == h - 3 else mix(ASH2, ASH, v / h) if (u + v) % 5 else BK2)
-    a(-4.6, 0, -3, 9.2, 15, 6, robe); a(-4, 14, -2.4, 8, 10, 4.8, forged(3, ASH, BK2, 9)); a(-1.6, 10, 2.5, 3.2, 12, .5, lambda f, u, v, w, h: CR2 if v % 4 else GD)
-    a(-4.4, 24, -4.4, 8.8, 9.4, 8.8, lambda f, u, v, w, h: None if (f == "front" and 2 <= v <= 8 and 1 <= u <= 6) else (ASH if (u + v) % 3 else BK2))
-    a(-3, 24.4, -1, 6, 7.6, 4.6, BONE); a(-2.2, 28.4, 3.6, 1.4, 1.6, .4, CR2); a(.8, 28.4, 3.6, 1.4, 1.6, .4, CR2); a(-.4, 25.4, 3.6, .8, 2, .4, BK)
-    for s in (-1, 1):
-        for i, (dx, dy, w) in enumerate([(3.4, 31, 1.8), (4.6, 33.4, 1.4), (5, 36, 1)]):
-            a(s * dx - (w if s < 0 else 0), dy, 0, w, 3, w, BONE)
-        a(4.4 if s > 0 else -7.4, 13, -2, 3, 11, 4, robe)
-    a(-9, 4, 2, 1.2, 34, 1.2, (84, 60, 48)); a(-10.6, 36, .4, 4.4, 1, 4.4, GD)
-    for k in range(4):
-        ang = k / 4 * math.tau
-        a(-8.4 + math.cos(ang) * 2.6 - .5, 37, 2.6 + math.sin(ang) * 2.6 - .5, 1, 4, 1, BONE)
-    a(-10, 40, 1, 3.2, 3.2, 3.2, flame(1)); a(-9.4, 43, 1.6, 2, 2, 2, WH)
-    for k, (x, y, z) in enumerate(((8, 26, 5), (10, 18, -1), (6, 33, -4))):
-        a(x, y, z, 2.6, 4, .4, lambda f, u, v, w, h: CR2 if (u == 1 and 1 <= v <= 2) else BONE)
+
+    def robe(dark=0.0, hem=True):
+        def f(face, u, v, w, h):
+            if hem and v == h - 1:
+                return None if u % 2 else WH
+            if hem and v == h - 2:
+                return EM if u % 3 else CR2
+            if hem and v == h - 3:
+                return CR if u % 2 else None if (u % 5 == 0) else (60, 40, 44)
+            c = mix((104, 96, 100), (52, 44, 50), v / max(1, h - 1))
+            c = shade(c, 0.82) if u % 3 == 0 else c
+            return shade(c, 1 - dark)
+        return f
+    paper = lambda f, u, v, w, h: CR2 if (u == w // 2 and 1 <= v <= h - 2 and v % 2) else GD if v in (0, h - 1) else (236, 224, 196)
+    # 재 구름
+    for i, (x, z, w) in enumerate(((-9, -6, 9), (0, -8, 10), (-4, 2, 12), (4, 3, 7), (-11, 1, 6))):
+        a(x, -2 + (i % 2), z, w, 2.4, w * .8, (150, 142, 146) if i % 2 else (116, 108, 112))
+    # 도포 3겹 (아래로 갈수록 넓고 해짐)
+    a(-7, 1, -6, 14, 9, 12, robe(.1)); a(-5.6, 8, -4.8, 11.2, 9, 9.6, robe(0)); a(-4.6, 16, -3.6, 9.2, 8, 7.4, robe(-.08, hem=False), ("x", 8, (0, 16, 0)))
+    a(-1.4, 6, 4.9, 2.8, 15, .5, lambda f, u, v, w, h: None if (v == h - 1 and u == 1) else (GD if u in (0, w - 1) else CR2 if v % 4 else WH))   # 앞 드림
+    # 어깨 털 망토 + 뼈 목걸이
+    a(-7.6, 21.4, -4.6, 15.2, 4, 9.6, lambda f, u, v, w, h: None if (v == h - 1 and u % 2) else (BONE if (u + v) % 3 == 0 else ASH2 if (u + v) % 3 == 1 else ASH), ("x", 8, (0, 16, 0)))
+    for i in range(7):
+        a(-4.2 + i * 1.2, 20.6 - (3 - abs(i - 3)) * .5, 5.4, .8, 1.6 if i % 2 else 1.1, .6, BONE if i != 3 else CR2)
+    # 두건 + 숫양 해골 가면
+    a(-5, 24.6, -4.6, 10, 10.6, 8.6, lambda f, u, v, w, h: None if f == "front" else ((40, 32, 38) if (u + v) % 4 else (58, 48, 54)))
+    def skull(f, u, v, w, h):
+        if f == "front":
+            if 2 <= v <= 4 and u in (1, 2, 5, 6):
+                return CR2 if (v == 3 and u in (2, 5)) else WH if (v == 3) else (22, 14, 18)
+            if 5 <= v <= 6 and u in (3, 4):
+                return (22, 14, 18)
+            if v == h - 1:
+                return BONE if u % 2 else (22, 14, 18)
+            if v == 0 and u in (3, 4):
+                return GD
+        return mix(BONE, (176, 160, 140), v / h) if (u + v) % 5 else (196, 182, 160)
+    a(-4, 24.8, 0, 8, 9.4, 4.6, skull); a(-2.2, 22.6, 2, 4.4, 2.4, 3.2, mix(BONE, (176, 160, 140), .6))                     # 주둥이
+    for s in (-1, 1):                                                                             # 말린 뿔
+        for k in range(8):
+            ang = R(100 - k * 40)
+            rad = 4.2 - k * .28
+            w = 2.6 - k * .22
+            a(s * (5.6 + k * .28) - w / 2, 30.4 + math.sin(ang) * rad - w / 2, -1 + math.cos(ang) * rad - w / 2, w, w, w, GD if k == 2 else mix((150, 138, 120), BONE, k / 7))
+    # 등 뒤 깃발 3개
+    for i, (ang, ln) in enumerate(((-20, 22), (0, 27), (20, 22))):
+        a(-.4, 18, -6.4, .8, ln, .8, (70, 50, 42), ("z", ang, (0, 18, -6)))
+        a(.4 if ang >= 0 else -4.4, 18 + ln - 9, -6.3, 4, 8, .4, lambda f, u, v, w, h, i=i: None if (v >= h - 2 and (u + i) % 2) else (GD if v == 0 else CR2 if (u + v) % 4 else CR), ("z", ang, (0, 18, -6)))
+    # 왼팔: 지팡이 (갈고리 끝에 사슬 향로)
+    a(5, 13, -2, 4, 9.6, 5, robe(.05)); a(8, 14.5, 1.4, 2.2, 2, 2, BONE)
+    a(8.6, -1, 2, 1.2, 40, 1.2, lambda f, u, v, w, h: GD if v % 9 == 4 else (74, 52, 44))
+    a(8.6, 39, 2, 1.2, 1.2, 5, (74, 52, 44)); a(8.6, 36.6, 6, 1.2, 3.6, 1.2, (74, 52, 44))
+    for i in range(4):
+        a(8.8 + (i % 2) * .3, 33.6 - i * 1.5, 6.2, .8, 1.5, .8 if i % 2 else 1.3, ASH2)
+    a(7.4, 23.4, 4.8, 3.6, 4.6, 3.6, lambda f, u, v, w, h: GD if (u in (0, w - 1) or v in (0, h - 1)) else (WH if (u + v) % 2 else EM)); a(8, 28, 5.4, 2.4, 1, 2.4, GD2); a(8.4, 22.6, 5.8, 1.6, .8, 1.6, GD2)
+    for i in range(4):
+        a(8.6 + math.sin(i * 1.3) * 1.4, 29.4 + i * 2.2, 6 + math.cos(i) * .8, 1.6 - i * .3, 1.8, 1.6 - i * .3, (170, 162, 166) if i % 2 else (126, 118, 122))
+    # 오른팔: 앞으로 내민 손 위에 겁화 불씨
+    a(-9, 13, -2, 4, 9.6, 5, robe(.05)); a(-9.4, 14, 3, 3, 2, 5, robe(.1, hem=False)); a(-9, 14.4, 8, 2.2, 1.4, 2.4, BONE)
+    a(-9.6, 17.4, 7.4, 3.4, 3.4, 3.4, flame(1)); a(-8.9, 20.6, 8.1, 2, 2.4, 2, WH); a(-8.4, 23, 8.6, 1, 1.6, 1, GD)
+    # 주위를 도는 부적 7장
+    for k in range(7):
+        ang = k / 7 * 360 + 12
+        a(12.5, 9 + (k % 3) * 5.5, -1.3, .4, 5, 2.6, paper, ("y", R(ang) and ang, (0, 0, 0)))
     return m.b
 
 
@@ -295,8 +444,11 @@ if __name__ == "__main__":
     V = lambda b, **k: render(b, size=(360, 440), bg=BG, **k)
     sheet("5.0 네더 · 겁화 장비 / 보스 「겁화의 군주」", [("겁화 장비 (앞)", V(gear(), yaw=-28, pitch=10, scale=10)), ("겁화 장비 (뒤)", V(gear(), yaw=150, pitch=10, scale=10)),
                                               ("겁화의 군주 (앞)", V(lord(), yaw=-24, pitch=8, scale=2.6)), ("겁화의 군주 (옆·뒤)", V(lord(), yaw=140, pitch=10, scale=2.6))], out + "/nether_a.png")
+    sheet("겁화 장비 · 재의 주술사 (2차 도안)", [("겁화 장비 (앞)", V(gear(), yaw=-28, pitch=10, scale=9)), ("겁화 장비 (옆)", V(gear(), yaw=-76, pitch=8, scale=9)), ("겁화 장비 (뒤)", V(gear(), yaw=150, pitch=10, scale=9)),
+                                     ("겁화 대검 · 활", V(weapons(), yaw=-18, pitch=6, scale=10.5)), ("재의 주술사 (앞)", V(shaman(), yaw=-28, pitch=10, scale=7.6)), ("재의 주술사 (옆)", V(shaman(), yaw=-78, pitch=8, scale=7.6)),
+                                     ("재의 주술사 (뒤)", V(shaman(), yaw=150, pitch=12, scale=7.6))], out + "/nether_d.png")
     sheet("5.0 네더 · 새 몬스터 4종", [("잿불 사냥개", V(hound(), yaw=-38, pitch=14, scale=8)), ("용암 거북", V(turtle(), yaw=-42, pitch=20, scale=8)),
-                                 ("재의 주술사", V(shaman(), yaw=-26, pitch=10, scale=8.4)), ("흑요 골렘", V(golem(), yaw=-28, pitch=10, scale=5.4))], out + "/nether_b.png")
+                                 ("재의 주술사", V(shaman(), yaw=-26, pitch=10, scale=8.4)), ("흑요석 골렘", V(golem(), yaw=-28, pitch=10, scale=5.4))], out + "/nether_b.png")
     sheet("5.0 네더 · 새 구조물", [("겁화의 성채 (앞)", V(citadel(), yaw=-32, pitch=28, scale=5.0)), ("겁화의 성채 (뒤)", V(citadel(), yaw=148, pitch=28, scale=5.0)),
                               ("잿불 감시탑", V(watchtower(), yaw=-34, pitch=20, scale=11))], out + "/nether_c.png")
     print("ok")
