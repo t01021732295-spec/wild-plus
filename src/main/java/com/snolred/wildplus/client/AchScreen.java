@@ -15,7 +15,7 @@ import net.minecraft.world.item.ItemStack;
  * 서버 데이터: 0번 = 돌아가기, 그 뒤 업적마다 (이름 / 설명\n현재\n목표\n보상\n칭호\n달성(1/0)\n분류 번호)
  */
 public class AchScreen extends AbstractContainerScreen<PickMenu> {
-    private static final int W = 372, H = 232, COLS = 2, ROWS = 4, PER = COLS * ROWS, CW = 174, CH = 38;
+    private static final int W = 372, H = 232, COLS = 2, ROWS = 4, PER = COLS * ROWS, CW = 174, CH = 35;
     private static final int GOLD = 0xFFE8B84A, GOLD_D = 0xFF8A6420, NAVY = 0xFF141C30, NAVY_L = 0xFF222E4C, INK = 0xFFE8ECF6, SOFT = 0xFF9AA6C0, GREEN = 0xFF4CD08A;
     private static final String[] TABS = {"전체", "전투", "생활", "경제", "도전", "수집"};
 
@@ -128,27 +128,27 @@ public class AchScreen extends AbstractContainerScreen<PickMenu> {
             int k = page * PER + r;
             if (k >= list.size()) break;
             A a = list.get(k);
-            int cx = x + 9 + (r % COLS) * (CW + 6), cy = y + 57 + (r / COLS) * (CH + 3);
+            int cx = x + 9 + (r % COLS) * (CW + 6), cy = y + 55 + (r / COLS) * (CH + 2);
             UiKit.round(g, cx, cy, CW, CH, 3, a.done() ? GOLD : 0xFF3A4868);
             UiKit.roundGradient(g, cx + 1, cy + 1, CW - 2, CH - 2, 2, a.done() ? 0xFF3A3420 : NAVY_L, a.done() ? 0xFF2A2616 : 0xFF1A2238);
             // 메달
-            UiKit.circle(g, cx + 5, cy + 7, 24, a.done() ? GOLD_D : 0xFF10182A);
-            UiKit.circle(g, cx + 6, cy + 8, 22, a.done() ? 0xFFFFDE85 : 0xFF2C3854);
-            g.item(a.icon(), cx + 9, cy + 11);
-            if (!a.done()) UiKit.circle(g, cx + 6, cy + 8, 22, 0x99141C30);
+            UiKit.circle(g, cx + 5, cy + 5, 24, a.done() ? GOLD_D : 0xFF10182A);
+            UiKit.circle(g, cx + 6, cy + 6, 22, a.done() ? 0xFFFFDE85 : 0xFF2C3854);
+            g.item(a.icon(), cx + 9, cy + 9);
+            if (!a.done()) UiKit.circle(g, cx + 6, cy + 6, 22, 0x99141C30);
             int tx = cx + 34, tw = CW - 40;
             // 보상 (오른쪽 위)
             String rew = a.coin() + "동";
             int rw = font.width(rew);
-            UiKit.right(g, rew, cx + CW - 5, cy + 5, a.done() ? 0xFF8A7A50 : 0xFFFFDE85);
-            UiKit.text(g, fit(a.name(), tw - rw - 4), tx, cy + 5, a.done() ? 0xFFFFE9A8 : INK);
+            UiKit.right(g, rew, cx + CW - 5, cy + 4, a.done() ? 0xFF8A7A50 : 0xFFFFDE85);
+            UiKit.text(g, fit(a.name(), tw - rw - 4), tx, cy + 4, a.done() ? 0xFFFFE9A8 : INK);
             // 설명 + 칭호
             String tl = a.title().isEmpty() ? "" : "[" + a.title() + "]";
             int tlw = tl.isEmpty() ? 0 : font.width(tl) + 4;
-            if (!tl.isEmpty()) UiKit.right(g, tl, cx + CW - 5, cy + 16, a.done() ? 0xFF7FE0D0 : 0xFF5E86A0);
-            UiKit.text(g, fit(a.desc(), tw - tlw), tx, cy + 16, SOFT);
+            if (!tl.isEmpty()) UiKit.right(g, tl, cx + CW - 5, cy + 14, a.done() ? 0xFF7FE0D0 : 0xFF5E86A0);
+            UiKit.text(g, fit(a.desc(), tw - tlw), tx, cy + 14, SOFT);
             // 진행 막대
-            int px = tx, py = cy + 28, pw = tw;
+            int px = tx, py = cy + 25, pw = tw;
             if (a.done()) {
                 UiKit.round(g, px, py - 2, pw, 9, 3, 0xFF2E7A52);
                 UiKit.round(g, px, py - 2, pw, 8, 3, GREEN);
