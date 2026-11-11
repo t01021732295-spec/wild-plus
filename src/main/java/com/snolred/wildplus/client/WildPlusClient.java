@@ -39,6 +39,7 @@ public class WildPlusClient {
                         : (m.flags & com.snolred.wildplus.menu.PickMenu.FLAG_DERBY_BET) != 0 ? new BettingScreen(m, inv, t)
                         : (m.flags & com.snolred.wildplus.menu.PickMenu.FLAG_STABLE) != 0 ? new StableScreen(m, inv, t)
                         : (m.flags & com.snolred.wildplus.menu.PickMenu.FLAG_VILLAGE) != 0 ? new VillageScreen(m, inv, t)
+                        : (m.flags & com.snolred.wildplus.menu.PickMenu.FLAG_ACH) != 0 ? new AchScreen(m, inv, t)
                         : new PickScreen(m, inv, t));
         event.register(com.snolred.wildplus.registry.ModMenus.BACKPACK.get(), BackpackScreen::new);
         event.register(com.snolred.wildplus.registry.ModMenus.STOCKS.get(), StockScreen::new);

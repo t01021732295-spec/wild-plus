@@ -29,6 +29,8 @@ public class PickMenu extends AbstractContainerMenu {
     public static final int FLAG_MARKET = 1 << 16;
     /** 4.9 모험 수첩: 진열장 모양이지만 상점 문구 없음 */
     public static final int FLAG_BOOK = 1 << 17;
+    /** 4.9.2 업적 전용 화면 (client/AchScreen) */
+    public static final int FLAG_ACH = 1 << 18;
     public static final int THEME_SHIFT = 12;
     public static final int T_PHARMACY = 1, T_WEATHER = 2, T_LAND = 3, T_WARP = 4, T_CONTEST = 5, T_TELEPORT = 6, T_CONTRACT = 7, T_PRISON = 8, T_ALTAR = 9;
 

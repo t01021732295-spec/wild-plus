@@ -417,6 +417,17 @@ public final class Codex {
                 }, null, x -> true);
     }
 
+    private static int group(String stat) {
+        return switch (stat) {
+            case "kill", "boss", "death" -> 1;
+            case "fish", "crop", "ore", "log", "breed", "cook" -> 2;
+            case "ship", "bal", "market", "lotto" -> 3;
+            case "tower", "raid", "honor" -> 4;
+            default -> 5;
+        };
+    }
+
+    /** 업적 전용 화면 (client/AchScreen): 이름 / 설명\n현재\n목표\n보상\n칭호\n달성\n분류 */
     private static void openAch(ServerPlayer p) {
         MinecraftServer s = p.level().getServer();
         CompoundTag d = data(s, p.getUUID());
@@ -426,10 +437,9 @@ public final class Codex {
         for (Ach a : ACHS) {
             boolean ok = done.contains(a.id());
             long g = goal(a), v = Math.min(g, stat(s, p.getUUID(), d, a.stat()));
-            String sub = ok ? "달성" : String.format("%,d/%,d · %s동%s", v, g, short_(Prices.x(a.coin())), a.title().isEmpty() ? "" : "+칭호");
-            e.add(new PickMenu.Entry((ok ? "✔ " : "") + a.name() + " · " + a.desc(), sub, ok ? stack(a.icon()) : new ItemStack(Items.PAPER)));
+            e.add(new PickMenu.Entry(a.name(), a.desc() + "\n" + v + "\n" + g + "\n" + short_(Prices.x(a.coin())) + "\n" + a.title() + "\n" + (ok ? 1 : 0) + "\n" + group(a.stat()), stack(a.icon())));
         }
-        PickMenu.open(p, Component.literal("🏆 업적"), done.keySet().size() + " / " + ACHS.size() + " 달성 · 보상은 통장으로 바로 들어와요", "", e, 0, i -> {
+        PickMenu.open(p, Component.literal("🏆 업적"), "", "", e, PickMenu.FLAG_ACH, i -> {
             if (i == 0) open(p);
         }, null, x -> true);
     }
