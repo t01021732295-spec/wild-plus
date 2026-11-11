@@ -239,6 +239,10 @@ public final class Codex {
             new Ach("play1", "단골", "10시간 플레이", "play", 600, 5_000, "단골", "minecraft:clock"),
             new Ach("play2", "터줏대감", "100시간 플레이", "play", 6_000, 100_000, "터줏대감", "minecraft:clock"));
 
+    private static String short_(long v) {
+        return v >= 100_000_000L ? (v / 100_000_000L) + "억" + (v % 100_000_000L >= 10_000L ? " " + (v % 100_000_000L / 10_000L) + "만" : "") : v >= 10_000L ? (v / 10_000L) + "만" + (v % 10_000L > 0 ? " " + (v % 10_000L) : "") : String.valueOf(v);
+    }
+
     private static long goal(Ach a) {
         init();
         return a.goal() < 0 ? total : a.goal();
@@ -388,7 +392,7 @@ public final class Codex {
         String title = d.getStringOr("title", "");
         e.add(new PickMenu.Entry("업적", done + " / " + ACHS.size(), new ItemStack(Items.GOLD_INGOT)));
         e.add(new PickMenu.Entry("칭호", title.isEmpty() ? "없음" : title, new ItemStack(Items.NAME_TAG)));
-        PickMenu.open(p, Component.literal("📖 모험 수첩"), String.format("도감 %d / %d · 업적 %d / %d", foundAll(d), total, done, ACHS.size()), "", e, PickMenu.FLAG_SHOP, i -> {
+        PickMenu.open(p, Component.literal("📖 모험 수첩"), String.format("도감 %d / %d · 업적 %d / %d", foundAll(d), total, done, ACHS.size()), "", e, PickMenu.FLAG_SHOP | PickMenu.FLAG_BOOK, i -> {
             if (i < CATS.size()) openCat(p, i);
             else if (i == CATS.size()) openAch(p);
             else openTitles(p);
@@ -408,7 +412,7 @@ public final class Codex {
         }
         int n = found(d, c), m = cat.ids().size();
         PickMenu.open(p, Component.literal("📖 " + cat.name() + " 도감"), String.format("%d / %d · %s · 완성하면 %,d동 + 칭호 [%s]", n, m, cat.hint(), Prices.x(50_000L), CAT_TITLE[c]),
-                "", e, PickMenu.FLAG_SHOP, i -> {
+                "", e, PickMenu.FLAG_SHOP | PickMenu.FLAG_BOOK, i -> {
                     if (i == 0) open(p);
                 }, null, x -> true);
     }
@@ -422,8 +426,8 @@ public final class Codex {
         for (Ach a : ACHS) {
             boolean ok = done.contains(a.id());
             long g = goal(a), v = Math.min(g, stat(s, p.getUUID(), d, a.stat()));
-            String sub = ok ? a.desc() + " · 달성" : String.format("%s · %,d/%,d · %,d동%s", a.desc(), v, g, Prices.x(a.coin()), a.title().isEmpty() ? "" : "+칭호");
-            e.add(new PickMenu.Entry((ok ? "✔ " : "") + a.name(), sub, ok ? stack(a.icon()) : new ItemStack(Items.PAPER)));
+            String sub = ok ? "달성" : String.format("%,d/%,d · %s동%s", v, g, short_(Prices.x(a.coin())), a.title().isEmpty() ? "" : "+칭호");
+            e.add(new PickMenu.Entry((ok ? "✔ " : "") + a.name() + " · " + a.desc(), sub, ok ? stack(a.icon()) : new ItemStack(Items.PAPER)));
         }
         PickMenu.open(p, Component.literal("🏆 업적"), done.keySet().size() + " / " + ACHS.size() + " 달성 · 보상은 통장으로 바로 들어와요", "", e, 0, i -> {
             if (i == 0) open(p);

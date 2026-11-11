@@ -556,9 +556,9 @@ public class PickScreen extends AbstractContainerScreen<PickMenu> {
         if (shop) {
             UiKit.bold(g, "✦ " + this.title.getString().replace("💎", "").trim() + " ✦", 10, 8, 0xFFF2C14E);
             UiKit.text(g, menu.header, 10, 19, 0xFFB8A98A);
-            UiKit.right(g, "LUXURY BOUTIQUE", W - 10, 8, 0x88D9A22E);
+            if ((menu.flags & PickMenu.FLAG_BOOK) == 0) UiKit.right(g, "LUXURY BOUTIQUE", W - 10, 8, 0x88D9A22E);
             UiKit.text(g, (page + 1) + " / " + pages(), 60, H - 19, 0xFFE8C060);
-            UiKit.right(g, "진열장을 누르면 바로 결제", W - 10, H - 19, 0xFFB8A98A);
+            UiKit.right(g, (menu.flags & PickMenu.FLAG_BOOK) != 0 ? "가방에 넣거나 잡으면 등록돼요" : "진열장을 누르면 바로 결제", W - 10, H - 19, 0xFFB8A98A);
             return;
         }
         if (arena) {
