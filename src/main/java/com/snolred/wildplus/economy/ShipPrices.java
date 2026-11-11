@@ -91,6 +91,14 @@ public final class ShipPrices {
         put(m, com.snolred.wildplus.registry.ModItems17.CREAM.get(), 350); put(m, com.snolred.wildplus.registry.ModItems17.WOOL_TUFT.get(), 120);
         put(m, com.snolred.wildplus.registry.ModItems17.YARN.get(), 90); put(m, com.snolred.wildplus.registry.ModItems17.CLOTH.get(), 500);
         put(m, com.snolred.wildplus.registry.ModItems17.GOLDEN_EGG.get(), 8000);
+        // 5.0 생활
+        put(m, com.snolred.wildplus.registry.ModItems33.SOYBEAN.get(), 90); put(m, com.snolred.wildplus.registry.ModItems33.KOREAN_MELON.get(), 160);
+        put(m, com.snolred.wildplus.registry.ModItems33.SWEET_POTATO.get(), 140); put(m, com.snolred.wildplus.registry.ModItems33.RADISH.get(), 110);
+        put(m, com.snolred.wildplus.registry.ModItems33.HONEY_JAR.get(), 450); put(m, com.snolred.wildplus.registry.ModItems33.ROYAL_JELLY.get(), 5000);
+        put(m, com.snolred.wildplus.registry.ModItems33.CHILI_POWDER.get(), 180); put(m, com.snolred.wildplus.registry.ModItems33.RAISIN.get(), 380);
+        put(m, com.snolred.wildplus.registry.ModItems33.DRIED_FISH.get(), 600); put(m, com.snolred.wildplus.registry.ModItems33.JERKY.get(), 400);
+        put(m, com.snolred.wildplus.registry.ModItems33.KKAKDUGI.get(), 150); put(m, com.snolred.wildplus.registry.ModItems33.DANMUJI.get(), 150);
+        put(m, com.snolred.wildplus.registry.ModItems33.DOENJANG.get(), 500); put(m, com.snolred.wildplus.registry.ModItems33.SOY_SAUCE.get(), 900);
         com.snolred.wildplus.cooking.Cooking.prices(m); // 요리: 재료값 × 2.5
         // 3.9 행운의 부적: 들어간 I단계 개수 × 200동 (최대 400만동) / 3.9.7 합성 개수 II 9개, III~V 3개, VI~X 2개 (tools/data_v29.py COST 와 같게)
         long ones = 1;

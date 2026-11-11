@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/jangdok"
+    },
+    "facing=east": {
+      "model": "wildplus:block/jangdok",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/jangdok",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/jangdok",
+      "y": 270
+    }
+  }
+}

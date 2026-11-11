@@ -58,7 +58,8 @@ public final class Codex {
 
     public static final List<Cat> CATS = List.of(
             new Cat("농장", "wildplus:tomato", "밭이나 목장에서 얻어요", false, w("chili tomato strawberry corn cabbage blueberry grape rice onion ginseng "
-                    + "milk_bottle butter cream cheese wool_tuft yarn cloth golden_egg")),
+                    + "milk_bottle butter cream cheese wool_tuft yarn cloth golden_egg soybean korean_melon sweet_potato radish honey_jar royal_jelly "
+                    + "chili_powder raisin dried_fish jerky kkakdugi danmuji doenjang soy_sauce")),
             new Cat("물고기", "wildplus:rainbow_trout", "낚시로 낚아요", false, w("rainbow_trout golden_carp moonlight_fish storm_eel anglerfish ice_smelt catfish tuna sweetfish "
                     + "dragon_king_fish sunken_chest")),
             new Cat("요리", "wildplus:spicy_stew", "조리 기구나 제작대에서 만들어요", false, w("spicy_stew honey_toast spicy_skewer traveler_ration tomato_soup pizza strawberry_tart sashimi_platter fish_stew "
@@ -66,7 +67,8 @@ public final class Codex {
                     + "kimchi_stew spicy_fish_stew seafood_stew curry_rice ginseng_chicken seaweed_soup mushroom_cream_soup onion_soup cheese_pizza apple_pie "
                     + "strawberry_cake grape_tart gratin baguette fish_bread fish_pie steak bulgogi pork_belly grilled_fish_set chicken_skewer lamb_chop "
                     + "dragon_king_grill fried_rice tteokbokki seafood_pancake omurice cream_pasta eel_rice_bowl rolled_omelette gimbap sushi_set hoe_rice_bowl "
-                    + "bibimbap fruit_salad kimchi wine beer makgeolli ginseng_wine butter_cookie cheesecake custard_pudding carbonara cream_stew egg_toast")),
+                    + "bibimbap fruit_salad kimchi wine beer makgeolli ginseng_wine butter_cookie cheesecake custard_pudding carbonara cream_stew egg_toast "
+                    + "doenjang_stew sweet_potato_mattang honey_hotteok radish_soup melon_bingsu soy_braised_beef roasted_sweet_potato honey_ginseng_tea raisin_bread spicy_pork")),
             new Cat("광물 · 보석", "wildplus:ruby", "캐거나 제련해서 얻어요", false, w("raw_mythril mythril_ingot jade ruby sapphire blood_shard bloodsteel_ingot stellar_core life_crystal life_essence "
                     + "void_shard raw_void_stone void_stone rift_dust")),
             new Cat("장비", "wildplus:ruby_sword", "제작하거나 강화해서 얻어요", false, w("bloodsteel_sword bloodsteel_chestplate mythril_sword mythril_chestplate jade_sword jade_chestplate ruby_sword ruby_chestplate "
@@ -214,6 +216,9 @@ public final class Codex {
             new Ach("ore3", "광산왕", "광석 3,000개 캐기", "ore", 3_000, 50_000, "광산왕", "wildplus:ruby"),
             new Ach("log1", "나무꾼", "원목 500개 캐기", "log", 500, 5_000, "나무꾼", "minecraft:iron_axe"),
             new Ach("breed1", "목동", "동물 50마리 번식", "breed", 50, 5_000, "목동", "minecraft:wheat"),
+            new Ach("honey1", "양봉가", "꿀단지 100개 모으기", "honey", 100, 10_000, "양봉가", "wildplus:honey_jar"),
+            new Ach("craft1", "손맛", "건조대 · 장독대로 200개 만들기", "craft", 200, 10_000, "장인", "wildplus:doenjang"),
+            new Ach("farmfish1", "양식업자", "양어장에서 100마리 건지기", "farmfish", 100, 10_000, "양식업자", "wildplus:catfish"),
             new Ach("cook1", "첫 요리", "조리 기구로 요리 1개 완성", "cook", 1, 500, "", "wildplus:tomato_soup"),
             new Ach("cook2", "요리사", "요리 100개 완성", "cook", 100, 5_000, "요리사", "wildplus:curry_rice"),
             new Ach("cook3", "미슐랭 셰프", "요리 1,000개 완성", "cook", 1_000, 50_000, "미슐랭 셰프", "wildplus:sushi_set"),
@@ -420,7 +425,7 @@ public final class Codex {
     private static int group(String stat) {
         return switch (stat) {
             case "kill", "boss", "death" -> 1;
-            case "fish", "crop", "ore", "log", "breed", "cook" -> 2;
+            case "fish", "crop", "ore", "log", "breed", "cook", "honey", "craft", "farmfish" -> 2;
             case "ship", "bal", "market", "lotto" -> 3;
             case "tower", "raid", "honor" -> 4;
             default -> 5;

@@ -1254,6 +1254,11 @@ jobs:
             # 4.4 엔드: 평원 지형 · 몬스터 · 공허 군주
             cmd "/gamemode creative"; cmd "/effect give @s minecraft:night_vision 200 0 true"
             cmd "/gamemode creative"; sleep 1
+            cmd "/fill 391 120 -5 401 123 -3 air"
+            cmd "/setblock 392 120 -4 wildplus:beehive_box[facing=north]"; cmd "/setblock 394 120 -4 wildplus:drying_rack[facing=north]"
+            cmd "/setblock 396 120 -4 wildplus:jangdok[facing=north]"; cmd "/setblock 399 120 -4 wildplus:fish_farm[facing=north]"
+            cmd "/season"; sleep 1; shot v50-life
+            cmd "/fill 391 120 -5 401 123 -3 air"
             cmd "/wildplus uitest dex"; sleep 2; shot v49-dex; esc
             cmd "/wildplus uitest dexcat"; sleep 2; shot v49-dexcat; esc
             cmd "/wildplus uitest dexach"; sleep 2; shot v49-dexach; esc

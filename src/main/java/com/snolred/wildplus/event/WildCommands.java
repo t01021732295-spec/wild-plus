@@ -17,6 +17,10 @@ public final class WildCommands {
             ctx.getSource().sendSuccess(() -> Component.translatable("commands.wildplus.guide"), false);
             return 1;
         }));
+        event.getDispatcher().register(Commands.literal("season").executes(ctx -> {
+            ctx.getSource().getPlayerOrException().sendSystemMessage(com.snolred.wildplus.content.Seasons.line());
+            return 1;
+        }));
         event.getDispatcher().register(Commands.literal("dex").executes(ctx -> {
             com.snolred.wildplus.content.Codex.open(ctx.getSource().getPlayerOrException());
             return 1;

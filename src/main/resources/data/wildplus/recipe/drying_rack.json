@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "S S",
+    "L L"
+  ],
+  "key": {
+    "S": "minecraft:stick",
+    "L": "#minecraft:logs"
+  },
+  "result": {
+    "id": "wildplus:drying_rack",
+    "count": 1
+  }
+}

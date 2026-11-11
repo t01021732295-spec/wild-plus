@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "wildplus:block/beehive_box"
+    },
+    "facing=east": {
+      "model": "wildplus:block/beehive_box",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "wildplus:block/beehive_box",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "wildplus:block/beehive_box",
+      "y": 270
+    }
+  }
+}

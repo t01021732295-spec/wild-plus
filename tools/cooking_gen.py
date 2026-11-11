@@ -122,6 +122,27 @@ DISHES = {
                    [("resistance", 240, 0), ("regeneration", 30, 0)], ("bowl", (245, 240, 225), [(240, 130, 40), (200, 160, 110)])),
     "egg_toast": ("에그 토스트", "STOVE", [M + "bread", M + "egg", W + "butter", W + "cheese"], 1, None,
                   [("haste", 240, 0)], ("bread", (230, 180, 100), [(250, 220, 80)])),
+    # ───── 5.0 생활 ─────
+    "doenjang_stew": ("된장찌개", "POT", [W + "doenjang", M + "potato", W + "onion", BOWL], 1, "bowl",
+                      [("regeneration", 45, 0), ("resistance", 180, 0)], ("bowl", (170, 120, 60), [(240, 235, 220), (90, 160, 60)])),
+    "radish_soup": ("소고기 뭇국", "POT", [W + "radish", M + "beef", W + "onion", BOWL], 1, "bowl",
+                    [("health_boost", 240, 0)], ("bowl", (225, 215, 190), [(250, 250, 245), (150, 90, 70)])),
+    "soy_braised_beef": ("장조림", "POT", [M + "beef", M + "beef", W + "soy_sauce", M + "egg"], 1, None,
+                         [("strength", 240, 0), ("resistance", 120, 0)], ("plate", (90, 50, 30), [(250, 240, 220)])),
+    "honey_ginseng_tea": ("꿀 인삼차", "POT", [W + "honey_jar", W + "ginseng", BOTTLE], 1, "bottle",
+                          [("regeneration", 60, 1), ("absorption", 300, 1)], ("bottle", (230, 170, 60), [(250, 230, 160)])),
+    "raisin_bread": ("건포도 빵", "OVEN", [M + "wheat", M + "wheat", M + "wheat", W + "raisin", M + "egg"], 2, None,
+                     [("haste", 240, 0)], ("bread", (210, 150, 80), [(90, 40, 110)])),
+    "roasted_sweet_potato": ("군고구마", "GRILL", [W + "sweet_potato", W + "sweet_potato"], 2, None,
+                             [("fire_resistance", 180, 0), ("regeneration", 20, 0)], ("roll", (150, 70, 90), [(250, 200, 80)])),
+    "sweet_potato_mattang": ("고구마 맛탕", "STOVE", [W + "sweet_potato", W + "sweet_potato", W + "honey_jar", M + "sugar"], 1, None,
+                             [("speed", 240, 0), ("jump_boost", 120, 0)], ("plate", (230, 160, 60), [(250, 220, 120), (40, 30, 20)])),
+    "honey_hotteok": ("꿀 호떡", "STOVE", [M + "wheat", M + "wheat", W + "honey_jar", M + "sugar"], 2, None,
+                      [("speed", 180, 0), ("haste", 120, 0)], ("pancake", (220, 160, 80), [(250, 200, 90)])),
+    "spicy_pork": ("제육볶음", "STOVE", [M + "porkchop", M + "porkchop", W + "chili_powder", W + "onion"], 1, None,
+                   [("strength", 300, 0), ("speed", 120, 0)], ("plate", (200, 60, 40), [(240, 200, 160), (90, 160, 60)])),
+    "melon_bingsu": ("참외 빙수", "PREP", [W + "korean_melon", W + "korean_melon", M + "snowball", W + "honey_jar", BOWL], 1, "bowl",
+                     [("fire_resistance", 300, 0), ("regeneration", 30, 0)], ("bowl", (240, 248, 255), [(250, 220, 90), (255, 250, 220)])),
 }
 INGREDIENT_ONLY = {"kimchi", "cheese"}  # 먹을 수는 있지만 주로 재료
 

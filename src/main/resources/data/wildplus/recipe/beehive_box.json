@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PPP",
+    "HHH",
+    "PPP"
+  ],
+  "key": {
+    "P": "#minecraft:planks",
+    "H": "minecraft:honeycomb"
+  },
+  "result": {
+    "id": "wildplus:beehive_box",
+    "count": 1
+  }
+}

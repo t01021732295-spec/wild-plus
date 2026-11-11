@@ -13,7 +13,7 @@ DIMS = {
     "hay_trough": (-1, 0, 0, 0, 1), "butter_churn": (0, 0, 0, 0, 2), "spinning_wheel": (0, 0, 0, 0, 2), "contest_board": (-1, 0, 0, 0, 2), "podium": (-1, 1, 0, 0, 1),
     # 3.5 경마장 · 마을
     "stable": (-1, 0, 0, 0, 2), "betting_kiosk": (0, 0, 0, 0, 2), "starting_gate": (-2, 1, 0, 0, 2), "scoreboard": (-1, 1, 0, 0, 2), "finish_post": (0, 0, 0, 0, 2),
-    "project_board": (-1, 1, 0, 0, 2), "goal_board": (-1, 1, 0, 0, 2), "atm_tall": (0, 0, 0, 0, 2), "music_player": (-1, 1, 0, 0, 2), "market_stall": (-1, 1, 0, 0, 4), "lottery_machine": (0, 0, 0, 0, 3), "fate_altar": (0, 0, 0, 0, 2), "pharmacy_rack": (-1, 1, 0, 0, 3),
+    "project_board": (-1, 1, 0, 0, 2), "goal_board": (-1, 1, 0, 0, 2), "atm_tall": (0, 0, 0, 0, 2), "music_player": (-1, 1, 0, 0, 2), "market_stall": (-1, 1, 0, 0, 4), "fish_farm": (0, 1, 0, 0, 1), "lottery_machine": (0, 0, 0, 0, 3), "fate_altar": (0, 0, 0, 0, 2), "pharmacy_rack": (-1, 1, 0, 0, 3),
 }
 STEP = {"north": (0, -1), "south": (0, 1), "east": (1, 0), "west": (-1, 0)}
 CW = {"north": "east", "east": "south", "south": "west", "west": "north"}

@@ -64,6 +64,9 @@
     "wildplus:finish_post",
     "wildplus:pharmacy_rack",
     "wildplus:music_player",
-    "wildplus:market_stall"
+    "wildplus:market_stall",
+    "wildplus:beehive_box",
+    "wildplus:drying_rack",
+    "wildplus:fish_farm"
   ]
 }

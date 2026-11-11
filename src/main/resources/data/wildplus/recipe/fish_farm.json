@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "P P",
+    "PBP",
+    "LLL"
+  ],
+  "key": {
+    "P": "#minecraft:planks",
+    "B": "minecraft:water_bucket",
+    "L": "#minecraft:logs"
+  },
+  "result": {
+    "id": "wildplus:fish_farm",
+    "count": 1
+  }
+}

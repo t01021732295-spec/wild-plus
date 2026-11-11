@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:sweet_potato"
+  ],
+  "result": {
+    "id": "wildplus:sweet_potato_seeds",
+    "count": 2
+  }
+}

@@ -94,6 +94,7 @@ public class BigPartBlock extends HorizontalDirectionalBlock {
             if (m != null && level.getBlockState(m).getBlock() instanceof BigBlock big) {
                 BlockState ms = level.getBlockState(m);
                 big.removeParts(level, m, ms);
+                if (big instanceof LifeBlock) com.snolred.wildplus.content.LifeStations.spill(level, m);
                 level.destroyBlock(m, !player.isCreative());
             }
         }

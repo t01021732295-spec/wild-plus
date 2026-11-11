@@ -51,6 +51,9 @@
 
 - 도감 · 업적 · 칭호(4.9): `content/Codex` — 분류 7개(`CATS`) · 업적(`ACHS`) · 통계는 `Codex.add(p, "이름", n)` / `Codex.max` 로 다른 시스템에서 넣음 · 화면은 모험 수첩(`ModItems32`) 우클릭 또는 `/dex` · 시험 `/wildplus uitest dex|dexcat|dexach|dextitle`
 
+- 생활(5.0): `content/Seasons`(게임 7일마다 계절, `/season`) · `block/SeasonCropBlock`(제철 2배) · `content/LifeStations` + `block/LifeBlock`(양봉 상자 · 건조대 · 장독대 · 양어장 — 블록 엔티티 없이 ContentData "life" 에 자리별 저장, 누를 때 지난 시간으로 계산) · `ModBlocks20` · `ModItems33` · `tools/data_v43.py` · 도안 `tools/life_design.py`
+- 네더(5.0.1~ 예정): 도안 `tools/nether_designs_v50.py` (겁화 장비 · 겁화의 군주 · 몬스터 4종 · 겁화의 성채 · 잿불 감시탑)
+
 ## 커밋
 커밋 메시지 끝에:
 ```

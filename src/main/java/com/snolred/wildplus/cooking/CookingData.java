@@ -74,6 +74,16 @@ public final class CookingData {
         new Dish("custard_pudding", "커스터드 푸딩", Station.STOVE, new String[]{"wildplus:milk_bottle", "minecraft:egg", "minecraft:sugar"}, 2, "", new Eff[]{new Eff("jump_boost", 180, 0)}, 7, 0.7F),
         new Dish("carbonara", "까르보나라", Station.STOVE, new String[]{"minecraft:wheat", "minecraft:wheat", "wildplus:cream", "minecraft:egg", "minecraft:porkchop"}, 1, "", new Eff[]{new Eff("strength", 240, 0), new Eff("absorption", 120, 0)}, 9, 0.8F),
         new Dish("cream_stew", "크림 스튜", Station.POT, new String[]{"wildplus:cream", "minecraft:chicken", "minecraft:potato", "minecraft:carrot", "minecraft:bowl"}, 1, "bowl", new Eff[]{new Eff("resistance", 240, 0), new Eff("regeneration", 30, 0)}, 9, 0.8F),
-        new Dish("egg_toast", "에그 토스트", Station.STOVE, new String[]{"minecraft:bread", "minecraft:egg", "wildplus:butter", "wildplus:cheese"}, 1, "", new Eff[]{new Eff("haste", 240, 0)}, 8, 0.7F)
+        new Dish("egg_toast", "에그 토스트", Station.STOVE, new String[]{"minecraft:bread", "minecraft:egg", "wildplus:butter", "wildplus:cheese"}, 1, "", new Eff[]{new Eff("haste", 240, 0)}, 8, 0.7F),
+        new Dish("doenjang_stew", "된장찌개", Station.POT, new String[]{"wildplus:doenjang", "minecraft:potato", "wildplus:onion", "minecraft:bowl"}, 1, "bowl", new Eff[]{new Eff("regeneration", 45, 0), new Eff("resistance", 180, 0)}, 8, 0.8F),
+        new Dish("radish_soup", "소고기 뭇국", Station.POT, new String[]{"wildplus:radish", "minecraft:beef", "wildplus:onion", "minecraft:bowl"}, 1, "bowl", new Eff[]{new Eff("health_boost", 240, 0)}, 8, 0.7F),
+        new Dish("soy_braised_beef", "장조림", Station.POT, new String[]{"minecraft:beef", "minecraft:beef", "wildplus:soy_sauce", "minecraft:egg"}, 1, "", new Eff[]{new Eff("strength", 240, 0), new Eff("resistance", 120, 0)}, 8, 0.8F),
+        new Dish("honey_ginseng_tea", "꿀 인삼차", Station.POT, new String[]{"wildplus:honey_jar", "wildplus:ginseng", "minecraft:glass_bottle"}, 1, "bottle", new Eff[]{new Eff("regeneration", 60, 1), new Eff("absorption", 300, 1)}, 7, 0.8F),
+        new Dish("raisin_bread", "건포도 빵", Station.OVEN, new String[]{"minecraft:wheat", "minecraft:wheat", "minecraft:wheat", "wildplus:raisin", "minecraft:egg"}, 2, "", new Eff[]{new Eff("haste", 240, 0)}, 9, 0.7F),
+        new Dish("roasted_sweet_potato", "군고구마", Station.GRILL, new String[]{"wildplus:sweet_potato", "wildplus:sweet_potato"}, 2, "", new Eff[]{new Eff("fire_resistance", 180, 0), new Eff("regeneration", 20, 0)}, 6, 0.8F),
+        new Dish("sweet_potato_mattang", "고구마 맛탕", Station.STOVE, new String[]{"wildplus:sweet_potato", "wildplus:sweet_potato", "wildplus:honey_jar", "minecraft:sugar"}, 1, "", new Eff[]{new Eff("speed", 240, 0), new Eff("jump_boost", 120, 0)}, 8, 0.8F),
+        new Dish("honey_hotteok", "꿀 호떡", Station.STOVE, new String[]{"minecraft:wheat", "minecraft:wheat", "wildplus:honey_jar", "minecraft:sugar"}, 2, "", new Eff[]{new Eff("speed", 180, 0), new Eff("haste", 120, 0)}, 8, 0.8F),
+        new Dish("spicy_pork", "제육볶음", Station.STOVE, new String[]{"minecraft:porkchop", "minecraft:porkchop", "wildplus:chili_powder", "wildplus:onion"}, 1, "", new Eff[]{new Eff("strength", 300, 0), new Eff("speed", 120, 0)}, 8, 0.8F),
+        new Dish("melon_bingsu", "참외 빙수", Station.PREP, new String[]{"wildplus:korean_melon", "wildplus:korean_melon", "minecraft:snowball", "wildplus:honey_jar", "minecraft:bowl"}, 1, "bowl", new Eff[]{new Eff("fire_resistance", 300, 0), new Eff("regeneration", 30, 0)}, 9, 0.8F)
     };
 }

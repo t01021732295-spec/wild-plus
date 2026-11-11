@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "wildplus:korean_melon"
+  ],
+  "result": {
+    "id": "wildplus:korean_melon_seeds",
+    "count": 2
+  }
+}

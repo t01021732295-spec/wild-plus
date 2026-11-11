@@ -10,6 +10,10 @@
     "wildplus:grape_crop",
     "wildplus:rice_crop",
     "wildplus:onion_crop",
-    "wildplus:ginseng_crop"
+    "wildplus:ginseng_crop",
+    "wildplus:soybean_crop",
+    "wildplus:korean_melon_crop",
+    "wildplus:sweet_potato_crop",
+    "wildplus:radish_crop"
   ]
 }

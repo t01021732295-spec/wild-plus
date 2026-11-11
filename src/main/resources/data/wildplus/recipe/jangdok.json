@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "T T",
+    "TCT",
+    "SSS"
+  ],
+  "key": {
+    "T": "minecraft:terracotta",
+    "C": "minecraft:clay_ball",
+    "S": "minecraft:stone"
+  },
+  "result": {
+    "id": "wildplus:jangdok",
+    "count": 1
+  }
+}
