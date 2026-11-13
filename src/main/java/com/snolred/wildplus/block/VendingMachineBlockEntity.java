@@ -64,6 +64,9 @@ public class VendingMachineBlockEntity extends BlockEntity implements MenuProvid
     public int price(int slot) {
         // 3.6: 마을 자판기의 불사의 토템은 최소 30,000동 (로열 에메랄드 재료 난이도)
         if (infinite && items.getItem(slot).is(net.minecraft.world.item.Items.TOTEM_OF_UNDYING)) return Math.max(prices[slot], 30_000);
+        // 5.0.3: 마을 · 교역소 · 오락실 자판기의 즉석 복권은 100배 (1장 90동 → 9,000동)
+        if (infinite && items.getItem(slot).is(com.snolred.wildplus.registry.ModItems4.LOTTERY_TICKET.get()))
+            return (int) Math.min(Integer.MAX_VALUE, com.snolred.wildplus.economy.Prices.x((long) prices[slot]) * 100L);
         // 3.7: 마을 · 교역소(무한 재고) 자판기 물가 3배
         return infinite ? com.snolred.wildplus.economy.Prices.x(prices[slot]) : prices[slot];
     }
