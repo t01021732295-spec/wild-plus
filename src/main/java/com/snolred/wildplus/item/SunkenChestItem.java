@@ -73,7 +73,7 @@ public class SunkenChestItem extends Item {
             }
             case 4 -> {
                 out.add(new ItemStack(com.snolred.wildplus.registry.ModItems13.EMERALD_COIN.get(), 1 + r.nextInt(2)));
-                out.add(new ItemStack(com.snolred.wildplus.registry.ModItems7.RUBY_BLOCK.get(), 2));
+                out.add(new ItemStack(com.snolred.wildplus.registry.ModItems7.RUBY.get(), 3)); // 5.0.6: 루비 블록 2 → 루비 3
                 out.add(new ItemStack(r.nextFloat() < 0.3F ? net.minecraft.world.item.Items.NETHER_STAR : net.minecraft.world.item.Items.TOTEM_OF_UNDYING));
             }
             default -> {}
@@ -104,6 +104,14 @@ public class SunkenChestItem extends Item {
             java.util.List<ItemStack> all = new java.util.ArrayList<>();
             for (int k = 0; k <= tier; k++) all.addAll(table.getRandomItems(params));
             all.addAll(bonus(tier, player.getRandom()));
+            // 5.0.6: 보물 35% 너프 — 개수마다 65% 만 남김 (남는 끝수는 확률로, 루비 상자의 루비 3개는 그대로)
+            for (int k = 0; k < all.size(); k++) {
+                ItemStack s = all.get(k);
+                if (s.isEmpty() || tier == 4 && s.is(com.snolred.wildplus.registry.ModItems7.RUBY.get()) && s.getCount() == 3) continue;
+                float want = s.getCount() * 0.65F;
+                int n = (int) want + (player.getRandom().nextFloat() < want - (int) want ? 1 : 0);
+                s.setCount(n);
+            }
             for (ItemStack loot : all) {
                 if (loot.isEmpty()) continue;
                 if (!first) msg.append(net.minecraft.network.chat.Component.literal(", ").withStyle(net.minecraft.ChatFormatting.GRAY));

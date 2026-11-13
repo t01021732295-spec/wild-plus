@@ -86,7 +86,7 @@
   "tooltip.wildplus.storm_eel": "비 오는 날에 잡힘 (뇌우 때 더 잘)",
   "tooltip.wildplus.anglerfish": "바다에서 잡힘 (밤에 더 잘)",
   "tooltip.wildplus.ice_smelt": "추운 지역에서 잡힘",
-  "tooltip.wildplus.sunken_chest": "들고 우클릭하면 보물이 쏟아짐 · 등급: 동 · 은 · 금 · 다이아 · 루비\n등급이 높을수록 보물을 더 많이 · 은 이상은 동전 · 다이아 · 루비 블록 보너스",
+  "tooltip.wildplus.sunken_chest": "들고 우클릭하면 보물이 쏟아짐 · 등급: 동 · 은 · 금 · 다이아 · 루비\n등급이 높을수록 보물을 더 많이 · 은 이상은 동전 · 다이아 · 루비 보너스",
   "tooltip.wildplus.sprinkler": "주변 9x9 경작지를 적시고 작물 성장을 3~4배 빠르게",
   "tooltip.wildplus.fertilizer": "주변 3x3 작물·묘목 2번 성장 + 경작지에 1단계 영양 (수확 3번)\n은 품질 25% · 금 6% · 조금 빨리 자람",
   "tooltip.wildplus.tomato_seeds": "잔디에서 가끔 나옴",

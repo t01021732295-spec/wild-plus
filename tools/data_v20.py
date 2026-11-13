@@ -68,7 +68,7 @@ for r, ko in RODS.items():
     LANG_KO[f"item.wildplus.{r}_fishing_rod"] = f"{ko} 낚싯대"
     LANG_KO[f"tooltip.wildplus.{r}_fishing_rod"] = ROD_TIP[r]
     LANG_EN[f"item.wildplus.{r}_fishing_rod"] = ("Dragon King" if r == "dragon" else r.replace("_", " ").title()) + " Fishing Rod"
-LANG_KO["tooltip.wildplus.sunken_chest"] = "들고 우클릭하면 보물이 쏟아짐 · 등급: 동 · 은 · 금 · 다이아 · 루비\n등급이 높을수록 보물을 더 많이 · 은 이상은 동전 · 다이아 · 루비 블록 보너스"
+LANG_KO["tooltip.wildplus.sunken_chest"] = "들고 우클릭하면 보물이 쏟아짐 · 등급: 동 · 은 · 금 · 다이아 · 루비\n등급이 높을수록 보물을 더 많이 · 은 이상은 동전 · 다이아 · 루비 보너스"
 LANG_KO["tooltip.wildplus.jade_fishing_rod"] = "희귀 어종·보물상자 확률 2배, 가끔 두 마리\n강화대에서 미스릴 블록 + 1,000동으로 미스릴 낚싯대 승급 (인챈트 유지)"
 for c, (ko, en) in CROPS.items():
     LANG_KO[f"block.wildplus.{c}_crop"] = ko
