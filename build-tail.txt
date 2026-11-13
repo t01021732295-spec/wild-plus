@@ -1,0 +1,111 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.2.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: build
+
+> Configure project :
+Creating Minecraft artifacts without recompilation.
+
+> Task :jarJar NO-SOURCE
+> Task :processTestResources NO-SOURCE
+> Task :generateModMetadata
+> Task :processResources
+
+> Task :createMinecraftArtifacts
+Loaded 135 artifacts from /home/runner/work/wild-plus/wild-plus/build/tmp/createMinecraftArtifacts/nfrt_artifact_manifest.properties
+[1m*** Started working on [4mdownloadManifest[23;0m[23;0m
+  ↓ https://piston-meta.mojang.com/mc/game/version_manifest_v2.json
+ [1m[92m✓[23;0m Completed [4mdownloadManifest[23;0m in 0.42s
+[1m*** Started working on [4mdownloadJson[23;0m[23;0m
+ [1m[92m✓[23;0m Completed [4mdownloadJson[23;0m in 0.00s
+[1m*** Started working on [4mdownloadClient[23;0m[23;0m
+[1m*** Started working on [4mdownloadServer[23;0m[23;0m
+ [1m[92m✓[23;0m Completed [4mdownloadClient[23;0m in 0.02s
+ [1m[92m✓[23;0m Completed [4mdownloadServer[23;0m in 0.03s
+[1m*** Started working on [4mpreProcessJar[23;0m[23;0m
+ [1m[92m♻[23;0m Used cache of [4mpreProcessJar[23;0m in 0.00s
+[1m*** Started working on [4mbinaryPatch[23;0m[23;0m
+ [1m[92m♻[23;0m Used cache of [4mbinaryPatch[23;0m in 0.00s
+[1m*** Started working on [4mcopyUnpatchedClasses[23;0m[23;0m
+ [1m[92m♻[23;0m Used cache of [4mcopyUnpatchedClasses[23;0m in 0.00s
+[1m*** Started working on [4mapplyDevTransforms[23;0m[23;0m
+ [1m[92m♻[23;0m Used cache of [4mapplyDevTransforms[23;0m in 0.00s
+Total runtime: 1.59s
+
+
+> Task :compileJava
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/event/RandomEvents.java:618: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+        if (active != Type.ORE_BLESSING || !event.getState().is(Tags.Blocks.ORES) || event.getDrops().isEmpty()) return;
+                                                                           ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/event/RubyGear.java:157: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+                if (!level.getBlockState(pos).is(Tags.Blocks.ORES)) continue;
+                                                            ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/event/RubyGear.java:304: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+        if (tool.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_PICKAXE.get()) && state.is(Tags.Blocks.ORES)
+                                                                                                            ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/event/GearEffects.java:162: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+            if (state.is(Tags.Blocks.ORES) && !drops.isEmpty() && !drops.get(0).getItem().is(state.getBlock().asItem())
+                                    ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/event/KalpaGear.java:255: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+        boolean twice = pick && event.getState().is(Tags.Blocks.ORES) && p.getRandom().nextFloat() < 0.15F;
+                                                               ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/event/EmeraldGear.java:257: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+        if (tool.is(ROYAL_EMERALD_PICKAXE.get()) && state.is(Tags.Blocks.ORES) && event.getBreaker() instanceof Player miner) {
+                                                                        ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/event/EmeraldGear.java:260: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+        if (is(tool, EMERALD_PICKAXE, ROYAL_EMERALD_PICKAXE) && state.is(Tags.Blocks.ORES)
+                                                                                    ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/event/PotionEvents41.java:67: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+            if (level.getBlockState(q).is(Tags.Blocks.ORES)) ores.add(q.immutable());
+                                                     ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/event/LuckyCharms.java:109: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+        if (!(event.getBreaker() instanceof Player p) || !event.getState().is(Tags.Blocks.ORES) || event.getDrops().isEmpty()) return;
+                                                                                         ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/event/QolEvents.java:79: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+        } else if (WildConfig.VEIN_MINING.getAsBoolean() && state.is(Tags.Blocks.ORES) && tool.is(ItemTags.PICKAXES)
+                                                                                ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/economy/Trials.java:205: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+        if (st.is(Tags.Blocks.ORES)) {
+                             ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/economy/Jobs.java:194: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+        else if (st.is(Tags.Blocks.ORES)) add(p, Kind.MINE, 1);
+                                  ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/content/Codex.java:347: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+        else if (st.is(Tags.Blocks.ORES)) add(p, "ore", 1);
+                                  ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/content/WeeklyGoals.java:281: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+        if (state.is(Tags.Blocks.ORES)) add(server, Kind.MINE_ORE, 1);
+                                ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/content/ContentEvents.java:34: warning: [removal] ORES in Blocks has been deprecated and marked for removal
+            if (event.getState().is(net.neoforged.neoforge.common.Tags.Blocks.ORES)) {
+                                                                             ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/content/ContentEvents.java:35: warning: [removal] ORES_DIAMOND in Blocks has been deprecated and marked for removal
+                boolean rare = event.getState().is(net.neoforged.neoforge.common.Tags.Blocks.ORES_DIAMOND)
+                                                                                            ^
+/home/runner/work/wild-plus/wild-plus/src/main/java/com/snolred/wildplus/content/ContentEvents.java:36: warning: [removal] ORES_EMERALD in Blocks has been deprecated and marked for removal
+                        || event.getState().is(net.neoforged.neoforge.common.Tags.Blocks.ORES_EMERALD)
+                                                                                        ^
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+17 warnings
+
+> Task :classes
+> Task :compileTestJava NO-SOURCE
+> Task :testClasses UP-TO-DATE
+> Task :test NO-SOURCE
+> Task :check UP-TO-DATE
+> Task :jar
+> Task :assemble
+> Task :build
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/build-1794589093145.json
+
+[Incubating] Problems report is available at: file:///home/runner/work/wild-plus/wild-plus/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.2.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 25s
+5 actionable tasks: 5 executed
+Configuration cache entry stored.
