@@ -52,7 +52,10 @@
 - 도감 · 업적 · 칭호(4.9): `content/Codex` — 분류 7개(`CATS`) · 업적(`ACHS`) · 통계는 `Codex.add(p, "이름", n)` / `Codex.max` 로 다른 시스템에서 넣음 · 화면은 모험 수첩(`ModItems32`) 우클릭 또는 `/dex` · 시험 `/wildplus uitest dex|dexcat|dexach|dextitle`
 
 - 생활(5.0): `content/Seasons`(게임 7일마다 계절, `/season`) · `block/SeasonCropBlock`(제철 2배) · `content/LifeStations` + `block/LifeBlock`(양봉 상자 · 건조대 · 장독대 · 양어장 — 블록 엔티티 없이 ContentData "life" 에 자리별 저장, 누를 때 지난 시간으로 계산) · `ModBlocks20` · `ModItems33` · `tools/data_v43.py` · 도안 `tools/life_design.py`
-- 네더(5.0.1~ 예정): 도안 `tools/nether_designs_v50.py` (겁화 장비 · 겁화의 군주 · 몬스터 4종 · 겁화의 성채 · 잿불 감시탑)
+- 네더(5.0.1~): 도안 `tools/nether_designs_v50.py` (겁화 장비 · 겁화의 군주 · 몬스터 4종 · 겁화의 성채 · 잿불 감시탑)
+  · 겁화 장비 `ModItems34` · 효과 `event/KalpaGear`(표식 5개 폭발 등, 도구 범위는 VoidGear 가 같이 처리) · 갑옷 입체 장식 `client/KalpaArmorLayer` · 데이터 `tools/data_v44.py`
+  · 몬스터 `entity/NetherMobs`(FxBoss keep=false) · 모델 `tools/gen_models_v50.py`(회전 상자 지원) · 스폰/이름 `tools/data_v45.py` · 드롭은 `KalpaGear.onMobDrops`
+  · 남은 것: 잿불 감시탑 · 겁화의 성채 · 겁화의 군주(군주의 뿔 = 장비 완성 재료) · 겁화 각인 · 바이옴 2종 · 요새/보루 강화
 
 ## 커밋
 커밋 메시지 끝에:

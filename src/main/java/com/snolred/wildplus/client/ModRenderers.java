@@ -67,6 +67,10 @@ public final class ModRenderers {
         event.registerEntityRenderer(ModEntities.MUSIC_VISUAL.get(), c -> new GenModelRenderer<>(c, "music_fx", 1.0F, 0F, GenModelRenderer::music));
         event.registerEntityRenderer(ModEntities.VOLCANO_BOSS.get(), c -> new GenModelRenderer<>(c, "volcano", 0.52F, 2.0F, GenModelRenderer::volcano));
         event.registerEntityRenderer(ModEntities.STORM_KING.get(), c -> new GenModelRenderer<>(c, "storm_king", 0.55F, 1.2F, GenModelRenderer::stormKing));
+        event.registerEntityRenderer(ModEntities.EMBER_HOUND.get(), c -> new GenModelRenderer<>(c, "ember_hound", 1.0F, 0.5F, GenModelRenderer::hound));
+        event.registerEntityRenderer(ModEntities.LAVA_TURTLE.get(), c -> new GenModelRenderer<>(c, "lava_turtle", 0.9F, 0.9F, GenModelRenderer::turtle));
+        event.registerEntityRenderer(ModEntities.ASH_SHAMAN.get(), c -> new GenModelRenderer<>(c, "ash_shaman", 0.75F, 0.5F, GenModelRenderer::shaman));
+        event.registerEntityRenderer(ModEntities.OBSIDIAN_GOLEM.get(), c -> new GenModelRenderer<>(c, "obsidian_golem", 0.8F, 1.0F, GenModelRenderer::golem));
         event.registerEntityRenderer(ModEntities.CLOUD_SENTINEL.get(), c -> new GenModelRenderer<>(c, "cloud_sentinel", 0.62F, 0.6F, GenModelRenderer::sentinel));
         event.registerEntityRenderer(ModEntities.THUNDER_HAWK.get(), c -> new GenModelRenderer<>(c, "thunder_hawk", 0.55F, 0.6F, GenModelRenderer::hawk));
         event.registerEntityRenderer(ModEntities.CLOUD_PRIEST.get(), c -> new GenModelRenderer<>(c, "cloud_priest", 0.6F, 0.6F, GenModelRenderer::priest));

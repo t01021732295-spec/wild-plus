@@ -78,7 +78,7 @@ public final class Codex {
             new Cat("전리품 · 각인", "wildplus:lord_heart", "보스나 유적에서 얻어요", false, w("lord_heart titan_core lich_orb frost_crown dragon_plume void_heart void_feather void_key lord_shard lord_sigil "
                     + "wraith_plume volcano_heart kalpa_horn awakening_core_1 awakening_core_2 awakening_core_3 awakening_core_4 awakening_core_5 "
                     + "engrave_abyss engrave_devour engrave_chain engrave_warp engrave_heart engrave_harvest engrave_fury engrave_guard engrave_vigor engrave_rush")),
-            new Cat("몬스터", "minecraft:bone", "직접 쓰러뜨리면 등록돼요", true, w("bandit bandit_boss wanted golden_slime treasure_rabbit illager_mercenary void_stalker rift_mite void_wraith "
+            new Cat("몬스터", "minecraft:bone", "직접 쓰러뜨리면 등록돼요", true, w("bandit bandit_boss wanted golden_slime treasure_rabbit illager_mercenary void_stalker rift_mite void_wraith ember_hound lava_turtle ash_shaman obsidian_golem "
                     + "cloud_sentinel thunder_hawk cloud_priest blood_lord dungeon_guardian titan_boss lich_boss frost_boss vine_boss pharaoh_boss flame_boss abyss_boss "
                     + "void_boss gold_boss storm_king volcano_boss void_lord minecraft:ender_dragon minecraft:wither minecraft:warden minecraft:elder_guardian")));
 

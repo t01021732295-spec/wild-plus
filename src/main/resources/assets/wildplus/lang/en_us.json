@@ -1115,5 +1115,9 @@
   "item.wildplus.kalpa_leggings": "Kalpa Leggings",
   "item.wildplus.kalpa_leggings_blank": "Unfinished Kalpa Leggings",
   "item.wildplus.kalpa_boots": "Kalpa Boots",
-  "item.wildplus.kalpa_boots_blank": "Unfinished Kalpa Boots"
+  "item.wildplus.kalpa_boots_blank": "Unfinished Kalpa Boots",
+  "entity.wildplus.ember_hound": "Ember Hound",
+  "entity.wildplus.lava_turtle": "Lava Turtle",
+  "entity.wildplus.ash_shaman": "Ash Shaman",
+  "entity.wildplus.obsidian_golem": "Obsidian Golem"
 }

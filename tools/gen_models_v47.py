@@ -21,14 +21,15 @@ def solid_color(b):
         return None
 
 
-def build(name, boxes, orig_shift, grouper):
+def build(name, boxes, orig_shift, grouper, bright=None):
+    bright = BRIGHT if bright is None else bright
     min_y = min(b.y0 for b in boxes)
     shift = -min_y
     cubes = []
     for b in boxes:
         w, h, d = (max(1, math.ceil(v)) for v in (b.w, b.h, b.d))
         c = solid_color(b)
-        glow = c in BRIGHT
+        glow = c in bright
         o = (b.x0, b.y0 - orig_shift, b.z0, b.w, b.h, b.d, glow)
         cubes.append((b, w, h, d, glow, grouper(*o)))
     W = 1024
@@ -60,7 +61,12 @@ def build(name, boxes, orig_shift, grouper):
         face(u + d + w, v + d, d, h, "right", b)
         face(u + d + w + d, v + d, w, h, "back", b)
         y0 = b.y0 + shift
-        groups.setdefault(group, {"solid": [], "glow": []})["glow" if glow else "solid"].append([u, v, round(b.x0, 2), round(24 - (y0 + b.h), 2), round(-(b.z0 + b.d), 2), round(b.w, 2), round(b.h, 2), round(b.d, 2)])
+        cube = [u, v, round(b.x0, 2), round(24 - (y0 + b.h), 2), round(-(b.z0 + b.d), 2), round(b.w, 2), round(b.h, 2), round(b.d, 2)]
+        if getattr(b, "rot", None):  # 도안(y 위 · z 앞) → 모델(y 아래 · z 뒤): x 축은 그대로, y · z 축은 각도 부호가 뒤집힘
+            axis, ang, piv = b.rot
+            k = "xyz".index(axis)
+            cube += [k, round(ang if k == 0 else -ang, 4), round(piv[0], 2), round(24 - (piv[1] + shift), 2), round(-piv[2], 2)]
+        groups.setdefault(group, {"solid": [], "glow": []})["glow" if glow else "solid"].append(cube)
     (ROOT / "textures/entity/gen").mkdir(parents=True, exist_ok=True)
     (ROOT / "models_gen").mkdir(parents=True, exist_ok=True)
     im.save(ROOT / f"textures/entity/gen/{name}.png")

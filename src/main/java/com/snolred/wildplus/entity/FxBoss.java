@@ -42,9 +42,17 @@ public abstract class FxBoss extends Monster {
 
     protected final List<Warn> warns = new ArrayList<>();
 
+    private final boolean keep;
+
     protected FxBoss(EntityType<? extends Monster> type, Level level) {
+        this(type, level, true);
+    }
+
+    /** keep=false: 자연 스폰 몹 (멀어지면 사라짐) */
+    protected FxBoss(EntityType<? extends Monster> type, Level level, boolean keep) {
         super(type, level);
-        setPersistenceRequired();
+        this.keep = keep;
+        if (keep) setPersistenceRequired();
     }
 
     @Override
@@ -56,7 +64,7 @@ public abstract class FxBoss extends Monster {
 
     @Override
     public boolean removeWhenFarAway(double d) {
-        return false;
+        return !keep;
     }
 
     protected List<ServerPlayer> near(ServerLevel lv, double r) {

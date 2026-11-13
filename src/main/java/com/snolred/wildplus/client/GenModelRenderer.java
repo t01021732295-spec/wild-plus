@@ -83,8 +83,17 @@ public class GenModelRenderer<T extends Mob> extends MobRenderer<T, GenModelRend
     private static Body bake(com.google.gson.JsonArray cubes, int tw, int th) {
         MeshDefinition m = new MeshDefinition();
         CubeListBuilder b = CubeListBuilder.create();
+        int rn = 0;
         for (var e : cubes) {
             var c = e.getAsJsonArray();
+            if (c.size() >= 13) { // 회전 상자: [u,v,x,y,z,w,h,d, 축, 라디안, px,py,pz] → 따로 굽는다
+                float px = c.get(10).getAsFloat(), py = c.get(11).getAsFloat(), pz = c.get(12).getAsFloat(), a = c.get(9).getAsFloat();
+                int axis = c.get(8).getAsInt();
+                m.getRoot().addOrReplaceChild("r" + rn++, CubeListBuilder.create().texOffs(c.get(0).getAsInt(), c.get(1).getAsInt())
+                        .addBox(c.get(2).getAsFloat() - px, c.get(3).getAsFloat() - py, c.get(4).getAsFloat() - pz, c.get(5).getAsFloat(), c.get(6).getAsFloat(), c.get(7).getAsFloat()),
+                        PartPose.offsetAndRotation(px, py, pz, axis == 0 ? a : 0F, axis == 1 ? a : 0F, axis == 2 ? a : 0F));
+                continue;
+            }
             b.texOffs(c.get(0).getAsInt(), c.get(1).getAsInt()).addBox(c.get(2).getAsFloat(), c.get(3).getAsFloat(), c.get(4).getAsFloat(), c.get(5).getAsFloat(), c.get(6).getAsFloat(), c.get(7).getAsFloat());
         }
         m.getRoot().addOrReplaceChild("p", b, PartPose.ZERO);
@@ -203,6 +212,31 @@ public class GenModelRenderer<T extends Mob> extends MobRenderer<T, GenModelRend
             case "coneR" -> p.scale(1F + (1F - kick) * 0.18F, 18F, 22F, 8F);
             default -> {}
         }
+    }
+
+    // ───── 5.0 네더 ─────
+    public static void hound(String g, State s, Pivot p) {
+        float t = s.ageInTicks;
+        if (g.equals("tail")) p.rotate(Axis.YP, Mth.sin(t * 0.3F) * 14F, 0F, 14F, -12F);
+        else if (g.equals("head")) p.rotate(Axis.XP, Mth.sin(t * 0.12F) * 4F, 0F, 12F, 11F);
+        else if (g.equals("legA")) p.rotate(Axis.XP, Mth.sin(t * 0.5F) * 16F, 0F, 8F, 0F);
+        else if (g.equals("legB")) p.rotate(Axis.XP, -Mth.sin(t * 0.5F) * 16F, 0F, 8F, 0F);
+    }
+
+    public static void turtle(String g, State s, Pivot p) {
+        if (g.equals("head")) p.move(0F, 0F, -Mth.sin(s.ageInTicks * 0.05F) * 1.5F);
+    }
+
+    public static void shaman(String g, State s, Pivot p) {
+        float t = s.ageInTicks;
+        p.move(0F, Mth.sin(t * 0.08F) * 0.9F, 0F);
+        if (g.equals("talisman")) p.rotate(Axis.YP, t * 2.5F, 0F, 0F, 0F);
+    }
+
+    public static void golem(String g, State s, Pivot p) {
+        float a = Mth.sin(s.ageInTicks * 0.07F) * 7F;
+        if (g.equals("armL")) p.rotate(Axis.XP, a, -20F, 34F, 0F);
+        else if (g.equals("armR")) p.rotate(Axis.XP, -a, 20F, 34F, 0F);
     }
 
     public static void priest(String g, State s, Pivot p) {

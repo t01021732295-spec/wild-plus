@@ -231,6 +231,16 @@ public final class KalpaGear {
         if (!(event.getSource().getEntity() instanceof ServerPlayer) || !(e.level() instanceof ServerLevel level)) return;
         String id = net.minecraft.core.registries.BuiltInRegistries.ENTITY_TYPE.getKey(e.getType()).toString();
         float chance = id.equals("minecraft:blaze") ? 0.25F : id.equals("minecraft:magma_cube") ? 0.08F : id.equals("minecraft:wither_skeleton") ? 0.30F : 0F;
+        int sure = switch (id) { // 겁화 몬스터: 확정 드롭
+            case "wildplus:ember_hound" -> 1 + level.getRandom().nextInt(2);
+            case "wildplus:lava_turtle", "wildplus:ash_shaman" -> 2 + level.getRandom().nextInt(2);
+            case "wildplus:obsidian_golem" -> 5 + level.getRandom().nextInt(4);
+            default -> 0;
+        };
+        if (sure > 0) event.getDrops().add(new ItemEntity(level, e.getX(), e.getY(), e.getZ(), new ItemStack(EMBER_SHARD.get(), sure)));
+        if (id.equals("wildplus:obsidian_golem") && level.getRandom().nextFloat() < 0.35F) {
+            event.getDrops().add(new ItemEntity(level, e.getX(), e.getY(), e.getZ(), new ItemStack(RAW_KALPA.get(), 1 + level.getRandom().nextInt(2))));
+        }
         if (chance > 0 && level.getRandom().nextFloat() < chance) {
             event.getDrops().add(new ItemEntity(level, e.getX(), e.getY(), e.getZ(), new ItemStack(EMBER_SHARD.get())));
         }

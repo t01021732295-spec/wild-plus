@@ -1264,7 +1264,11 @@ jobs:
             cmd "/item replace entity @s armor.legs with wildplus:kalpa_leggings"; cmd "/item replace entity @s armor.feet with wildplus:kalpa_boots"
             cmd "/item replace entity @s weapon.mainhand with wildplus:kalpa_sword"
             xdotool key F5; sleep 1; shot v50-kalpa-back; xdotool key F5; sleep 1; shot v50-kalpa-front; xdotool key F5; sleep 1
-            cmd "/clear @s"; cmd "/tp @s 396.5 120 -8.3 0 20"
+            cmd "/clear @s"; cmd "/fill 390 200 -6 402 203 -4 air"
+            cmd "/summon wildplus:ember_hound 392.5 200 -4.5 {NoAI:1b,Rotation:[150f,0f]}"; cmd "/summon wildplus:lava_turtle 395 200 -4 {NoAI:1b,Rotation:[160f,0f]}"
+            cmd "/summon wildplus:ash_shaman 398 200 -4 {NoAI:1b,Rotation:[190f,0f]}"; cmd "/summon wildplus:obsidian_golem 401 200 -3 {NoAI:1b,Rotation:[200f,0f]}"
+            cmd "/gamemode creative"; cmd "/tp @s 396.5 200.5 -10 0 8"; sleep 1; shot v50-mobs
+            cmd "/kill @e[type=!player,distance=..20]"; cmd "/tp @s 396.5 120 -8.3 0 20"
             cmd "/wildplus uitest dex"; sleep 2; shot v49-dex; esc
             cmd "/wildplus uitest dexcat"; sleep 2; shot v49-dexcat; esc
             cmd "/wildplus uitest dexach"; sleep 2; shot v49-dexach; esc

@@ -64,6 +64,16 @@ public final class ModEntities {
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.SkyMobs.Priest>> CLOUD_PRIEST = ENTITIES.registerEntityType("cloud_priest",
             com.snolred.wildplus.entity.SkyMobs.Priest::new, MobCategory.MONSTER, b -> b.sized(0.8F, 2.6F).clientTrackingRange(10));
 
+    // ───────── 5.0 네더 몬스터 ─────────
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.NetherMobs.Hound>> EMBER_HOUND = ENTITIES.registerEntityType("ember_hound",
+            com.snolred.wildplus.entity.NetherMobs.Hound::new, MobCategory.MONSTER, b -> b.sized(0.9F, 1.1F).fireImmune().clientTrackingRange(8));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.NetherMobs.Turtle>> LAVA_TURTLE = ENTITIES.registerEntityType("lava_turtle",
+            com.snolred.wildplus.entity.NetherMobs.Turtle::new, MobCategory.MONSTER, b -> b.sized(1.6F, 1.4F).fireImmune().clientTrackingRange(8));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.NetherMobs.Shaman>> ASH_SHAMAN = ENTITIES.registerEntityType("ash_shaman",
+            com.snolred.wildplus.entity.NetherMobs.Shaman::new, MobCategory.MONSTER, b -> b.sized(0.8F, 2.2F).fireImmune().clientTrackingRange(8));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.NetherMobs.Golem>> OBSIDIAN_GOLEM = ENTITIES.registerEntityType("obsidian_golem",
+            com.snolred.wildplus.entity.NetherMobs.Golem::new, MobCategory.MONSTER, b -> b.sized(1.6F, 2.9F).fireImmune().clientTrackingRange(10));
+
     // ───────── 4.3 엔드 몬스터 ─────────
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.EndMobs.Stalker>> VOID_STALKER = ENTITIES.registerEntityType("void_stalker",
             com.snolred.wildplus.entity.EndMobs.Stalker::new, MobCategory.MONSTER, b -> b.sized(0.6F, 2.9F).eyeHeight(2.55F).clientTrackingRange(8));
@@ -121,6 +131,10 @@ public final class ModEntities {
         event.put(MUSIC_VISUAL.get(), com.snolred.wildplus.entity.MusicVisual.attributes().build());
         event.put(VOLCANO_BOSS.get(), com.snolred.wildplus.entity.VolcanoEntity.attributes().build());
         event.put(STORM_KING.get(), com.snolred.wildplus.entity.StormKingEntity.attributes().build());
+        event.put(EMBER_HOUND.get(), com.snolred.wildplus.entity.NetherMobs.Hound.attributes().build());
+        event.put(LAVA_TURTLE.get(), com.snolred.wildplus.entity.NetherMobs.Turtle.attributes().build());
+        event.put(ASH_SHAMAN.get(), com.snolred.wildplus.entity.NetherMobs.Shaman.attributes().build());
+        event.put(OBSIDIAN_GOLEM.get(), com.snolred.wildplus.entity.NetherMobs.Golem.attributes().build());
         event.put(CLOUD_SENTINEL.get(), com.snolred.wildplus.entity.SkyMobs.Sentinel.attributes().build());
         event.put(THUNDER_HAWK.get(), com.snolred.wildplus.entity.SkyMobs.Hawk.attributes().build());
         event.put(CLOUD_PRIEST.get(), com.snolred.wildplus.entity.SkyMobs.Priest.attributes().build());
@@ -137,6 +151,11 @@ public final class ModEntities {
     }
 
     public static void onSpawnPlacements(RegisterSpawnPlacementsEvent event) {
+        for (var t : java.util.List.of(EMBER_HOUND, LAVA_TURTLE, ASH_SHAMAN, OBSIDIAN_GOLEM)) {
+            @SuppressWarnings("unchecked")
+            EntityType<Monster> type = (EntityType<Monster>) t.get();
+            event.register(type, SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
+        }
         event.register(VOID_STALKER.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(RIFT_MITE.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);
         event.register(VOID_WRAITH.get(), SpawnPlacementTypes.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Mob::checkMobSpawnRules, RegisterSpawnPlacementsEvent.Operation.REPLACE);

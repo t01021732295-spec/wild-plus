@@ -1444,5 +1444,9 @@
   "item.wildplus.kalpa_boots": "겁화 부츠",
   "tooltip.wildplus.kalpa_boots": "2부위: 화염 저항 · 힘 I · 최대 체력 +2칸\n4부위: 저항 I · 네더에서 신속 I · 최대 체력 +4칸 · 용암 위에 뜸\n장화: 달린 자리에 3초 동안 불길이 남아 적을 태움",
   "item.wildplus.kalpa_boots_blank": "미완성 겁화 부츠",
-  "tooltip.wildplus.kalpa_boots_blank": "강화대에서 군주의 뿔과 돈으로 완성"
+  "tooltip.wildplus.kalpa_boots_blank": "강화대에서 군주의 뿔과 돈으로 완성",
+  "entity.wildplus.ember_hound": "잿불 사냥개",
+  "entity.wildplus.lava_turtle": "용암 거북",
+  "entity.wildplus.ash_shaman": "재의 주술사",
+  "entity.wildplus.obsidian_golem": "흑요석 골렘"
 }
