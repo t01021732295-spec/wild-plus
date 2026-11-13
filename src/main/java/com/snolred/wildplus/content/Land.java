@@ -195,13 +195,13 @@ public final class Land {
                 int mx = cx << 4, mz = cz << 4;
                 boolean n = !o.equals(CHUNKS.get(dim + cx + "|" + (cz - 1))), sth = !o.equals(CHUNKS.get(dim + cx + "|" + (cz + 1)));
                 boolean w = !o.equals(CHUNKS.get(dim + (cx - 1) + "|" + cz)), e = !o.equals(CHUNKS.get(dim + (cx + 1) + "|" + cz));
-                for (int i = 0; i <= 16; i++) {
+                for (int i = 0; i <= 16; i += 2) { // 5.0.6: 2칸 간격 (패킷 · 파티클 줄이기)
                     if (n) fence(p, lv, dust, mx + i, mz);
                     if (sth) fence(p, lv, dust, mx + i, mz + 16);
                     if (w) fence(p, lv, dust, mx, mz + i);
                     if (e) fence(p, lv, dust, mx + 16, mz + i);
                 }
-                for (int k = 0; k < 8; k++) {
+                for (int k = 0; k < 2; k++) {
                     double x = mx + r.nextDouble() * 16, z = mz + r.nextDouble() * 16;
                     int y = lv.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, (int) x, (int) z);
                     if (Math.abs(y - p.getY()) > 24) continue;
@@ -216,9 +216,7 @@ public final class Land {
         if (!lv.hasChunk(bx >> 4, bz >> 4)) return;
         int y = lv.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, bx, bz);
         if (Math.abs(y - p.getY()) > 24) return;
-        lv.sendParticles(p, dust, false, false, x, y + 0.2, z, 1, 0, 0, 0, 0);
-        lv.sendParticles(p, dust, false, false, x, y + 0.8, z, 1, 0, 0, 0, 0);
-        lv.sendParticles(p, dust, false, false, x, y + 1.4, z, 1, 0, 0, 0, 0);
+        lv.sendParticles(p, dust, false, false, x, y + 0.8, z, 3, 0, 0.35, 0, 0); // 5.0.6: 세 번 보내던 것을 한 번에
     }
 
     @SubscribeEvent

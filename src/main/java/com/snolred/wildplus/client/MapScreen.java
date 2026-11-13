@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 /** 큰 지도: 휠로 확대 · 축소 */
 public class MapScreen extends Screen {
     private static final int PX = 3;
+    private final MiniMap.Cache cache = new MiniMap.Cache();
     private static final int[] SCALES = {1, 2, 4, 8};
     private static final String[] NAMES = {"친구", "사망 위치", "워프", "내 땅"};
     private int scale = 1;
@@ -33,7 +34,7 @@ public class MapScreen extends Screen {
         g.fill(ox - 2, oy - 2, ox + cols * PX + 2, oy + rows * PX + 2, 0xFFE8BA46);
         g.fill(ox, oy, ox + cols * PX, oy + rows * PX, 0xFF141822);
         int px = mc.player.getBlockX(), pz = mc.player.getBlockZ();
-        MiniMap.draw(g, MiniMap.cur(mc.level), ox, oy, cols, rows, PX, px, pz, s, false);
+        MiniMap.draw(g, cache, MiniMap.cur(mc.level), ox, oy, cols, rows, PX, px, pz, s, false);
         int cx = ox + cols / 2 * PX, cy = oy + rows / 2 * PX;
         for (MapNet.Marker m : MiniMap.markers) {
             if (m.type() == MapNet.LAND) continue;

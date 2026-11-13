@@ -131,8 +131,8 @@ public final class VoidGear {
     private static void aura(ServerLevel level, ServerPlayer p, int now) {
         if (now % 5 == 0) level.sendParticles(ParticleTypes.PORTAL, p.getX(), p.getY() + 1.0, p.getZ(), 4, 0.35, 0.55, 0.35, 0.15);
         if (now % 10 == 0 && p.onGround()) {
-            for (int i = 0; i < 12; i++) {
-                double a = Math.toRadians(i * 30 + now * 3);
+            for (int i = 0; i < 6; i++) {
+                double a = Math.toRadians(i * 60 + now * 3);
                 level.sendParticles(ParticleTypes.REVERSE_PORTAL, p.getX() + Math.cos(a) * 1.2, p.getY() + 0.1, p.getZ() + Math.sin(a) * 1.2, 1, 0, 0, 0, 0);
             }
         }

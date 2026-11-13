@@ -54,6 +54,11 @@ public final class MiniMap {
     static final Set<Long> land = new HashSet<>();
     private static String world = "";
     private static int zoom = 1, cursor, dirty;
+    /** 5.0.6 최적화: 지도 내용이 바뀔 때마다 올라가는 번호 (그림 캐시 무효화용) · 저장할 차원 · 저장 중 여부 */
+    static int version;
+    private static final Set<String> DIRTY_DIMS = new HashSet<>();
+    private static final java.util.concurrent.atomic.AtomicBoolean SAVING = new java.util.concurrent.atomic.AtomicBoolean();
+    private static final Cache HUD = new Cache();
 
     private MiniMap() {}
 
@@ -76,8 +81,13 @@ public final class MiniMap {
             load();
         }
         markers = p.markers();
-        land.clear();
-        for (MapNet.Marker m : p.markers()) if (m.type() == MapNet.LAND) land.add(ChunkPos.pack(m.x(), m.z()));
+        Set<Long> next = new HashSet<>();
+        for (MapNet.Marker m : p.markers()) if (m.type() == MapNet.LAND) next.add(ChunkPos.pack(m.x(), m.z()));
+        if (!next.equals(land)) {
+            land.clear();
+            land.addAll(next);
+            version++;
+        }
     }
 
     private static String dimKey(Level lv) {
@@ -116,9 +126,14 @@ public final class MiniMap {
             int cx = pcx + cursor % side - RANGE, cz = pcz + cursor / side - RANGE;
             if (!lv.hasChunk(cx, cz)) continue;
             int[] col = sample(lv, lv.getChunk(cx, cz), p.getBlockY());
-            if (col != null) map.put(ChunkPos.pack(cx, cz), col);
+            if (col == null) continue;
+            int[] old = map.put(ChunkPos.pack(cx, cz), col);
+            if (old == null || !java.util.Arrays.equals(old, col)) {
+                version++;
+                DIRTY_DIMS.add(dimKey(lv));
+            }
         }
-        if (++dirty >= 6000) save();
+        if (++dirty >= 6000) save(true);
     }
 
     private static int[] sample(ClientLevel lv, LevelChunk c, int py) {
@@ -165,6 +180,8 @@ public final class MiniMap {
 
     private static void load() {
         DIMS.clear();
+        DIRTY_DIMS.clear();
+        version++;
         if (world.isEmpty()) return;
         try {
             Path d = dir();
@@ -173,7 +190,7 @@ public final class MiniMap {
                 for (Path f : files.toList()) {
                     String name = f.getFileName().toString();
                     if (!name.endsWith(".bin")) continue;
-                    try (DataInputStream in = new DataInputStream(new GZIPInputStream(Files.newInputStream(f)))) {
+                    try (DataInputStream in = new DataInputStream(new java.io.BufferedInputStream(new GZIPInputStream(Files.newInputStream(f)), 1 << 16))) {
                         String dim = in.readUTF();
                         int n = in.readInt();
                         Map<Long, int[]> map = DIMS.computeIfAbsent(dim, k -> new HashMap<>());
@@ -191,31 +208,54 @@ public final class MiniMap {
         }
     }
 
-    private static void save() {
+    /** async: 게임 진행 중 저장은 별도 스레드에서 (5분마다 멈칫하던 원인) · 접속 끊을 때는 바로 */
+    private static void save(boolean async) {
         dirty = 0;
-        if (world.isEmpty()) return;
-        try {
-            Path d = dir();
-            Files.createDirectories(d);
-            for (var en : DIMS.entrySet()) {
-                if (en.getValue().isEmpty()) continue;
-                Path f = d.resolve(en.getKey().replaceAll("[^a-zA-Z0-9-]", "_") + ".bin");
-                try (DataOutputStream out = new DataOutputStream(new GZIPOutputStream(Files.newOutputStream(f)))) {
-                    out.writeUTF(en.getKey());
-                    out.writeInt(en.getValue().size());
-                    for (var c : en.getValue().entrySet()) {
-                        out.writeLong(c.getKey());
-                        for (int v : c.getValue()) out.writeInt(v);
-                    }
-                }
-            }
-        } catch (Exception ignored) {
+        if (world.isEmpty() || DIRTY_DIMS.isEmpty()) return;
+        if (async && SAVING.get()) return; // 앞 저장이 아직 진행 중이면 다음 기회에
+        Path d = dir();
+        Map<String, Map<Long, int[]>> snap = new HashMap<>();
+        for (String dim : DIRTY_DIMS) {
+            Map<Long, int[]> m = DIMS.get(dim);
+            if (m != null && !m.isEmpty()) snap.put(dim, new HashMap<>(m));
         }
+        DIRTY_DIMS.clear();
+        Runnable job = () -> {
+            try {
+                Files.createDirectories(d);
+                for (var en : snap.entrySet()) {
+                    Path f = d.resolve(en.getKey().replaceAll("[^a-zA-Z0-9-]", "_") + ".bin");
+                    Path tmp = f.resolveSibling(f.getFileName() + ".tmp");
+                    try (DataOutputStream out = new DataOutputStream(new java.io.BufferedOutputStream(new GZIPOutputStream(Files.newOutputStream(tmp)), 1 << 16))) {
+                        out.writeUTF(en.getKey());
+                        out.writeInt(en.getValue().size());
+                        for (var c : en.getValue().entrySet()) {
+                            out.writeLong(c.getKey());
+                            for (int v : c.getValue()) out.writeInt(v);
+                        }
+                    }
+                    Files.move(tmp, f, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+                }
+            } catch (Exception ignored) {
+            } finally {
+                SAVING.set(false);
+            }
+        };
+        if (!async) {
+            while (SAVING.get()) Thread.onSpinWait();
+            SAVING.set(true);
+            job.run();
+            return;
+        }
+        SAVING.set(true);
+        Thread th = new Thread(job, "wildplus-map-save");
+        th.setDaemon(false);
+        th.start();
     }
 
     @SubscribeEvent
     static void logout(ClientPlayerNetworkEvent.LoggingOut event) {
-        save();
+        save(false);
         DIMS.clear();
         markers = List.of();
         land.clear();
@@ -223,9 +263,45 @@ public final class MiniMap {
     }
 
     // ───────── 그리기 ─────────
+    /** 5.0.6: 미리 계산한 사각형 목록 (x0, y0, x1, y1, 색) — 매 프레임 칸마다 지도를 찾던 것을 없앰 */
+    static final class Cache {
+        int[] rects = new int[1024];
+        int n, key0 = Integer.MIN_VALUE, key1, key2, key3, key4, ver = -1;
+        Object map;
+
+        void add(int x0, int y0, int x1, int y1, int c) {
+            if (n + 5 > rects.length) rects = java.util.Arrays.copyOf(rects, rects.length * 2);
+            rects[n++] = x0;
+            rects[n++] = y0;
+            rects[n++] = x1;
+            rects[n++] = y1;
+            rects[n++] = c;
+        }
+    }
+
     /** (ox, oy) 부터 cols × rows 칸을 그린다. 같은 색은 가로로 이어서 한 번에. round 면 원 안쪽만 */
-    static void draw(GuiGraphicsExtractor g, Map<Long, int[]> map, int ox, int oy, int cols, int rows, int px, int cx, int cz, int scale, boolean round) {
+    static void draw(GuiGraphicsExtractor g, Cache cache, Map<Long, int[]> map, int ox, int oy, int cols, int rows, int px, int cx, int cz, int scale, boolean round) {
+        int k0 = ox * 31 + oy, k1 = cols * 31 + rows + (round ? 7 : 0), k2 = px * 31 + scale;
+        if (cache.map != map || cache.ver != version || cache.key0 != k0 || cache.key1 != k1 || cache.key2 != k2 || cache.key3 != cx || cache.key4 != cz) {
+            cache.map = map;
+            cache.ver = version;
+            cache.key0 = k0;
+            cache.key1 = k1;
+            cache.key2 = k2;
+            cache.key3 = cx;
+            cache.key4 = cz;
+            build(cache, map, ox, oy, cols, rows, px, cx, cz, scale, round);
+        }
+        int[] r = cache.rects;
+        for (int i = 0; i < cache.n; i += 5) g.fill(r[i], r[i + 1], r[i + 2], r[i + 3], r[i + 4]);
+    }
+
+    private static void build(Cache cache, Map<Long, int[]> map, int ox, int oy, int cols, int rows, int px, int cx, int cz, int scale, boolean round) {
+        cache.n = 0;
         double r = cols / 2.0;
+        long lastKey = Long.MIN_VALUE;
+        int[] lastArr = null;
+        boolean lastLand = false;
         for (int j = 0; j < rows; j++) {
             int from = 0, to = cols;
             if (round) {
@@ -239,11 +315,19 @@ public final class MiniMap {
                 int col = 0;
                 if (i < to) {
                     int bx = cx + (i - cols / 2) * scale;
-                    col = colorAt(map, bx, bz);
-                    if (col != 0) col = tint(col, bx, bz);
+                    long key = ChunkPos.pack(bx >> 4, bz >> 4);
+                    if (key != lastKey) { // 같은 청크 안에서는 다시 찾지 않음
+                        lastKey = key;
+                        lastArr = map.get(key);
+                        lastLand = !land.isEmpty() && land.contains(key);
+                    }
+                    if (lastArr != null) {
+                        col = lastArr[(bz & 15) * 16 + (bx & 15)];
+                        if (col != 0 && lastLand) col = UiKit.mix(col, 0xFFFFD75A, 0.3F);
+                    }
                 }
                 if (col != runColor || i == to) {
-                    if (runColor != 0) g.fill(ox + runStart * px, oy + j * px, ox + i * px, oy + j * px + px, runColor);
+                    if (runColor != 0) cache.add(ox + runStart * px, oy + j * px, ox + i * px, oy + j * px + px, runColor);
                     runStart = i;
                     runColor = col;
                 }
@@ -270,7 +354,7 @@ public final class MiniMap {
         int ox = g.guiWidth() - size - 6, oy = p.getActiveEffects().isEmpty() ? 6 : 58;
         UiKit.circle(g, ox - 2, oy - 2, size + 4, 0xFFE8BA46);
         UiKit.circle(g, ox, oy, size, 0xFF141822);
-        draw(g, cur(mc.level), ox, oy, CELLS, CELLS, PX, p.getBlockX(), p.getBlockZ(), scale, true);
+        draw(g, HUD, cur(mc.level), ox, oy, CELLS, CELLS, PX, p.getBlockX(), p.getBlockZ(), scale, true);
         int cx = ox + size / 2, cy = oy + size / 2;
         double lim = size / 2.0 - 3;
         for (MapNet.Marker m : markers) {
