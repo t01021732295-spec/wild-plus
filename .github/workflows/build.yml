@@ -1269,6 +1269,7 @@ jobs:
             cmd "/summon wildplus:ash_shaman 398 200 -4 {NoAI:1b,Rotation:[190f,0f]}"; cmd "/summon wildplus:obsidian_golem 401 200 -3 {NoAI:1b,Rotation:[200f,0f]}"
             cmd "/gamemode creative"; cmd "/tp @s 396.5 200.5 -10 0 8"; sleep 1; shot v50-mobs
             cmd "/kill @e[type=!player,distance=..20]"; cmd "/tp @s 396.5 120 -8.3 0 20"
+            cmd "/wildplus uitest bowloot"; sleep 2
             cmd "/wildplus uitest dex"; sleep 2; shot v49-dex; esc
             cmd "/wildplus uitest dexcat"; sleep 2; shot v49-dexcat; esc
             cmd "/wildplus uitest dexach"; sleep 2; shot v49-dexach; esc

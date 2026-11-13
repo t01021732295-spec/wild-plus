@@ -110,4 +110,25 @@ public final class EconomyEvents {
                     SoundEvents.ARMOR_EQUIP_LEATHER.value(), SoundSource.HOSTILE, 1.0F, 1.6F);
         }
     }
+
+    /** 5.0.5 동전 쪼개기: 에메랄드화 · 다이아화를 들고 웅크리고 우클릭하면 1개를 한 단계 아래 동전 10개로 */
+    @SubscribeEvent
+    public static void onSplitCoin(net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickItem event) {
+        Player p = event.getEntity();
+        if (!p.isShiftKeyDown()) return;
+        ItemStack s = event.getItemStack();
+        net.minecraft.world.item.Item to = s.is(com.snolred.wildplus.registry.ModItems13.EMERALD_COIN.get()) ? ModItems3.DIAMOND_COIN.get()
+                : s.is(ModItems3.DIAMOND_COIN.get()) ? ModItems3.GOLD_COIN.get() : null;
+        if (to == null) return;
+        event.setCanceled(true);
+        event.setCancellationResult(net.minecraft.world.InteractionResult.SUCCESS);
+        if (!(p instanceof net.minecraft.server.level.ServerPlayer sp)) return;
+        String from = s.getHoverName().getString();
+        s.shrink(1);
+        ItemStack out = new ItemStack(to, 10);
+        String name = out.getHoverName().getString();
+        if (!sp.getInventory().add(out) && !out.isEmpty()) net.minecraft.world.Containers.dropItemStack(sp.level(), sp.getX(), sp.getY(), sp.getZ(), out);
+        sp.level().playSound(null, sp.blockPosition(), net.minecraft.sounds.SoundEvents.EXPERIENCE_ORB_PICKUP, net.minecraft.sounds.SoundSource.PLAYERS, 0.5F, 1.2F);
+        sp.sendOverlayMessage(net.minecraft.network.chat.Component.literal(from + " 1개 → " + name + " 10개").withStyle(net.minecraft.ChatFormatting.GOLD));
+    }
 }

@@ -46,7 +46,7 @@ LANG_KO.update({
     "item.wildplus.lucky_box": "행운 상자",
     "tooltip.wildplus.lucky_box": "들고 우클릭하면 열림 · 무엇이 나왔는지 알려 줌\n루비·사파이어 블록 · 네더라이트 · 토템 · 가끔 네더의 별 · 겉날개",
     "item.wildplus.emerald_coin": "에메랄드화",
-    "tooltip.wildplus.emerald_coin": "10,000동 · 다이아화 10개와 환전소에서 바꿀 수 있음",
+    "tooltip.wildplus.emerald_coin": "10,000동 · 웅크리고 우클릭 또는 제작대에서 다이아화 10개로 쪼갬\n다이아화 10 → 에메랄드화는 환전소에서",
     "item.wildplus.emerald_backpack": "에메랄드 배낭",
     "tooltip.wildplus.emerald_backpack": "128칸 (16×8) · 불에 타지 않음\n다이아 배낭 창에서 30,000동으로 업그레이드",
     "gui.wildplus.backpack.tier4": "에메랄드 배낭",

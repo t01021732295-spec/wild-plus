@@ -153,6 +153,7 @@ public final class WildCommands {
                         case "endplains" -> VoidBiome.debugGoto(p);
                         case "musichelp" -> net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(p, new com.snolred.wildplus.net.MusicNet.Help());
                         case "dex" -> com.snolred.wildplus.content.Codex.debug(p);
+                        case "bowloot" -> com.snolred.wildplus.event.Bows.selfTest(p);
                         case "dexcat" -> com.snolred.wildplus.content.Codex.debugPage(p, 0);
                         case "dexach" -> com.snolred.wildplus.content.Codex.debugPage(p, 1);
                         case "dextitle" -> com.snolred.wildplus.content.Codex.debugPage(p, 2);

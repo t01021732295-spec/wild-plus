@@ -206,7 +206,7 @@ public final class Bows {
     }
 
     /** 활 약탈이 새겨진 화살에 맞은 몹: 10초 동안 기록 (화살 뒤에 폭발 · 번개 · 서리 · 겁화 폭발로 죽어도 적용되게) */
-    @SubscribeEvent
+    @SubscribeEvent(priority = net.neoforged.bus.api.EventPriority.HIGHEST)
     public static void onLootMark(LivingDamageEvent.Post event) {
         if (!(event.getSource().getDirectEntity() instanceof AbstractArrow a)) return;
         int lv = a.getPersistentData().getIntOr(LOOT_TAG, 0);
@@ -245,5 +245,52 @@ public final class Bows {
             int add = rnd.nextInt(lv + 1);
             if (add > 0) s.setCount(Math.min(s.getMaxStackSize(), s.getCount() + add));
         }
+    }
+
+    /** CI 시험 (/wildplus uitest bowloot): 닭 20마리씩 맨 활 · 활 약탈 III · 활 약탈 화살 뒤 마법 마무리로 잡고 떨군 개수를 센다 */
+    public static void selfTest(net.minecraft.server.level.ServerPlayer p) {
+        ServerLevel level = (ServerLevel) p.level();
+        var holder = level.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).getOrThrow(BOW_LOOTING);
+        net.minecraft.world.item.ItemStack old = p.getMainHandItem().copy();
+        net.minecraft.world.item.ItemStack looting = new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.BOW);
+        looting.enchant(holder, 3);
+        int plain = trial(p, level, new net.minecraft.world.item.ItemStack(net.minecraft.world.item.Items.BOW), false);
+        int with = trial(p, level, looting, false);
+        int finish = trial(p, level, looting, true);
+        p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, old);
+        String msg = String.format("[wildplus-bowloot] plain=%d looting3=%d looting3_magic_finish=%d (chickens x20)", plain, with, finish);
+        com.snolred.wildplus.WildPlus.LOGGER.info(msg);
+        p.sendSystemMessage(net.minecraft.network.chat.Component.literal(msg));
+    }
+
+    private static int trial(net.minecraft.server.level.ServerPlayer p, ServerLevel level, net.minecraft.world.item.ItemStack bow, boolean magicFinish) {
+        p.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, bow.copy());
+        Vec3 at = p.position().add(0, 0, 3);
+        net.minecraft.world.phys.AABB box = new net.minecraft.world.phys.AABB(at, at).inflate(5);
+        level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, box).forEach(Entity::discard);
+        for (int i = 0; i < 20; i++) {
+            var c = EntityTypes.CHICKEN.create(level, EntitySpawnReason.TRIGGERED);
+            AbstractArrow a = EntityTypes.ARROW.create(level, EntitySpawnReason.TRIGGERED);
+            if (c == null || a == null) continue;
+            c.snapTo(at.x, at.y, at.z, 0F, 0F);
+            level.addFreshEntity(c);
+            a.setOwner(p);
+            a.snapTo(at.x, at.y + 2, at.z, 0F, 0F);
+            level.addFreshEntity(a); // 들어오는 순간 활 약탈 단계가 새겨짐
+            if (magicFinish) {
+                c.hurtServer(level, level.damageSources().arrow(a, p), 0.5F);
+                c.setInvulnerableTime(0);
+                c.hurtServer(level, level.damageSources().magic(), 100F);
+            } else {
+                c.hurtServer(level, level.damageSources().arrow(a, p), 100F);
+            }
+            a.discard();
+        }
+        int n = 0;
+        for (net.minecraft.world.entity.item.ItemEntity it : level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, box)) {
+            n += it.getItem().getCount();
+            it.discard();
+        }
+        return n;
     }
 }
