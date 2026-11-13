@@ -90,7 +90,7 @@ public final class MerchantTrades {
         sell(o, ModItems.BLOOD_SHARD.get(), 2, 30);
         sell(o, Items.DIAMOND, 1, 100);
         buy(o, com.snolred.wildplus.registry.ModItems7.RUBY.get(), 1, 40);
-        sell(o, com.snolred.wildplus.registry.ModItems7.RUBY.get(), 1, 160, 6);
+        sell(o, com.snolred.wildplus.registry.ModItems7.RUBY.get(), 1, 160, 8);
         sell(o, ModItems2.MYTHRIL_PICKAXE.get(), 1, 150);
         sell(o, ModItems2.MYTHRIL_SWORD.get(), 1, 120);
         sell(o, ModItems4.JADE_PICKAXE.get(), 1, 120);

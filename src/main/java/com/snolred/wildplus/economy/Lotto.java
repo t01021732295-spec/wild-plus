@@ -24,7 +24,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 /** 4.5 복권 발매기: 즉석 복권 · 숫자 복권(1~25 중 5개). 추첨은 게임 속 토요일 오후 8시 45분, 그 시각을 건너뛰면 다음 확인 때. */
 public final class Lotto {
-    private static final long TICKET = 10_000L, SCRATCH = 3_000L, BASE_JACKPOT = 50_000_000L;
+    private static final long TICKET = 10_000L, SCRATCH = 9_000L, BASE_JACKPOT = 50_000_000L;
     private static final int MAX = 25, PICK = 5;
     /** 첫 추첨: 6일차(토) 오후 8시 45분 — 오전 6시가 틱 0, 1시간 = 1000틱 */
     private static final long FIRST_DRAW = 5L * 24_000L + 14_750L, WEEK = 7L * 24_000L;
@@ -51,7 +51,7 @@ public final class Lotto {
     public static void open(ServerPlayer p, BlockPos pos) {
         MinecraftServer s = p.level().getServer();
         List<PickMenu.Entry> e = new ArrayList<>();
-        e.add(new PickMenu.Entry("즉석 복권 1장", "3,000동 · 우클릭으로 긁기. 최고 500,000동!", new ItemStack(ModItems4.LOTTERY_TICKET.get())));
+        e.add(new PickMenu.Entry("즉석 복권 1장", "9,000동 · 우클릭으로 긁기. 최고 500,000동!", new ItemStack(ModItems4.LOTTERY_TICKET.get())));
         e.add(new PickMenu.Entry("숫자 복권 · 자동", "10,000동 · 번호 5개를 무작위로 골라 드려요", new ItemStack(Items.PAPER)));
         e.add(new PickMenu.Entry("숫자 복권 · 직접 고르기", "10,000동 · 1~25 중 5개를 직접 골라요", new ItemStack(Items.WRITABLE_BOOK)));
         e.add(new PickMenu.Entry("내 복권", "이번 회차에 산 번호 보기", new ItemStack(Items.BOOK)));

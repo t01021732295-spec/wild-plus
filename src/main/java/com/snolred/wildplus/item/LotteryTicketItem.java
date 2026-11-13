@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 /**
- * 즉석 복권 (3,000동). 우클릭으로 긁는다.
+ * 즉석 복권 (발매기 · 마을 자판기 9,000동). 우클릭으로 긁는다.
  * 꽝 55.6% · 1,000동 25% · 3,000동 12% · 1만동 6% · 5만동 1.2% · 50만동 0.2% (평균 약 2,810동). 당첨금은 세금 없음.
  */
 public class LotteryTicketItem extends Item {

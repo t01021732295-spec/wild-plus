@@ -35,6 +35,9 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  */
 public final class Bows {
     public static final String BOW_TAG = "wildplus_bow", ARROW_TAG = "wildplus_arrow", EXTRA = "wildplus_extra_arrow";
+    /** 5.0.4 활 약탈: 화살에 새긴 단계 · 맞은 몹에 남기는 단계와 시각 */
+    private static final String LOOT_TAG = "wildplus_bow_loot", MARK_LV = "wildplus_bl_lv", MARK_T = "wildplus_bl_t";
+    private static final long MARK_TICKS = 200L;
     private static final List<UUID> HOMING = new ArrayList<>();
     private static final List<ServerLevel> HOMING_LEVEL = new ArrayList<>();
 
@@ -51,6 +54,11 @@ public final class Bows {
     public static void onJoin(EntityJoinLevelEvent event) {
         if (!(event.getLevel() instanceof ServerLevel level) || !(event.getEntity() instanceof AbstractArrow arrow)) return;
         var data = arrow.getPersistentData();
+        // 5.0.4 활 약탈: 쏘는 순간 든 활의 단계를 화살에 새김 (스텔라 루비 곁화살도 주인이 같아서 같이 새겨짐)
+        if (!data.contains(LOOT_TAG) && arrow.getOwner() instanceof net.minecraft.world.entity.player.Player shooter) {
+            int lv = bowLooting(shooter);
+            if (lv > 0) data.putInt(LOOT_TAG, lv);
+        }
         String bow = data.getStringOr(BOW_TAG, "");
         if (bow.equals("ruby") || bow.equals("star_ruby")) arrow.igniteForSeconds(100);
         // 스카이 사파이어 활: 화살이 더 빠르고 곧게 날아감
@@ -197,16 +205,40 @@ public final class Bows {
         return lv;
     }
 
-    /** 화살로 잡은 몹: 떨군 물건마다 0~단계 개 더 (바닐라 약탈과 같은 방식, 장비는 제외) */
+    /** 활 약탈이 새겨진 화살에 맞은 몹: 10초 동안 기록 (화살 뒤에 폭발 · 번개 · 서리 · 겁화 폭발로 죽어도 적용되게) */
+    @SubscribeEvent
+    public static void onLootMark(LivingDamageEvent.Post event) {
+        if (!(event.getSource().getDirectEntity() instanceof AbstractArrow a)) return;
+        int lv = a.getPersistentData().getIntOr(LOOT_TAG, 0);
+        LivingEntity t = event.getEntity();
+        if (lv <= 0 || t instanceof net.minecraft.world.entity.player.Player) return;
+        var d = t.getPersistentData();
+        long now = t.level().getGameTime();
+        boolean fresh = now - d.getLongOr(MARK_T, -MARK_TICKS - 1) <= MARK_TICKS;
+        d.putInt(MARK_LV, fresh ? Math.max(lv, d.getIntOr(MARK_LV, 0)) : lv);
+        d.putLong(MARK_T, now);
+    }
+
+    /** 활 약탈 단계: 화살로 직접 잡았으면 그 화살에 새긴 단계, 아니면 10초 안에 활 약탈 화살에 맞은 기록 */
+    private static int lootLevel(net.neoforged.neoforge.event.entity.living.LivingDropsEvent event) {
+        LivingEntity dead = event.getEntity();
+        int lv = 0;
+        if (event.getSource().getDirectEntity() instanceof AbstractArrow a) {
+            lv = a.getPersistentData().getIntOr(LOOT_TAG, 0);
+            if (lv <= 0 && !a.getPersistentData().contains(LOOT_TAG) && event.getSource().getEntity() instanceof net.minecraft.world.entity.player.Player p) lv = bowLooting(p);
+        }
+        var d = dead.getPersistentData();
+        if (dead.level().getGameTime() - d.getLongOr(MARK_T, -MARK_TICKS - 1) <= MARK_TICKS) lv = Math.max(lv, d.getIntOr(MARK_LV, 0));
+        return lv;
+    }
+
+    /** 활 약탈: 떨군 물건마다 0~단계 개 더 (바닐라 약탈과 같은 방식, 장비는 제외) */
     @SubscribeEvent
     public static void onArrowKillDrops(net.neoforged.neoforge.event.entity.living.LivingDropsEvent event) {
-        if (!(event.getSource().getDirectEntity() instanceof AbstractArrow) || !(event.getSource().getEntity() instanceof net.minecraft.world.entity.player.Player p)
-                || event.getEntity() instanceof net.minecraft.world.entity.player.Player) {
-            return;
-        }
-        int lv = bowLooting(p);
+        if (event.getEntity() instanceof net.minecraft.world.entity.player.Player) return;
+        int lv = lootLevel(event);
         if (lv <= 0) return;
-        var rnd = p.getRandom();
+        var rnd = event.getEntity().getRandom();
         for (net.minecraft.world.entity.item.ItemEntity it : event.getDrops()) {
             net.minecraft.world.item.ItemStack s = it.getItem();
             if (s.isDamageableItem() || s.getMaxStackSize() <= 1) continue;
