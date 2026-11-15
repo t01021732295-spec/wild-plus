@@ -82,6 +82,7 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModBlocks20.init();
         com.snolred.wildplus.registry.ModItems33.init();
         com.snolred.wildplus.registry.ModBlocks21.init();
+        com.snolred.wildplus.registry.ModBlocks22.init();
         com.snolred.wildplus.registry.ModItems34.init();
         com.snolred.wildplus.registry.ModItems35.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
@@ -138,6 +139,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.FertilizerZones.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.content.GroundCleaner.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.entity.DpsDummy.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.KalpaCitadel.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.KalpaGear.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.BulkShip.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.net.MapNet.class);

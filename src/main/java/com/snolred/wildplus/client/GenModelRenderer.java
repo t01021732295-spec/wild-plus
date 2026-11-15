@@ -202,6 +202,17 @@ public class GenModelRenderer<T extends Mob> extends MobRenderer<T, GenModelRend
         p.move(0F, Mth.sin(t * 0.09F) * (g.equals("cloud") ? 1.2F : 0.6F), 0F);
     }
 
+    /** 5.1 겁화의 군주: 머리 뒤 불의 고리가 돌고, 향로가 사슬에 매달려 흔들림 */
+    public static void lord(String g, State s, Pivot p) {
+        float t = s.ageInTicks;
+        switch (g) {
+            case "ring" -> p.rotate(Axis.ZP, t * 1.5F, 0F, 96F, -10F);
+            case "censer" -> p.rotate(Axis.XP, Mth.sin(t * 0.12F) * 14F, -35F, 24F, 11F);
+            case "wings" -> p.rotate(Axis.XP, Mth.sin(t * 0.07F) * 4F, 0F, 68F, -13F);
+            default -> {}
+        }
+    }
+
     /** 5.0.10 허수아비: 맞으면 받침 위에서 앞뒤로 흔들림 */
     public static void dummy(String g, State s, Pivot p) {
         if (s.hurt <= 0F || g.equals("base")) return;

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "wildplus:block/kalpa_brazier"
+    },
+    "lit=true": {
+      "model": "wildplus:block/kalpa_brazier_lit"
+    }
+  }
+}

@@ -1122,5 +1122,9 @@
   "entity.wildplus.obsidian_golem": "Obsidian Golem",
   "item.wildplus.dps_dummy": "DPS Dummy",
   "entity.wildplus.dps_dummy": "DPS Dummy",
-  "item.wildplus.purify_scroll": "Scroll of Purification"
+  "item.wildplus.purify_scroll": "Scroll of Purification",
+  "block.wildplus.kalpa_gate": "Kalpa Gate",
+  "block.wildplus.kalpa_altar": "Lord's Altar",
+  "block.wildplus.kalpa_brazier": "Kalpa Brazier",
+  "entity.wildplus.kalpa_lord": "Kalpa Lord"
 }
