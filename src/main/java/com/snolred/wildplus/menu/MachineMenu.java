@@ -47,7 +47,7 @@ public class MachineMenu extends AbstractContainerMenu {
 
     public static int playerY(MachineBlock.Kind kind) {
         return switch (kind) {
-            case HARVESTER -> 124;
+            case HARVESTER -> 134;
             case MINER -> 136;
             case FISHER -> 96;
         };
@@ -93,8 +93,9 @@ public class MachineMenu extends AbstractContainerMenu {
         };
         switch (kind) {
             case HARVESTER -> {
-                for (int i = 0; i < 9; i++) addSlot(new InputSlot(container, i, 8 + i * 18, 20));
-                for (int r = 0; r < 2; r++) for (int c = 0; c < 9; c++) addSlot(new OutputSlot(container, 9 + c + r * 9, 8 + c * 18, 58 + r * 18));
+                int seeds = AutoHarvesterBlockEntity.SEEDS;
+                for (int i = 0; i < seeds; i++) addSlot(new InputSlot(container, i, 8 + (i % 9) * 18, 19 + (i / 9) * 18));
+                for (int r = 0; r < 2; r++) for (int c = 0; c < 9; c++) addSlot(new OutputSlot(container, seeds + c + r * 9, 8 + c * 18, 68 + r * 18));
             }
             case MINER -> {
                 for (int r = 0; r < 2; r++) for (int c = 0; c < 9; c++) addSlot(new OutputSlot(container, c + r * 9, 8 + c * 18, 86 + r * 18));

@@ -14,13 +14,13 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
- * 스프링클러: 2초마다 주변 9x9 범위에 물을 뿌린다.
+ * 스프링클러: 2초마다 주변 13x13 범위 (5.0.9)에 물을 뿌린다.
  * - 경작지를 항상 촉촉하게 유지
  * - 작물이 자라는 속도가 약 3~4배 빨라짐
  */
 public class SprinklerBlock extends Block {
     public static final int INTERVAL = 40;
-    public static final int RADIUS = 4;
+    public static final int RADIUS = 6;
     private static final float GROW_CHANCE = 0.12F;
     private static final VoxelShape SHAPE = Block.box(4.0, 0.0, 4.0, 12.0, 13.0, 12.0);
 

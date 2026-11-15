@@ -21,7 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * 칸: 0~8 씨앗 / 9~26 작물. 호퍼로 씨앗을 넣고 작물을 뺄 수 있다.
  */
 public class AutoHarvesterBlockEntity extends MachineBlockEntity {
-    public static final int SEEDS = 9, OUTPUT = 18, SEED_RESERVE = 16;
+    public static final int SEEDS = 18, OUTPUT = 18, SEED_RESERVE = 16;
     private boolean autoPlant = true;
 
     public boolean autoPlant() {
@@ -101,7 +101,7 @@ public class AutoHarvesterBlockEntity extends MachineBlockEntity {
         return level != null && level.getBlockState(worldPosition.above()).getBlock() instanceof SprinklerBlock;
     }
 
-    /** 5.0.8: 수확 범위 13×13 (스프링클러가 적시는 범위는 9×9 그대로) */
+    /** 수확 범위 13×13 (5.0.9: 스프링클러도 13×13) */
     public static final int RADIUS = 6;
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, AutoHarvesterBlockEntity be) {
@@ -125,12 +125,18 @@ public class AutoHarvesterBlockEntity extends MachineBlockEntity {
 
     private void harvest(ServerLevel level, BlockPos p, BlockState s, CropBlock crop) {
         List<ItemStack> drops = new ArrayList<>(Block.getDrops(s, level, p, null));
-        if (!hasRoomFor(drops)) return;
+        // 5.0.9: 진짜 씨앗은 작물 칸 자리를 따지지 않음 (씨앗 칸이 차면 버림)
+        List<ItemStack> crops = new ArrayList<>();
+        for (ItemStack d : drops) if (!(isSeed(d) && isPureSeed(d))) crops.add(d);
+        if (!hasRoomFor(crops)) return;
         com.snolred.wildplus.content.Soil.gradeHarvest(level, p, s, drops); // 비료 · 품질
         Item seed = s.getBlock().asItem();
-        // 씨앗은 씨앗 칸으로 먼저
+        // 씨앗은 씨앗 칸으로 먼저, 진짜 씨앗이 넘치면 폐기
         for (ItemStack d : drops) {
-            if (!d.isEmpty() && isSeed(d)) storeSeed(d);
+            if (!d.isEmpty() && isSeed(d)) {
+                storeSeed(d);
+                if (isPureSeed(d)) d.setCount(0);
+            }
         }
         // 다시 심기 (자동 심기 켜짐 + 씨앗 칸에 그 씨앗이 있을 때)
         boolean replant = autoPlant && takeSeed(seed);

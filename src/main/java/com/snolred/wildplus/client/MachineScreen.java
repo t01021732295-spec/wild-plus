@@ -31,7 +31,7 @@ public class MachineScreen extends AbstractContainerScreen<MachineMenu> {
         oreButtons.clear();
         plantButton = null;
         if (menu.kind == MachineBlock.Kind.HARVESTER) {
-            plantButton = addRenderableWidget(UiButton.of(leftPos + 110, topPos + 95, 58, 13, "", UiButton.GREEN,
+            plantButton = addRenderableWidget(UiButton.of(leftPos + 110, topPos + 105, 58, 13, "", UiButton.GREEN,
                     () -> click(MachineMenu.BTN_AUTO_PLANT)));
             updatePlant();
         }
@@ -118,7 +118,7 @@ public class MachineScreen extends AbstractContainerScreen<MachineMenu> {
         }
         // 상태 표시 LCD
         int ly = switch (menu.kind) {
-            case HARVESTER -> 96;
+            case HARVESTER -> 106;
             case FISHER -> 60;
             case MINER -> 72;
         };
@@ -138,9 +138,9 @@ public class MachineScreen extends AbstractContainerScreen<MachineMenu> {
         int on = 0xFF6BFF8A, warn = 0xFFFF6A5A;
         switch (menu.kind) {
             case HARVESTER -> {
-                UiKit.text(g, "▲ 씨앗 칸", 8, 40, 0xFF0E4A28);
-                UiKit.right(g, "작물 칸 · 호퍼로 빼기 ▼", 168, 40, 0xFF6A3A00);
-                UiKit.text(g, ok == 1 ? "● 스프링클러 연결" : "● 스프링클러 필요", 11, 98, ok == 1 ? on : warn);
+                UiKit.text(g, "▲ 씨앗 칸 (꽉 차면 버림)", 8, 57, 0xFF0E4A28);
+                UiKit.right(g, "작물 칸 ▼", 168, 57, 0xFF6A3A00);
+                UiKit.text(g, ok == 1 ? "● 스프링클러 연결" : "● 스프링클러 필요", 11, 108, ok == 1 ? on : warn);
             }
             case FISHER -> {
                 UiKit.text(g, "낚싯대", 14, 26, 0xFF1A1D22);
