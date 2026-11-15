@@ -21,6 +21,8 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
     private final List<Card> cards = new ArrayList<>();
     private UiButton prev, next, action;
     private int page, selected;
+    /** 5.1.4 운명의 제단: 인챈트 목록 스크롤 (줄 단위) */
+    private static int fateScroll; // 굴린 뒤 화면이 다시 열려도 위치 유지
     private net.minecraft.client.gui.components.EditBox nameBox;
 
     public ThemedScreen(PickMenu menu, Inventory inv, Component title) {
@@ -181,6 +183,20 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
             return true;
         }
         return super.keyPressed(event);
+    }
+
+    /** 운명의 제단 인챈트 목록에 한 번에 보이는 줄 수 */
+    private int fateRows() {
+        return Math.max(1, (h - 24 - 102) / 10);
+    }
+
+    @Override
+    public boolean mouseScrolled(double mx, double my, double dx, double dy) {
+        if (theme == PickMenu.T_FATE && mx >= leftPos + 10 && mx < leftPos + 160 && my >= topPos + 32 && my < topPos + h - 10) {
+            fateScroll = Math.max(0, fateScroll - (int) Math.signum(dy));
+            return true;
+        }
+        return super.mouseScrolled(mx, my, dx, dy);
     }
 
     private int pages() {
@@ -453,15 +469,21 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
                     if (item.icon().isEmpty()) UiKit.center(g, "?", cx, y + 56, 0xFF9C84C8);
                     else icon(g, item.icon(), cx - 16, y + 44, 2F);
                     UiKit.center(g, fit(item.title(), 140), cx, y + 88, item.icon().isEmpty() ? 0xFFFF9C9C : 0xFFFFE6A0);
-                    int ly = y + 102;
                     String[] ls = item.sub().split("\n");
-                    for (int k = 0; k < ls.length; k++) {
-                        if (ly > y + h - 22) {
-                            UiKit.center(g, "… 외 " + (ls.length - k) + "개", cx, ly, 0xFF8C7CA8);
-                            break;
-                        }
-                        UiKit.center(g, fit(ls[k], 140), cx, ly, 0xFFC8B8F0);
+                    int rows = fateRows();
+                    fateScroll = Math.max(0, Math.min(fateScroll, ls.length - rows));
+                    int ly = y + 102;
+                    for (int k = fateScroll; k < Math.min(ls.length, fateScroll + rows); k++) {
+                        UiKit.center(g, fit(ls[k], 134), cx - 3, ly, 0xFFC8B8F0);
                         ly += 10;
+                    }
+                    if (ls.length > rows) { // 스크롤 막대 + 지금 보이는 범위
+                        int bx = x + 152, by = y + 102, bh = rows * 10 - 2;
+                        g.fill(bx, by, bx + 3, by + bh, 0xFF2C2240);
+                        int th = Math.max(8, bh * rows / ls.length);
+                        int ty = by + (bh - th) * fateScroll / Math.max(1, ls.length - rows);
+                        g.fill(bx, ty, bx + 3, ty + th, 0xFFB08CF0);
+                        UiKit.center(g, (fateScroll + 1) + "~" + Math.min(ls.length, fateScroll + rows) + " / " + ls.length + " · 휠로 내리기", cx, y + h - 20, 0xFF8C7CA8);
                     }
                 }
                 // 오른쪽: 확률 · 최근 결과
