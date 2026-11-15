@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " L ",
+    "SHS",
+    " T "
+  ],
+  "key": {
+    "L": "minecraft:leather",
+    "S": "minecraft:stick",
+    "H": "minecraft:hay_block",
+    "T": "minecraft:target"
+  },
+  "result": {
+    "id": "wildplus:dps_dummy",
+    "count": 1
+  }
+}

@@ -73,6 +73,9 @@ public final class ModEntities {
             com.snolred.wildplus.entity.NetherMobs.Shaman::new, MobCategory.MONSTER, b -> b.sized(0.8F, 2.2F).fireImmune().clientTrackingRange(8));
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.NetherMobs.Golem>> OBSIDIAN_GOLEM = ENTITIES.registerEntityType("obsidian_golem",
             com.snolred.wildplus.entity.NetherMobs.Golem::new, MobCategory.MONSTER, b -> b.sized(1.6F, 2.9F).fireImmune().clientTrackingRange(10));
+    // 5.0.10 DPS 허수아비
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.DpsDummy>> DPS_DUMMY = ENTITIES.registerEntityType("dps_dummy",
+            com.snolred.wildplus.entity.DpsDummy::new, MobCategory.MISC, b -> b.sized(0.9F, 2.3F).clientTrackingRange(8));
 
     // ───────── 4.3 엔드 몬스터 ─────────
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.EndMobs.Stalker>> VOID_STALKER = ENTITIES.registerEntityType("void_stalker",
@@ -135,6 +138,7 @@ public final class ModEntities {
         event.put(LAVA_TURTLE.get(), com.snolred.wildplus.entity.NetherMobs.Turtle.attributes().build());
         event.put(ASH_SHAMAN.get(), com.snolred.wildplus.entity.NetherMobs.Shaman.attributes().build());
         event.put(OBSIDIAN_GOLEM.get(), com.snolred.wildplus.entity.NetherMobs.Golem.attributes().build());
+        event.put(DPS_DUMMY.get(), com.snolred.wildplus.entity.DpsDummy.attributes().build());
         event.put(CLOUD_SENTINEL.get(), com.snolred.wildplus.entity.SkyMobs.Sentinel.attributes().build());
         event.put(THUNDER_HAWK.get(), com.snolred.wildplus.entity.SkyMobs.Hawk.attributes().build());
         event.put(CLOUD_PRIEST.get(), com.snolred.wildplus.entity.SkyMobs.Priest.attributes().build());

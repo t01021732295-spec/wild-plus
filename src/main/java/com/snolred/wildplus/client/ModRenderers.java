@@ -71,6 +71,7 @@ public final class ModRenderers {
         event.registerEntityRenderer(ModEntities.LAVA_TURTLE.get(), c -> new GenModelRenderer<>(c, "lava_turtle", 0.9F, 0.9F, GenModelRenderer::turtle));
         event.registerEntityRenderer(ModEntities.ASH_SHAMAN.get(), c -> new GenModelRenderer<>(c, "ash_shaman", 0.75F, 0.5F, GenModelRenderer::shaman));
         event.registerEntityRenderer(ModEntities.OBSIDIAN_GOLEM.get(), c -> new GenModelRenderer<>(c, "obsidian_golem", 0.8F, 1.0F, GenModelRenderer::golem));
+        event.registerEntityRenderer(ModEntities.DPS_DUMMY.get(), c -> new GenModelRenderer<>(c, "dps_dummy", 1.0F, 0.5F, GenModelRenderer::dummy));
         event.registerEntityRenderer(ModEntities.CLOUD_SENTINEL.get(), c -> new GenModelRenderer<>(c, "cloud_sentinel", 0.62F, 0.6F, GenModelRenderer::sentinel));
         event.registerEntityRenderer(ModEntities.THUNDER_HAWK.get(), c -> new GenModelRenderer<>(c, "thunder_hawk", 0.55F, 0.6F, GenModelRenderer::hawk));
         event.registerEntityRenderer(ModEntities.CLOUD_PRIEST.get(), c -> new GenModelRenderer<>(c, "cloud_priest", 0.6F, 0.6F, GenModelRenderer::priest));

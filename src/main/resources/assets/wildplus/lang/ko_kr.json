@@ -1448,5 +1448,8 @@
   "entity.wildplus.ember_hound": "잿불 사냥개",
   "entity.wildplus.lava_turtle": "용암 거북",
   "entity.wildplus.ash_shaman": "재의 주술사",
-  "entity.wildplus.obsidian_golem": "흑요석 골렘"
+  "entity.wildplus.obsidian_golem": "흑요석 골렘",
+  "item.wildplus.dps_dummy": "DPS 측정 허수아비",
+  "entity.wildplus.dps_dummy": "DPS 측정 허수아비",
+  "tooltip.wildplus.dps_dummy": "땅에 우클릭해서 세움 · 맞아도 죽지 않음\n최근 10초 피해로 DPS 측정 (머리 위 = 모두 합계)\n때린 사람 화면 아래: 내 DPS · 한 방 최고 · 치명타 · 누적\n우클릭 = 기록 초기화 · 웅크리고 우클릭 = 회수"
 }

@@ -29,6 +29,7 @@ public class GenModelRenderer<T extends Mob> extends MobRenderer<T, GenModelRend
     public static class State extends LivingEntityRenderState {
         public float hp = 1F;
         public boolean cooled;
+        public float hurt;
     }
 
     public interface Anim {
@@ -135,6 +136,7 @@ public class GenModelRenderer<T extends Mob> extends MobRenderer<T, GenModelRend
         super.extractRenderState(e, s, partial);
         s.hp = e.getHealth() / e.getMaxHealth();
         s.cooled = e instanceof com.snolred.wildplus.entity.VolcanoEntity v && v.cooled();
+        s.hurt = e.hurtTime > 0 ? e.hurtTime - partial : 0F;
     }
 
     @Override
@@ -198,6 +200,14 @@ public class GenModelRenderer<T extends Mob> extends MobRenderer<T, GenModelRend
     public static void sentinel(String g, State s, Pivot p) {
         float t = s.ageInTicks;
         p.move(0F, Mth.sin(t * 0.09F) * (g.equals("cloud") ? 1.2F : 0.6F), 0F);
+    }
+
+    /** 5.0.10 허수아비: 맞으면 받침 위에서 앞뒤로 흔들림 */
+    public static void dummy(String g, State s, Pivot p) {
+        if (s.hurt <= 0F || g.equals("base")) return;
+        float k = s.hurt / 10F;
+        p.rotate(Axis.XP, Mth.sin(s.hurt * 1.6F) * 9F * k, 0F, 4F, 0F);
+        if (g.equals("head")) p.rotate(Axis.ZP, Mth.sin(s.hurt * 1.1F) * 6F * k, 0F, 28F, 0F);
     }
 
     /** 턴테이블이 돌고, 스피커가 박자처럼 들썩인다 */
