@@ -217,12 +217,12 @@ public final class Tower {
             return switch ((f - 61) / 10 % 4) {
                 case 0 -> List.of(com.snolred.wildplus.registry.ModEntities.CLOUD_SENTINEL.get(), com.snolred.wildplus.registry.ModEntities.THUNDER_HAWK.get(), com.snolred.wildplus.registry.ModEntities.CLOUD_PRIEST.get());
                 case 1 -> List.of(com.snolred.wildplus.registry.ModEntities.VOID_STALKER.get(), com.snolred.wildplus.registry.ModEntities.RIFT_MITE.get(), com.snolred.wildplus.registry.ModEntities.VOID_WRAITH.get());
-                case 2 -> List.of(EntityTypes.WITHER_SKELETON, EntityTypes.BLAZE, EntityTypes.RAVAGER, EntityTypes.PIGLIN_BRUTE, EntityTypes.EVOKER);
+                case 2 -> List.of(EntityTypes.WITHER_SKELETON, EntityTypes.BLAZE, EntityTypes.RAVAGER, EntityTypes.PIGLIN_BRUTE, EntityTypes.EVOKER, EntityTypes.CREEPER);
                 default -> List.of(com.snolred.wildplus.registry.ModEntities.CLOUD_SENTINEL.get(), com.snolred.wildplus.registry.ModEntities.CLOUD_PRIEST.get(), com.snolred.wildplus.registry.ModEntities.VOID_STALKER.get(), EntityTypes.WITHER_SKELETON, EntityTypes.RAVAGER);
             };
         }
         List<EntityType<? extends Mob>> p = new ArrayList<>(List.of(EntityTypes.ZOMBIE, EntityTypes.SKELETON, EntityTypes.SPIDER));
-        if (f >= 4) p.addAll(List.of(EntityTypes.HUSK, EntityTypes.STRAY, EntityTypes.CAVE_SPIDER));
+        if (f >= 4) p.addAll(List.of(EntityTypes.HUSK, EntityTypes.STRAY, EntityTypes.CAVE_SPIDER, EntityTypes.CREEPER));
         if (f >= 8) p.addAll(List.of(EntityTypes.VINDICATOR, EntityTypes.WITCH, EntityTypes.PILLAGER));
         if (f >= 15) p.addAll(List.of(EntityTypes.WITHER_SKELETON, EntityTypes.BLAZE, EntityTypes.PIGLIN_BRUTE));
         if (f >= 25) p.addAll(List.of(EntityTypes.EVOKER, EntityTypes.RAVAGER));
@@ -440,6 +440,18 @@ public final class Tower {
                 }
             }
         }
+    }
+
+    /** 5.0.8: 탑은 폭발에 부서지지 않음 (크리퍼 · 화살 · 보스 기술 모두) */
+    @net.neoforged.bus.api.SubscribeEvent
+    public static void onExplode(net.neoforged.neoforge.event.level.ExplosionEvent.Detonate event) {
+        if (event.getLevel().dimension() != net.minecraft.world.level.Level.OVERWORLD) return;
+        event.getAffectedBlocks().removeIf(Tower::inTower);
+    }
+
+    public static boolean inTower(BlockPos b) {
+        return Math.abs(b.getX() - CENTER.getX()) <= R + 6 && Math.abs(b.getZ() - CENTER.getZ()) <= R + 6
+                && b.getY() >= CENTER.getY() - 8 && b.getY() <= CENTER.getY() + H + 12;
     }
 
     private static boolean inArena(Player p) {

@@ -43,8 +43,8 @@ public class OreMinerBlockEntity extends MachineBlockEntity {
             new Ore("에메랄드", () -> Items.EMERALD, 1, 1, 54),
             new Ore("미스릴 원석", () -> ModItems2.RAW_MYTHRIL.get(), 1, 2, 27),
             new Ore("비취", () -> ModItems2.JADE.get(), 1, 2, 27),
-            new Ore("루비", () -> com.snolred.wildplus.registry.ModItems7.RUBY.get(), 1, 2, 216),
-            new Ore("사파이어", () -> com.snolred.wildplus.registry.ModItems11.SAPPHIRE.get(), 1, 2, 189));
+            new Ore("루비", () -> com.snolred.wildplus.registry.ModItems7.RUBY.get(), 1, 2, 144), // 5.0.8: 216 → 144초 (효율 1.5배)
+            new Ore("사파이어", () -> com.snolred.wildplus.registry.ModItems11.SAPPHIRE.get(), 1, 2, 126)); // 5.0.8: 189 → 126초
 
     public static final int MAX_TIER = 2;
     /** 강화 재료: 1단계 다이아 블록 4개, 2단계 루비 블록 8개 */

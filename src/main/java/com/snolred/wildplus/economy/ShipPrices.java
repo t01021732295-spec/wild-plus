@@ -99,6 +99,14 @@ public final class ShipPrices {
         put(m, com.snolred.wildplus.registry.ModItems33.DRIED_FISH.get(), 600); put(m, com.snolred.wildplus.registry.ModItems33.JERKY.get(), 400);
         put(m, com.snolred.wildplus.registry.ModItems33.KKAKDUGI.get(), 150); put(m, com.snolred.wildplus.registry.ModItems33.DANMUJI.get(), 150);
         put(m, com.snolred.wildplus.registry.ModItems33.DOENJANG.get(), 500); put(m, com.snolred.wildplus.registry.ModItems33.SOY_SAUCE.get(), 900);
+        // 5.0.8: 농작물 출하가 1.5배 (요리 재료값 계산 전에 올려서 요리값도 따라 오름)
+        for (Item crop : new Item[] {Items.WHEAT, Items.CARROT, Items.POTATO, Items.BEETROOT, Items.PUMPKIN, Items.MELON_SLICE, Items.SUGAR_CANE, Items.COCOA_BEANS,
+                Items.SWEET_BERRIES, ModItems.CHILI.get(), ModItems2.TOMATO.get(), ModItems2.STRAWBERRY.get(),
+                com.snolred.wildplus.registry.ModItems13.GRAPE.get(), com.snolred.wildplus.registry.ModItems13.RICE.get(), com.snolred.wildplus.registry.ModItems13.ONION.get(),
+                com.snolred.wildplus.registry.ModItems13.GINSENG.get(), com.snolred.wildplus.registry.ModItems33.SOYBEAN.get(), com.snolred.wildplus.registry.ModItems33.KOREAN_MELON.get(),
+                com.snolred.wildplus.registry.ModItems33.SWEET_POTATO.get(), com.snolred.wildplus.registry.ModItems33.RADISH.get()}) {
+            m.computeIfPresent(crop, (k, v) -> v * 3 / 2);
+        }
         com.snolred.wildplus.cooking.Cooking.prices(m); // 요리: 재료값 × 2.5
         // 3.9 행운의 부적: 들어간 I단계 개수 × 200동 (최대 400만동) / 3.9.7 합성 개수 II 9개, III~V 3개, VI~X 2개 (tools/data_v29.py COST 와 같게)
         long ones = 1;

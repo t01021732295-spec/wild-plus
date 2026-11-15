@@ -35,7 +35,7 @@ LANG_KO = {
     "message.wildplus.honor.festival": "🎉 %s 님이 서버 축제를 열었습니다! 1시간 동안 모두에게 신속·성급함·행운",
     "tooltip.wildplus.hall_of_fame": "돈으로 하는 엔드 컨텐츠\n명예 등급(영구 혜택) · 비행 허가증 · 보스 소환권 · 서버 축제 · 부자 순위",
     "tooltip.wildplus.lord_heart": "핏빛 군주의 전리품 · 출하하면 2,000동, 경제 상인도 2,000동에 사 줌",
-    "tooltip.wildplus.auto_harvester": "스프링클러 바로 아래에 놓기\n씨앗은 씨앗 칸, 작물은 작물 칸 (호퍼로 빼기)\n수확한 씨앗은 씨앗 칸에 자동 보충 · 자동 심기 켜고 끄기",
+    "tooltip.wildplus.auto_harvester": "스프링클러 바로 아래에 놓기 · 주변 13×13 수확\n씨앗은 씨앗 칸, 작물은 작물 칸 (호퍼로 빼기)\n수확한 씨앗은 씨앗 칸에 자동 보충 · 자동 심기 켜고 끄기",
     "tooltip.wildplus.auto_fisher": "반경 2칸 안에 물이 있으면 작동\n낚싯대를 넣으면 미끼·바다의 행운이 그대로 적용\n잡은 물고기는 호퍼로 빼기",
 }
 LANG_EN = {

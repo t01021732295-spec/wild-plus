@@ -81,7 +81,12 @@ public final class Services {
                     }
                     if (i < list.size()) {
                         Buff b = list.get(i);
-                        player.addEffect(new MobEffectInstance(b.effect(), b.seconds() * 20, b.amp()));
+                        // 5.0.8: 같은 효과(같은 단계 이상)가 남아 있으면 시간을 더함 · 최대 1시간
+                        int ticks = b.seconds() * 20;
+                        MobEffectInstance cur = player.getEffect(b.effect());
+                        if (cur != null && cur.getAmplifier() == b.amp() && !cur.isInfiniteDuration()) ticks = Math.min(72000, cur.getDuration() + ticks);
+                        if (cur != null && cur.getAmplifier() == b.amp()) player.removeEffect(b.effect());
+                        player.addEffect(new MobEffectInstance(b.effect(), ticks, b.amp()));
                         player.sendOverlayMessage(Component.translatable("message.wildplus.service.bought", b.name(), price).withStyle(ChatFormatting.GREEN));
                     } else {
                         player.setHealth(player.getMaxHealth());

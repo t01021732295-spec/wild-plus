@@ -101,10 +101,13 @@ public class AutoHarvesterBlockEntity extends MachineBlockEntity {
         return level != null && level.getBlockState(worldPosition.above()).getBlock() instanceof SprinklerBlock;
     }
 
+    /** 5.0.8: 수확 범위 13×13 (스프링클러가 적시는 범위는 9×9 그대로) */
+    public static final int RADIUS = 6;
+
     public static void serverTick(Level level, BlockPos pos, BlockState state, AutoHarvesterBlockEntity be) {
         if (!(level instanceof ServerLevel server) || level.getGameTime() % 40 != 11 || !be.hasSprinkler()) return;
         BlockPos center = pos.above();
-        int r = SprinklerBlock.RADIUS;
+        int r = RADIUS;
         for (int dx = -r; dx <= r; dx++) {
             for (int dz = -r; dz <= r; dz++) {
                 for (int dy = -2; dy <= 1; dy++) {

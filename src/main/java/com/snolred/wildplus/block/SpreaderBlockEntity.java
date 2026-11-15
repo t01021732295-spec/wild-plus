@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * 비료가 없거나 다 떨어진 칸, 더 낮은 단계 비료가 든 칸부터 채운다. 가장 좋은 비료부터 쓴다. 호퍼로 채울 수 있다.
  */
 public class SpreaderBlockEntity extends BoxBlockEntity {
-    public static final int SIZE = 9, RADIUS = 4;
+    public static final int SIZE = 9, RADIUS = 6; // 5.0.8: 9×9 → 13×13
     private int cursor;
 
     public SpreaderBlockEntity(BlockPos pos, BlockState state) {

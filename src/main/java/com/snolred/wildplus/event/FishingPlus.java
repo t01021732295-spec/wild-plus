@@ -77,6 +77,29 @@ public final class FishingPlus {
     // ───────── 입질 속도: 찌가 물에 들어갈 때 낚싯대 · 미끼만큼 기다림 시간을 줄인다 ─────────
     private static Field lureField, luckField;
 
+    // 5.0.8 낚시 효율 30% 너프: 기다림이 새로 정해지는 순간 (기다림 + 다가오는 시간 평균 50틱) ÷ 0.7 이 되게 늘린다
+    private static Field luredField;
+    private static final java.util.Map<FishingHook, Integer> LAST_WAIT = new java.util.WeakHashMap<>();
+
+    @SubscribeEvent
+    public static void onHookTick(net.neoforged.neoforge.event.tick.EntityTickEvent.Post event) {
+        if (!(event.getEntity() instanceof FishingHook hook) || hook.level().isClientSide()) return;
+        try {
+            if (luredField == null) {
+                luredField = FishingHook.class.getDeclaredField("timeUntilLured");
+                luredField.setAccessible(true);
+            }
+            int now = luredField.getInt(hook);
+            int before = LAST_WAIT.getOrDefault(hook, 0);
+            if (now > 0 && before <= 0) {
+                now = Math.round((now + 50) / 0.7F) - 50;
+                luredField.setInt(hook, now);
+            }
+            LAST_WAIT.put(hook, now);
+        } catch (ReflectiveOperationException | RuntimeException ignored) {
+        }
+    }
+
     @SubscribeEvent
     public static void onHookJoin(EntityJoinLevelEvent event) {
         if (event.getLevel().isClientSide() || !(event.getEntity() instanceof FishingHook hook) || hook.getPlayerOwner() == null) return;
