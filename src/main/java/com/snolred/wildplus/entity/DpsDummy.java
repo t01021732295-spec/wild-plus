@@ -36,12 +36,14 @@ public class DpsDummy extends Mob {
     private static final class Stat {
         final ArrayDeque<double[]> hits = new ArrayDeque<>(); // {tick, 피해}
         double total;
-        float max;
+        float max, lastDmg;
         int crits, count;
         long first, last;
     }
 
     private final Map<UUID, Stat> stats = new HashMap<>();
+    /** 5.1.5 마지막으로 받은 한 방 (누가 때렸든) */
+    private float lastHit;
     /** 치명타 이벤트 → 바로 뒤 피해와 짝지음 */
     private static final Map<UUID, Long> CRIT = new HashMap<>();
 
@@ -94,9 +96,11 @@ public class DpsDummy extends Mob {
         s.hits.addLast(new double[] {now, dmg});
         s.total += dmg;
         s.max = Math.max(s.max, dmg);
+        s.lastDmg = dmg;
         s.count++;
         if (crit) s.crits++;
         s.last = now;
+        lastHit = dmg;
         setHealth(getMaxHealth());
         show(p, s, now);
         updateName();
@@ -115,7 +119,7 @@ public class DpsDummy extends Mob {
 
     private void show(ServerPlayer p, Stat s, long now) {
         long secs = (now - s.first) / 20;
-        p.sendOverlayMessage(Component.literal("§6내 DPS §f" + f(dps(s, now)) + " §7· 한 방 최고 §f" + f(s.max) + " §7· 치명타 §f" + s.crits
+        p.sendOverlayMessage(Component.literal("§6내 DPS §f" + f(dps(s, now)) + " §7· 방금 §c" + f(s.lastDmg) + " §7· 한 방 최고 §f" + f(s.max) + " §7· 치명타 §f" + s.crits
                 + "/" + s.count + "회 §7· 누적 §f" + f(s.total) + " §7(" + secs + "초)"));
     }
 
@@ -127,7 +131,7 @@ public class DpsDummy extends Mob {
         }
         double sum = 0;
         for (Stat s : stats.values()) sum += dps(s, now);
-        setCustomName(Component.literal("§c⚔ §fDPS §e" + f(sum) + (stats.size() > 1 ? " §7(" + stats.size() + "명)" : "")));
+        setCustomName(Component.literal("§c⚔ §fDPS §e" + f(sum) + " §7· 방금 §c" + f(lastHit) + (stats.size() > 1 ? " §7(" + stats.size() + "명)" : "")));
     }
 
     @Override

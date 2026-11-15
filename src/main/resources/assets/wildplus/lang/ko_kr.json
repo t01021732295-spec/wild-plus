@@ -1166,7 +1166,7 @@
   "tooltip.wildplus.void_heart": "강화대에서 미완성 공허 장비를 완성하는 핵심 재료",
   "equipment.wildplus.void": "공허",
   "item.wildplus.void_sword": "공허 검",
-  "tooltip.wildplus.void_sword": "공격력 10.5 · 공격 속도 1.9 · 내구도 무한\n공허 베기: 3타마다 주변 3칸 방어 무시 피해 12\n균열 표식: 맞은 적이 5초간 받는 피해 +15% (보스 +8%)",
+  "tooltip.wildplus.void_sword": "공격력 10.5 · 공격 속도 1.9 · 내구도 무한\n공허 베기: 3타마다 주변 3칸 방어 무시 피해 18\n균열 표식: 맞은 적이 5초간 받는 피해 +15% (보스 +8%)",
   "item.wildplus.void_sword_blank": "미완성 공허 검",
   "tooltip.wildplus.void_sword_blank": "강화대에서 공허 심장과 돈으로 완성",
   "item.wildplus.void_pickaxe": "공허 곡괭이",

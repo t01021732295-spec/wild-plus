@@ -247,7 +247,7 @@ public final class VoidGear {
         boolean abyss = "ABYSS".equals(RubyGear.engraving(p.getMainHandItem()));
         double slashR = abyss ? 5.0 : 3.0;
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(slashR))) {
-            if (e != p && (e == target || e instanceof Enemy)) magic(level, e, p, abyss ? 15.6F : 12.0F);
+            if (e != p && (e == target || e instanceof Enemy)) magic(level, e, p, abyss ? 23.4F : 18.0F); // 5.1.5: 12 → 18 (+50%)
         }
         level.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), 8, 1.4, 0.3, 1.4, 0);
         level.sendParticles(ParticleTypes.SONIC_BOOM, target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), 1, 0, 0, 0, 0);
