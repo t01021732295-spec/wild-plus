@@ -1121,5 +1121,6 @@
   "entity.wildplus.ash_shaman": "Ash Shaman",
   "entity.wildplus.obsidian_golem": "Obsidian Golem",
   "item.wildplus.dps_dummy": "DPS Dummy",
-  "entity.wildplus.dps_dummy": "DPS Dummy"
+  "entity.wildplus.dps_dummy": "DPS Dummy",
+  "item.wildplus.purify_scroll": "Scroll of Purification"
 }

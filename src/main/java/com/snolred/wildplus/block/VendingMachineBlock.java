@@ -48,6 +48,17 @@ public class VendingMachineBlock extends BaseEntityBlock {
         builder.add(FACING, HALF);
     }
 
+    /** 5.0.11: 마을(구조물)이 돌아가 생성될 때 자판기도 같이 돌아가야 정면을 봄 */
+    @Override
+    protected BlockState rotate(BlockState state, net.minecraft.world.level.block.Rotation rot) {
+        return state.setValue(FACING, rot.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, net.minecraft.world.level.block.Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
+
     /** 이 칸이 속한 자판기의 아래 칸 위치 */
     public static BlockPos basePos(BlockState state, BlockPos pos) {
         return state.getValue(HALF) == DoubleBlockHalf.UPPER ? pos.below() : pos;

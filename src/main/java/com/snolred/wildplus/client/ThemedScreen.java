@@ -59,6 +59,7 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
             case PickMenu.T_CONTRACT -> 214;
             case PickMenu.T_PRISON -> 200;
             case PickMenu.T_ALTAR -> 176;
+            case PickMenu.T_FATE -> 196;
             default -> 200;
         };
     }
@@ -75,7 +76,7 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
             case PickMenu.T_CONTRACT -> 6;
             case PickMenu.T_PRISON -> 4;
             case PickMenu.T_ALTAR -> 5;
-            case PickMenu.T_CONTEST -> 0; // 게시판은 배경에 직접 씀
+            case PickMenu.T_CONTEST, PickMenu.T_FATE -> 0; // 배경에 직접 씀
             default -> 8;
         };
     }
@@ -129,7 +130,7 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
         }
         int by = topPos + h - 22;
         int px = theme == PickMenu.T_LAND ? leftPos + 188 : leftPos + 8;
-        if (theme != PickMenu.T_CONTEST) {
+        if (theme != PickMenu.T_CONTEST && theme != PickMenu.T_FATE) {
             prev = addRenderableWidget(UiButton.of(px, by, 20, 16, "◀", UiButton.WHITE, () -> { page--; refresh(); }));
             next = addRenderableWidget(UiButton.of(px + 24, by, 20, 16, "▶", UiButton.WHITE, () -> { page++; refresh(); }));
         }
@@ -140,6 +141,12 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
             for (int i = 0; i < menu.entries.size(); i++) if (menu.entries.get(i).kind() == PickMenu.K_PRIMARY) sign = i;
             final int s = sign;
             if (s >= 0) action = addRenderableWidget(new UiButton(leftPos + w - 120, topPos + h - 30, 110, 22, Component.literal("✒ 서명하고 종 치기"), UiButton.RED, () -> send(s)));
+        } else if (theme == PickMenu.T_FATE) {
+            if (menu.entries.size() > 2 && menu.entries.get(2).kind() == PickMenu.K_PRIMARY) {
+                PickMenu.Entry r = menu.entries.get(2);
+                action = addRenderableWidget(new UiButton(leftPos + 168, topPos + h - 34, w - 178, 24,
+                        Component.literal(r.title()), UiButton.RED, () -> send(2)));
+            }
         } else if (theme == PickMenu.T_PRISON && prisonActions()) {
             for (int i = 0; i < menu.entries.size(); i++) {
                 if (menu.entries.get(i).kind() == PickMenu.K_SMALL) {
@@ -429,6 +436,57 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
                     UiKit.center(g, "포로를 어떻게 할까요?", x + w / 2, y + 50, 0xFFE6E0D0);
                 }
             }
+            case PickMenu.T_FATE -> {
+                UiKit.round(g, x, y, w, h, 4, 0xFF8C64C8);
+                UiKit.roundGradient(g, x + 2, y + 2, w - 4, h - 4, 3, 0xFF241A36, 0xFF34264C);
+                for (int k = 0; k < 14; k++) { // 별가루
+                    int sx = x + 8 + (k * 53) % (w - 16), sy = y + 6 + (k * 29) % (h - 12);
+                    g.fill(sx, sy, sx + 1, sy + 1, 0x66E6D2FF);
+                }
+                // 왼쪽: 든 장비
+                UiKit.round(g, x + 10, y + 32, 150, h - 42, 4, 0xFF1A1428);
+                UiKit.outline(g, x + 10, y + 32, 150, h - 42, 0xFF5C4488);
+                PickMenu.Entry item = menu.entries.isEmpty() ? null : menu.entries.get(0);
+                if (item != null) {
+                    int cx = x + 85;
+                    UiKit.round(g, cx - 22, y + 38, 44, 44, 22, 0xFF3A2A5C);
+                    if (item.icon().isEmpty()) UiKit.center(g, "?", cx, y + 56, 0xFF9C84C8);
+                    else icon(g, item.icon(), cx - 16, y + 44, 2F);
+                    UiKit.center(g, fit(item.title(), 140), cx, y + 88, item.icon().isEmpty() ? 0xFFFF9C9C : 0xFFFFE6A0);
+                    int ly = y + 102;
+                    String[] ls = item.sub().split("\n");
+                    for (int k = 0; k < ls.length; k++) {
+                        if (ly > y + h - 22) {
+                            UiKit.center(g, "… 외 " + (ls.length - k) + "개", cx, ly, 0xFF8C7CA8);
+                            break;
+                        }
+                        UiKit.center(g, fit(ls[k], 140), cx, ly, 0xFFC8B8F0);
+                        ly += 10;
+                    }
+                }
+                // 오른쪽: 확률 · 최근 결과
+                int rx = x + 168, rw = w - 178;
+                UiKit.round(g, rx, y + 32, rw, 74, 4, 0xFF1A1428);
+                UiKit.text(g, "✦ 확률", rx + 6, y + 37, 0xFFE6D2FF);
+                if (menu.entries.size() > 1) {
+                    int ly = y + 50;
+                    for (String l : menu.entries.get(1).sub().split("\n")) {
+                        UiKit.text(g, fit(l, rw - 12), rx + 6, ly, 0xFFB4A4D4);
+                        ly += 11;
+                    }
+                }
+                UiKit.round(g, rx, y + 112, rw, 40, 4, 0xFF2C1E46);
+                UiKit.outline(g, rx, y + 112, rw, 40, 0xFF8C64C8);
+                UiKit.text(g, "최근 결과", rx + 6, y + 117, 0xFF9C84C8);
+                String last = menu.entries.size() > 1 ? menu.entries.get(1).title() : "";
+                int ly = y + 129;
+                for (String l : wrap(last.isEmpty() ? "§7아직 굴리지 않았어요" : last, rw - 12)) {
+                    if (ly > y + 145) break;
+                    UiKit.text(g, l, rx + 6, ly, 0xFFFFFFFF);
+                    ly += 10;
+                }
+                if (action == null) UiKit.center(g, "장비를 손에 들고 다시 열어 주세요", rx + rw / 2, y + h - 26, 0xFFFF9C9C);
+            }
             case PickMenu.T_ALTAR -> {
                 UiKit.round(g, x, y, w, h, 4, 0xFF78708C);
                 UiKit.roundGradient(g, x + 2, y + 2, w - 4, h - 4, 3, 0xFF2E2C3A, 0xFF3A3848);
@@ -490,6 +548,10 @@ public class ThemedScreen extends AbstractContainerScreen<PickMenu> {
             case PickMenu.T_PRISON -> {
                 UiKit.center(g, title, w / 2, 8, 0xFFF0E8D8);
                 UiKit.center(g, fit(menu.header, w - 20), w / 2, 19, 0xFFC0BCB4);
+            }
+            case PickMenu.T_FATE -> {
+                UiKit.center(g, title, w / 2, 8, 0xFFE6D2FF);
+                UiKit.center(g, menu.header, w / 2, 20, 0xFFB4A0DC);
             }
             case PickMenu.T_ALTAR -> {
                 UiKit.center(g, title, w / 2, 8, 0xFFB4FFF0);

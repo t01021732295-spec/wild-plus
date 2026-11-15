@@ -154,6 +154,7 @@ public final class WildCommands {
                         case "musichelp" -> net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(p, new com.snolred.wildplus.net.MusicNet.Help());
                         case "dex" -> com.snolred.wildplus.content.Codex.debug(p);
                         case "bowloot" -> com.snolred.wildplus.event.Bows.selfTest(p);
+                        case "fate" -> com.snolred.wildplus.block.FateAltar.open(p, at, "§d날카로움 XII §f이 붙었어요! §7· 31,204동");
                         case "dexcat" -> com.snolred.wildplus.content.Codex.debugPage(p, 0);
                         case "dexach" -> com.snolred.wildplus.content.Codex.debugPage(p, 1);
                         case "dextitle" -> com.snolred.wildplus.content.Codex.debugPage(p, 2);

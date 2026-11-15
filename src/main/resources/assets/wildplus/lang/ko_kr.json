@@ -1314,7 +1314,7 @@
   "block.wildplus.lottery_machine": "복권 발매기",
   "tooltip.wildplus.lottery_machine": "즉석 복권 · 숫자 복권(게임 속 토요일 오후 8시 45분 추첨)",
   "block.wildplus.fate_altar": "운명의 제단",
-  "tooltip.wildplus.fate_altar": "장비를 들고 우클릭: 2만 4천~4만동에 랜덤 인챈트 1개 (1~15단계)",
+  "tooltip.wildplus.fate_altar": "우클릭: 운명의 제단 화면\n든 장비에 랜덤 인챈트 1개 (1~15단계) · 2만 4천~4만동",
   "block.wildplus.music_player": "음악 플레이어",
   "tooltip.wildplus.music_player": "서버 폴더의 노래를 트는 플레이어\n사용법은 우클릭 → [사용법]",
   "item.wildplus.custom_disc": "커스텀 음반",
@@ -1451,5 +1451,7 @@
   "entity.wildplus.obsidian_golem": "흑요석 골렘",
   "item.wildplus.dps_dummy": "DPS 측정 허수아비",
   "entity.wildplus.dps_dummy": "DPS 측정 허수아비",
-  "tooltip.wildplus.dps_dummy": "땅에 우클릭해서 세움 · 맞아도 죽지 않음\n최근 10초 피해로 DPS 측정 (머리 위 = 모두 합계)\n때린 사람 화면 아래: 내 DPS · 한 방 최고 · 치명타 · 누적\n우클릭 = 기록 초기화 · 웅크리고 우클릭 = 회수"
+  "tooltip.wildplus.dps_dummy": "땅에 우클릭해서 세움 · 맞아도 죽지 않음\n최근 10초 피해로 DPS 측정 (머리 위 = 모두 합계)\n때린 사람 화면 아래: 내 DPS · 한 방 최고 · 치명타 · 누적\n우클릭 = 기록 초기화 · 웅크리고 우클릭 = 회수",
+  "item.wildplus.purify_scroll": "정화의 주문서",
+  "tooltip.wildplus.purify_scroll": "귀속 저주 · 소실 저주 등 모든 저주를 지움\n저주 걸린 장비를 왼손(보조 손)에 들고 우클릭\n왼손이 비면 입고 있는 장비 중 저주 걸린 것 하나를 정화"
 }

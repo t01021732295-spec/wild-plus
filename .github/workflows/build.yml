@@ -1273,6 +1273,11 @@ jobs:
             cmd "/damage @e[type=wildplus:dps_dummy,limit=1,sort=nearest] 12 minecraft:player_attack by @s"; shot v51-dummy
             cmd "/kill @e[type=!player,distance=..20]"; cmd "/tp @s 396.5 120 -8.3 0 20"
             cmd "/wildplus uitest bowloot"; sleep 2
+            cmd "/item replace entity @s weapon.mainhand with minecraft:diamond_sword[enchantments={sharpness:5,unbreaking:3,vanishing_curse:1}]"
+            cmd "/wildplus uitest fate"; sleep 2; shot v511-fate; esc
+            cmd "/item replace entity @s weapon.offhand with minecraft:diamond_sword[enchantments={sharpness:5,binding_curse:1,vanishing_curse:1}]"
+            cmd "/item replace entity @s weapon.mainhand with wildplus:purify_scroll"; sleep 1; xdotool click 3; sleep 1; shot v511-purify
+            cmd "/clear @s"
             cmd "/wildplus uitest dex"; sleep 2; shot v49-dex; esc
             cmd "/wildplus uitest dexcat"; sleep 2; shot v49-dexcat; esc
             cmd "/wildplus uitest dexach"; sleep 2; shot v49-dexach; esc

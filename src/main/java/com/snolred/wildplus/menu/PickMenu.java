@@ -32,7 +32,7 @@ public class PickMenu extends AbstractContainerMenu {
     /** 4.9.2 업적 전용 화면 (client/AchScreen) */
     public static final int FLAG_ACH = 1 << 18;
     public static final int THEME_SHIFT = 12;
-    public static final int T_PHARMACY = 1, T_WEATHER = 2, T_LAND = 3, T_WARP = 4, T_CONTEST = 5, T_TELEPORT = 6, T_CONTRACT = 7, T_PRISON = 8, T_ALTAR = 9;
+    public static final int T_PHARMACY = 1, T_WEATHER = 2, T_LAND = 3, T_WARP = 4, T_CONTEST = 5, T_TELEPORT = 6, T_CONTRACT = 7, T_PRISON = 8, T_ALTAR = 9, T_FATE = 10;
 
     public static int theme(int flags) {
         return (flags >> THEME_SHIFT) & 15;
