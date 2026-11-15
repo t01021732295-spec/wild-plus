@@ -1,12 +1,3 @@
-net.minecraft.world.level.material.MapColor
-net.minecraft.client.gui.GuiGraphicsExtractor
-net.minecraft.client.KeyMapping
-net.minecraft.client.multiplayer.ClientLevel
-net.minecraft.world.level.chunk.LevelChunk
-net.minecraft.world.level.chunk.ChunkAccess
-net.minecraft.client.multiplayer.ServerData
-net.minecraft.world.level.storage.LevelResource
-net.minecraft.client.server.IntegratedServer
-net.minecraft.world.level.block.state.BlockBehaviour$BlockStateBase
-net.minecraft.client.KeyMapping$Category
-net.minecraft.world.entity.player.Player
+net.minecraft.world.level.biome.MultiNoiseBiomeSource
+net.minecraft.world.level.levelgen.structure.BuiltinStructures
+net.minecraft.world.entity.monster.piglin.Piglin

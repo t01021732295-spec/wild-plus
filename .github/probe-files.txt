@@ -1,0 +1,2 @@
+data/minecraft/worldgen/biome/basalt_deltas.json
+data/minecraft/worldgen/biome/nether_wastes.json
