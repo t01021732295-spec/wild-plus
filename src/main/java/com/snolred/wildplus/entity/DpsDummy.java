@@ -71,9 +71,6 @@ public class DpsDummy extends Mob {
     }
 
     @Override
-    public void knockback(double strength, double x, double z) {}
-
-    @Override
     protected InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!(player instanceof ServerPlayer sp) || hand != InteractionHand.MAIN_HAND) return InteractionResult.SUCCESS;
         if (sp.isShiftKeyDown()) {
@@ -166,7 +163,7 @@ public class DpsDummy extends Mob {
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onDamage(LivingDamageEvent.Post event) {
         if (!(event.getEntity() instanceof DpsDummy d)) return;
-        float dmg = event.getNewDamage();
+        float dmg = event.getHealthDamage();
         if (event.getSource().getEntity() instanceof ServerPlayer p && dmg > 0) {
             Long t = CRIT.remove(p.getUUID());
             d.record(p, dmg, t != null && d.level().getGameTime() - t <= 1);
