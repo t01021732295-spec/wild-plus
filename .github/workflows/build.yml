@@ -1278,6 +1278,8 @@ jobs:
             cmd "/wildplus uitest bowloot"; sleep 2
             cmd "/item replace entity @s weapon.mainhand with minecraft:diamond_sword[enchantments={sharpness:5,unbreaking:3,vanishing_curse:1}]"
             cmd "/wildplus uitest fate"; sleep 2; shot v511-fate; esc
+            cmd "/wildplus uitest piglin"; sleep 2; shot v511-piglin; esc; cmd "/kill @e[type=minecraft:piglin]"
+            cmd "/wildplus uitest netherbiome"; sleep 20
             cmd "/item replace entity @s weapon.offhand with minecraft:diamond_sword[enchantments={sharpness:5,binding_curse:1,vanishing_curse:1}]"
             cmd "/item replace entity @s weapon.mainhand with wildplus:purify_scroll"; sleep 1; xdotool click 3; sleep 1; shot v511-purify
             cmd "/clear @s"

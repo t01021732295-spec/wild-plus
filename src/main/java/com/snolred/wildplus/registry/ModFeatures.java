@@ -12,5 +12,10 @@ public final class ModFeatures {
     public static final DeferredRegister<MapCodec<? extends Feature>> TYPES = DeferredRegister.create(Registries.FEATURE_TYPE, WildPlus.MODID);
     public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<VoidPlainsFeature>> VOID_PLAINS = TYPES.register("void_plains", () -> VoidPlainsFeature.CODEC);
 
+    public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<com.snolred.wildplus.worldgen.EmberWastesFeature>> EMBER_WASTES = TYPES.register("ember_wastes",
+            () -> com.snolred.wildplus.worldgen.EmberWastesFeature.CODEC);
+    public static final DeferredHolder<MapCodec<? extends Feature>, MapCodec<com.snolred.wildplus.worldgen.AshGroveFeature>> ASH_GROVE = TYPES.register("ash_grove",
+            () -> com.snolred.wildplus.worldgen.AshGroveFeature.CODEC);
+
     private ModFeatures() {}
 }

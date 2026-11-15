@@ -154,6 +154,34 @@ public final class WildCommands {
                         case "musichelp" -> net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(p, new com.snolred.wildplus.net.MusicNet.Help());
                         case "dex" -> com.snolred.wildplus.content.Codex.debug(p);
                         case "bowloot" -> com.snolred.wildplus.event.Bows.selfTest(p);
+                        case "piglin" -> {
+                            var pg = net.minecraft.world.entity.EntityTypes.PIGLIN.create(p.level(), net.minecraft.world.entity.EntitySpawnReason.COMMAND);
+                            if (pg != null) {
+                                pg.snapTo(front.getX() + 0.5, front.getY(), front.getZ() + 0.5, 0F, 0F);
+                                pg.setNoAi(true);
+                                p.level().addFreshEntity(pg);
+                                com.snolred.wildplus.event.NetherPlus.open(p, pg);
+                            }
+                        }
+                        case "netherbiome" -> {
+                            var nether = p.level().getServer().getLevel(net.minecraft.world.level.Level.NETHER);
+                            if (nether != null) {
+                                for (var key : java.util.List.of(com.snolred.wildplus.event.NetherBiomes.EMBER, com.snolred.wildplus.event.NetherBiomes.ASH)) {
+                                    var found = nether.findClosestBiome3d(h -> h.is(key), net.minecraft.core.BlockPos.ZERO.atY(64), 6400, 32, 64);
+                                    String msg = "[wildplus-netherbiome] " + key.identifier() + " = " + (found == null ? "none" : found.getFirst().toShortString());
+                                    com.snolred.wildplus.WildPlus.LOGGER.info(msg);
+                                    p.sendSystemMessage(net.minecraft.network.chat.Component.literal(msg));
+                                }
+                                var reg = nether.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.STRUCTURE);
+                                for (String n : new String[] {"kalpa_citadel", "ember_watchtower"}) {
+                                    var k = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.STRUCTURE, com.snolred.wildplus.WildPlus.id(n));
+                                    var at2 = nether.getChunkSource().getGenerator().findNearestMapStructure(nether, net.minecraft.core.HolderSet.direct(reg.getOrThrow(k)), net.minecraft.core.BlockPos.ZERO, 64, false);
+                                    String msg = "[wildplus-netherbiome] " + n + " = " + (at2 == null ? "none" : at2.getFirst().toShortString());
+                                    com.snolred.wildplus.WildPlus.LOGGER.info(msg);
+                                    p.sendSystemMessage(net.minecraft.network.chat.Component.literal(msg));
+                                }
+                            }
+                        }
                         case "fate" -> com.snolred.wildplus.block.FateAltar.open(p, at, "§d날카로움 XII §f이 붙었어요! §7· 31,204동");
                         case "dexcat" -> com.snolred.wildplus.content.Codex.debugPage(p, 0);
                         case "dexach" -> com.snolred.wildplus.content.Codex.debugPage(p, 1);

@@ -203,6 +203,11 @@ public class KalpaLordEntity extends FxBoss {
             com.snolred.wildplus.content.Codex.add(p, "kalpa_lord", 1);
         }
         if (all.isEmpty()) drop(lv, new ItemStack(ModItems34.KALPA_HORN.get()));
+        // 5.1.1 겁화 각인석: 한 개는 반드시, 사람마다 35% 더
+        String[] ks = {"INFERNO", "PYRE", "CINDER", "PHOENIX"};
+        int stones = 1;
+        for (int k = 0; k < all.size(); k++) if (r.nextFloat() < 0.35F) stones++;
+        for (int k = 0; k < stones; k++) drop(lv, new ItemStack(com.snolred.wildplus.registry.ModItems25.STONES.get(ks[r.nextInt(ks.length)]).get()));
         drop(lv, new ItemStack(ModItems34.KALPA_STONE.get(), 3 + r.nextInt(4)));
         drop(lv, new ItemStack(ModItems34.EMBER_SHARD.get(), 16 + r.nextInt(17)));
         drop(lv, new ItemStack(ModItems34.RAW_KALPA.get(), 4 + r.nextInt(5)));

@@ -24,12 +24,26 @@ public abstract class BiomeSourceMixin {
 
     @Inject(method = "possibleBiomes", at = @At("RETURN"), cancellable = true)
     private void wildplus$possible(CallbackInfoReturnable<Set<Holder<Biome>>> cir) {
-        if (!((Object) this instanceof TheEndBiomeSource)) return;
-        Holder<Biome> h = VoidBiome.holder;
+        Holder<Biome> h;
+        Holder<Biome> h2 = null;
+        if ((Object) this instanceof TheEndBiomeSource) {
+            h = VoidBiome.holder;
+        } else if ((Object) this instanceof net.minecraft.world.level.biome.MultiNoiseBiomeSource) {
+            // 5.1.1: 네더(황무지가 들어 있는 목록)에만 잿불 황야 · 재의 숲을 더한다
+            h = com.snolred.wildplus.event.NetherBiomes.ember;
+            h2 = com.snolred.wildplus.event.NetherBiomes.ash;
+            if (h == null || h2 == null) return;
+            boolean nether = false;
+            for (Holder<Biome> b : cir.getReturnValue()) if (b.is(net.minecraft.world.level.biome.Biomes.NETHER_WASTES)) { nether = true; break; }
+            if (!nether) return;
+        } else {
+            return;
+        }
         if (h == null) return;
         if (wildplus$for != h) {
             Set<Holder<Biome>> s = new HashSet<>(cir.getReturnValue());
             s.add(h);
+            if (h2 != null) s.add(h2);
             wildplus$set = s;
             wildplus$for = h;
         }

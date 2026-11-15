@@ -1126,5 +1126,12 @@
   "block.wildplus.kalpa_gate": "Kalpa Gate",
   "block.wildplus.kalpa_altar": "Lord's Altar",
   "block.wildplus.kalpa_brazier": "Kalpa Brazier",
-  "entity.wildplus.kalpa_lord": "Kalpa Lord"
+  "entity.wildplus.kalpa_lord": "Kalpa Lord",
+  "item.wildplus.engrave_inferno": "Inferno Engraving Stone",
+  "item.wildplus.engrave_pyre": "Pyre Engraving Stone",
+  "item.wildplus.engrave_cinder": "Cinder Engraving Stone",
+  "item.wildplus.engrave_phoenix": "Phoenix Engraving Stone",
+  "item.wildplus.engrave_smelt": "Smelting Engraving Stone",
+  "biome.wildplus.ember_wastes": "Ember Wastes",
+  "biome.wildplus.ash_grove": "Ash Grove"
 }

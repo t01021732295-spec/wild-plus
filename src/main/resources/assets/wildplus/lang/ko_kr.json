@@ -1457,5 +1457,17 @@
   "block.wildplus.kalpa_gate": "겁화의 문",
   "block.wildplus.kalpa_altar": "군주의 제단",
   "block.wildplus.kalpa_brazier": "겁화의 화로",
-  "entity.wildplus.kalpa_lord": "겁화의 군주"
+  "entity.wildplus.kalpa_lord": "겁화의 군주",
+  "item.wildplus.engrave_inferno": "업화 각인석",
+  "item.wildplus.engrave_pyre": "화장 각인석",
+  "item.wildplus.engrave_cinder": "잿불 갑주 각인석",
+  "item.wildplus.engrave_phoenix": "불사조 각인석",
+  "item.wildplus.engrave_smelt": "제련 각인석",
+  "tooltip.wildplus.engrave_inferno": "겁화 검 · 겁화 활 전용 (강화대 각인)\n불타는 적에게 피해 +25%",
+  "tooltip.wildplus.engrave_pyre": "겁화 활 전용 (강화대 각인)\n화살이 맞은 자리 3칸에 불기둥 (피해 6 · 불붙임)",
+  "tooltip.wildplus.engrave_cinder": "겁화 갑옷 전용 (강화대 각인)\n나를 때린 적에게 피해 2 + 불 (부위마다, 최대 8)",
+  "tooltip.wildplus.engrave_phoenix": "겁화 갑옷 전용 (강화대 각인)\n불·용암 피해 무시 · 불타는 동안 초당 체력 1 회복",
+  "tooltip.wildplus.engrave_smelt": "도구 공용 (강화대 각인)\n캔 철·금·구리 원석이 바로 주괴로",
+  "biome.wildplus.ember_wastes": "잿불 황야",
+  "biome.wildplus.ash_grove": "재의 숲"
 }
