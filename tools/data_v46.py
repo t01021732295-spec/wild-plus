@@ -7,7 +7,7 @@ from data_v18 import simple
 LANG_KO = {
     "item.wildplus.dps_dummy": "DPS 측정 허수아비",
     "entity.wildplus.dps_dummy": "DPS 측정 허수아비",
-    "tooltip.wildplus.dps_dummy": "땅에 우클릭해서 세움 · 맞아도 죽지 않음\n최근 10초 피해로 DPS 측정 (머리 위 = 모두 합계)\n때린 사람 화면 아래: 내 DPS · 한 방 최고 · 치명타 · 누적\n우클릭 = 기록 초기화 · 웅크리고 우클릭 = 회수",
+    "tooltip.wildplus.dps_dummy": "땅에 우클릭해서 세움 · 맞아도 죽지 않음\n최근 10초 피해로 DPS 측정 (머리 위 = 모두 합계)\n때린 사람 화면 아래: 내 DPS · 한 방 최고 · 치명타 · 누적\n우클릭 = 기록 초기화 · 갑옷 들고 우클릭 = 입히기(인챈트 적용)\n웅크리고 우클릭 = 갑옷 벗기기 → 한 번 더 하면 회수",
 }
 LANG_EN = {"item.wildplus.dps_dummy": "DPS Dummy", "entity.wildplus.dps_dummy": "DPS Dummy"}
 

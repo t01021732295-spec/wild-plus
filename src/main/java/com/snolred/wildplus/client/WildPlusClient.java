@@ -83,9 +83,60 @@ public class WildPlusClient {
         event.setCanRender(net.minecraft.util.TriState.TRUE);
     }
 
+    /** 5.1.5 날카로움이 더해 주는 공격력 (바닐라 계산: 0.5 × 단계 + 0.5) */
+    static float sharpBonus(ItemStack stack) {
+        for (var e : net.minecraft.world.item.enchantment.EnchantmentHelper.getEnchantmentsForCrafting(stack).entrySet()) {
+            if (e.getKey().is(net.minecraft.world.item.enchantment.Enchantments.SHARPNESS) && e.getIntValue() > 0) return 0.5F * e.getIntValue() + 0.5F;
+        }
+        return 0F;
+    }
+
+    private static String num(double v) {
+        return v == Math.floor(v) ? String.valueOf((long) v) : String.format("%.1f", v);
+    }
+
+    /** 모드 설명의 "공격력 10.5" 를 날카로움 포함 값으로 */
+    static String withSharp(String line, float bonus) {
+        var m = java.util.regex.Pattern.compile("^공격력 ([0-9.]+)").matcher(line);
+        if (!m.find()) return line;
+        double v = Double.parseDouble(m.group(1)) + bonus;
+        return "공격력 " + num(v) + " (날카로움 +" + num(bonus) + ")" + line.substring(m.end());
+    }
+
+    /** 바닐라 "주로 사용하는 손에 있을 때: 공격 피해 N" 줄에 날카로움을 더한다 */
+    private static Component sharpLine(Component c, float bonus) {
+        if (c.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents t && t.getKey().startsWith("attribute.modifier.equals")
+                && t.getArgs().length >= 2 && t.getArgs()[1] instanceof Component name && name.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents tn
+                && tn.getKey().contains("attack_damage")) {
+            try {
+                double v = Double.parseDouble(String.valueOf(t.getArgs()[0] instanceof Component cc ? cc.getString() : t.getArgs()[0]).replace(",", ""));
+                return Component.translatable(t.getKey(), num(v + bonus), name).withStyle(c.getStyle())
+                        .append(Component.literal(" (날카로움 +" + num(bonus) + ")").withStyle(ChatFormatting.AQUA));
+            } catch (NumberFormatException ignored) {
+                return null;
+            }
+        }
+        for (int k = 0; k < c.getSiblings().size(); k++) {
+            Component r = sharpLine(c.getSiblings().get(k), bonus);
+            if (r == null) continue;
+            var copy = c.plainCopy().withStyle(c.getStyle());
+            for (int j = 0; j < c.getSiblings().size(); j++) copy.append(j == k ? r : c.getSiblings().get(j));
+            return copy;
+        }
+        return null;
+    }
+
     @SubscribeEvent
     static void onTooltip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
+        float sharpAll = sharpBonus(stack);
+        if (sharpAll > 0) {
+            var tip = event.getToolTip();
+            for (int k = 0; k < tip.size(); k++) {
+                Component r = sharpLine(tip.get(k), sharpAll);
+                if (r != null) tip.set(k, r);
+            }
+        }
         String key = null;
         if (stack.is(ModItems.BLOOD_SHARD.get())) key = "blood_shard";
         else if (stack.is(ModItems.BLOODSTEEL_SWORD.get())) key = "bloodsteel_sword";
@@ -103,8 +154,11 @@ public class WildPlusClient {
             // 설명이 길면 줄을 나눠서 읽기 쉽게 ("\n" 또는 " · " 기준)
             String text = Component.translatable("tooltip.wildplus." + key).getString();
             String[] lines = text.contains("\n") ? text.split("\n") : text.split(" · ");
+            float sharp = sharpBonus(stack);
             for (int i = lines.length - 1; i >= 0; i--) {
-                event.getToolTip().add(1, Component.literal(lines[i].trim()).withStyle(i == 0 ? ChatFormatting.GRAY : ChatFormatting.DARK_GRAY));
+                String ln = lines[i].trim();
+                if (sharp > 0) ln = withSharp(ln, sharp);
+                event.getToolTip().add(1, Component.literal(ln).withStyle(i == 0 ? ChatFormatting.GRAY : ChatFormatting.DARK_GRAY));
             }
         }
         if (stack.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SWORD.get())) {

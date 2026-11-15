@@ -1269,6 +1269,7 @@ jobs:
             cmd "/summon wildplus:ash_shaman 398 200 -4 {NoAI:1b,Rotation:[190f,0f]}"; cmd "/summon wildplus:obsidian_golem 401 200 -3 {NoAI:1b,Rotation:[200f,0f]}"
             cmd "/gamemode creative"; cmd "/tp @s 396.5 200.5 -10 0 8"; sleep 1; shot v50-mobs
             cmd "/summon wildplus:dps_dummy 396.5 200 -7 {Rotation:[180f,0f]}"; sleep 1
+            cmd "/item replace entity @e[type=wildplus:dps_dummy,limit=1,sort=nearest] armor.chest with minecraft:diamond_chestplate[enchantments={protection:4}]"
             cmd "/damage @e[type=wildplus:dps_dummy,limit=1,sort=nearest] 37 minecraft:player_attack by @s"; sleep 1
             cmd "/damage @e[type=wildplus:dps_dummy,limit=1,sort=nearest] 12 minecraft:player_attack by @s"; shot v51-dummy
             cmd "/kill @e[type=!player,distance=..20]"; cmd "/summon wildplus:kalpa_lord 396.5 200 -2 {NoAI:1b,Rotation:[180f,0f]}"; sleep 2; shot v51-lord

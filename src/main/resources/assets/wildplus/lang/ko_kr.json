@@ -1451,7 +1451,7 @@
   "entity.wildplus.obsidian_golem": "흑요석 골렘",
   "item.wildplus.dps_dummy": "DPS 측정 허수아비",
   "entity.wildplus.dps_dummy": "DPS 측정 허수아비",
-  "tooltip.wildplus.dps_dummy": "땅에 우클릭해서 세움 · 맞아도 죽지 않음\n최근 10초 피해로 DPS 측정 (머리 위 = 모두 합계)\n때린 사람 화면 아래: 내 DPS · 한 방 최고 · 치명타 · 누적\n우클릭 = 기록 초기화 · 웅크리고 우클릭 = 회수",
+  "tooltip.wildplus.dps_dummy": "땅에 우클릭해서 세움 · 맞아도 죽지 않음\n최근 10초 피해로 DPS 측정 (머리 위 = 모두 합계)\n때린 사람 화면 아래: 내 DPS · 한 방 최고 · 치명타 · 누적\n우클릭 = 기록 초기화 · 갑옷 들고 우클릭 = 입히기(인챈트 적용)\n웅크리고 우클릭 = 갑옷 벗기기 → 한 번 더 하면 회수",
   "item.wildplus.purify_scroll": "정화의 주문서",
   "tooltip.wildplus.purify_scroll": "귀속 저주 · 소실 저주 등 모든 저주를 지움\n저주 걸린 장비를 왼손(보조 손)에 들고 우클릭\n왼손이 비면 입고 있는 장비 중 저주 걸린 것 하나를 정화",
   "block.wildplus.kalpa_gate": "겁화의 문",
