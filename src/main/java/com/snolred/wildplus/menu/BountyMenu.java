@@ -48,7 +48,8 @@ public class BountyMenu extends AbstractContainerMenu {
         super(ModMenus.BOUNTY.get(), id);
         this.pos = pos;
         this.day = day;
-        this.bounties = Bounties.forDay(player.getUUID(), day);
+        this.bounties = Bounties.forDay(player.getUUID(), day,
+                player.level() instanceof net.minecraft.server.level.ServerLevel sl ? com.snolred.wildplus.economy.EconIndex.daily(sl.getServer()) : 0L);
         for (int i = 0; i < Bounties.COUNT; i++) display.setItem(i, bounties.get(i).stack().copy());
         List<Bounties.Bounty> list = bounties;
         this.data = new ContainerData() {

@@ -68,14 +68,21 @@ public final class Jobs {
     }
 
     /** 그날 그 사람의 알바 3개 (날짜 · 사람으로 정해지므로 저장 안 함) */
-    public static List<Job> forDay(UUID id, long day) {
+    /** 5.2: 알바 1건 = 경기 지수(1인 하루 소득)의 10% (일 양에 비례), 최소 예전 보수의 10배 */
+    public static final double JOB_PCT = 10.0;
+
+    public static List<Job> forDay(UUID id, long day, long idx) {
         Random r = new Random(day * 7_919L ^ id.getMostSignificantBits() * 31 ^ id.getLeastSignificantBits());
         List<Kind> kinds = new ArrayList<>(List.of(Kind.values()));
         List<Job> out = new ArrayList<>();
         for (int i = 0; i < COUNT; i++) {
             Kind k = kinds.remove(r.nextInt(kinds.size()));
             int n = k.min + r.nextInt(k.max - k.min + 1);
-            out.add(new Job(k, n, Math.round(n * k.payEach / 10.0) * 10));
+            long old = Math.round(n * k.payEach / 10.0) * 10;
+            double mid = (k.min + k.max) / 2.0;
+            long byIdx = Math.round(idx * JOB_PCT / 100.0 * n / mid);
+            long pay = Math.max(old * 10, byIdx);
+            out.add(new Job(k, n, pay >= 1000 ? Math.round(pay / 100.0) * 100 : pay));
         }
         return out;
     }
@@ -104,7 +111,7 @@ public final class Jobs {
     public static void open(ServerPlayer p, BlockPos pos) {
         MinecraftServer s = p.level().getServer();
         CompoundTag d = data(s, p.getUUID());
-        List<Job> jobs = forDay(p.getUUID(), day(s));
+        List<Job> jobs = forDay(p.getUUID(), day(s), EconIndex.daily(s));
         int active = d.getIntOr("active", -1), done = d.getIntOr("done", 0), prog = d.getIntOr("progress", 0);
         int bonus = bonusPct(d);
         List<PickMenu.Entry> e = new ArrayList<>();
@@ -118,7 +125,7 @@ public final class Jobs {
             else sub = String.format("보수 %,d동 · 누르면 출근", pay);
             e.add(new PickMenu.Entry(j.kind().title + " — " + task, sub, ItemStack.EMPTY, PickMenu.K_ROW));
         }
-        String header = String.format("오늘의 알바 · 연속 근무 %d일 (보수 +%d%%)", d.getIntOr("streak", 0), bonus);
+        String header = String.format("오늘의 알바 · 연속 근무 %d일 (보수 +%d%%) · %s", d.getIntOr("streak", 0), bonus, EconIndex.label(s));
         PickMenu.open(p, Component.literal("📋 알바 게시판"), header, "", e, PickMenu.FLAG_JOB, i -> {
             if (i < 0 || i >= jobs.size()) return;
             CompoundTag dd = data(s, p.getUUID());
@@ -156,7 +163,7 @@ public final class Jobs {
         CompoundTag d = data(s, p.getUUID());
         int act = d.getIntOr("active", -1);
         if (act < 0) return;
-        List<Job> jobs = forDay(p.getUUID(), day(s));
+        List<Job> jobs = forDay(p.getUUID(), day(s), EconIndex.daily(s));
         if (act >= jobs.size()) return;
         Job j = jobs.get(act);
         if (j.kind() != kind) return;

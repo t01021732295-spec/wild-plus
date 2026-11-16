@@ -1281,6 +1281,7 @@ jobs:
             cmd "/wildplus uitest fate"; sleep 2; shot v511-fate; xdotool mousemove 500 420; for k in 1 2 3; do xdotool click 5; sleep 0.3; done; sleep 1; shot v514-fate-scroll; esc
             cmd "/wildplus uitest piglin"; sleep 2; shot v511-piglin; esc; cmd "/kill @e[type=minecraft:piglin]"
             cmd "/wildplus uitest netherbiome"; sleep 20
+            cmd "/wildplus uitest econ"; sleep 1
             cmd "/item replace entity @s weapon.offhand with minecraft:diamond_sword[enchantments={sharpness:5,binding_curse:1,vanishing_curse:1}]"
             cmd "/item replace entity @s weapon.mainhand with wildplus:purify_scroll"; sleep 1; xdotool click 3; sleep 1; shot v511-purify
             cmd "/clear @s"

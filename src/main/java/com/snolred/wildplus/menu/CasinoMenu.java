@@ -138,7 +138,7 @@ public class CasinoMenu extends AbstractContainerMenu {
         }
         long profit = gross - bet;
         if (profit > 0) {
-            long net = Tax.collect(sp.level().getServer(), sp.getUUID(), profit);
+            long net = Tax.collect(sp.level().getServer(), sp.getUUID(), profit, false);
             gross = bet + net;
         }
         win = gross;

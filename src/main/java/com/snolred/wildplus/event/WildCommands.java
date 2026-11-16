@@ -154,6 +154,16 @@ public final class WildCommands {
                         case "musichelp" -> net.neoforged.neoforge.network.PacketDistributor.sendToPlayer(p, new com.snolred.wildplus.net.MusicNet.Help());
                         case "dex" -> com.snolred.wildplus.content.Codex.debug(p);
                         case "bowloot" -> com.snolred.wildplus.event.Bows.selfTest(p);
+                        case "econ" -> {
+                            var sv = p.level().getServer();
+                            long idx = com.snolred.wildplus.economy.EconIndex.daily(sv);
+                            String msg = "[wildplus-econ] index=" + idx + " jobs=" + com.snolred.wildplus.economy.Jobs.forDay(p.getUUID(), 1, idx).stream().map(j -> j.pay()).toList()
+                                    + " bounties=" + com.snolred.wildplus.economy.Bounties.forDay(p.getUUID(), 1, idx).stream().map(b -> b.reward()).toList()
+                                    + " goal=" + com.snolred.wildplus.content.WeeklyGoals.goalReward(sv, com.snolred.wildplus.content.WeeklyGoals.Kind.FISH)
+                                    + " pass20=" + com.snolred.wildplus.content.WeeklyGoals.passCash(sv, 20);
+                            com.snolred.wildplus.WildPlus.LOGGER.info(msg);
+                            p.sendSystemMessage(net.minecraft.network.chat.Component.literal(msg));
+                        }
                         case "piglin" -> {
                             var pg = net.minecraft.world.entity.EntityTypes.PIGLIN.create(p.level(), net.minecraft.world.entity.EntitySpawnReason.COMMAND);
                             if (pg != null) {

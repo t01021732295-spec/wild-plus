@@ -56,6 +56,16 @@ public final class WeeklyGoals {
 
     public static final int GOAL_POINTS = 40, TIER_POINTS = 100, TIERS = 10;
 
+    /** 5.2: 주간 목표 1개 = 경기 지수의 35% (목표마다 예전 보상 비율대로 ±), 최소 예전 보상의 10배 */
+    public static long goalReward(net.minecraft.server.MinecraftServer s, Kind k) {
+        return com.snolred.wildplus.economy.EconIndex.reward(s, 35.0 * k.reward / 450.0, k.reward * 10L);
+    }
+
+    /** 5.2: 시즌 패스 금화 n개는 받을 때 경기 지수 × (n × 5%) 의 돈으로 바뀜 (최소 금화 가치의 10배) */
+    public static long passCash(net.minecraft.server.MinecraftServer s, int coins) {
+        return com.snolred.wildplus.economy.EconIndex.reward(s, coins * 5.0, coins * 100L * 10L);
+    }
+
     /** 시즌 패스 단계 보상 */
     public static List<ItemStack> tierReward(int tier) {
         List<ItemStack> out = new ArrayList<>();
@@ -132,6 +142,12 @@ public final class WeeklyGoals {
         me.putInt("proClaimed", mask | (1 << tier));
         ContentData.get(server).dirty();
         for (ItemStack s : proReward(tier)) {
+            if (s.is(ModItems3.GOLD_COIN.get())) {
+                long cash = passCash(server, s.getCount());
+                Coins.give(p, cash);
+                p.sendSystemMessage(Component.literal(String.format("💰 시즌 패스 보상 %,d동 (금화 %d개 → 경기 지수 반영)", cash, s.getCount())).withStyle(ChatFormatting.GOLD));
+                continue;
+            }
             if (!p.getInventory().add(s) && !s.isEmpty()) net.minecraft.world.Containers.dropItemStack(p.level(), p.getX(), p.getY(), p.getZ(), s);
         }
         p.level().playSound(null, p.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.8F, 1.5F);
@@ -212,9 +228,10 @@ public final class WeeklyGoals {
         if ((mask & (1 << i)) != 0) return false;
         me.putInt("claimed", mask | (1 << i));
         d.dirty();
-        Coins.give(p, k.reward);
+        long rw = goalReward(p.level().getServer(), k);
+        Coins.give(p, rw);
         addPoints(p, GOAL_POINTS);
-        p.sendSystemMessage(Component.literal(String.format("주간 목표 보상: %,d동 + 시즌 점수 %d", k.reward, GOAL_POINTS)).withStyle(ChatFormatting.GREEN));
+        p.sendSystemMessage(Component.literal(String.format("주간 목표 보상: %,d동 + 시즌 점수 %d", rw, GOAL_POINTS)).withStyle(ChatFormatting.GREEN));
         return true;
     }
 
@@ -263,6 +280,12 @@ public final class WeeklyGoals {
         me.putInt("claimed", mask | (1 << tier));
         ContentData.get(server).dirty();
         for (ItemStack s : tierReward(tier)) {
+            if (s.is(ModItems3.GOLD_COIN.get())) {
+                long cash = passCash(server, s.getCount());
+                Coins.give(p, cash);
+                p.sendSystemMessage(Component.literal(String.format("💰 시즌 패스 보상 %,d동 (금화 %d개 → 경기 지수 반영)", cash, s.getCount())).withStyle(ChatFormatting.GOLD));
+                continue;
+            }
             if (!p.getInventory().add(s) && !s.isEmpty()) net.minecraft.world.Containers.dropItemStack(p.level(), p.getX(), p.getY(), p.getZ(), s);
         }
         p.level().playSound(null, p.blockPosition(), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS, 0.8F, 1.2F);

@@ -38,7 +38,10 @@ public final class Bounties {
     }
 
     /** 그날 그 플레이어의 의뢰 (날짜와 플레이어로 정해지므로 저장할 필요가 없다) */
-    public static List<Bounty> forDay(UUID player, long day) {
+    /** 5.2: 의뢰 1건 = 경기 지수의 4% (양에 비례), 최소 예전 보상의 10배. idx=0 이면 예전 방식(클라이언트 표시용) */
+    public static final double BOUNTY_PCT = 4.0;
+
+    public static List<Bounty> forDay(UUID player, long day, long idx) {
         Random rnd = new Random(day * 1_000_003L ^ player.getMostSignificantBits() ^ player.getLeastSignificantBits());
         List<Kind> kinds = new ArrayList<>(pool());
         List<Bounty> out = new ArrayList<>();
@@ -46,7 +49,10 @@ public final class Bounties {
             Kind k = kinds.remove(rnd.nextInt(kinds.size()));
             int n = k.min() + rnd.nextInt(k.max() - k.min() + 1);
             ItemStack s = new ItemStack(k.item(), n);
-            long reward = Math.max(5, (long) ShipPrices.centi(s) * n * 2 / 100);
+            long old = Math.max(5, (long) ShipPrices.centi(s) * n * 2 / 100);
+            double mid = (k.min() + k.max()) / 2.0;
+            long reward = Math.max(old * 10, Math.round(idx * BOUNTY_PCT / 100.0 * n / mid));
+            if (reward >= 1000) reward = Math.round(reward / 100.0) * 100;
             out.add(new Bounty(s, reward));
         }
         return out;

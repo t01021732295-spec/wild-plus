@@ -134,7 +134,7 @@ public class StockMenu extends AbstractContainerMenu {
             long profit = gain - basis;
             long tax = 0;
             if (profit > 0) {
-                tax = profit - com.snolred.wildplus.economy.Tax.collect(sp.level().getServer(), sp.getUUID(), profit);
+                tax = profit - com.snolred.wildplus.economy.Tax.collect(sp.level().getServer(), sp.getUUID(), profit, false);
                 gain -= tax;
                 profit -= tax;
             }

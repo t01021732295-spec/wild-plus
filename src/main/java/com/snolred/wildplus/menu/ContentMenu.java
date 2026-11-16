@@ -120,7 +120,7 @@ public class ContentMenu extends AbstractContainerMenu {
                     e.putString("label", k.label);
                     e.putInt("progress", g.getIntOr("p" + i, 0));
                     e.putInt("target", k.target);
-                    e.putInt("reward", k.reward);
+                    e.putInt("reward", (int) Math.min(Integer.MAX_VALUE, WeeklyGoals.goalReward(server, k)));
                     e.putBoolean("claimed", (claimed & (1 << i)) != 0);
                     goals.add(e);
                 }
