@@ -167,10 +167,11 @@ public final class Music {
         CompoundTag act = ContentData.get(lv.getServer()).section(ACTIVE).getCompoundOrEmpty(keyOf(lv, pos));
         List<PickMenu.Entry> e = new ArrayList<>();
         e.add(new PickMenu.Entry("곡 고르기", list(false).size() + "곡 · 폴더의 ogg 파일 재생", new ItemStack(Items.MUSIC_DISC_CAT)));
+        e.add(new PickMenu.Entry("플레이리스트 (" + playlist(c).size() + "곡)", "곡을 모아 차례로 재생 · 순서 바꾸기", new ItemStack(Items.WRITABLE_BOOK)));
         e.add(new PickMenu.Entry("정지", act.isEmpty() ? "재생 중이 아니에요" : "재생 중: " + title(act.getStringOr("name", "")), new ItemStack(Items.BARRIER)));
         e.add(new PickMenu.Entry("음량: " + c.getIntOr("vol", 75) + "%", "누를 때마다 변경", new ItemStack(Items.NOTE_BLOCK)));
         e.add(new PickMenu.Entry("들리는 범위: " + c.getIntOr("range", 32) + "칸", "누를 때마다 변경", new ItemStack(Items.ENDER_EYE)));
-        e.add(new PickMenu.Entry("반복: " + (c.getBooleanOr("loop", false) ? "켜짐" : "꺼짐"), "누를 때마다 변경", new ItemStack(Items.REPEATER)));
+        e.add(new PickMenu.Entry("반복: " + (c.getBooleanOr("loop", false) ? "켜짐" : "꺼짐"), "한 곡 · 플레이리스트 전체를 반복", new ItemStack(Items.REPEATER)));
         e.add(new PickMenu.Entry("음반에 곡 담기", "빈 음반을 들고 눌러요", new ItemStack(ModItems29.CUSTOM_DISC.get())));
         e.add(new PickMenu.Entry("악보에 곡 담기", "빈 악보를 들고 눌러요", new ItemStack(ModItems29.SHEET_MUSIC.get())));
         e.add(new PickMenu.Entry("사용법", "음악 · 악보 넣는 법", new ItemStack(Items.BOOK)));
@@ -178,20 +179,21 @@ public final class Music {
         PickMenu.open(p, Component.literal("🎵 음악 플레이어"), act.isEmpty() ? "멈춰 있어요" : "♪ " + title(act.getStringOr("name", "")), "", e, PickMenu.FLAG_SHOP, i -> {
             switch (i) {
                 case 0 -> pickSong(p, lv, pos, false, 0);
-                case 1 -> {
+                case 1 -> openPlaylist(p, lv, pos);
+                case 2 -> {
                     stop(lv, pos);
                     open(p, pos);
                 }
-                case 2 -> cycle(lv, pos, "vol", VOLS, 75, p);
-                case 3 -> cycle(lv, pos, "range", RANGES, 32, p);
-                case 4 -> {
+                case 3 -> cycle(lv, pos, "vol", VOLS, 75, p);
+                case 4 -> cycle(lv, pos, "range", RANGES, 32, p);
+                case 5 -> {
                     c.putBoolean("loop", !c.getBooleanOr("loop", false));
                     ContentData.get(lv.getServer()).dirty();
                     open(p, pos);
                 }
-                case 5 -> pickSong(p, lv, pos, false, 1);
-                case 6 -> pickSong(p, lv, pos, true, 2);
-                case 7 -> {
+                case 6 -> pickSong(p, lv, pos, false, 1);
+                case 7 -> pickSong(p, lv, pos, true, 2);
+                case 8 -> {
                     p.closeContainer();
                     PacketDistributor.sendToPlayer(p, new MusicNet.Help());
                 }
@@ -201,6 +203,155 @@ public final class Music {
                 }
             }
         }, null, x -> x.blockPosition().closerThan(pos, 8));
+    }
+
+    // ───────── 5.3.1 플레이리스트 ─────────
+    /** 이 플레이어의 플레이리스트 (파일 이름, 순서대로) */
+    private static List<String> playlist(CompoundTag c) {
+        String raw = c.getStringOr("playlist", "");
+        List<String> out = new ArrayList<>();
+        if (!raw.isEmpty()) for (String n : raw.split("\n")) if (!n.isEmpty()) out.add(n);
+        return out;
+    }
+
+    private static void savePlaylist(ServerLevel lv, CompoundTag c, List<String> l) {
+        c.putString("playlist", String.join("\n", l));
+        ContentData.get(lv.getServer()).dirty();
+    }
+
+    private static void openPlaylist(ServerPlayer p, ServerLevel lv, BlockPos pos) {
+        CompoundTag c = cfg(lv, pos);
+        List<String> pl = playlist(c);
+        CompoundTag act = ContentData.get(lv.getServer()).section(ACTIVE).getCompoundOrEmpty(keyOf(lv, pos));
+        int playing = act.getIntOr("pl", -1);
+        List<PickMenu.Entry> e = new ArrayList<>();
+        e.add(new PickMenu.Entry("▶ 처음부터 재생", pl.isEmpty() ? "곡을 먼저 추가해 주세요" : pl.size() + "곡 · 끝나면 다음 곡으로", new ItemStack(Items.JUKEBOX)));
+        e.add(new PickMenu.Entry("＋ 곡 추가", "폴더의 곡을 골라 맨 뒤에 넣어요", new ItemStack(Items.MUSIC_DISC_CAT)));
+        e.add(new PickMenu.Entry("모두 비우기", "플레이리스트를 비워요", new ItemStack(Items.BARRIER)));
+        for (int k = 0; k < pl.size(); k++)
+            e.add(new PickMenu.Entry((k == playing ? "♪ " : "") + (k + 1) + ". " + title(pl.get(k)), k == playing ? "지금 재생 중 · 눌러서 순서 바꾸기" : "눌러서 순서 바꾸기 · 빼기 · 여기서부터 재생",
+                    new ItemStack(k == playing ? Items.MUSIC_DISC_PIGSTEP : Items.MUSIC_DISC_13)));
+        PickMenu.open(p, Component.literal("🎵 플레이리스트"), pl.size() + "곡 · 반복 " + (c.getBooleanOr("loop", false) ? "켜짐" : "꺼짐"), "", e, PickMenu.FLAG_SHOP, i -> {
+            List<String> cur = playlist(cfg(lv, pos));
+            if (i == 0) {
+                if (cur.isEmpty()) {
+                    say(p, "플레이리스트가 비어 있어요", ChatFormatting.RED);
+                    openPlaylist(p, lv, pos);
+                } else {
+                    playAt(p, lv, pos, 0);
+                    openPlaylist(p, lv, pos);
+                }
+            } else if (i == 1) {
+                addSong(p, lv, pos);
+            } else if (i == 2) {
+                savePlaylist(lv, cfg(lv, pos), new ArrayList<>());
+                openPlaylist(p, lv, pos);
+            } else if (i - 3 < cur.size()) {
+                songMenu(p, lv, pos, i - 3);
+            }
+        }, null, x -> x.blockPosition().closerThan(pos, 8));
+    }
+
+    private static void addSong(ServerPlayer p, ServerLevel lv, BlockPos pos) {
+        List<String> names = list(false);
+        List<PickMenu.Entry> e = new ArrayList<>();
+        for (String n : names) e.add(new PickMenu.Entry(title(n), n, new ItemStack(Items.MUSIC_DISC_CAT)));
+        PickMenu.open(p, Component.literal("플레이리스트에 곡 추가"), "누르면 맨 뒤에 들어가요 (여러 번 눌러 계속 추가)", "wildplus_music 폴더에 파일이 없어요", e, 0, i -> {
+            if (i < 0 || i >= names.size()) return;
+            CompoundTag c = cfg(lv, pos);
+            List<String> pl = playlist(c);
+            if (pl.size() >= 100) {
+                say(p, "플레이리스트는 100곡까지예요", ChatFormatting.RED);
+                return;
+            }
+            pl.add(names.get(i));
+            savePlaylist(lv, c, pl);
+            say(p, "추가: " + title(names.get(i)) + " (" + pl.size() + "번째)", ChatFormatting.GREEN);
+        }, null, x -> x.blockPosition().closerThan(pos, 8));
+    }
+
+    /** 곡 하나: 위로 · 아래로 · 맨 위로 · 빼기 · 여기서부터 재생 */
+    private static void songMenu(ServerPlayer p, ServerLevel lv, BlockPos pos, int idx) {
+        List<String> pl = playlist(cfg(lv, pos));
+        if (idx < 0 || idx >= pl.size()) {
+            openPlaylist(p, lv, pos);
+            return;
+        }
+        List<PickMenu.Entry> e = new ArrayList<>();
+        e.add(new PickMenu.Entry("▲ 위로", idx == 0 ? "이미 맨 위예요" : (idx) + "번째로", new ItemStack(Items.ARROW)));
+        e.add(new PickMenu.Entry("▼ 아래로", idx == pl.size() - 1 ? "이미 맨 아래예요" : (idx + 2) + "번째로", new ItemStack(Items.SPECTRAL_ARROW)));
+        e.add(new PickMenu.Entry("⤒ 맨 위로", "1번째로", new ItemStack(Items.FEATHER)));
+        e.add(new PickMenu.Entry("⤓ 맨 아래로", pl.size() + "번째로", new ItemStack(Items.ANVIL)));
+        e.add(new PickMenu.Entry("▶ 여기서부터 재생", "이 곡부터 차례로", new ItemStack(Items.JUKEBOX)));
+        e.add(new PickMenu.Entry("✕ 빼기", "플레이리스트에서 지워요", new ItemStack(Items.BARRIER)));
+        e.add(new PickMenu.Entry("← 돌아가기", "플레이리스트로", new ItemStack(Items.OAK_DOOR)));
+        PickMenu.open(p, Component.literal((idx + 1) + ". " + title(pl.get(idx))), "순서 바꾸기", "", e, PickMenu.FLAG_SHOP, i -> {
+            CompoundTag c = cfg(lv, pos);
+            List<String> cur = playlist(c);
+            if (idx >= cur.size()) {
+                openPlaylist(p, lv, pos);
+                return;
+            }
+            int to = idx;
+            switch (i) {
+                case 0 -> to = Math.max(0, idx - 1);
+                case 1 -> to = Math.min(cur.size() - 1, idx + 1);
+                case 2 -> to = 0;
+                case 3 -> to = cur.size() - 1;
+                case 4 -> {
+                    playAt(p, lv, pos, idx);
+                    openPlaylist(p, lv, pos);
+                    return;
+                }
+                case 5 -> {
+                    cur.remove(idx);
+                    savePlaylist(lv, c, cur);
+                    shiftPlaying(lv, pos, idx, -1);
+                    openPlaylist(p, lv, pos);
+                    return;
+                }
+                default -> {
+                    openPlaylist(p, lv, pos);
+                    return;
+                }
+            }
+            if (to != idx) {
+                String moved = cur.remove(idx);
+                cur.add(to, moved);
+                savePlaylist(lv, c, cur);
+                shiftPlaying(lv, pos, idx, to);
+            }
+            songMenu(p, lv, pos, to);
+        }, null, x -> x.blockPosition().closerThan(pos, 8));
+    }
+
+    /** 재생 중인 곡의 플레이리스트 번호를 순서 변경에 맞춰 고침 (to = -1 이면 from 을 뺀 것) */
+    private static void shiftPlaying(ServerLevel lv, BlockPos pos, int from, int to) {
+        CompoundTag act = ContentData.get(lv.getServer()).section(ACTIVE).getCompoundOrEmpty(keyOf(lv, pos));
+        int cur = act.getIntOr("pl", -1);
+        if (cur < 0) return;
+        int n = cur;
+        if (to < 0) {
+            if (cur == from) n = cur - 1; // 지금 곡을 뺐으면 끝나고 그 자리(다음 곡)로
+            else if (cur > from) n = cur - 1;
+        } else if (cur == from) {
+            n = to;
+        } else if (from < cur && to >= cur) {
+            n = cur - 1;
+        } else if (from > cur && to <= cur) {
+            n = cur + 1;
+        }
+        if (n != cur) {
+            act.putInt("pl", n);
+            ContentData.get(lv.getServer()).dirty();
+        }
+    }
+
+    /** 플레이리스트 idx 번째 곡 재생 */
+    private static void playAt(ServerPlayer p, ServerLevel lv, BlockPos pos, int idx) {
+        List<String> pl = playlist(cfg(lv, pos));
+        if (idx < 0 || idx >= pl.size()) return;
+        start(p, lv, pos, pl.get(idx), idx);
     }
 
     private static CompoundTag cfg(ServerLevel lv, BlockPos pos) {
@@ -256,15 +407,20 @@ public final class Music {
     }
 
     private static void play(ServerPlayer p, ServerLevel lv, BlockPos pos, String file) {
+        start(p, lv, pos, file, -1);
+    }
+
+    /** 재생 시작. pl = 플레이리스트 번호 (-1 = 한 곡만) · p 가 null 이면 (다음 곡 자동 재생) 메시지 없이 */
+    private static boolean start(ServerPlayer p, ServerLevel lv, BlockPos pos, String file, int pl) {
         Path f = file(file, false);
         if (f == null) {
-            say(p, "서버 폴더에 이 곡이 없어요: " + file, ChatFormatting.RED);
-            return;
+            if (p != null) say(p, "서버 폴더에 이 곡이 없어요: " + file, ChatFormatting.RED);
+            return false;
         }
         try {
             if (Files.size(f) > MAX_OGG) {
-                say(p, "파일이 너무 커요 (최대 40MB)", ChatFormatting.RED);
-                return;
+                if (p != null) say(p, "파일이 너무 커요 (최대 40MB)", ChatFormatting.RED);
+                return false;
             }
             String key = keyOf(lv, pos), sha = sha(f);
             stop(lv, pos);
@@ -278,15 +434,21 @@ public final class Music {
             t.putLong("size", Files.size(f));
             t.putFloat("vol", c.getIntOr("vol", 75) / 100F);
             t.putInt("range", c.getIntOr("range", 32));
-            t.putBoolean("loop", c.getBooleanOr("loop", false));
+            // 플레이리스트는 곡마다 반복하지 않고 목록 단위로 반복 (tickActive 가 다음 곡으로 넘김)
+            t.putBoolean("loop", pl < 0 && c.getBooleanOr("loop", false));
+            t.putInt("pl", pl);
             t.putLong("end", sec > 0 ? System.currentTimeMillis() + (long) (sec * 1000) + 3000 : 0L);
             ContentData d = ContentData.get(lv.getServer());
             d.section(ACTIVE).put(key, t);
             d.dirty();
             TOLD.remove(key);
-            p.sendSystemMessage(Component.literal("🎵 재생: " + title(file)).withStyle(ChatFormatting.AQUA));
+            String msg = "🎵 재생: " + title(file) + (pl >= 0 ? " (플레이리스트 " + (pl + 1) + "/" + playlist(c).size() + ")" : "");
+            if (p != null) p.sendSystemMessage(Component.literal(msg).withStyle(ChatFormatting.AQUA));
+            else for (ServerPlayer q : lv.players()) if (q.blockPosition().closerThan(pos, c.getIntOr("range", 32))) q.sendOverlayMessage(Component.literal(msg).withStyle(ChatFormatting.AQUA));
+            return true;
         } catch (Exception e) {
-            say(p, "파일을 읽지 못했어요", ChatFormatting.RED);
+            if (p != null) say(p, "파일을 읽지 못했어요", ChatFormatting.RED);
+            return false;
         }
     }
 
@@ -458,6 +620,22 @@ public final class Music {
         notes(lv, at);
     }
 
+    /** 플레이리스트 다음 곡 (끝이면 반복일 때만 처음으로). 넘겼으면 true */
+    private static boolean next(ServerLevel lv, BlockPos pos, int cur) {
+        CompoundTag c = cfg(lv, pos);
+        List<String> pl = playlist(c);
+        if (pl.isEmpty()) return false;
+        for (int tries = 0; tries < pl.size(); tries++) {
+            int n = cur + 1 + tries;
+            if (n >= pl.size()) {
+                if (!c.getBooleanOr("loop", false)) return false;
+                n %= pl.size();
+            }
+            if (start(null, lv, pos, pl.get(n), n)) return true;
+        }
+        return false;
+    }
+
     private static void tickActive(MinecraftServer s) {
         ContentData d = ContentData.get(s);
         CompoundTag act = d.section(ACTIVE);
@@ -469,6 +647,7 @@ public final class Music {
             long end = t.getLongOr("end", 0L);
             boolean over = !t.getBooleanOr("loop", false) && end > 0 && System.currentTimeMillis() > end;
             boolean gone = lv == null || lv.isLoaded(pos) && !lv.getBlockState(pos).is(com.snolred.wildplus.registry.ModBlocks18.MUSIC_PLAYER.get());
+            if (over && !gone && t.getIntOr("pl", -1) >= 0 && next(lv, pos, t.getIntOr("pl", -1))) continue; // 5.3.1 다음 곡
             if (over || gone) {
                 act.remove(key);
                 d.dirty();
