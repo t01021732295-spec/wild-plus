@@ -1,3 +1,2 @@
-net.minecraft.world.entity.LivingEntity
-net.minecraft.world.entity.projectile.arrow.AbstractArrow
-net.minecraft.client.renderer.entity.state.LivingEntityRenderState
+net.minecraft.network.protocol.game.ClientboundAnimatePacket
+net.minecraft.world.item.component.SwingAnimation
