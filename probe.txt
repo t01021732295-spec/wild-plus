@@ -1,0 +1,36 @@
+######## net.minecraft.network.protocol.game.ClientboundAnimatePacket
+Compiled from "ClientboundAnimatePacket.java"
+public class net.minecraft.network.protocol.game.ClientboundAnimatePacket implements net.minecraft.network.protocol.Packet<net.minecraft.network.protocol.game.ClientGamePacketListener> {
+  public static final net.minecraft.network.codec.StreamCodec<net.minecraft.network.FriendlyByteBuf, net.minecraft.network.protocol.game.ClientboundAnimatePacket> STREAM_CODEC;
+  public static final int WAKE_UP;
+  public static final int CRITICAL_HIT;
+  public static final int MAGIC_CRITICAL_HIT;
+  private final int id;
+  private final int action;
+  public net.minecraft.network.protocol.game.ClientboundAnimatePacket(net.minecraft.world.entity.Entity, int);
+  private net.minecraft.network.protocol.game.ClientboundAnimatePacket(net.minecraft.network.FriendlyByteBuf);
+  private void write(net.minecraft.network.FriendlyByteBuf);
+  public net.minecraft.network.protocol.PacketType<net.minecraft.network.protocol.game.ClientboundAnimatePacket> type();
+  public void handle(net.minecraft.network.protocol.game.ClientGamePacketListener);
+  public int getId();
+  public int getAction();
+  public void handle(net.minecraft.network.PacketListener);
+  static {};
+}
+######## net.minecraft.world.item.component.SwingAnimation
+Compiled from "SwingAnimation.java"
+public final class net.minecraft.world.item.component.SwingAnimation extends java.lang.Record {
+  private final net.minecraft.world.item.SwingAnimationType type;
+  private final int duration;
+  public static final net.minecraft.world.item.component.SwingAnimation DEFAULT;
+  public static final com.mojang.serialization.Codec<net.minecraft.world.item.component.SwingAnimation> CODEC;
+  public static final net.minecraft.network.codec.StreamCodec<io.netty.buffer.ByteBuf, net.minecraft.world.item.component.SwingAnimation> STREAM_CODEC;
+  public net.minecraft.world.item.component.SwingAnimation(net.minecraft.world.item.SwingAnimationType, int);
+  public final java.lang.String toString();
+  public final int hashCode();
+  public final boolean equals(java.lang.Object);
+  public net.minecraft.world.item.SwingAnimationType type();
+  public int duration();
+  private static com.mojang.datafixers.kinds.App lambda$static$0(com.mojang.serialization.codecs.RecordCodecBuilder$Instance);
+  static {};
+}
