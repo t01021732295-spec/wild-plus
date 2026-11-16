@@ -114,8 +114,7 @@ public class VoidLordEntity extends Monster {
 
     private void magic(ServerLevel level, ServerPlayer p, float amount) {
         { // 5.2.1 공격 모션
-            net.minecraft.network.protocol.game.ClientboundAnimatePacket pkt = new net.minecraft.network.protocol.game.ClientboundAnimatePacket(this, net.minecraft.network.protocol.game.ClientboundAnimatePacket.SWING_MAIN_HAND);
-            for (net.minecraft.server.level.ServerPlayer sp : ((net.minecraft.server.level.ServerLevel) level()).players()) if (sp.distanceToSqr(this) < 80 * 80) sp.connection.send(pkt);
+            swing(net.minecraft.world.InteractionHand.MAIN_HAND, net.minecraft.world.item.component.SwingAnimation.DEFAULT, true);
         }
         int inv = p.getInvulnerableTime();
         p.setInvulnerableTime(0);

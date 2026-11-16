@@ -94,8 +94,7 @@ public abstract class FxBoss extends Monster {
     protected Warn warn(ServerLevel lv, double x, double y, double z, double r, float dmg, int left, int kind) {
         if (tickCount - lastSwing > 10) { // 5.2.1 장판을 깔 때 공격 모션
             lastSwing = tickCount;
-            net.minecraft.network.protocol.game.ClientboundAnimatePacket pkt = new net.minecraft.network.protocol.game.ClientboundAnimatePacket(this, net.minecraft.network.protocol.game.ClientboundAnimatePacket.SWING_MAIN_HAND);
-            for (net.minecraft.server.level.ServerPlayer sp : ((net.minecraft.server.level.ServerLevel) level()).players()) if (sp.distanceToSqr(this) < 80 * 80) sp.connection.send(pkt);
+            swing(net.minecraft.world.InteractionHand.MAIN_HAND, net.minecraft.world.item.component.SwingAnimation.DEFAULT, true);
         }
         Warn w = new Warn(new Vec3(x, ground(lv, x, y, z), z), r, dmg, left, kind);
         warns.add(w);
