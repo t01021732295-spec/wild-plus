@@ -52,13 +52,13 @@ public final class Honor {
     public static final long HEAL_COST = com.snolred.wildplus.economy.Prices.x(300L), XP_COST = com.snolred.wildplus.economy.Prices.x(800L), MERCHANT_COST = com.snolred.wildplus.economy.Prices.x(1_000L), MAP_COST = com.snolred.wildplus.economy.Prices.x(1_500L), GUARD_COST = com.snolred.wildplus.economy.Prices.x(2_000L);
     public static final int BTN_HEAL = 4, BTN_XP = 5, BTN_MERCHANT = 6, BTN_MAP = 7, BTN_GUARD = 8;
     /** 등급마다 새로 생기는 혜택 (누적) */
-    public static final String[] PERK = {"", "1분마다 배고픔 회복", "낙하 피해 절반", "몬스터 처치 시 동전",
+    public static final String[] PERK = {"", "1분마다 배고픔 회복", "낙하 피해 절반", "몬스터 처치 시 30~70동 (은화)",
             "상시 성급함 I", "상시 신속 I · 받는 피해 -10% · 비행 반값", "상시 힘 I · 재생 I · 비행 무료 · 출하 +10%",
             "저항 I · 야간 투시 · 받는 피해 -20% · 출하 +20% · 처치 동전 2배",
             "신속 II · 재생 II · 게임 하루 1번 죽음 무효 · 경험치 2배",
             "힘 II · 저항 II · 화염·수중 면역 · 언제나 자유 비행 · 접속 공지"};
     /** 명예의 전당 화면용 짧은 혜택 */
-    public static final String[] PERK_SHORT = {"", "배고픔 회복", "낙하 피해 절반", "처치 시 동전", "성급함 I",
+    public static final String[] PERK_SHORT = {"", "배고픔 회복", "낙하 피해 절반", "처치 시 30~70동", "성급함 I",
             "신속 I · 피해 -10%", "힘 I · 재생 I · 비행 무료 · 출하+10%", "저항 · 야간투시 · 피해-20% · 출하+20%",
             "신속II · 재생II · 하루 1번 부활 · 경험치2배", "힘II · 저항II · 불·물 면역 · 자유 비행"};
     public static final net.minecraft.tags.TagKey<net.minecraft.world.level.levelgen.structure.Structure> TREASURE_SITES =
@@ -264,9 +264,10 @@ public final class Honor {
         if (!(event.getEntity() instanceof net.minecraft.world.entity.monster.Monster m) || !(event.getSource().getEntity() instanceof ServerPlayer p)) return;
         int rank = WildData.get(p.level().getServer()).honor(p.getUUID());
         if (rank < 3) return;
-        int n = (1 + p.getRandom().nextInt(3)) * (rank >= 7 ? 2 : 1);
+        // 5.2.1: 몬스터마다 30~70동 (은화 3~7개, 7등급부터 2배)
+        int n = (3 + p.getRandom().nextInt(5)) * (rank >= 7 ? 2 : 1);
         var it = new net.minecraft.world.entity.item.ItemEntity(m.level(), m.getX(), m.getY() + 0.5, m.getZ(),
-                new net.minecraft.world.item.ItemStack(com.snolred.wildplus.registry.ModItems3.COPPER_COIN.get(), n));
+                new net.minecraft.world.item.ItemStack(com.snolred.wildplus.registry.ModItems3.SILVER_COIN.get(), n));
         event.getDrops().add(it);
     }
 
