@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "EAE",
+    "ANA",
+    "EAE"
+  ],
+  "key": {
+    "E": "minecraft:echo_shard",
+    "A": "minecraft:amethyst_shard",
+    "N": "minecraft:netherite_ingot"
+  },
+  "result": {
+    "id": "wildplus:engrave_expander",
+    "count": 1
+  }
+}

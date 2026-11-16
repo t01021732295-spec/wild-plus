@@ -61,15 +61,16 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
  * 3.8 흉조 습격: 바닐라 습격(마을 습격)에 흉조 계약 · 흉조 양조 테마 · 연쇄 · 기여도 · 큰 보상을 얹는다.
  * - 흉조가 걸린 채 마을 종을 누르면 계약서 (저주 카드 → 보상 배율), 서명하면 바로 습격 시작
  * - 테마 흉조(양조)를 마시고 일으킨 습격은 테마 적 · 테마 효과
- * - 이기면 보상은 "정산 대기": 5분 안에 같은 마을에서 다시 습격하면 연쇄 배율 (×1.5 → ×2 → ×3), 종을 치면 바로 정산, 지면 모두 증발
+ * - 이기면 보상은 "정산 대기": 5분 안에 같은 마을에서 다시 습격하면 연쇄 배율 (5.2.1: ×1.25 → ×1.5 → ×2) · 같은 날 여러 번 이기면 1인 보상 ×0.7씩, 종을 치면 바로 정산, 지면 모두 증발
  */
 public final class OmenRaids {
     private OmenRaids() {}
 
     static final long WINDOW_TICKS = 6000, TIME_LIMIT = 18000;
     /** 흉조 세기(I~V)별 1인 기본 보상 */
-    static final long[] BASE = {60_000, 100_000, 150_000, 220_000, 300_000};
-    static final double[] STREAK = {1.0, 1.0, 1.5, 2.0, 3.0};
+    // 5.2.1: 레이드 팜 대비 하향 (예전 6만 · 10만 · 15만 · 22만 · 30만)
+    static final long[] BASE = {15_000, 25_000, 40_000, 55_000, 75_000};
+    static final double[] STREAK = {1.0, 1.0, 1.25, 1.5, 2.0}; // 5.2.1: 예전 ×1.5 · ×2 · ×3
 
     static final class State {
         int id;
@@ -500,7 +501,9 @@ public final class OmenRaids {
         for (var e : share.entrySet()) {
             double s = total > 0 ? e.getValue() / total : 1.0 / n;
             double factor = Math.max(0.6, Math.min(1.8, 0.6 + 0.4 * s * n));
-            long reward = Math.round(base * mult * factor / 100.0) * 100;
+            // 5.2.1: 같은 날 여러 번 이기면 1인 보상이 ×0.7 씩 줄어듦 (최저 ×0.1) — 자동 습격 농장 방지
+            double daily = dailyFactor(server, e.getKey());
+            long reward = Math.round(base * mult * factor * daily / 100.0) * 100;
             w.pending.merge(e.getKey(), reward, Long::sum);
             ServerPlayer p = server.getPlayerList().getPlayer(e.getKey());
             if (p == null) continue;
@@ -591,6 +594,21 @@ public final class OmenRaids {
                 e.discard();
             }
         }
+    }
+
+    /** 오늘 이 사람이 이긴 흉조 습격 수만큼 보상 감소 (부르면 1회 센다) */
+    private static double dailyFactor(MinecraftServer server, UUID id) {
+        var d = com.snolred.wildplus.content.ContentData.get(server);
+        var t = d.player("omen_daily", id);
+        long day = com.snolred.wildplus.content.ContentData.gameDay;
+        if (t.getLongOr("day", -1L) != day) {
+            t.putLong("day", day);
+            t.putInt("wins", 0);
+        }
+        int wins = t.getIntOr("wins", 0);
+        t.putInt("wins", wins + 1);
+        d.dirty();
+        return Math.max(0.1, Math.pow(0.7, wins));
     }
 
     /** 정산: 정산 대기 금액을 통장으로 */

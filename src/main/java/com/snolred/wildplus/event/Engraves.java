@@ -98,6 +98,8 @@ public final class Engraves {
             case "PYRE" -> s.is(com.snolred.wildplus.registry.ModItems34.KALPA_BOW.get());
             case "CINDER", "PHOENIX" -> kalpaArmor(s);
             case "SMELT" -> tool(s);
+            case "EXECUTE", "SONIC" -> weapon(s) || kalpaWeapon(s) || s.is(VOID_SWORD.get()) || s.is(VOID_BOW.get());
+            case "BULWARK", "ECHO" -> armor(s) || voidArmor(s) || kalpaArmor(s);
             default -> false;
         };
     }
@@ -126,6 +128,10 @@ public final class Engraves {
             case "CINDER" -> "잿불 갑주 각인";
             case "PHOENIX" -> "불사조 각인";
             case "SMELT" -> "제련 각인";
+            case "EXECUTE" -> "고대 처형 각인";
+            case "SONIC" -> "고대 음파 각인";
+            case "BULWARK" -> "고대 보루 각인";
+            case "ECHO" -> "고대 메아리 각인";
             default -> "";
         };
     }
@@ -149,6 +155,10 @@ public final class Engraves {
             case "CINDER" -> "✦ 잿불 갑주 각인: 나를 때린 적에게 피해 2 + 불 (부위마다, 최대 8)";
             case "PHOENIX" -> "✦ 불사조 각인: 불·용암 피해 무시 · 불타는 동안 초당 체력 1 회복";
             case "SMELT" -> "✦ 제련 각인: 캔 원석(철·금·구리)이 바로 주괴로";
+            case "EXECUTE" -> "✦ 고대 처형 각인: 체력 절반 이하인 적에게 피해 +30%";
+            case "SONIC" -> "✦ 고대 음파 각인: 4타마다 주변 3칸 방어 무시 피해 21.6";
+            case "BULWARK" -> "✦ 고대 보루 각인: 받는 피해 -6% (부위마다, 최대 -24%) · 어둠 면역";
+            case "ECHO" -> "✦ 고대 메아리 각인: 나를 때린 적에게 피해 2.4 + 구속 (부위마다, 최대 9.6)";
             default -> "";
         };
     }
@@ -157,9 +167,11 @@ public final class Engraves {
         return RubyGear.hasEngraving(e, kind);
     }
 
+    private static final java.util.Map<java.util.UUID, Integer> SONIC_HITS = new java.util.HashMap<>();
+
     private static int armorCount(LivingEntity e, String kind) {
         int n = 0;
-        for (EquipmentSlot a : ARMOR) if (kind.equals(RubyGear.engraving(e.getItemBySlot(a)))) n++;
+        for (EquipmentSlot a : ARMOR) if (RubyGear.has(e.getItemBySlot(a), kind)) n++;
         return n;
     }
 
@@ -180,29 +192,51 @@ public final class Engraves {
         setMod(p, Attributes.MAX_HEALTH, "engrave_vigor", armorCount(p, "VIGOR") > 0 ? 4.0 : 0.0, AttributeModifier.Operation.ADD_VALUE);
         setMod(p, Attributes.MOVEMENT_SPEED, "engrave_rush", armorCount(p, "RUSH") > 0 ? 0.08 : 0.0, AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
         if (p.isOnFire() && armorCount(p, "PHOENIX") > 0) p.heal(1.0F);
+        if (armorCount(p, "BULWARK") > 0 && p.hasEffect(net.minecraft.world.effect.MobEffects.DARKNESS)) p.removeEffect(net.minecraft.world.effect.MobEffects.DARKNESS);
         ItemStack chest = p.getItemBySlot(EquipmentSlot.CHEST);
-        if (p.isFallFlying() && "GLIDE".equals(RubyGear.engraving(chest)) && chest.getDamageValue() > 0) chest.setDamageValue(chest.getDamageValue() - 1);
+        if (p.isFallFlying() && RubyGear.has(chest, "GLIDE") && chest.getDamageValue() > 0) chest.setDamageValue(chest.getDamageValue() - 1);
     }
 
     @SubscribeEvent
     public static void onIncoming(LivingIncomingDamageEvent event) {
         LivingEntity target = event.getEntity();
-        if (event.getSource().getEntity() instanceof Player p && "FURY".equals(RubyGear.engraving(p.getMainHandItem())) && target.getHealth() >= target.getMaxHealth()) {
+        if (event.getSource().getEntity() instanceof Player p && RubyGear.has(p.getMainHandItem(), "FURY") && target.getHealth() >= target.getMaxHealth()) {
             event.setAmount(event.getAmount() * 1.25F);
         }
-        if (event.getSource().getEntity() instanceof Player p && target.isOnFire() && "INFERNO".equals(RubyGear.engraving(p.getMainHandItem())))
+        if (event.getSource().getEntity() instanceof Player p && target.isOnFire() && RubyGear.has(p.getMainHandItem(), "INFERNO"))
             event.setAmount(event.getAmount() * 1.25F);
         if (armorCount(target, "PHOENIX") > 0 && event.getSource().is(DamageTypeTags.IS_FIRE)) {
             event.setCanceled(true);
             return;
         }
         int cinder = armorCount(target, "CINDER");
-        if (cinder > 0 && event.getSource().getDirectEntity() instanceof LivingEntity hitter && hitter != target && target.level() instanceof ServerLevel lv) {
+        if (cinder > 0 && !event.getSource().is(net.minecraft.world.damagesource.DamageTypes.THORNS) && event.getSource().getDirectEntity() instanceof LivingEntity hitter && hitter != target && target.level() instanceof ServerLevel lv) {
             hitter.hurtServer(lv, lv.damageSources().thorns(target), 2.0F * cinder);
             hitter.igniteForSeconds(3);
         }
         int guard = armorCount(target, "GUARD");
         if (guard > 0) event.setAmount(event.getAmount() * (1.0F - 0.05F * guard));
+        // 5.2.1 고대 각인
+        int bulwark = armorCount(target, "BULWARK");
+        if (bulwark > 0) event.setAmount(event.getAmount() * (1.0F - 0.06F * bulwark));
+        int echo = armorCount(target, "ECHO");
+        if (echo > 0 && !event.getSource().is(net.minecraft.world.damagesource.DamageTypes.THORNS) && event.getSource().getDirectEntity() instanceof LivingEntity hitter2 && hitter2 != target && target.level() instanceof ServerLevel lv2) {
+            hitter2.hurtServer(lv2, lv2.damageSources().thorns(target), 2.4F * echo);
+            hitter2.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.SLOWNESS, 40, 1));
+        }
+        if (event.getSource().getEntity() instanceof Player p3 && event.getSource().getDirectEntity() == p3 && target.level() instanceof ServerLevel lv3) {
+            ItemStack w = p3.getMainHandItem();
+            if (RubyGear.has(w, "EXECUTE") && target.getHealth() <= target.getMaxHealth() * 0.5F) event.setAmount(event.getAmount() * 1.30F);
+            if (RubyGear.has(w, "SONIC") && SONIC_HITS.merge(p3.getUUID(), 1, Integer::sum) % 4 == 0) {
+                for (LivingEntity e : lv3.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(3.0),
+                        e -> e != p3 && (e == target || e instanceof net.minecraft.world.entity.monster.Enemy))) {
+                    if (e == target) event.setAmount(event.getAmount() + 21.6F);
+                    else e.hurtServer(lv3, lv3.damageSources().indirectMagic(p3, p3), 21.6F);
+                }
+                lv3.sendParticles(ParticleTypes.SONIC_BOOM, target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), 1, 0, 0, 0, 0);
+                lv3.playSound(null, target.blockPosition(), net.minecraft.sounds.SoundEvents.WARDEN_SONIC_BOOM, net.minecraft.sounds.SoundSource.PLAYERS, 0.5F, 1.4F);
+            }
+        }
     }
 
     @SubscribeEvent
@@ -224,7 +258,7 @@ public final class Engraves {
             }
         }
         if (event.getSource().getEntity() instanceof ServerPlayer p && event.getSource().getDirectEntity() == p
-                && "DEVOUR".equals(RubyGear.engraving(p.getMainHandItem())) && VoidGear.marked(dead)) {
+                && RubyGear.has(p.getMainHandItem(), "DEVOUR") && VoidGear.marked(dead)) {
             p.heal(4.0F);
             if (p.level() instanceof ServerLevel lv) lv.sendParticles(ParticleTypes.HEART, p.getX(), p.getY() + 1.6, p.getZ(), 4, 0.3, 0.2, 0.3, 0);
         }
@@ -235,7 +269,7 @@ public final class Engraves {
     public static void onArrow(net.neoforged.neoforge.event.entity.ProjectileImpactEvent event) {
         if (!(event.getProjectile() instanceof net.minecraft.world.entity.projectile.arrow.AbstractArrow a) || !(a.level() instanceof ServerLevel lv)
                 || !(a.getOwner() instanceof ServerPlayer p) || a.getPersistentData().getBooleanOr("wp_pyre_done", false)) return;
-        if (!"PYRE".equals(RubyGear.engraving(p.getMainHandItem())) && !"PYRE".equals(RubyGear.engraving(p.getOffhandItem()))) return;
+        if (!RubyGear.has(p.getMainHandItem(), "PYRE") && !RubyGear.has(p.getOffhandItem(), "PYRE")) return;
         a.getPersistentData().putBoolean("wp_pyre_done", true);
         var at = event.getRayTraceResult().getLocation();
         lv.sendParticles(ParticleTypes.FLAME, at.x, at.y + 0.5, at.z, 50, 1.0, 1.2, 1.0, 0.05);
@@ -248,14 +282,14 @@ public final class Engraves {
 
     @SubscribeEvent
     public static void onDrops(BlockDropsEvent event) {
-        if (event.getBlockEntity() == null && "SMELT".equals(RubyGear.engraving(event.getTool()))) {
+        if (event.getBlockEntity() == null && RubyGear.has(event.getTool(), "SMELT")) {
             for (ItemEntity e : event.getDrops()) {
                 ItemStack s = e.getItem();
                 var to = s.is(Items.RAW_IRON) ? Items.IRON_INGOT : s.is(Items.RAW_GOLD) ? Items.GOLD_INGOT : s.is(Items.RAW_COPPER) ? Items.COPPER_INGOT : null;
                 if (to != null) e.setItem(new ItemStack(to, s.getCount()));
             }
         }
-        if (event.getBlockEntity() != null || !"HARVEST".equals(RubyGear.engraving(event.getTool()))) return;
+        if (event.getBlockEntity() != null || !RubyGear.has(event.getTool(), "HARVEST")) return;
         for (ItemEntity e : event.getDrops()) {
             if (event.getLevel().getRandom().nextFloat() < 0.10F) e.getItem().grow(1);
         }

@@ -215,7 +215,7 @@ public final class VoidGear {
                     if (e != owner && (e == target || e instanceof Enemy)) magic(level, e, owner, 8.0F);
                 }
                 burstFx(level, target, 3.0, ParticleTypes.REVERSE_PORTAL);
-                if ("CHAIN".equals(RubyGear.engraving(owner.getMainHandItem())) || "CHAIN".equals(RubyGear.engraving(owner.getOffhandItem()))) {
+                if (RubyGear.has(owner.getMainHandItem(), "CHAIN") || RubyGear.has(owner.getOffhandItem(), "CHAIN")) {
                     LivingEntity next = null;
                     double bd = Double.MAX_VALUE;
                     for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(8.0))) {
@@ -244,7 +244,7 @@ public final class VoidGear {
         State s = state(p);
         if (++s.hits < 3) return;
         s.hits = 0;
-        boolean abyss = "ABYSS".equals(RubyGear.engraving(p.getMainHandItem()));
+        boolean abyss = RubyGear.has(p.getMainHandItem(), "ABYSS");
         double slashR = abyss ? 5.0 : 3.0;
         for (LivingEntity e : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(slashR))) {
             if (e != p && (e == target || e instanceof Enemy)) magic(level, e, p, abyss ? 23.4F : 18.0F); // 5.1.5: 12 → 18 (+50%)

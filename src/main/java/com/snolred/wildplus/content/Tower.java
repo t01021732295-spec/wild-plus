@@ -55,7 +55,7 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
 /**
  * 하늘의 탑: 탑 입구 근처의 친구들이 함께 하늘 위 투기장으로 올라가 층마다 몰려오는 몬스터를 물리친다.
- * - 층을 깰 때마다 각자 동전(층 × 10동), 5층마다 보너스 아이템. 10층마다 경치(테마)가 바뀐다.
+ * - 층을 깰 때마다 각자 동전(층 × 1,000동), 5층마다 보너스 아이템. 10층마다 경치(테마)가 바뀐다.
  * - 5층마다 정예 보스, 10층마다 큰 보스.
  * - 쓰러지면 아이템을 잃지 않고 탑 입구로 돌아온다 (탈락). 층 사이 쉬는 시간에 금빛 발판을 밟으면 스스로 내려갈 수 있다.
  * - 모두 탈락하면 도전 끝. 최고 기록은 탑 입구 화면과 명예 기록에 남는다.
@@ -474,7 +474,7 @@ public final class Tower {
         BossSkills.clear();
         sweep(lv);
         MinecraftServer server = lv.getServer();
-        long coins = 10L * floor;
+        long coins = 1000L * floor; // 5.2.1: 층 × 10 → 층 × 1,000동
         for (UUID id : ACTIVE) {
             ServerPlayer p = server.getPlayerList().getPlayer(id);
             if (p == null) continue;

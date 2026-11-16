@@ -52,7 +52,8 @@ public final class RubyGear {
         return s.is(ruby.get()) || s.is(star.get());
     }
 
-    public static final String TRUE_DMG = "wildplus_true_dmg", ENGRAVE = "wildplus_engrave", LIFESTEAL = "wildplus_lifesteal";
+    public static final String TRUE_DMG = "wildplus_true_dmg", ENGRAVE = "wildplus_engrave", LIFESTEAL = "wildplus_lifesteal",
+            ENGRAVE2 = "wildplus_engrave2", ENGRAVE_SLOTS = "wildplus_engrave_slots";
 
     /** 흡혈 강화 단계 (1단계 = 준 피해의 1%) */
     public static int lifesteal(ItemStack s) {
@@ -72,6 +73,30 @@ public final class RubyGear {
                 .copyTag().getStringOr(ENGRAVE, "");
     }
 
+    /** 5.2.1 두 번째 각인 (각인 확장석으로 칸을 늘린 장비만), 없으면 "" */
+    public static String engraving2(ItemStack s) {
+        return s.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY)
+                .copyTag().getStringOr(ENGRAVE2, "");
+    }
+
+    /** 각인 칸 수 (기본 1, 확장석 2) */
+    public static int engraveSlots(ItemStack s) {
+        return s.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY)
+                .copyTag().getIntOr(ENGRAVE_SLOTS, 1);
+    }
+
+    /** 이 장비에 그 각인이 (첫째든 둘째든) 있나 */
+    public static boolean has(ItemStack s, String kind) {
+        if (s.isEmpty()) return false;
+        var t = s.getOrDefault(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.EMPTY).copyTag();
+        return kind.equals(t.getStringOr(ENGRAVE, "")) || kind.equals(t.getStringOr(ENGRAVE2, ""));
+    }
+
+    /** 새 각인을 받을 빈칸이 있나 */
+    public static boolean canEngraveMore(ItemStack s) {
+        return engraving(s).isEmpty() || engraveSlots(s) >= 2 && engraving2(s).isEmpty();
+    }
+
     public static boolean isStar(ItemStack s) {
         return !(s.getItem() instanceof net.minecraft.world.item.FishingRodItem) && com.snolred.wildplus.registry.ModItems9.upgrades().containsValue(s.getItem());
     }
@@ -79,7 +104,7 @@ public final class RubyGear {
     /** 손에 든 무기·입은 갑옷 중 하나라도 그 각인이 있으면 */
     public static boolean hasEngraving(LivingEntity e, String kind) {
         for (EquipmentSlot slot : new EquipmentSlot[]{EquipmentSlot.MAINHAND, EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET}) {
-            if (kind.equals(engraving(e.getItemBySlot(slot)))) return true;
+            if (has(e.getItemBySlot(slot), kind)) return true;
         }
         return false;
     }

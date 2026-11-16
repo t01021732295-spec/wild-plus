@@ -25,6 +25,8 @@ public class VoidLordRenderer extends MobRenderer<VoidLordEntity, VoidLordRender
 
     public static class State extends LivingEntityRenderState {
         public float hp = 1F;
+        /** 5.2.1 이동 세기 · 공격 휘두르기 */
+        public float walk, swing;
     }
 
     static final class Body extends EntityModel<State> {
@@ -53,6 +55,8 @@ public class VoidLordRenderer extends MobRenderer<VoidLordEntity, VoidLordRender
     public void extractRenderState(VoidLordEntity e, State s, float partial) {
         super.extractRenderState(e, s, partial);
         s.hp = e.getHealth() / e.getMaxHealth();
+        s.walk = Math.min(1F, e.walkAnimation.speed(partial));
+        s.swing = e.getAttackAnim(partial);
     }
 
     @Override
@@ -100,6 +104,11 @@ public class VoidLordRenderer extends MobRenderer<VoidLordEntity, VoidLordRender
             p.translate(0F, 1.5F, 0F);
             p.scale(0.78F, 0.78F, 0.78F);
             p.translate(0F, -1.5F - 1.1F + hover / 16F, 0F);
+            // 5.2.1: 나아갈 때 앞으로 기울고, 공격할 때 상체를 내던짐
+            float lean = s.walk * 14F + Mth.sin(s.swing * Mth.PI) * 18F;
+            p.translate(0F, 1.6F, 0F);
+            p.mulPose(com.mojang.math.Axis.XP.rotationDegrees(lean));
+            p.translate(0F, -1.6F, 0F);
             head();
             halo(t);
             chest(breath, t);
@@ -167,16 +176,17 @@ public class VoidLordRenderer extends MobRenderer<VoidLordEntity, VoidLordRender
         }
 
         private void arm(int side, float sx, float sy, float z, int n, float dx, float dy, int col, float t) {
-            float sway = Mth.sin(t * 0.06F + side) * 1.0F;
+            float sway = Mth.sin(t * 0.06F + side) * 1.0F + st.walk * Mth.sin(t * 0.3F + side * 1.6F) * 1.5F;
+            float reach = Mth.sin(st.swing * Mth.PI) * 2.2F; // 공격: 팔이 앞으로 뻗음
             float x = sx, y = sy;
             for (int i = 0; i < n; i++) {
                 float px = side * x - 2, py = y + sway * i * 0.5F;
-                d(px, py, z, 4, 6, 4, i % 2 == 0 ? col : PUR, false);
+                d(px, py, z + reach * i, 4, 6, 4, i % 2 == 0 ? col : PUR, false);
                 x += dx;
                 y += dy;
             }
             float ey = y + sway * n * 0.5F - 6;
-            for (int k = -3; k <= 3; k += 3) d(side * x - 1 + k, ey, z + 1, 2, 7, 2, BONE, false);
+            for (int k = -3; k <= 3; k += 3) d(side * x - 1 + k, ey, z + 1 + reach * n, 2, 7, 2, BONE, false);
         }
 
         private void cloak(int side, float t) {

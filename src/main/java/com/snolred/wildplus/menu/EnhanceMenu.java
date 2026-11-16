@@ -99,7 +99,8 @@ public class EnhanceMenu extends AbstractContainerMenu {
         if (com.snolred.wildplus.registry.ModItems9.upgrades().containsKey(stack.getItem())) out.add(BTN_STAR);
         if (stack.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SWORD.get())
                 && com.snolred.wildplus.event.RubyGear.trueLevel(stack) < 4) out.add(BTN_TRUE_DMG);
-        if ((com.snolred.wildplus.event.RubyGear.isStar(stack) || com.snolred.wildplus.event.Engraves.engravable(stack)) && com.snolred.wildplus.event.RubyGear.engraving(stack).isEmpty()) out.add(BTN_ENGRAVE);
+        if ((com.snolred.wildplus.event.RubyGear.isStar(stack) || com.snolred.wildplus.event.Engraves.engravable(stack))
+                && (com.snolred.wildplus.event.RubyGear.canEngraveMore(stack) || com.snolred.wildplus.event.RubyGear.engraveSlots(stack) < 2)) out.add(BTN_ENGRAVE);
         if (com.snolred.wildplus.event.RubyGear.lifestealable(stack)
                 && com.snolred.wildplus.event.RubyGear.lifesteal(stack) < LIFESTEAL_MAX) out.add(BTN_LIFESTEAL);
         return out;
@@ -136,8 +137,30 @@ public class EnhanceMenu extends AbstractContainerMenu {
             return true;
         }
         if (id == BTN_ENGRAVE) {
+            // 5.2.1 각인 확장석: 이 장비의 각인 칸을 2칸으로
+            if (input.getItem(1).is(com.snolred.wildplus.registry.ModItems37.ENGRAVE_EXPANDER.get())) {
+                if (com.snolred.wildplus.event.RubyGear.engraveSlots(stack) >= 2) {
+                    sp.sendOverlayMessage(Component.literal("이미 각인 칸이 2칸이에요").withStyle(ChatFormatting.RED));
+                    return true;
+                }
+                input.getItem(1).shrink(1);
+                net.minecraft.world.item.component.CustomData.update(net.minecraft.core.component.DataComponents.CUSTOM_DATA, stack,
+                        tag -> tag.putInt(com.snolred.wildplus.event.RubyGear.ENGRAVE_SLOTS, 2));
+                input.setChanged();
+                sp.level().playSound(null, sp.blockPosition(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 1.0F, 0.8F);
+                sp.sendSystemMessage(Component.literal("✦ 각인 칸이 2칸으로 늘었어요! 다른 각인을 하나 더 새길 수 있어요").withStyle(ChatFormatting.LIGHT_PURPLE));
+                return true;
+            }
             String kind = engraveKind(input.getItem(1));
-            if (!com.snolred.wildplus.event.RubyGear.engraving(stack).isEmpty()) return true;
+            boolean second = !com.snolred.wildplus.event.RubyGear.engraving(stack).isEmpty();
+            if (!com.snolred.wildplus.event.RubyGear.canEngraveMore(stack)) {
+                sp.sendOverlayMessage(Component.literal("각인 칸이 가득 찼어요 · 각인 확장석으로 2칸까지 늘릴 수 있어요").withStyle(ChatFormatting.RED));
+                return true;
+            }
+            if (second && kind.equals(com.snolred.wildplus.event.RubyGear.engraving(stack))) {
+                sp.sendOverlayMessage(Component.literal("같은 각인은 두 번 새길 수 없어요").withStyle(ChatFormatting.RED));
+                return true;
+            }
             if (kind.isEmpty()) {
                 sp.sendOverlayMessage(Component.literal("재료 칸에 각인석이나 레이드 전리품을 넣으세요")
                         .withStyle(ChatFormatting.RED));
@@ -154,7 +177,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
             }
             input.getItem(1).shrink(1);
             net.minecraft.world.item.component.CustomData.update(net.minecraft.core.component.DataComponents.CUSTOM_DATA, stack,
-                    tag -> tag.putString(com.snolred.wildplus.event.RubyGear.ENGRAVE, kind));
+                    tag -> tag.putString(second ? com.snolred.wildplus.event.RubyGear.ENGRAVE2 : com.snolred.wildplus.event.RubyGear.ENGRAVE, kind));
             input.setChanged();
             sp.level().playSound(null, sp.blockPosition(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0F, 0.7F);
             sp.sendSystemMessage(Component.literal("✦ " + engraveName(kind) + "을(를) 새겼어요!").withStyle(ChatFormatting.LIGHT_PURPLE));
@@ -273,7 +296,8 @@ public class EnhanceMenu extends AbstractContainerMenu {
                 || s.is(net.minecraft.world.item.Items.NETHER_STAR) || s.is(com.snolred.wildplus.registry.ModItems13.STELLAR_CORE.get()) || s.is(com.snolred.wildplus.registry.ModItems11.DRAGON_PLUME.get())
                 || s.is(com.snolred.wildplus.registry.ModItems7.RUBY_BLOCK.get()) || s.is(com.snolred.wildplus.registry.ModItems11.SAPPHIRE_BLOCK.get())
                 || s.is(com.snolred.wildplus.registry.ModItems2.MYTHRIL_BLOCK.get()) || s.is(com.snolred.wildplus.registry.ModItems5.DRAGON_KING_FISH.get()) || s.is(com.snolred.wildplus.registry.ModItems12.LIFE_CRYSTAL.get())
-                || s.is(com.snolred.wildplus.registry.ModItems.BLOODSTEEL_INGOT.get()) || !engraveKind(s).isEmpty()) {
+                || s.is(com.snolred.wildplus.registry.ModItems.BLOODSTEEL_INGOT.get()) || !engraveKind(s).isEmpty()
+                || s.is(com.snolred.wildplus.registry.ModItems37.ENGRAVE_EXPANDER.get())) {
             if (!moveItemStackTo(s, 1, 2, false)) return ItemStack.EMPTY;
         } else {
             if (!moveItemStackTo(s, 0, 1, false)) return ItemStack.EMPTY;

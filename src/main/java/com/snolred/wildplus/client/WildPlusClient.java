@@ -171,6 +171,10 @@ public class WildPlusClient {
             event.getToolTip().add(1, Component.literal(String.format("♥ 흡혈 %d%% (핏빛 강철 강화 %d/%d)", ls, ls,
                     com.snolred.wildplus.menu.EnhanceMenu.LIFESTEAL_MAX)).withStyle(ChatFormatting.DARK_RED));
         }
+        String eng2 = com.snolred.wildplus.event.RubyGear.engraving2(stack);
+        if (!eng2.isEmpty()) event.getToolTip().add(1, Component.literal(com.snolred.wildplus.event.Engraves.text(eng2)).withStyle(ChatFormatting.AQUA));
+        if (com.snolred.wildplus.event.RubyGear.engraveSlots(stack) >= 2)
+            event.getToolTip().add(1, Component.literal("◆ 각인 칸 2칸" + (eng2.isEmpty() ? " (1칸 비어 있음)" : "")).withStyle(ChatFormatting.DARK_AQUA));
         String eng = com.snolred.wildplus.event.RubyGear.engraving(stack);
         if (!eng.isEmpty()) {
             String text = switch (eng) {

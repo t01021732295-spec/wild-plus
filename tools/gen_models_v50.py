@@ -12,12 +12,16 @@ def main():
         if y < 8 and h >= 8: return "legA" if (x < 0) == (z > 0) else "legB"
         return "body"
     def turtle(x, y, z, w, h, d, glow):
-        return "head" if z >= 13.5 and y < 12 else "body"
+        if z >= 13.5 and y < 12: return "head"
+        if y < 4 and h <= 5:  # 5.2.1 다리 4개 (걷기 모션)
+            return ("legF" if z > 0 else "legB") + ("L" if x < 0 else "R")
+        return "body"
     def shaman(x, y, z, w, h, d, glow):
         return "talisman" if x >= 12 and w < 1 else "body"
     def golem(x, y, z, w, h, d, glow):
         if y < 34 and x >= 13: return "armR"
         if y < 34 and x + w <= -13: return "armL"
+        if y < 16 and abs(x + w / 2) < 12: return "legR" if x > 0 else "legL"  # 5.2.1 다리 (걷기 모션)
         return "body"
     G.build("ember_hound", N.hound(), 4, hound, BRIGHT)
     G.build("lava_turtle", N.turtle(), 6, turtle, BRIGHT)

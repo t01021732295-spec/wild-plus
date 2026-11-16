@@ -1133,5 +1133,10 @@
   "item.wildplus.engrave_phoenix": "Phoenix Engraving Stone",
   "item.wildplus.engrave_smelt": "Smelting Engraving Stone",
   "biome.wildplus.ember_wastes": "Ember Wastes",
-  "biome.wildplus.ash_grove": "Ash Grove"
+  "biome.wildplus.ash_grove": "Ash Grove",
+  "item.wildplus.engrave_expander": "Engraving Expander",
+  "item.wildplus.engrave_execute": "Ancient Execution Stone",
+  "item.wildplus.engrave_sonic": "Ancient Sonic Stone",
+  "item.wildplus.engrave_bulwark": "Ancient Bulwark Stone",
+  "item.wildplus.engrave_echo": "Ancient Echo Stone"
 }

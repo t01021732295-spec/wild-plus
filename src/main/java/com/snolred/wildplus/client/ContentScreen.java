@@ -299,7 +299,7 @@ public class ContentScreen extends AbstractContainerScreen<ContentMenu> {
             UiKit.text(g, nm, rx + 40, ly, 0xFF2A3A4E);
         }
 
-        UiKit.text(g, "층마다 각자 층×10동 · 5층마다 보너스 상자", rx, y + 146, 0xFF1E3A5F);
+        UiKit.text(g, "층마다 각자 층×1,000동 · 5층마다 보너스 상자", rx, y + 146, 0xFF1E3A5F);
         UiKit.text(g, "5층 정예 · 10층 수문장 · 10층마다 경치 변화", rx, y + 157, 0xFF1E3A5F);
         UiKit.text(g, "쉬는 시간에 금빛 발판 = 스스로 내려가기", rx, y + 168, 0xFF1E3A5F);
         UiKit.text(g, "쓰러지면 탈락 (아이템은 그대로)", rx, y + 179, 0xFF1E3A5F);

@@ -30,6 +30,8 @@ public class GenModelRenderer<T extends Mob> extends MobRenderer<T, GenModelRend
         public float hp = 1F;
         public boolean cooled;
         public float hurt;
+        /** 5.2.1 걷기 위상 · 걷기 세기(0~1) · 공격 휘두르기(0~1) */
+        public float walkPos, walkSpeed, swing;
     }
 
     public interface Anim {
@@ -137,6 +139,9 @@ public class GenModelRenderer<T extends Mob> extends MobRenderer<T, GenModelRend
         s.hp = e.getHealth() / e.getMaxHealth();
         s.cooled = e instanceof com.snolred.wildplus.entity.VolcanoEntity v && v.cooled();
         s.hurt = e.hurtTime > 0 ? e.hurtTime - partial : 0F;
+        s.walkPos = e.walkAnimation.position(partial);
+        s.walkSpeed = Math.min(1F, e.walkAnimation.speed(partial));
+        s.swing = e.getAttackAnim(partial);
     }
 
     @Override
@@ -202,13 +207,21 @@ public class GenModelRenderer<T extends Mob> extends MobRenderer<T, GenModelRend
         p.move(0F, Mth.sin(t * 0.09F) * (g.equals("cloud") ? 1.2F : 0.6F), 0F);
     }
 
-    /** 5.1 겁화의 군주: 머리 뒤 불의 고리가 돌고, 향로가 사슬에 매달려 흔들림 */
+    /** 5.1 겁화의 군주: 불의 고리 · 향로 · 날개 + (5.2.1) 걷기 · 대검 내려찍기 */
     public static void lord(String g, State s, Pivot p) {
-        float t = s.ageInTicks;
+        float t = s.ageInTicks, w = walk(s, 0.45F, 24F), atk = hit(s);
+        p.move(0F, -Math.abs(Mth.sin(s.walkPos * 0.45F)) * s.walkSpeed * 1.5F, 0F);
         switch (g) {
             case "ring" -> p.rotate(Axis.ZP, t * 1.5F, 0F, 96F, -10F);
-            case "censer" -> p.rotate(Axis.XP, Mth.sin(t * 0.12F) * 14F, -35F, 24F, 11F);
-            case "wings" -> p.rotate(Axis.XP, Mth.sin(t * 0.07F) * 4F, 0F, 68F, -13F);
+            case "wings" -> p.rotate(Axis.XP, Mth.sin(t * 0.07F) * 4F + atk * 10F, 0F, 68F, -13F);
+            case "legL" -> p.rotate(Axis.XP, w, -8F, 37F, 0F);
+            case "legR" -> p.rotate(Axis.XP, -w, 8F, 37F, 0F);
+            case "armR" -> p.rotate(Axis.XP, w * 0.5F - atk * 75F, 25F, 62F, 0F);
+            case "armL" -> p.rotate(Axis.XP, -w * 0.6F, -34F, 62F, 0F);
+            case "censer" -> {
+                p.rotate(Axis.XP, -w * 0.6F, -34F, 62F, 0F);
+                p.rotate(Axis.XP, Mth.sin(t * 0.12F) * 14F + w * 0.8F, -35F, 24F, 11F);
+            }
             default -> {}
         }
     }
@@ -236,28 +249,60 @@ public class GenModelRenderer<T extends Mob> extends MobRenderer<T, GenModelRend
     }
 
     // ───── 5.0 네더 ─────
+    /** 걷기 흔들림 (각도) */
+    private static float walk(State s, float freq, float deg) {
+        return Mth.sin(s.walkPos * freq) * deg * s.walkSpeed;
+    }
+
+    /** 공격: 0 → 1 → 0 으로 한 번 휘두름 */
+    private static float hit(State s) {
+        return Mth.sin(s.swing * Mth.PI);
+    }
+
     public static void hound(String g, State s, Pivot p) {
-        float t = s.ageInTicks;
-        if (g.equals("tail")) p.rotate(Axis.YP, Mth.sin(t * 0.3F) * 14F, 0F, 14F, -12F);
-        else if (g.equals("head")) p.rotate(Axis.XP, Mth.sin(t * 0.12F) * 4F, 0F, 12F, 11F);
-        else if (g.equals("legA")) p.rotate(Axis.XP, Mth.sin(t * 0.5F) * 16F, 0F, 8F, 0F);
-        else if (g.equals("legB")) p.rotate(Axis.XP, -Mth.sin(t * 0.5F) * 16F, 0F, 8F, 0F);
+        float t = s.ageInTicks, w = walk(s, 0.9F, 38F);
+        p.move(0F, Math.abs(Mth.sin(s.walkPos * 0.9F)) * s.walkSpeed * 0.8F, 0F);
+        switch (g) {
+            case "tail" -> p.rotate(Axis.YP, Mth.sin(t * 0.3F) * (14F + 20F * s.walkSpeed), 0F, 14F, -12F);
+            case "head" -> {
+                p.rotate(Axis.XP, Mth.sin(t * 0.12F) * 4F + hit(s) * 28F, 0F, 12F, 11F);
+                p.move(0F, 0F, hit(s) * 2.5F);
+            }
+            case "legA" -> p.rotate(Axis.XP, w + Mth.sin(t * 0.1F) * 2F, 0F, 8F, 0F);
+            case "legB" -> p.rotate(Axis.XP, -w - Mth.sin(t * 0.1F) * 2F, 0F, 8F, 0F);
+            default -> {}
+        }
     }
 
     public static void turtle(String g, State s, Pivot p) {
-        if (g.equals("head")) p.move(0F, 0F, -Mth.sin(s.ageInTicks * 0.05F) * 1.5F);
+        float w = walk(s, 0.7F, 28F);
+        p.rotate(Axis.ZP, Mth.sin(s.walkPos * 0.7F) * 3F * s.walkSpeed, 0F, 0F, 0F);
+        switch (g) {
+            case "head" -> p.move(0F, 0F, -Mth.sin(s.ageInTicks * 0.05F) * 1.5F + hit(s) * 4F);
+            case "legFL", "legBR" -> p.rotate(Axis.XP, w, 0F, 5F, g.equals("legFL") ? 10F : -8F);
+            case "legFR", "legBL" -> p.rotate(Axis.XP, -w, 0F, 5F, g.equals("legFR") ? 10F : -8F);
+            default -> {}
+        }
     }
 
     public static void shaman(String g, State s, Pivot p) {
         float t = s.ageInTicks;
         p.move(0F, Mth.sin(t * 0.08F) * 0.9F, 0F);
-        if (g.equals("talisman")) p.rotate(Axis.YP, t * 2.5F, 0F, 0F, 0F);
+        p.rotate(Axis.XP, 12F * s.walkSpeed + hit(s) * 14F, 0F, 10F, 0F); // 나아갈 때 앞으로 기울고, 주문 때 앞으로 숙임
+        if (g.equals("talisman")) p.rotate(Axis.YP, t * (2.5F + hit(s) * 12F), 0F, 0F, 0F);
     }
 
     public static void golem(String g, State s, Pivot p) {
-        float a = Mth.sin(s.ageInTicks * 0.07F) * 7F;
-        if (g.equals("armL")) p.rotate(Axis.XP, a, -20F, 34F, 0F);
-        else if (g.equals("armR")) p.rotate(Axis.XP, -a, 20F, 34F, 0F);
+        float idle = Mth.sin(s.ageInTicks * 0.07F) * 5F, w = walk(s, 0.55F, 30F), atk = hit(s) * 85F;
+        p.move(0F, -Math.abs(Mth.sin(s.walkPos * 0.55F)) * s.walkSpeed * 1.2F, 0F);
+        p.rotate(Axis.ZP, Mth.sin(s.walkPos * 0.55F) * 3F * s.walkSpeed, 0F, 16F, 0F);
+        switch (g) {
+            case "armL" -> p.rotate(Axis.XP, idle - w - atk, -20F, 40F, 0F);
+            case "armR" -> p.rotate(Axis.XP, -idle + w - atk, 20F, 40F, 0F);
+            case "legL" -> p.rotate(Axis.XP, w, -6F, 16F, 0F);
+            case "legR" -> p.rotate(Axis.XP, -w, 6F, 16F, 0F);
+            default -> {}
+        }
     }
 
     public static void priest(String g, State s, Pivot p) {
