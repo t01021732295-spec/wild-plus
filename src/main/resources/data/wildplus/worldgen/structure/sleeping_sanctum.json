@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "minecraft:deep_dark",
+  "max_distance_from_center": 80,
+  "size": 1,
+  "spawn_overrides": {},
+  "start_height": {
+    "absolute": -46
+  },
+  "start_pool": "wildplus:sleeping_sanctum",
+  "step": "underground_structures",
+  "terrain_adaptation": "none",
+  "use_expansion_hack": false
+}

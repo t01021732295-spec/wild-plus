@@ -76,6 +76,15 @@ public final class ModEntities {
     // 5.1 겁화의 군주
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.KalpaLordEntity>> KALPA_LORD = ENTITIES.registerEntityType("kalpa_lord",
             com.snolred.wildplus.entity.KalpaLordEntity::new, MobCategory.MONSTER, b -> b.sized(2.2F, 4.4F).fireImmune().clientTrackingRange(10));
+    // 5.3 고대 도시 몬스터
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.AncientMobs.Stalker>> SCULK_STALKER = ENTITIES.registerEntityType("sculk_stalker",
+            com.snolred.wildplus.entity.AncientMobs.Stalker::new, MobCategory.MONSTER, b -> b.sized(0.8F, 2.6F).clientTrackingRange(8));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.AncientMobs.Bats>> ECHO_BATS = ENTITIES.registerEntityType("echo_bats",
+            com.snolred.wildplus.entity.AncientMobs.Bats::new, MobCategory.MONSTER, b -> b.sized(1.2F, 1.2F).clientTrackingRange(8));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.AncientMobs.Priest>> SILENT_PRIEST = ENTITIES.registerEntityType("silent_priest",
+            com.snolred.wildplus.entity.AncientMobs.Priest::new, MobCategory.MONSTER, b -> b.sized(0.8F, 2.3F).clientTrackingRange(8));
+    public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.AncientMobs.SculkGolem>> SCULK_GOLEM = ENTITIES.registerEntityType("sculk_golem",
+            com.snolred.wildplus.entity.AncientMobs.SculkGolem::new, MobCategory.MONSTER, b -> b.sized(1.8F, 3.2F).clientTrackingRange(8));
     // 5.0.10 DPS 허수아비
     public static final DeferredHolder<EntityType<?>, EntityType<com.snolred.wildplus.entity.DpsDummy>> DPS_DUMMY = ENTITIES.registerEntityType("dps_dummy",
             com.snolred.wildplus.entity.DpsDummy::new, MobCategory.MISC, b -> b.sized(0.9F, 2.3F).clientTrackingRange(8));
@@ -143,6 +152,10 @@ public final class ModEntities {
         event.put(OBSIDIAN_GOLEM.get(), com.snolred.wildplus.entity.NetherMobs.Golem.attributes().build());
         event.put(DPS_DUMMY.get(), com.snolred.wildplus.entity.DpsDummy.attributes().build());
         event.put(KALPA_LORD.get(), com.snolred.wildplus.entity.KalpaLordEntity.attributes().build());
+        event.put(SCULK_STALKER.get(), com.snolred.wildplus.entity.AncientMobs.Stalker.attributes().build());
+        event.put(ECHO_BATS.get(), com.snolred.wildplus.entity.AncientMobs.Bats.attributes().build());
+        event.put(SILENT_PRIEST.get(), com.snolred.wildplus.entity.AncientMobs.Priest.attributes().build());
+        event.put(SCULK_GOLEM.get(), com.snolred.wildplus.entity.AncientMobs.SculkGolem.attributes().build());
         event.put(CLOUD_SENTINEL.get(), com.snolred.wildplus.entity.SkyMobs.Sentinel.attributes().build());
         event.put(THUNDER_HAWK.get(), com.snolred.wildplus.entity.SkyMobs.Hawk.attributes().build());
         event.put(CLOUD_PRIEST.get(), com.snolred.wildplus.entity.SkyMobs.Priest.attributes().build());

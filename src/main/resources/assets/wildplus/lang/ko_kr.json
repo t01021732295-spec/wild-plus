@@ -1479,5 +1479,15 @@
   "tooltip.wildplus.engrave_execute": "무기 공용 (공허 · 겁화 포함, 강화대 각인)\n체력 절반 이하인 적에게 피해 +30%",
   "tooltip.wildplus.engrave_sonic": "무기 공용 (공허 · 겁화 포함, 강화대 각인)\n4타마다 주변 3칸 방어 무시 피해 21.6",
   "tooltip.wildplus.engrave_bulwark": "갑옷 공용 (공허 · 겁화 포함, 강화대 각인)\n받는 피해 -6% (부위마다, 최대 -24%) · 어둠 면역",
-  "tooltip.wildplus.engrave_echo": "갑옷 공용 (공허 · 겁화 포함, 강화대 각인)\n나를 때린 적에게 피해 2.4 + 구속 (부위마다, 최대 9.6)"
+  "tooltip.wildplus.engrave_echo": "갑옷 공용 (공허 · 겁화 포함, 강화대 각인)\n나를 때린 적에게 피해 2.4 + 구속 (부위마다, 최대 9.6)",
+  "entity.wildplus.sculk_stalker": "스컬크 추적자",
+  "entity.wildplus.echo_bats": "메아리 박쥐 떼",
+  "entity.wildplus.silent_priest": "침묵의 사제",
+  "entity.wildplus.sculk_golem": "스컬크 골렘",
+  "block.wildplus.ancient_bell": "공명 종",
+  "block.wildplus.ancient_seal": "스컬크 봉인",
+  "block.wildplus.score_tablet": "악보 석판",
+  "block.wildplus.sanctum_altar": "성소 제단",
+  "item.wildplus.silence_incense": "침묵 향",
+  "tooltip.wildplus.silence_incense": "우클릭: 나와 8칸 안 친구들의 소음을 0으로\n30초 동안 소음이 20% 만 오름 (딥다크)"
 }

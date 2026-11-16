@@ -305,6 +305,76 @@ public class GenModelRenderer<T extends Mob> extends MobRenderer<T, GenModelRend
         }
     }
 
+    // ───────── 5.3 고대 도시 ─────────
+    /** 스컬크 추적자: 성큼성큼 걷기 · 감지 촉수가 떨림 · 공격 때 양팔 할퀴기 */
+    public static void stalker(String g, State s, Pivot p) {
+        float t = s.ageInTicks, w = walk(s, 0.7F, 34F), atk = hit(s);
+        p.move(0F, Math.abs(Mth.sin(s.walkPos * 0.7F)) * s.walkSpeed * 1.2F, 0F);
+        switch (g) {
+            case "head" -> {
+                p.rotate(Axis.YP, Mth.sin(t * 0.09F) * 18F, 0F, 34F, 6F); // 소리를 찾아 고개를 돌림
+                p.rotate(Axis.ZP, Mth.sin(t * 0.9F) * 1.5F, 0F, 34F, 6F);
+            }
+            case "armL" -> p.rotate(Axis.XP, -w - atk * 70F, -9F, 33F, 3F);
+            case "armR" -> p.rotate(Axis.XP, w - atk * 70F, 9F, 33F, 3F);
+            case "legL" -> p.rotate(Axis.XP, w, -4F, 17F, 0F);
+            case "legR" -> p.rotate(Axis.XP, -w, 4F, 17F, 0F);
+            default -> {}
+        }
+    }
+
+    /** 메아리 박쥐 떼: 박쥐 3마리가 소리 덩어리 주위를 돌며 날갯짓 */
+    public static void bats(String g, State s, Pivot p) {
+        float t = s.ageInTicks;
+        p.move(0F, Mth.sin(t * 0.15F) * 1.2F, 0F);
+        switch (g) {
+            case "core" -> {
+                p.rotate(Axis.YP, t * 6F, 0F, 16F, 0F);
+                p.scale(1F + Mth.sin(t * 0.4F) * 0.12F, 0F, 16F, 0F);
+            }
+            case "bat1", "bat2", "bat3" -> {
+                int k = g.charAt(3) - '1';
+                p.rotate(Axis.YP, t * (5F + k), 0F, 16F, 0F);
+                p.move(0F, Mth.sin(t * 0.5F + k * 2.1F) * 1.4F, 0F);
+                p.scale(1F + Mth.sin(t * 1.8F + k) * 0.1F, 0F, 16F, 0F); // 날갯짓 대신 몸이 들썩
+            }
+            default -> {}
+        }
+    }
+
+    /** 침묵의 사제: 떠다니듯 흔들림 · 종 지팡이를 흔들어 울림 · 초가 돎 */
+    public static void silentPriest(String g, State s, Pivot p) {
+        float t = s.ageInTicks, atk = hit(s);
+        p.move(0F, Mth.sin(t * 0.07F) * 0.6F, 0F);
+        p.rotate(Axis.XP, 8F * s.walkSpeed, 0F, 0F, 0F);
+        switch (g) {
+            case "staff" -> p.rotate(Axis.ZP, Mth.sin(t * 0.1F) * 4F - atk * 25F + Mth.sin(t * 1.2F) * atk * 8F, 10F, 18F, 5F);
+            case "candles" -> {
+                p.rotate(Axis.YP, t * 2F, 0F, 0F, 0F);
+                p.move(0F, Mth.sin(t * 0.12F) * 1.5F, 0F);
+            }
+            default -> {}
+        }
+    }
+
+    /** 스컬크 골렘: 무거운 걸음 · 양팔 내리치기 · 등 촉수가 꿈틀 */
+    public static void sculkGolem(String g, State s, Pivot p) {
+        float t = s.ageInTicks, idle = Mth.sin(t * 0.06F) * 4F, w = walk(s, 0.5F, 26F), atk = hit(s) * 90F;
+        p.move(0F, -Math.abs(Mth.sin(s.walkPos * 0.5F)) * s.walkSpeed * 1.4F, 0F);
+        p.rotate(Axis.ZP, Mth.sin(s.walkPos * 0.5F) * 3F * s.walkSpeed, 0F, 14F, 0F);
+        switch (g) {
+            case "armL" -> p.rotate(Axis.XP, idle - w - atk, -19F, 36F, 0F);
+            case "armR" -> p.rotate(Axis.XP, -idle + w - atk, 19F, 36F, 0F);
+            case "legL" -> p.rotate(Axis.XP, w, -6F, 14F, 0F);
+            case "legR" -> p.rotate(Axis.XP, -w, 6F, 14F, 0F);
+            case "tendrils" -> {
+                p.rotate(Axis.XP, Mth.sin(t * 0.13F) * 8F + atk * 0.2F, 0F, 38F, -6F);
+                p.rotate(Axis.ZP, Mth.sin(t * 0.09F) * 6F, 0F, 38F, -6F);
+            }
+            default -> {}
+        }
+    }
+
     public static void priest(String g, State s, Pivot p) {
         float t = s.ageInTicks;
         if (g.equals("ring")) p.rotate(Axis.ZP, t * 4F, 0F, 60F, -9F);

@@ -83,10 +83,12 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModItems33.init();
         com.snolred.wildplus.registry.ModBlocks21.init();
         com.snolred.wildplus.registry.ModBlocks22.init();
+        com.snolred.wildplus.registry.ModBlocks23.init();
         com.snolred.wildplus.registry.ModItems34.init();
         com.snolred.wildplus.registry.ModItems35.init();
         com.snolred.wildplus.registry.ModItems36.init();
         com.snolred.wildplus.registry.ModItems37.init();
+        com.snolred.wildplus.registry.ModItems38.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);
@@ -94,6 +96,7 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModEffects.POTIONS.register(modEventBus);
         modEventBus.addListener(ModEntities::onAttributes);
         modEventBus.addListener(com.snolred.wildplus.net.BankSync::register);
+        modEventBus.addListener(com.snolred.wildplus.event.Noise::register);
         modEventBus.addListener(com.snolred.wildplus.net.CosmeticSync::register);
         modEventBus.addListener(com.snolred.wildplus.net.DoubleJump::register);
         modEventBus.addListener(com.snolred.wildplus.net.MusicNet::register);
@@ -147,6 +150,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.ArrowControl.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.WardenBoss.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.LagGuard.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.Noise.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.KalpaGear.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.BulkShip.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.net.MapNet.class);

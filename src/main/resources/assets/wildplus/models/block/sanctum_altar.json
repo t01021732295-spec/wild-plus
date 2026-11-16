@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "wildplus:block/sanctum_altar",
+    "side": "wildplus:block/sanctum_altar_side",
+    "bottom": "wildplus:block/sanctum_altar_side"
+  }
+}

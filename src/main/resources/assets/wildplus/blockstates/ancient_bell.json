@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "note=0": {
+      "model": "wildplus:block/ancient_bell"
+    },
+    "note=1": {
+      "model": "wildplus:block/ancient_bell"
+    },
+    "note=2": {
+      "model": "wildplus:block/ancient_bell"
+    },
+    "note=3": {
+      "model": "wildplus:block/ancient_bell"
+    }
+  }
+}

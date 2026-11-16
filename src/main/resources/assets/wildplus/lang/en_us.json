@@ -1138,5 +1138,14 @@
   "item.wildplus.engrave_execute": "Ancient Execution Stone",
   "item.wildplus.engrave_sonic": "Ancient Sonic Stone",
   "item.wildplus.engrave_bulwark": "Ancient Bulwark Stone",
-  "item.wildplus.engrave_echo": "Ancient Echo Stone"
+  "item.wildplus.engrave_echo": "Ancient Echo Stone",
+  "entity.wildplus.sculk_stalker": "Sculk Stalker",
+  "entity.wildplus.echo_bats": "Echo Bat Swarm",
+  "entity.wildplus.silent_priest": "Silent Priest",
+  "entity.wildplus.sculk_golem": "Sculk Golem",
+  "block.wildplus.ancient_bell": "Resonance Bell",
+  "block.wildplus.ancient_seal": "Sculk Seal",
+  "block.wildplus.score_tablet": "Score Tablet",
+  "block.wildplus.sanctum_altar": "Sanctum Altar",
+  "item.wildplus.silence_incense": "Silence Incense"
 }

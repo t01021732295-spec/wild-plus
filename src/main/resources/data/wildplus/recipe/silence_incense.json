@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:echo_shard",
+    "minecraft:white_wool",
+    "minecraft:amethyst_shard",
+    "minecraft:candle"
+  ],
+  "result": {
+    "id": "wildplus:silence_incense",
+    "count": 2
+  }
+}

@@ -183,6 +183,15 @@ public final class WildCommands {
                                     p.sendSystemMessage(net.minecraft.network.chat.Component.literal(msg));
                                 }
                                 var reg = nether.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.STRUCTURE);
+                                var ow = p.level().getServer().overworld();
+                                var oreg = ow.registryAccess().lookupOrThrow(net.minecraft.core.registries.Registries.STRUCTURE);
+                                for (String n : new String[] {"echo_spire", "sealed_archive", "sleeping_sanctum"}) {
+                                    var k = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.STRUCTURE, com.snolred.wildplus.WildPlus.id(n));
+                                    var at2 = ow.getChunkSource().getGenerator().findNearestMapStructure(ow, net.minecraft.core.HolderSet.direct(oreg.getOrThrow(k)), net.minecraft.core.BlockPos.ZERO, 100, false);
+                                    String msg = "[wildplus-netherbiome] " + n + " = " + (at2 == null ? "none" : at2.getFirst().toShortString());
+                                    com.snolred.wildplus.WildPlus.LOGGER.info(msg);
+                                    p.sendSystemMessage(net.minecraft.network.chat.Component.literal(msg));
+                                }
                                 for (String n : new String[] {"kalpa_citadel", "ember_watchtower"}) {
                                     var k = net.minecraft.resources.ResourceKey.create(net.minecraft.core.registries.Registries.STRUCTURE, com.snolred.wildplus.WildPlus.id(n));
                                     var at2 = nether.getChunkSource().getGenerator().findNearestMapStructure(nether, net.minecraft.core.HolderSet.direct(reg.getOrThrow(k)), net.minecraft.core.BlockPos.ZERO, 64, false);

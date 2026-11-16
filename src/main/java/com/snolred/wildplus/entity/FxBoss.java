@@ -22,7 +22,7 @@ import net.minecraft.world.phys.Vec3;
 
 /** 4.7 보스 공용: 바닥 예고 → 발동. 종류별 이펙트는 fx 에서 그린다 */
 public abstract class FxBoss extends Monster {
-    public static final int BOLT = 1, LAVA = 2, ROCK = 3, ERUPT = 4, RING = 5, BOOM = 6;
+    public static final int BOLT = 1, LAVA = 2, ROCK = 3, ERUPT = 4, RING = 5, BOOM = 6, SCULK = 7, SCULK_RING = 8;
 
     protected static final class Warn {
         final Vec3 at;
@@ -139,19 +139,28 @@ public abstract class FxBoss extends Monster {
             }
             case ERUPT -> column(lv, w.at, 24, ParticleTypes.FLAME, ParticleTypes.LAVA);
             case RING -> ring(lv, w.at, w.r, ParticleTypes.SONIC_BOOM, 1.0);
+            case SCULK -> { // 5.3 스컬크 음파 폭발
+                lv.sendParticles(ParticleTypes.SONIC_BOOM, w.at.x, w.at.y + 0.8, w.at.z, 1, 0, 0, 0, 0);
+                lv.sendParticles(ParticleTypes.SCULK_SOUL, w.at.x, w.at.y + 0.4, w.at.z, 24, w.r * 0.5, 0.4, w.r * 0.5, 0.04);
+            }
+            case SCULK_RING -> {
+                ring(lv, w.at, w.r, ParticleTypes.SONIC_BOOM, 0.8);
+                ring(lv, w.at, w.r, ParticleTypes.SCULK_SOUL, 0.3);
+            }
             default -> lv.sendParticles(ParticleTypes.EXPLOSION_EMITTER, w.at.x, w.at.y + 1, w.at.z, 2, 1, 0.5, 1, 0);
         }
     }
 
     private boolean inside(Warn w, ServerPlayer p) {
         double d = Math.hypot(p.getX() - w.at.x, p.getZ() - w.at.z);
-        return w.kind == RING ? Math.abs(d - w.r) < 2.0 && Math.abs(p.getY() - w.at.y) < 4 : d < w.r && Math.abs(p.getY() - w.at.y) < 6;
+        return w.kind == RING || w.kind == SCULK_RING ? Math.abs(d - w.r) < 2.0 && Math.abs(p.getY() - w.at.y) < 4 : d < w.r && Math.abs(p.getY() - w.at.y) < 6;
     }
 
     protected void tickWarns(ServerLevel lv) {
         for (Iterator<Warn> it = new ArrayList<>(warns).iterator(); it.hasNext(); ) {
             Warn w = it.next();
-            if (w.left % 4 == 0) ring(lv, w.at, w.r, w.kind == LAVA || w.kind == ROCK || w.kind == ERUPT ? ParticleTypes.FLAME : ParticleTypes.ELECTRIC_SPARK, 0.2);
+            if (w.left % 4 == 0) ring(lv, w.at, w.r, w.kind == LAVA || w.kind == ROCK || w.kind == ERUPT ? ParticleTypes.FLAME
+                    : w.kind == SCULK || w.kind == SCULK_RING ? ParticleTypes.SCULK_CHARGE_POP : ParticleTypes.ELECTRIC_SPARK, 0.2);
             if (--w.left > 0) continue;
             warns.remove(w);
             fire(lv, w);
