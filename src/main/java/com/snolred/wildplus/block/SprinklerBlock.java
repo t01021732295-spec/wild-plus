@@ -58,8 +58,9 @@ public class SprinklerBlock extends Block {
                 }
             }
         }
-        level.sendParticles(ParticleTypes.SPLASH, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5,
-                20, 1.8, 0.2, 1.8, 0.1);
+        // 5.2.1: 근처(32칸)에 사람이 있을 때만, 입자 수도 줄임
+        if (level.getNearestPlayer(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 32, false) != null)
+            level.sendParticles(ParticleTypes.SPLASH, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, 8, 2.4, 0.2, 2.4, 0.1);
         level.scheduleTick(pos, this, INTERVAL);
     }
 }

@@ -141,7 +141,7 @@ public class GenModelRenderer<T extends Mob> extends MobRenderer<T, GenModelRend
         s.hurt = e.hurtTime > 0 ? e.hurtTime - partial : 0F;
         s.walkPos = e.walkAnimation.position(partial);
         s.walkSpeed = Math.min(1F, e.walkAnimation.speed(partial));
-        s.swing = e.getAttackAnim(partial);
+        s.swing = e.getSwingAnimation(partial);
     }
 
     @Override

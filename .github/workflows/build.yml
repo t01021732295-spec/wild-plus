@@ -1273,6 +1273,7 @@ jobs:
             cmd "/damage @e[type=wildplus:dps_dummy,limit=1,sort=nearest] 37 minecraft:player_attack by @s"; sleep 1
             cmd "/damage @e[type=wildplus:dps_dummy,limit=1,sort=nearest] 12 minecraft:player_attack by @s"; shot v51-dummy
             cmd "/kill @e[type=!player,distance=..20]"; cmd "/summon wildplus:kalpa_lord 396.5 200 -2 {NoAI:1b,Rotation:[180f,0f]}"; sleep 2; shot v51-lord
+            cmd "/kill @e[type=wildplus:kalpa_lord]"; cmd "/summon minecraft:warden 396.5 200 -3 {NoAI:1b,Rotation:[180f,0f]}"; sleep 2; shot v521-warden; cmd "/kill @e[type=minecraft:warden]"
             cmd "/setblock 393 200 -7 wildplus:kalpa_brazier[lit=true]"; cmd "/setblock 395 200 -7 wildplus:kalpa_brazier"; cmd "/setblock 398 200 -7 wildplus:kalpa_altar"; cmd "/setblock 400 200 -7 wildplus:kalpa_gate"
             sleep 1; shot v51-blocks; cmd "/fill 390 200 -8 402 200 -6 air"
             cmd "/kill @e[type=!player,distance=..20]"; cmd "/tp @s 396.5 120 -8.3 0 20"

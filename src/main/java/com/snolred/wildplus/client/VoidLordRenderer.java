@@ -56,7 +56,7 @@ public class VoidLordRenderer extends MobRenderer<VoidLordEntity, VoidLordRender
         super.extractRenderState(e, s, partial);
         s.hp = e.getHealth() / e.getMaxHealth();
         s.walk = Math.min(1F, e.walkAnimation.speed(partial));
-        s.swing = e.getAttackAnim(partial);
+        s.swing = e.getSwingAnimation(partial);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class VoidLordRenderer extends MobRenderer<VoidLordEntity, VoidLordRender
             // 5.2.1: 나아갈 때 앞으로 기울고, 공격할 때 상체를 내던짐
             float lean = s.walk * 14F + Mth.sin(s.swing * Mth.PI) * 18F;
             p.translate(0F, 1.6F, 0F);
-            p.mulPose(com.mojang.math.Axis.XP.rotationDegrees(lean));
+            p.rotate(com.mojang.math.Axis.XP.rotationDegrees(lean));
             p.translate(0F, -1.6F, 0F);
             head();
             halo(t);

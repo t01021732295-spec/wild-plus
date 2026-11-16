@@ -52,7 +52,22 @@ public final class ArrowControl {
             event.setCanceled(true);
             return;
         }
-        a.setBaseDamage(a.getBaseDamage() * total / (double) MAX_PER_SHOT);
+        a.setBaseDamage(baseDamage(a) * total / (double) MAX_PER_SHOT);
+    }
+
+    private static java.lang.reflect.Field DMG;
+
+    /** 26.3 에는 getBaseDamage 가 없어서 필드를 직접 읽음 (못 읽으면 바닐라 기본 2) */
+    private static double baseDamage(AbstractArrow a) {
+        try {
+            if (DMG == null) {
+                DMG = AbstractArrow.class.getDeclaredField("baseDamage");
+                DMG.setAccessible(true);
+            }
+            return DMG.getDouble(a);
+        } catch (ReflectiveOperationException | RuntimeException e) {
+            return 2.0;
+        }
     }
 
     @SubscribeEvent

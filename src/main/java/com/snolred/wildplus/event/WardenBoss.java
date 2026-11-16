@@ -129,7 +129,7 @@ public final class WardenBoss {
                 p.addEffect(new MobEffectInstance(MobEffects.DARKNESS, 120, 0));
                 Vec3 pull = w.position().subtract(p.position()).normalize().scale(1.1);
                 p.push(pull.x, 0.35, pull.z);
-                p.hurtMarked = true;
+                p.connection.send(new net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket(p));
             }
         }
     }

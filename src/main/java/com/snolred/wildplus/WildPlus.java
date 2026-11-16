@@ -146,6 +146,7 @@ public class WildPlus {
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.NetherPlus.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.ArrowControl.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.WardenBoss.class);
+        NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.LagGuard.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.event.KalpaGear.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.economy.BulkShip.class);
         NeoForge.EVENT_BUS.register(com.snolred.wildplus.net.MapNet.class);
