@@ -27,7 +27,7 @@ public final class NoiseHud {
     private static void render(GuiGraphicsExtractor g, DeltaTracker delta) {
         Minecraft mc = Minecraft.getInstance();
         int v = Noise.client;
-        if (mc.player == null || v < 0 || mc.options.hideGui) {
+        if (mc.player == null || v < 0) {
             shown = 0;
             return;
         }

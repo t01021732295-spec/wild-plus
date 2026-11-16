@@ -138,10 +138,10 @@ public final class Noise {
         if (p.isCreative() || p.isSpectator()) return;
         if (s.v >= 25) { // 촉수가 꿈틀
             for (int i = 0; i < 4; i++) {
-                double a = lv.random.nextDouble() * Math.PI * 2, r = 2 + lv.random.nextDouble() * 4;
+                double a = lv.getRandom().nextDouble() * Math.PI * 2, r = 2 + lv.getRandom().nextDouble() * 4;
                 lv.sendParticles(ParticleTypes.SCULK_CHARGE_POP, p.getX() + Math.cos(a) * r, p.getY() + 0.1, p.getZ() + Math.sin(a) * r, 2, 0.1, 0, 0.1, 0);
             }
-            if (lv.random.nextInt(3) == 0) lv.playSound(null, p.blockPosition(), SoundEvents.SCULK_CLICKING, SoundSource.HOSTILE, 0.8F, 0.8F);
+            if (lv.getRandom().nextInt(3) == 0) lv.playSound(null, p.blockPosition(), SoundEvents.SCULK_CLICKING, SoundSource.HOSTILE, 0.8F, 0.8F);
         }
         if (s.v >= 100 && now >= s.nextWarden) {
             s.nextWarden = now + 3600;
@@ -150,7 +150,7 @@ public final class Noise {
                 BlockPos at = spot(lv, p, 8, 12);
                 Warden w = net.minecraft.world.entity.EntityTypes.WARDEN.create(lv, EntitySpawnReason.TRIGGERED);
                 if (w != null && at != null) {
-                    w.snapTo(at.getX() + 0.5, at.getY(), at.getZ() + 0.5, lv.random.nextFloat() * 360F, 0F);
+                    w.snapTo(at.getX() + 0.5, at.getY(), at.getZ() + 0.5, lv.getRandom().nextFloat() * 360F, 0F);
                     lv.addFreshEntity(w);
                     w.increaseAngerAt(p, 80, false);
                     for (ServerPlayer q : lv.players())
@@ -167,7 +167,7 @@ public final class Noise {
             for (int i = 0; i < stalkers; i++) spawn(lv, p, ModEntities.SCULK_STALKER.get());
             if (heavy) {
                 spawn(lv, p, ModEntities.ECHO_BATS.get());
-                if (lv.random.nextInt(3) == 0) spawn(lv, p, ModEntities.SILENT_PRIEST.get());
+                if (lv.getRandom().nextInt(3) == 0) spawn(lv, p, ModEntities.SILENT_PRIEST.get());
             }
             p.sendOverlayMessage(Component.literal(heavy ? "🔊 소음이 너무 커요! 무언가 몰려옵니다" : "🔊 무언가 소리를 듣고 다가옵니다…").withStyle(heavy ? ChatFormatting.RED : ChatFormatting.GOLD));
         }
@@ -179,7 +179,7 @@ public final class Noise {
         if (at == null) return;
         Mob m = type.create(lv, EntitySpawnReason.EVENT);
         if (m == null) return;
-        m.snapTo(at.getX() + 0.5, at.getY() + (type == ModEntities.ECHO_BATS.get() ? 2 : 0), at.getZ() + 0.5, lv.random.nextFloat() * 360F, 0F);
+        m.snapTo(at.getX() + 0.5, at.getY() + (type == ModEntities.ECHO_BATS.get() ? 2 : 0), at.getZ() + 0.5, lv.getRandom().nextFloat() * 360F, 0F);
         m.setTarget(p);
         lv.addFreshEntity(m);
         lv.sendParticles(ParticleTypes.SCULK_SOUL, m.getX(), m.getY() + 0.5, m.getZ(), 20, 0.5, 0.5, 0.5, 0.05);
@@ -188,7 +188,7 @@ public final class Noise {
     /** 사람 주변 min~max 칸 떨어진, 발 디딜 곳 */
     public static BlockPos spot(ServerLevel lv, Player p, int min, int max) {
         for (int tries = 0; tries < 16; tries++) {
-            double a = lv.random.nextDouble() * Math.PI * 2, r = min + lv.random.nextDouble() * (max - min);
+            double a = lv.getRandom().nextDouble() * Math.PI * 2, r = min + lv.getRandom().nextDouble() * (max - min);
             int x = (int) Math.floor(p.getX() + Math.cos(a) * r), z = (int) Math.floor(p.getZ() + Math.sin(a) * r);
             for (int dy = 6; dy >= -6; dy--) {
                 BlockPos b = new BlockPos(x, (int) p.getY() + dy, z);
@@ -200,8 +200,8 @@ public final class Noise {
 
     // ───────── 소리 나는 행동 ─────────
     @SubscribeEvent
-    public static void onBreak(BlockEvent.BreakEvent event) {
-        if (!onWoolOrSneak(event.getPlayer())) add(event.getPlayer(), 4F);
+    public static void onBreak(net.neoforged.neoforge.event.level.BlockDropsEvent event) {
+        if (event.getBreaker() instanceof Player p && !onWoolOrSneak(p)) add(p, 4F);
     }
 
     @SubscribeEvent

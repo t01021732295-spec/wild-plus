@@ -73,7 +73,7 @@ public final class AncientMobs {
                     setTarget(best);
                     if (best != null) { // 들었다! 감지 촉수가 빛남
                         lv.sendParticles(ParticleTypes.SCULK_CHARGE_POP, getX(), getY() + 2.6, getZ(), 10, 0.4, 0.2, 0.4, 0.02);
-                        lv.playSound(null, blockPosition(), SoundEvents.SCULK_SENSOR_CLICKING, SoundSource.HOSTILE, 1.2F, 0.7F);
+                        lv.playSound(null, blockPosition(), SoundEvents.SCULK_CLICKING, SoundSource.HOSTILE, 1.2F, 0.7F);
                     }
                 }
             }
