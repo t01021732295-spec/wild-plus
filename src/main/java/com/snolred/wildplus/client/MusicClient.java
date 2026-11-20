@@ -94,13 +94,95 @@ public final class MusicClient {
         }
     }
 
-    /** 혼자 하는 세계면 폴더를 열고, 서버 접속 중이면 안내만 */
-    public static void openDir() {
+    // ───────── 5.3.5 내 곡 올리기 ─────────
+    private static final java.util.ArrayDeque<Path> UPQ = new java.util.ArrayDeque<>();
+    private static byte[] upData;
+    private static String upName;
+    private static int upNext, upDone;
+
+    /** 내 폴더에서 서버에 없는 (이름이 없거나 크기가 다른) 곡을 줄 세움 */
+    public static void uploadAsk(MusicNet.UploadAsk a) {
         Minecraft mc = Minecraft.getInstance();
-        if (!mc.hasSingleplayerServer()) {
-            if (mc.player != null) mc.player.sendOverlayMessage(net.minecraft.network.chat.Component.literal("서버의 폴더는 서버 컴퓨터에서 열어 주세요 (wildplus_music)").withStyle(net.minecraft.ChatFormatting.YELLOW));
+        if (mc.hasSingleplayerServer()) { // 혼자 하는 세계는 같은 폴더
+            if (a.manual() && mc.player != null) say("혼자 하는 세계는 폴더에 넣기만 하면 돼요", net.minecraft.ChatFormatting.YELLOW);
             return;
         }
+        java.util.Map<String, Long> have = new HashMap<>();
+        for (String line : a.have().split("\n")) {
+            int t = line.lastIndexOf('\t');
+            if (t > 0) try {
+                have.put(line.substring(0, t), Long.parseLong(line.substring(t + 1)));
+            } catch (NumberFormatException ignored) {
+            }
+        }
+        int added = 0;
+        try (var st = Files.list(dir())) {
+            for (Path f : (Iterable<Path>) st::iterator) {
+                String n = f.getFileName().toString(), l = n.toLowerCase(java.util.Locale.ROOT);
+                boolean ogg = l.endsWith(".ogg"), mid = l.endsWith(".mid") || l.endsWith(".midi");
+                if (!ogg && !mid || n.startsWith(".")) continue;
+                long size = Files.size(f);
+                if (size > (ogg ? 40L << 20 : 1L << 20) || Long.valueOf(size).equals(have.get(n))) continue;
+                if (UPQ.contains(f) || n.equals(upName)) continue;
+                UPQ.add(f);
+                added++;
+            }
+        } catch (Exception ignored) {
+        }
+        if (added > 0) say("🎵 내 폴더의 새 곡 " + added + "개를 서버에 올려요…", net.minecraft.ChatFormatting.AQUA);
+        else if (a.manual() && upName == null) say("서버에 없는 새 곡이 없어요 (내 wildplus_music 폴더에 .ogg 를 넣어 주세요)", net.minecraft.ChatFormatting.YELLOW);
+    }
+
+    private static void say(String s, net.minecraft.ChatFormatting c) {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player != null) mc.player.sendSystemMessage(net.minecraft.network.chat.Component.literal(s).withStyle(c));
+    }
+
+    private static Path dir() throws java.io.IOException {
+        Path d = FMLPaths.GAMEDIR.get().resolve("wildplus_music");
+        Files.createDirectories(d);
+        return d;
+    }
+
+    /** 틱마다 조각 2개씩 (약 1MB/초) */
+    public static void tickUpload() {
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.getConnection() == null) {
+            UPQ.clear();
+            upData = null;
+            upName = null;
+            return;
+        }
+        for (int k = 0; k < 2; k++) {
+            if (upData == null) {
+                Path f = UPQ.poll();
+                if (f == null) return;
+                try {
+                    upData = Files.readAllBytes(f);
+                    upName = f.getFileName().toString();
+                    upNext = 0;
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+            int total = Math.max(1, (upData.length + MusicNet.Up.SIZE - 1) / MusicNet.Up.SIZE);
+            int from = upNext * MusicNet.Up.SIZE, to = Math.min(upData.length, from + MusicNet.Up.SIZE);
+            net.neoforged.neoforge.client.network.ClientPacketDistributor.sendToServer(new MusicNet.Up(upName, upNext, total, java.util.Arrays.copyOfRange(upData, from, to)));
+            upNext++;
+            if (mc.player != null && upNext % 10 == 0)
+                mc.player.sendOverlayMessage(net.minecraft.network.chat.Component.literal(String.format("🎵 올리는 중: %s (%d%%)", upName, upNext * 100 / total)).withStyle(net.minecraft.ChatFormatting.AQUA));
+            if (upNext >= total) {
+                upData = null;
+                upName = null;
+            }
+        }
+    }
+
+    /** 내 컴퓨터의 wildplus_music 폴더 열기 (서버 접속 중이면 넣은 뒤 올리기 안내) */
+    public static void openDir() {
+        Minecraft mc = Minecraft.getInstance();
+        if (!mc.hasSingleplayerServer())
+            say("내 폴더예요. 곡을 넣은 뒤 음악 플레이어를 다시 열면 서버로 올라가요", net.minecraft.ChatFormatting.YELLOW);
         try {
             Path d = FMLPaths.GAMEDIR.get().resolve("wildplus_music");
             Files.createDirectories(d);

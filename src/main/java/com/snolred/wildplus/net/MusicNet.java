@@ -86,6 +86,37 @@ public final class MusicNet {
         }
     }
 
+    /** 5.3.5 서버 → 클라이언트: "내 폴더의 새 곡을 올려 줘" (서버에 있는 파일 "이름\t크기" 줄들) · manual = 버튼으로 누름 */
+    public record UploadAsk(String have, boolean manual) implements CustomPacketPayload {
+        public static final Type<UploadAsk> TYPE = new Type<>(WildPlus.id("music_upload_ask"));
+        public static final StreamCodec<FriendlyByteBuf, UploadAsk> CODEC = StreamCodec.of((b, p) -> {
+            b.writeUtf(p.have, 1 << 20);
+            b.writeBoolean(p.manual);
+        }, b -> new UploadAsk(b.readUtf(1 << 20), b.readBoolean()));
+
+        @Override
+        public Type<? extends CustomPacketPayload> type() {
+            return TYPE;
+        }
+    }
+
+    /** 5.3.5 클라이언트 → 서버: 내 곡 파일 조각 */
+    public record Up(String name, int index, int total, byte[] data) implements CustomPacketPayload {
+        public static final int SIZE = 24_000;
+        public static final Type<Up> TYPE = new Type<>(WildPlus.id("music_up"));
+        public static final StreamCodec<FriendlyByteBuf, Up> CODEC = StreamCodec.of((b, p) -> {
+            b.writeUtf(p.name, 256);
+            b.writeVarInt(p.index);
+            b.writeVarInt(p.total);
+            b.writeByteArray(p.data);
+        }, b -> new Up(b.readUtf(256), b.readVarInt(), b.readVarInt(), b.readByteArray(SIZE)));
+
+        @Override
+        public Type<? extends CustomPacketPayload> type() {
+            return TYPE;
+        }
+    }
+
     public static void register(RegisterPayloadHandlersEvent event) {
         var r = event.registrar("1").optional();
         r.playToClient(Play.TYPE, Play.CODEC, MusicNet::onPlay);
@@ -94,6 +125,10 @@ public final class MusicNet {
         r.playToClient(Help.TYPE, Help.CODEC, MusicNet::onHelp);
         r.playToClient(OpenDir.TYPE, OpenDir.CODEC, (p, c) -> ClientBridge.openDir());
         r.playToServer(Request.TYPE, Request.CODEC, MusicNet::onRequest);
+        r.playToClient(UploadAsk.TYPE, UploadAsk.CODEC, (p, c) -> ClientBridge.uploadAsk(p));
+        r.playToServer(Up.TYPE, Up.CODEC, (p, c) -> {
+            if (c.player() instanceof ServerPlayer sp) Music.receive(sp, p);
+        });
     }
 
     private static void onPlay(Play p, IPayloadContext c) {
@@ -132,6 +167,10 @@ public final class MusicNet {
 
         static void openDir() {
             com.snolred.wildplus.client.MusicClient.openDir();
+        }
+
+        static void uploadAsk(UploadAsk p) {
+            com.snolred.wildplus.client.MusicClient.uploadAsk(p);
         }
 
         static void help() {

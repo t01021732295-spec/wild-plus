@@ -175,7 +175,9 @@ public final class Music {
         e.add(new PickMenu.Entry("음반에 곡 담기", "빈 음반을 들고 눌러요", new ItemStack(ModItems29.CUSTOM_DISC.get())));
         e.add(new PickMenu.Entry("악보에 곡 담기", "빈 악보를 들고 눌러요", new ItemStack(ModItems29.SHEET_MUSIC.get())));
         e.add(new PickMenu.Entry("사용법", "음악 · 악보 넣는 법", new ItemStack(Items.BOOK)));
-        e.add(new PickMenu.Entry("폴더 열기", "wildplus_music 폴더를 바로 열어요", new ItemStack(Items.CHEST)));
+        e.add(new PickMenu.Entry("폴더 열기", "내 컴퓨터의 wildplus_music 폴더를 열어요", new ItemStack(Items.CHEST)));
+        e.add(new PickMenu.Entry("내 곡 서버에 올리기", "내 폴더에만 있는 곡을 서버로 보내요 (모두가 들을 수 있게)", new ItemStack(Items.HOPPER)));
+        askUpload(p, false);
         PickMenu.open(p, Component.literal("🎵 음악 플레이어"), act.isEmpty() ? "멈춰 있어요" : "♪ " + title(act.getStringOr("name", "")), "", e, PickMenu.FLAG_SHOP, i -> {
             switch (i) {
                 case 0 -> pickSong(p, lv, pos, false, 0);
@@ -197,9 +199,13 @@ public final class Music {
                     p.closeContainer();
                     PacketDistributor.sendToPlayer(p, new MusicNet.Help());
                 }
-                default -> {
+                case 9 -> {
                     p.closeContainer();
                     PacketDistributor.sendToPlayer(p, new MusicNet.OpenDir());
+                }
+                default -> {
+                    p.closeContainer();
+                    askUpload(p, true);
                 }
             }
         }, null, x -> x.blockPosition().closerThan(pos, 8));
@@ -460,6 +466,69 @@ public final class Music {
         TOLD.remove(key);
         dropVisual(lv.getServer(), key);
         PacketDistributor.sendToAllPlayers(new MusicNet.Stop(key));
+    }
+
+    // ───────── 5.3.5 내 곡 올리기 (친구 컴퓨터 → 서버 폴더) ─────────
+    private static final class Incoming {
+        final String name;
+        final byte[][] parts;
+        int have;
+        long size;
+
+        Incoming(String name, int total) {
+            this.name = name;
+            this.parts = new byte[total][];
+        }
+    }
+
+    private static final Map<UUID, Incoming> INCOMING = new HashMap<>();
+
+    /** 서버 폴더에 있는 곡 목록을 보내 클라이언트가 없는 것만 올리게 */
+    public static void askUpload(ServerPlayer p, boolean manual) {
+        StringBuilder sb = new StringBuilder();
+        try (var st = Files.list(dir())) {
+            for (Path f : (Iterable<Path>) st::iterator) sb.append(f.getFileName()).append('\t').append(Files.size(f)).append('\n');
+        } catch (IOException ignored) {
+        }
+        PacketDistributor.sendToPlayer(p, new MusicNet.UploadAsk(sb.toString(), manual));
+    }
+
+    private static boolean okName(String n) {
+        String l = n.toLowerCase(Locale.ROOT);
+        return !n.isBlank() && n.length() <= 120 && !n.contains("/") && !n.contains("\\") && !n.contains("..") && !n.startsWith(".")
+                && n.chars().noneMatch(ch -> ch < 32 || ":*?\"<>|".indexOf(ch) >= 0)
+                && (l.endsWith(".ogg") || l.endsWith(".mid") || l.endsWith(".midi"));
+    }
+
+    public static void receive(ServerPlayer p, MusicNet.Up u) {
+        boolean midi = !u.name().toLowerCase(Locale.ROOT).endsWith(".ogg");
+        long max = midi ? MAX_MID : MAX_OGG;
+        if (!okName(u.name()) || u.total() <= 0 || (long) u.total() * MusicNet.Up.SIZE > max + MusicNet.Up.SIZE || u.index() < 0 || u.index() >= u.total()) return;
+        Incoming in = INCOMING.get(p.getUUID());
+        if (in == null || !in.name.equals(u.name()) || in.parts.length != u.total()) {
+            in = new Incoming(u.name(), u.total());
+            INCOMING.put(p.getUUID(), in);
+        }
+        if (in.parts[u.index()] != null) return;
+        in.parts[u.index()] = u.data();
+        in.size += u.data().length;
+        if (in.size > max) {
+            INCOMING.remove(p.getUUID());
+            say(p, "파일이 너무 커요: " + u.name(), ChatFormatting.RED);
+            return;
+        }
+        if (++in.have < in.parts.length) return;
+        INCOMING.remove(p.getUUID());
+        try {
+            java.io.ByteArrayOutputStream all = new java.io.ByteArrayOutputStream();
+            for (byte[] b : in.parts) all.write(b);
+            Path tmp = dir().resolve(".upload-" + p.getUUID() + ".tmp");
+            Files.write(tmp, all.toByteArray());
+            Files.move(tmp, dir().resolve(in.name), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            say(p, "🎵 서버에 올렸어요: " + title(in.name), ChatFormatting.GREEN);
+        } catch (Exception e) {
+            say(p, "올리지 못했어요: " + in.name, ChatFormatting.RED);
+        }
     }
 
     public static void request(ServerPlayer p, String sha) {
