@@ -285,6 +285,110 @@ public final class Derby {
     private static Direction gateFacing = Direction.NORTH;
     private static ServerLevel raceLevel;
 
+    // ───────── 5.3.3 경마 관전 ─────────
+    /** 관전 중인 사람 → 돌아갈 자리 */
+    private static final java.util.Map<UUID, CompoundTag> WATCH = new java.util.HashMap<>();
+    private static final String WATCH_TAG = "wp_derby_watch";
+    private static int restoreIn = -1, camLeader = -1;
+
+    /** /racewatch: 경주 중이면 관전 시작 (관전 중이면 끝내기) */
+    public static void watch(ServerPlayer p) {
+        if (WATCH.containsKey(p.getUUID())) {
+            restore(p);
+            msg(p, "📺 관전을 끝냈어요", ChatFormatting.YELLOW);
+            return;
+        }
+        if (raceTick < 0) {
+            msg(p, "📺 지금은 경주 중이 아니에요 (매일 오후 3시)", ChatFormatting.YELLOW);
+            return;
+        }
+        if (gate == null || raceLevel == null || RUNNERS.isEmpty()) {
+            msg(p, "📺 출발 게이트가 없는 경주라 화면 관전은 못 해요 · 순위는 화면 아래에 계속 떠요", ChatFormatting.YELLOW);
+            return;
+        }
+        CompoundTag t = new CompoundTag();
+        t.putString("dim", p.level().dimension().identifier().toString());
+        t.putDouble("x", p.getX());
+        t.putDouble("y", p.getY());
+        t.putDouble("z", p.getZ());
+        t.putFloat("yaw", p.getYRot());
+        t.putFloat("pitch", p.getXRot());
+        t.putBoolean("creative", p.isCreative());
+        p.getPersistentData().put(WATCH_TAG, t);
+        WATCH.put(p.getUUID(), t);
+        p.setGameMode(net.minecraft.world.level.GameType.SPECTATOR);
+        Direction left = gateFacing.getCounterClockWise();
+        double cx = gate.getX() + 0.5 + left.getStepX() * 10, cz = gate.getZ() + 0.5 + left.getStepZ() * 10;
+        p.teleportTo(raceLevel, cx, gate.getY() + 14.0, cz, java.util.Set.of(), gateFacing.toYRot(), 50F, true);
+        camLeader = -1;
+        p.sendSystemMessage(Component.literal("📺 경주 관전 중 · 1등 말을 따라가요. 웅크리면 자유 시점, /racewatch 로 끝내기 (경주가 끝나면 원래 자리로)").withStyle(ChatFormatting.AQUA));
+    }
+
+    private static void restore(ServerPlayer p) {
+        CompoundTag t = WATCH.remove(p.getUUID());
+        if (t == null) t = p.getPersistentData().getCompoundOrEmpty(WATCH_TAG);
+        p.getPersistentData().remove(WATCH_TAG);
+        if (t.isEmpty()) return;
+        p.setCamera(p);
+        p.setGameMode(t.getBooleanOr("creative", false) ? net.minecraft.world.level.GameType.CREATIVE : net.minecraft.world.level.GameType.SURVIVAL);
+        ServerLevel lv = p.level().getServer().overworld();
+        for (ServerLevel l : p.level().getServer().getAllLevels()) if (l.dimension().identifier().toString().equals(t.getStringOr("dim", ""))) lv = l;
+        p.teleportTo(lv, t.getDoubleOr("x", p.getX()), t.getDoubleOr("y", p.getY()), t.getDoubleOr("z", p.getZ()), java.util.Set.of(),
+                t.getFloatOr("yaw", 0F), t.getFloatOr("pitch", 0F), true);
+    }
+
+    /** 경주 중 순위 (진행률 높은 순) */
+    private static Integer[] standings() {
+        Integer[] o = new Integer[finish.length];
+        for (int i = 0; i < o.length; i++) o[i] = i;
+        java.util.Arrays.sort(o, Comparator.comparingDouble(i -> -(raceTick / finish[i] + Math.sin(raceTick * 0.05 + i * 1.7) * 0.012 * Math.max(0, 1 - raceTick / finish[i]))));
+        return o;
+    }
+
+    /** 관전자 카메라 · 순위 표시 (마권을 산 사람 · 관전자에게) */
+    private static void broadcastLive(MinecraftServer s) {
+        if (finish.length == 0) return;
+        Integer[] o = standings();
+        if (raceTick % 10 == 0) {
+            StringBuilder sb = new StringBuilder("🏇 ");
+            for (int k = 0; k < Math.min(3, o.length); k++)
+                sb.append(k > 0 ? " · " : "").append(k + 1).append("위 ").append(o[k] + 1).append("번 ").append(raceField.get(o[k]).name());
+            double lead = Math.min(1.0, raceTick / finish[o[0]]);
+            sb.append(String.format("  (%d%%)", (int) (lead * 100)));
+            java.util.Set<String> bettors = new java.util.HashSet<>();
+            long day = today(s);
+            for (Tag t : sec(s).getListOrEmpty("bets")) {
+                CompoundTag b = (CompoundTag) t;
+                if (b.getLongOr("day", -1) == day) bettors.add(b.getStringOr("by", ""));
+            }
+            Component line = Component.literal(sb.toString()).withStyle(ChatFormatting.GOLD);
+            for (ServerPlayer p : s.getPlayerList().getPlayers())
+                if (WATCH.containsKey(p.getUUID()) || bettors.contains(p.getUUID().toString()) || raceLevel != null && gate != null && p.level() == raceLevel && p.blockPosition().closerThan(gate, 64))
+                    p.sendOverlayMessage(line);
+        }
+        if (WATCH.isEmpty() || RUNNERS.isEmpty()) return;
+        int leader = o[0];
+        if (leader != camLeader || raceTick % 40 == 0) {
+            camLeader = leader;
+            Entity cam = leader < RUNNERS.size() ? RUNNERS.get(leader) : null;
+            if (cam == null || cam.isRemoved()) return;
+            for (UUID id : WATCH.keySet()) {
+                ServerPlayer p = s.getPlayerList().getPlayer(id);
+                if (p != null && p.isSpectator() && !p.isShiftKeyDown()) p.setCamera(cam);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onLogin(net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer p && p.getPersistentData().contains(WATCH_TAG) && !WATCH.containsKey(p.getUUID())) restore(p);
+    }
+
+    @SubscribeEvent
+    public static void onLogout(net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent event) {
+        if (event.getEntity() instanceof ServerPlayer p && WATCH.containsKey(p.getUUID())) restore(p);
+    }
+
     /** 출발 게이트가 놓이면 경주 길을 기억 */
     public static void registerGate(ServerLevel level, BlockPos pos, Direction facing) {
         CompoundTag d = sec(level.getServer());
@@ -297,9 +401,17 @@ public final class Derby {
     @SubscribeEvent
     public static void onTick(ServerTickEvent.Post event) {
         MinecraftServer s = event.getServer();
+        if (restoreIn > 0 && --restoreIn == 0) {
+            for (UUID id : new ArrayList<>(WATCH.keySet())) {
+                ServerPlayer p = s.getPlayerList().getPlayer(id);
+                if (p != null) restore(p);
+                else WATCH.remove(id);
+            }
+        }
         if (raceTick >= 0) {
             raceTick++;
             move();
+            broadcastLive(s);
             int end = (int) java.util.Arrays.stream(finish).max().orElse(0) + 60;
             if (raceTick >= end) endRace(s);
             return;
@@ -355,6 +467,8 @@ public final class Derby {
         StringBuilder sb = new StringBuilder("🏇 출발! ");
         for (int i = 0; i < raceField.size(); i++) sb.append(i + 1).append("번 ").append(raceField.get(i).name()).append(i < raceField.size() - 1 ? " · " : "");
         s.getPlayerList().broadcastSystemMessage(Component.literal(sb.toString()).withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD), false);
+        if (gate != null) s.getPlayerList().broadcastSystemMessage(Component.literal("   [📺 눌러서 관전하기]").withStyle(s2 -> s2.withColor(ChatFormatting.AQUA).withUnderlined(true)
+                .withClickEvent(new net.minecraft.network.chat.ClickEvent.RunCommand("/racewatch"))), false);
     }
 
     private record Pos(double x, double z, float yaw) {}
@@ -389,6 +503,13 @@ public final class Derby {
     }
 
     private static void endRace(MinecraftServer s) {
+        if (!WATCH.isEmpty()) {
+            restoreIn = 100; // 결과 · 불꽃놀이를 보고 5초 뒤 원래 자리로
+            for (UUID id : WATCH.keySet()) {
+                ServerPlayer p = s.getPlayerList().getPlayer(id);
+                if (p != null) p.setCamera(p);
+            }
+        }
         raceTick = -1;
         for (Entity e : RUNNERS) e.discard();
         RUNNERS.clear();
@@ -578,6 +699,10 @@ public final class Derby {
     // ───────── 시험 명령: /derby race ─────────
     @SubscribeEvent
     public static void onCommands(net.neoforged.neoforge.event.RegisterCommandsEvent event) {
+        event.getDispatcher().register(net.minecraft.commands.Commands.literal("racewatch").executes(ctx -> {
+            if (ctx.getSource().getEntity() instanceof ServerPlayer p) watch(p);
+            return 1;
+        }));
         event.getDispatcher().register(net.minecraft.commands.Commands.literal("derby")
                 .requires(net.minecraft.commands.Commands.hasPermission(net.minecraft.commands.Commands.LEVEL_GAMEMASTERS))
                 .then(net.minecraft.commands.Commands.literal("race").executes(ctx -> {
