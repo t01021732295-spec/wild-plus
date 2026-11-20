@@ -21,7 +21,7 @@ public class BettingScreen extends AbstractContainerScreen<PickMenu> {
     private static final String[] TYPE_SUB = {"1등을 맞혀요", "2등 안에 들면", "3등 안에 들면"};
     private static final String[] CHIP = {"1천", "5천", "1만", "5만"};
     private static final long[] CHIPS = {1_000, 5_000, 10_000, 50_000};
-    private int sel, type, chip = 2, count = 1;
+    private static int sel, type, chip = 2, count = 1; // 마권을 사고 화면이 다시 열려도 고른 것 유지
     private UiButton buy;
     private final List<UiButton> rows = new ArrayList<>();
 
