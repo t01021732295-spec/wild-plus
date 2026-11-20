@@ -127,6 +127,10 @@ public class PickMenu extends AbstractContainerMenu {
             onPick.accept(id);
             return true;
         }
+        if ((flags & FLAG_DERBY_BET) != 0 && id >= 1000 && onPick != null) { // 마권 (말 · 종류 · 칩 · 장수를 번호에 담음)
+            onPick.accept(id);
+            return true;
+        }
         if (id >= DEC && id - DEC < entries.size() && onPick != null) { // 설정 ◀
             onPick.accept(id);
             return true;

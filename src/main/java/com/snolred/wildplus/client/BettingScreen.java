@@ -21,7 +21,7 @@ public class BettingScreen extends AbstractContainerScreen<PickMenu> {
     private static final String[] TYPE_SUB = {"1등을 맞혀요", "2등 안에 들면", "3등 안에 들면"};
     private static final String[] CHIP = {"1천", "5천", "1만", "5만"};
     private static final long[] CHIPS = {1_000, 5_000, 10_000, 50_000};
-    private int sel, type, chip = 2;
+    private int sel, type, chip = 2, count = 1;
     private UiButton buy;
     private final List<UiButton> rows = new ArrayList<>();
 
@@ -68,9 +68,11 @@ public class BettingScreen extends AbstractContainerScreen<PickMenu> {
             final int k = c;
             addRenderableWidget(new Clear(tx + 8 + c * 36, topPos + 126, 30, 16, () -> chip = k));
         }
-        buy = addRenderableWidget(UiButton.of(tx, topPos + 192, W - 252, 18, "🎫 마권 사기", UiButton.ORANGE, () -> {
+        addRenderableWidget(UiButton.of(tx, topPos + 192, 16, 18, "◀", UiButton.WHITE, () -> count = Math.max(1, count - 1)));
+        addRenderableWidget(UiButton.of(tx + 48, topPos + 192, 16, 18, "▶", UiButton.WHITE, () -> count = Math.min(10, count + 1)));
+        buy = addRenderableWidget(UiButton.of(tx + 68, topPos + 192, W - 252 - 68, 18, "🎫 마권 사기", UiButton.ORANGE, () -> {
             if (this.minecraft != null && this.minecraft.gameMode != null)
-                this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 1000 + sel * 100 + type * 10 + chip);
+                this.minecraft.gameMode.handleInventoryButtonClick(this.menu.containerId, 100000 + count * 1000 + sel * 100 + type * 10 + chip);
         }));
     }
 
@@ -130,6 +132,17 @@ public class BettingScreen extends AbstractContainerScreen<PickMenu> {
             UiKit.round(g, cx, y + 126, 30, 16, 7, chipC[c]);
         }
         g.fill(tx + 8, y + 148, x + W - 14, y + 149, 0xFFD2C8AF);
+        UiKit.round(g, tx + 17, y + 192, 30, 18, 3, 0xFFFCF8EB);
+    }
+
+    @Override
+    public boolean mouseScrolled(double mx, double my, double dx, double dy) {
+        int tx = leftPos + 244;
+        if (mx >= tx && mx < tx + 64 && my >= topPos + 188 && my < topPos + 214) {
+            count = Math.max(1, Math.min(10, count + (dy > 0 ? 1 : -1)));
+            return true;
+        }
+        return super.mouseScrolled(mx, my, dx, dy);
     }
 
     private static float num(String[] a, int i) {
@@ -185,8 +198,9 @@ public class BettingScreen extends AbstractContainerScreen<PickMenu> {
         g.text(font, TYPE_SUB[type] + " · 건 돈", tx + 10, 113, 0xFF6E6E78, false);
         for (int c = 0; c < 4; c++) UiKit.center(g, CHIP[c], tx + 23 + c * 36, 130, 0xFFFFFFFF);
         double o = sel < horses() ? odds(sel, type) : 0;
-        g.text(font, String.format("%,d동 × %.1f배 → 당첨 시", CHIPS[chip], o), tx + 10, 154, 0xFF3C4650, false);
-        String win = String.format("%,d동", Math.round(CHIPS[chip] * o));
+        UiKit.center(g, count + "장", tx + 32, 197, 0xFF23305A);
+        g.text(font, count > 1 ? String.format("%,d동×%d장×%.1f배 → 당첨 시", CHIPS[chip], count, o) : String.format("%,d동 × %.1f배 → 당첨 시", CHIPS[chip], o), tx + 10, 154, 0xFF3C4650, false);
+        String win = String.format("%,d동", Math.round(CHIPS[chip] * count * o));
         UiKit.big(g, win, W - 14 - UiKit.bigWidth(win, 2), 166, 2, 0xFFB0283A);
         g.text(font, in.length > 3 ? in[3] : "", tx, 214, 0xFFBEE6C8, false);
         if (in.length > 4 && !in[4].isEmpty()) {

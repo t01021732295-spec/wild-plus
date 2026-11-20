@@ -570,7 +570,11 @@ public final class Derby {
         if (gate != null && raceLevel != null) Contest.fireworks(raceLevel, gate, 3);
     }
 
-    private static void bet(ServerPlayer p, int horse, int type, int chip) {
+    private static int count(CompoundTag b) {
+        return Math.max(1, b.getIntOr("count", 1));
+    }
+
+    private static void bet(ServerPlayer p, int horse, int type, int chip, int count) {
         MinecraftServer s = p.level().getServer();
         if (!betsOpen(s)) {
             msg(p, "🎫 지금은 마권을 살 수 없어요 (오전 6시 ~ 오후 3시)", ChatFormatting.YELLOW);
@@ -580,12 +584,13 @@ public final class Derby {
         if (horse < 0 || horse >= f.size() || type < 0 || type > 2 || chip < 0 || chip >= CHIPS.length) return;
         ListTag bets = sec(s).getListOrEmpty("bets");
         int mine = 0;
-        for (Tag t : bets) if (((CompoundTag) t).getStringOr("by", "").equals(p.getUUID().toString()) && ((CompoundTag) t).getLongOr("day", -1) == today(s)) mine++;
+        for (Tag t : bets) if (((CompoundTag) t).getStringOr("by", "").equals(p.getUUID().toString()) && ((CompoundTag) t).getLongOr("day", -1) == today(s)) mine += count((CompoundTag) t);
         if (mine >= 10) {
             msg(p, "한 경주에 마권은 10장까지", ChatFormatting.YELLOW);
             return;
         }
-        long amount = CHIPS[chip];
+        count = Math.max(1, Math.min(count, 10 - mine));
+        long amount = CHIPS[chip] * count;
         if (!Honor.pay(p, amount)) {
             msg(p, String.format("돈이 모자라요 (%,d동)", amount), ChatFormatting.RED);
             return;
@@ -597,12 +602,13 @@ public final class Derby {
         b.putInt("horse", horse);
         b.putInt("type", type);
         b.putLong("amount", amount);
+        b.putInt("count", count);
         b.putDouble("odds", o);
         bets.add(b);
         sec(s).put("bets", bets);
         ContentData.get(s).dirty();
         p.level().playSound(null, p.blockPosition(), SoundEvents.UI_STONECUTTER_TAKE_RESULT, SoundSource.PLAYERS, 0.8F, 1.2F);
-        p.sendSystemMessage(Component.literal(String.format("🎫 마권: %d번 %s · %s · %,d동 × %.1f배 = %,d동", horse + 1, f.get(horse).name(), TYPES[type], amount, o,
+        p.sendSystemMessage(Component.literal(String.format("🎫 마권 %d장: %d번 %s · %s · %,d동 × %.1f배 = %,d동", count, horse + 1, f.get(horse).name(), TYPES[type], amount, o,
                 Math.round(amount * o))).withStyle(ChatFormatting.GOLD));
     }
 
@@ -623,7 +629,7 @@ public final class Derby {
         for (Tag t : sec(s).getListOrEmpty("bets")) {
             CompoundTag b = (CompoundTag) t;
             if (b.getStringOr("by", "").equals(p.getUUID().toString()) && b.getLongOr("day", -1) == today(s)) {
-                myN++;
+                myN += count(b);
                 myAmt += b.getLongOr("amount", 0);
             }
         }
@@ -639,9 +645,13 @@ public final class Derby {
                     new ItemStack(com.snolred.wildplus.registry.ModItems18.RACE_HORSES.get(r.coat() % 6).get())));
         }
         PickMenu.open(p, Component.literal("🏇 야생 경마장"), "", "", rows, PickMenu.FLAG_DERBY_BET, id -> {
-            if (id >= 1000) {
+            if (id >= 100000) { // 5.3.4: 100000 + 장수×1000 + 말×100 + 종류×10 + 칩
+                int k = id - 100000;
+                bet(p, (k % 1000) / 100, (k / 10) % 10, k % 10, k / 1000);
+                openBetting(p, pos);
+            } else if (id >= 1000) {
                 int k = id - 1000;
-                bet(p, k / 100, (k / 10) % 10, k % 10);
+                bet(p, k / 100, (k / 10) % 10, k % 10, 1);
                 openBetting(p, pos);
             }
         }, null, pl -> pl.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) < 64.0);
