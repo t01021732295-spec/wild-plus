@@ -67,6 +67,12 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
                             && menu.material().getCount() >= EnhanceMenu.LIFESTEAL_COST;
                     continue;
                 }
+                if (engrave && menu.material().is(com.snolred.wildplus.registry.ModItems37.ENGRAVE_EXPANDER.get())) { // 5.3.2 각인 확장석
+                    b.setMessage(Component.literal("칸 늘리기"));
+                    b.style(UiButton.TEAL);
+                    b.active = com.snolred.wildplus.event.RubyGear.engraveSlots(menu.item()) < 2;
+                    continue;
+                }
                 b.setMessage(Component.literal(String.format("%,d동", star ? EnhanceMenu.STAR_COST : engrave ? EnhanceMenu.ENGRAVE_COST : EnhanceMenu.TRUE_DMG_COST)));
                 b.style(star ? UiButton.RED : engrave ? UiButton.TEAL : UiButton.ORANGE);
                 b.active = star ? menu.material().is(com.snolred.wildplus.registry.ModItems9.upgradeMaterial(menu.item().getItem()))
@@ -187,7 +193,12 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
                 UiKit.text(g, have + "/" + EnhanceMenu.LIFESTEAL_COST, 150, ry, have >= EnhanceMenu.LIFESTEAL_COST ? 0xFF22A35A : soft);
             } else if (sp.get(i) == EnhanceMenu.BTN_ENGRAVE) {
                 String kind = EnhanceMenu.engraveKind(menu.material());
-                UiKit.bold(g, kind.isEmpty() ? "✦ 각인 (전리품 필요)" : "✦ " + EnhanceMenu.engraveName(kind), 68, ry, 0xFF0E6E64);
+                int slots = com.snolred.wildplus.event.RubyGear.engraveSlots(item);
+                String label = menu.material().is(com.snolred.wildplus.registry.ModItems37.ENGRAVE_EXPANDER.get())
+                        ? (slots >= 2 ? "✦ 이미 각인 2칸" : "✦ 각인 칸 확장 1 → 2칸")
+                        : !kind.isEmpty() ? "✦ " + EnhanceMenu.engraveName(kind)
+                        : !com.snolred.wildplus.event.RubyGear.canEngraveMore(item) ? "✦ 각인 칸 가득 (확장석 필요)" : "✦ 각인 (각인석 필요)";
+                UiKit.bold(g, label, 68, ry, 0xFF0E6E64);
             } else {
                 int lv = com.snolred.wildplus.event.RubyGear.trueLevel(item);
                 UiKit.text(g, String.format("고정 피해 %.1f", 4 + 0.5 * lv), 68, ry, ink);
