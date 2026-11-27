@@ -1149,5 +1149,8 @@
   "block.wildplus.sanctum_altar": "Sanctum Altar",
   "item.wildplus.silence_incense": "Silence Incense",
   "item.wildplus.engrave_eraser": "Engraving Eraser",
-  "tooltip.wildplus.engrave_eraser": "Put in the enhance table material slot\nRemoves one engraving (latest first)"
+  "tooltip.wildplus.engrave_eraser": "Put in the enhance table material slot\nRemoves one engraving (latest first)",
+  "item.wildplus.ruby_coin": "Ruby Coin",
+  "item.wildplus.ruby_backpack": "Ruby Backpack",
+  "gui.wildplus.backpack.tier5": "Ruby Backpack"
 }

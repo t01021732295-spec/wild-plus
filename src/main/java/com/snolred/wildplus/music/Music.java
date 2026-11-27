@@ -75,7 +75,7 @@ public final class Music {
         final List<Midi.Note> notes;
         final String title;
         final long start = System.currentTimeMillis();
-        int next;
+        int next, shift;
 
         Performance(ServerLevel level, BlockPos pos, List<Midi.Note> notes, String title) {
             this.level = level;
@@ -551,6 +551,10 @@ public final class Music {
             return true;
         }
         String key = keyOf(lv, m);
+        if (p.isShiftKeyDown()) { // 5.3.7 웅크리고 누르면 음 높이 고르기
+            pitchMenu(p, lv, m, key);
+            return true;
+        }
         if (PIANOS.containsKey(key)) {
             PIANOS.remove(key);
             say(p, "연주를 멈췄어요", ChatFormatting.YELLOW);
@@ -567,17 +571,58 @@ public final class Music {
                 say(p, "악보에 음이 없어요", ChatFormatting.RED);
                 return true;
             }
-            PIANOS.put(key, new Performance(lv, m.immutable(), notes, title(file)));
-            p.sendSystemMessage(Component.literal("🎹 자동 연주: " + title(file) + " (악보를 들고 다시 누르면 멈춤)").withStyle(ChatFormatting.AQUA));
+            Performance perf = new Performance(lv, m.immutable(), notes, title(file));
+            perf.shift = shift(hand);
+            PIANOS.put(key, perf);
+            p.sendSystemMessage(Component.literal("🎹 자동 연주: " + title(file) + (perf.shift != 0 ? " · 음 높이 " + shiftLabel(perf.shift) : "")
+                    + " (악보를 들고 다시 누르면 멈춤 · 웅크리고 누르면 음 높이)").withStyle(ChatFormatting.AQUA));
         } catch (Exception e) {
             say(p, "악보를 읽지 못했어요 (MIDI 파일인지 확인)", ChatFormatting.RED);
         }
         return true;
     }
 
+    // ───────── 5.3.7 피아노 음 높이 (악보마다 저장, -24 ~ +24 반음) ─────────
+    private static final String SHIFT = "wp_pitch";
+
+    public static int shift(ItemStack s) {
+        return s.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag().getIntOr(SHIFT, 0);
+    }
+
+    private static String shiftLabel(int v) {
+        if (v == 0) return "원래대로";
+        String oct = v % 12 == 0 ? (Math.abs(v) / 12) + "옥타브" : Math.abs(v) + "반음";
+        return (v > 0 ? "▲ " : "▼ ") + oct + (v > 0 ? " 높게" : " 낮게");
+    }
+
+    private static void pitchMenu(ServerPlayer p, ServerLevel lv, BlockPos m, String key) {
+        int cur = shift(p.getMainHandItem());
+        int[] step = {12, 1, 0, -1, -12};
+        String[] name = {"▲ 한 옥타브 높게", "▲ 반음 높게", "● 원래 높이로", "▼ 반음 낮게", "▼ 한 옥타브 낮게"};
+        List<PickMenu.Entry> e = new ArrayList<>();
+        for (int i = 0; i < step.length; i++)
+            e.add(new PickMenu.Entry(name[i], step[i] == 0 ? "음 높이를 처음으로" : "지금보다 " + (step[i] > 0 ? "+" : "") + step[i] + "반음",
+                    new ItemStack(i < 2 ? Items.SPECTRAL_ARROW : i == 2 ? Items.NOTE_BLOCK : Items.ARROW)));
+        PickMenu.open(p, Component.literal("🎹 피아노 음 높이"), "지금: " + shiftLabel(cur), "", e, PickMenu.FLAG_SHOP, i -> {
+            if (i < 0 || i >= step.length) return;
+            ItemStack hand = p.getMainHandItem();
+            if (!hand.is(ModItems29.SHEET_MUSIC.get())) return;
+            int v = step[i] == 0 ? 0 : Math.max(-24, Math.min(24, shift(hand) + step[i]));
+            CustomData.update(DataComponents.CUSTOM_DATA, hand, t -> t.putInt(SHIFT, v));
+            Performance perf = PIANOS.get(key);
+            if (perf != null) perf.shift = v;
+            lv.playSound(null, m, SoundEvents.NOTE_BLOCK_HARP.value(), SoundSource.RECORDS, 1F, (float) Math.pow(2.0, Math.max(-12, Math.min(12, v)) / 12.0));
+            pitchMenu(p, lv, m, key);
+        });
+    }
+
     /** 또렷한 타건: 하프 몸통 + 플링 어택. 음역에 따라 베이스 · 하프 · 벨로 나눠 실제 음높이를 맞춘다 */
     private static void strike(ServerLevel lv, BlockPos m, Midi.Note n) {
-        int key = n.key();
+        strike(lv, m, n, 0);
+    }
+
+    private static void strike(ServerLevel lv, BlockPos m, Midi.Note n, int shift) {
+        int key = n.key() + shift;
         while (key < 30) key += 12;
         while (key > 102) key -= 12;
         var body = key < 54 ? SoundEvents.NOTE_BLOCK_BASS : key > 78 ? SoundEvents.NOTE_BLOCK_BELL : SoundEvents.NOTE_BLOCK_HARP;
@@ -623,7 +668,7 @@ public final class Music {
             long at = now - perf.start;
             int played = 0;
             while (perf.next < perf.notes.size() && perf.notes.get(perf.next).ms() <= at && played < 16) {
-                strike(perf.level, perf.pos, perf.notes.get(perf.next++));
+                strike(perf.level, perf.pos, perf.notes.get(perf.next++), perf.shift);
                 played++;
             }
             return perf.next >= perf.notes.size();

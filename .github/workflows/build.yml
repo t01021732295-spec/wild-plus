@@ -1288,6 +1288,9 @@ jobs:
             cmd "/time set 3000"; cmd "/tp @s 774.3 119 -55.5 -90 20"; sleep 3; xdotool click 3; sleep 2
             xdotool mousemove 462 360; xdotool click 1; sleep 0.3; xdotool mousemove 840 526; xdotool click 1; sleep 0.2; xdotool click 1; sleep 0.5; shot v534-bet-count
             xdotool mousemove 944 526; xdotool click 1; sleep 2; shot v534-bet-bought; esc; cmd "/tp @s 396.5 120 -8.3 0 20"; sleep 2
+            cmd "/setblock 390 120 -6 wildplus:exchange[facing=north]"; cmd "/give @s wildplus:emerald_coin 23"; cmd "/give @s wildplus:ruby_coin 2"
+            cmd "/tp @s 390.5 120 -8.3 0 20"; sleep 2; xdotool click 3; sleep 2; shot v537-exchange; esc
+            cmd "/item replace entity @s weapon.mainhand with wildplus:ruby_backpack"; cmd "/tp @s 451.5 120 -4.5 0 -30"; sleep 1; xdotool click 3; sleep 2; shot v537-ruby-backpack; esc
             cmd "/wildplus uitest piglin"; sleep 2; shot v511-piglin; esc; cmd "/kill @e[type=minecraft:piglin]"
             cmd "/wildplus uitest netherbiome"; sleep 20
             cmd "/wildplus uitest econ"; sleep 1

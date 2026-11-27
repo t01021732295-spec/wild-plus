@@ -26,8 +26,8 @@ import org.jspecify.annotations.Nullable;
  * 버튼 = 종류 × 2 + (0: 한 번, 1: 전부). [정리] 은 가장 적은 개수로, [잔돈으로] 는 전부 동화로.
  */
 public class ExchangeMenu extends AbstractContainerMenu {
-    public static final int C2S = 0, S2G = 2, G2S = 4, S2C = 6, TIDY = 10, ALL_COPPER = 11, G2D = 12, D2G = 14, D2E = 16, E2D = 18;
-    public static final int DATA = 12;
+    public static final int C2S = 0, S2G = 2, G2S = 4, S2C = 6, TIDY = 10, ALL_COPPER = 11, G2D = 12, D2G = 14, D2E = 16, E2D = 18, E2R = 20, R2E = 22;
+    public static final int DATA = 13;
 
     private final ContainerData data;
     private final @Nullable BlockPos pos;
@@ -62,6 +62,7 @@ public class ExchangeMenu extends AbstractContainerMenu {
                     case 1 -> ModItems3.SILVER_COIN.get();
                     case 10 -> ModItems3.DIAMOND_COIN.get();
                     case 11 -> com.snolred.wildplus.registry.ModItems13.EMERALD_COIN.get();
+                    case 12 -> com.snolred.wildplus.registry.ModItems40.RUBY_COIN.get();
                     default -> ModItems3.GOLD_COIN.get();
                 };
                 return Math.min(32767, count(player, item));
@@ -95,6 +96,7 @@ public class ExchangeMenu extends AbstractContainerMenu {
     public int day() { return data.get(9); }
     public int diamond() { return data.get(10); }
     public int emerald() { return data.get(11); }
+    public int ruby() { return data.get(12); }
 
     private static int count(Player p, Item item) {
         int n = 0;
@@ -132,7 +134,7 @@ public class ExchangeMenu extends AbstractContainerMenu {
     public boolean clickMenuButton(Player who, int id) {
         if (!(who instanceof ServerPlayer sp)) return false;
         Item copper = ModItems3.COPPER_COIN.get(), silver = ModItems3.SILVER_COIN.get(), gold = ModItems3.GOLD_COIN.get();
-        Item diamond = ModItems3.DIAMOND_COIN.get(), emerald = com.snolred.wildplus.registry.ModItems13.EMERALD_COIN.get();
+        Item diamond = ModItems3.DIAMOND_COIN.get(), emerald = com.snolred.wildplus.registry.ModItems13.EMERALD_COIN.get(), ruby = com.snolred.wildplus.registry.ModItems40.RUBY_COIN.get();
         boolean special = id == TIDY || id == ALL_COPPER;
         boolean all = !special && id % 2 == 1;
         int kind = special ? id : id - id % 2;
@@ -148,9 +150,11 @@ public class ExchangeMenu extends AbstractContainerMenu {
             case D2G -> convert(sp, diamond, 1, gold, 10, all);
             case D2E -> convert(sp, diamond, 10, emerald, 1, all);
             case E2D -> convert(sp, emerald, 1, diamond, 10, all);
+            case E2R -> convert(sp, emerald, 10, ruby, 1, all);
+            case R2E -> convert(sp, ruby, 1, emerald, 10, all);
             // 정리: 가능한 만큼 큰 동전으로 / 잔돈: 전부 동화로 (모두 오늘 환율)
-            case TIDY -> convert(sp, copper, sBuy, silver, 1, true) | convert(sp, silver, gBuy, gold, 1, true) | convert(sp, gold, 10, diamond, 1, true) | convert(sp, diamond, 10, emerald, 1, true);
-            case ALL_COPPER -> convert(sp, emerald, 1, diamond, 10, true) | convert(sp, diamond, 1, gold, 10, true) | convert(sp, gold, 1, silver, gSell, true) | convert(sp, silver, 1, copper, sSell, true);
+            case TIDY -> convert(sp, copper, sBuy, silver, 1, true) | convert(sp, silver, gBuy, gold, 1, true) | convert(sp, gold, 10, diamond, 1, true) | convert(sp, diamond, 10, emerald, 1, true) | convert(sp, emerald, 10, ruby, 1, true);
+            case ALL_COPPER -> convert(sp, ruby, 1, emerald, 10, true) | convert(sp, emerald, 1, diamond, 10, true) | convert(sp, diamond, 1, gold, 10, true) | convert(sp, gold, 1, silver, gSell, true) | convert(sp, silver, 1, copper, sSell, true);
             default -> false;
         };
         if (ok) {

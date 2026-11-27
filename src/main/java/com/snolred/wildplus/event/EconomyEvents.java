@@ -117,7 +117,8 @@ public final class EconomyEvents {
         Player p = event.getEntity();
         if (!p.isShiftKeyDown()) return;
         ItemStack s = event.getItemStack();
-        net.minecraft.world.item.Item to = s.is(com.snolred.wildplus.registry.ModItems13.EMERALD_COIN.get()) ? ModItems3.DIAMOND_COIN.get()
+        net.minecraft.world.item.Item to = s.is(com.snolred.wildplus.registry.ModItems40.RUBY_COIN.get()) ? com.snolred.wildplus.registry.ModItems13.EMERALD_COIN.get()
+                : s.is(com.snolred.wildplus.registry.ModItems13.EMERALD_COIN.get()) ? ModItems3.DIAMOND_COIN.get()
                 : s.is(ModItems3.DIAMOND_COIN.get()) ? ModItems3.GOLD_COIN.get() : null;
         if (to == null) return;
         event.setCanceled(true);
