@@ -613,7 +613,7 @@ public final class Music {
             if (perf != null) perf.shift = v;
             lv.playSound(null, m, SoundEvents.NOTE_BLOCK_HARP.value(), SoundSource.RECORDS, 1F, (float) Math.pow(2.0, Math.max(-12, Math.min(12, v)) / 12.0));
             pitchMenu(p, lv, m, key);
-        });
+        }, null, x -> x.blockPosition().closerThan(m, 8));
     }
 
     /** 또렷한 타건: 하프 몸통 + 플링 어택. 음역에 따라 베이스 · 하프 · 벨로 나눠 실제 음높이를 맞춘다 */
