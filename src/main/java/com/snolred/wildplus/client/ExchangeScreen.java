@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
  * 환전소: 은행 창구 느낌. 위에는 검은 LED 환율 고시판, 가운데 동전 3종 카드, 아래 올리기(초록)·내리기(파랑) 창구 버튼.
  */
 public class ExchangeScreen extends AbstractContainerScreen<ExchangeMenu> {
-    private static final int W = 300, H = 328;
+    private static final int W = 360, H = 226;
 
     public ExchangeScreen(ExchangeMenu menu, Inventory inv, Component title) {
         super(menu, inv, title, W, H);
@@ -24,16 +24,16 @@ public class ExchangeScreen extends AbstractContainerScreen<ExchangeMenu> {
         int[] ids = {ExchangeMenu.C2S, ExchangeMenu.S2G, ExchangeMenu.G2D, ExchangeMenu.D2E, ExchangeMenu.E2R,
                 ExchangeMenu.R2E, ExchangeMenu.E2D, ExchangeMenu.D2G, ExchangeMenu.G2S, ExchangeMenu.S2C};
         rateButtons.clear();
-        for (int r = 0; r < 10; r++) {
-            int y = topPos + 96 + r * 18 + (r >= 5 ? 16 : 0);
+        for (int r = 0; r < 10; r++) { // 왼쪽 열 = 올리기 5줄, 오른쪽 열 = 내리기 5줄
+            boolean down = r >= 5;
+            int y = topPos + 100 + (r % 5) * 18, cx = leftPos + (down ? 184 : 10);
             int id = ids[r];
-            UiButton.Style st = r < 5 ? UiButton.GREEN : UiButton.BLUE;
-            rateButtons.add(btn("", id, leftPos + 10, y, 192, st));
-            btn("전부", id + 1, leftPos + 206, y, 84, UiButton.WHITE);
+            rateButtons.add(btn("", id, cx, y, 130, down ? UiButton.BLUE : UiButton.GREEN));
+            btn("전부", id + 1, cx + 133, y, 33, UiButton.WHITE);
         }
         updateLabels();
-        btn("가장 적은 개수로 정리", ExchangeMenu.TIDY, leftPos + 10, topPos + H - 26, 176, UiButton.GOLD);
-        btn("전부 동화로", ExchangeMenu.ALL_COPPER, leftPos + 190, topPos + H - 26, 100, UiButton.WHITE);
+        btn("가장 적은 개수로 정리", ExchangeMenu.TIDY, leftPos + 10, topPos + H - 26, 200, UiButton.GOLD);
+        btn("전부 동화로", ExchangeMenu.ALL_COPPER, leftPos + 214, topPos + H - 26, 136, UiButton.WHITE);
     }
 
     private final java.util.List<UiButton> rateButtons = new java.util.ArrayList<>();
@@ -42,12 +42,12 @@ public class ExchangeScreen extends AbstractContainerScreen<ExchangeMenu> {
         if (rateButtons.size() < 10) return;
         rateButtons.get(0).setMessage(Component.literal("동화 " + menu.silverBuy() + " → 은화 1"));
         rateButtons.get(1).setMessage(Component.literal("은화 " + menu.goldBuy() + " → 금화 1"));
-        rateButtons.get(2).setMessage(Component.literal("금화 10 → 다이아화 1"));
-        rateButtons.get(3).setMessage(Component.literal("다이아화 10 → 에메랄드화 1"));
-        rateButtons.get(4).setMessage(Component.literal("에메랄드화 10 → 루비화 1"));
-        rateButtons.get(5).setMessage(Component.literal("루비화 1 → 에메랄드화 10"));
-        rateButtons.get(6).setMessage(Component.literal("에메랄드화 1 → 다이아화 10"));
-        rateButtons.get(7).setMessage(Component.literal("다이아화 1 → 금화 10"));
+        rateButtons.get(2).setMessage(Component.literal("금화 10 → 다이아 1"));
+        rateButtons.get(3).setMessage(Component.literal("다이아 10 → 에메랄드 1"));
+        rateButtons.get(4).setMessage(Component.literal("에메랄드 10 → 루비 1"));
+        rateButtons.get(5).setMessage(Component.literal("루비 1 → 에메랄드 10"));
+        rateButtons.get(6).setMessage(Component.literal("에메랄드 1 → 다이아 10"));
+        rateButtons.get(7).setMessage(Component.literal("다이아 1 → 금화 10"));
         rateButtons.get(8).setMessage(Component.literal("금화 1 → 은화 " + menu.goldSell()));
         rateButtons.get(9).setMessage(Component.literal("은화 1 → 동화 " + menu.silverSell()));
     }
@@ -84,13 +84,13 @@ public class ExchangeScreen extends AbstractContainerScreen<ExchangeMenu> {
         net.minecraft.world.item.Item[] coins = {ModItems3.COPPER_COIN.get(), ModItems3.SILVER_COIN.get(), ModItems3.GOLD_COIN.get(),
                 ModItems3.DIAMOND_COIN.get(), com.snolred.wildplus.registry.ModItems13.EMERALD_COIN.get(), com.snolred.wildplus.registry.ModItems40.RUBY_COIN.get()};
         for (int k = 0; k < 6; k++) {
-            int cx = x + 10 + k * 47;
-            UiKit.card(g, cx, y + 54, 45, 26, tints[k], borders[k]);
+            int cx = x + 10 + k * 57;
+            UiKit.card(g, cx, y + 54, 54, 26, tints[k], borders[k]);
             g.item(new ItemStack(coins[k]), cx + 2, y + 59);
         }
         // 구역 띠
         UiKit.hline(g, x + 8, y + 84, W - 16, 0xFFCFC7B8);
-        UiKit.hline(g, x + 8, y + 185, W - 16, 0xFFCFC7B8);
+        g.fill(x + 179, y + 88, x + 180, y + H - 36, 0xFFCFC7B8);
         UiKit.hline(g, x + 8, y + H - 32, W - 16, 0xFFCFC7B8);
     }
 
@@ -107,14 +107,14 @@ public class ExchangeScreen extends AbstractContainerScreen<ExchangeMenu> {
         String[] names = {"동화", "은화", "금화", "다이아", "에메랄드", "루비"};
         int[] colors = {0xFF8A4A1A, 0xFF4A525C, 0xFF7A5400, 0xFF0E7C86, 0xFF0E7A3A, 0xFFA8182C};
         for (int k = 0; k < 6; k++) {
-            int cx = 10 + k * 47;
+            int cx = 10 + k * 57;
             UiKit.text(g, names[k], cx + 20, 57, colors[k]);
             UiKit.bold(g, String.format("%,d", counts[k]), cx + 20, 68, UiKit.INK);
         }
-        UiKit.bold(g, "▲ 올리기", 10, 86, 0xFF1E8A4C);
-        UiKit.text(g, "작은 동전을 큰 동전으로", 66, 86, UiKit.INK_SOFT);
-        UiKit.bold(g, "▼ 내리기", 10, 188, 0xFF2563D9);
-        UiKit.text(g, "잔돈 만들기", 66, 188, UiKit.INK_SOFT);
+        UiKit.bold(g, "▲ 올리기", 10, 88, 0xFF1E8A4C);
+        UiKit.text(g, "큰 동전으로", 66, 88, UiKit.INK_SOFT);
+        UiKit.bold(g, "▼ 내리기", 184, 88, 0xFF2563D9);
+        UiKit.text(g, "잔돈 만들기", 240, 88, UiKit.INK_SOFT);
     }
 
     @Override

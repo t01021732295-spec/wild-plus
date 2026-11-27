@@ -15,8 +15,8 @@ import net.minecraft.world.level.Level;
 
 /** 배낭: 동(30칸) · 은(50칸) · 금(70칸) · 다이아(98칸) · 에메랄드(128칸). 들고 우클릭하면 열린다. 내용물은 아이템 자체에 저장. */
 public class BackpackItem extends Item {
-    public static final int[] COLS = {10, 10, 10, 14, 16, 18};
-    public static final int[] ROWS = {3, 5, 7, 7, 8, 9};
+    public static final int[] COLS = {10, 10, 10, 14, 16, 20};
+    public static final int[] ROWS = {3, 5, 7, 7, 8, 8};
     public static final long[] UPGRADE_COST = {com.snolred.wildplus.economy.Prices.x(200L), com.snolred.wildplus.economy.Prices.x(800L), com.snolred.wildplus.economy.Prices.x(3000L), com.snolred.wildplus.economy.Prices.x(30000L), com.snolred.wildplus.economy.Prices.x(300000L)};
     public static final int MAX_TIER = 5;
 

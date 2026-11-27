@@ -6,7 +6,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.neoforged.neoforge.registries.DeferredItem;
 
-/** 5.3.7 루비화(100,000동) · 루비 배낭(162칸, 18×9) */
+/** 5.3.7 루비화(100,000동) · 루비 배낭(160칸, 20×8) */
 public final class ModItems40 {
     private ModItems40() {}
 
