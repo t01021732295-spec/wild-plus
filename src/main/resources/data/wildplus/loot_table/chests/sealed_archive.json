@@ -124,6 +124,11 @@
               "options": "#minecraft:on_random_loot"
             }
           ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:engrave_eraser",
+          "weight": 2
         }
       ]
     },

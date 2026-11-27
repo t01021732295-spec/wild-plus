@@ -67,6 +67,12 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
                             && menu.material().getCount() >= EnhanceMenu.LIFESTEAL_COST;
                     continue;
                 }
+                if (engrave && menu.material().is(com.snolred.wildplus.registry.ModItems39.ENGRAVE_ERASER.get())) { // 5.3.6 해제 각인석
+                    b.setMessage(Component.literal("각인 지우기"));
+                    b.style(UiButton.RED);
+                    b.active = !com.snolred.wildplus.event.RubyGear.engraving(menu.item()).isEmpty() || !com.snolred.wildplus.event.RubyGear.engraving2(menu.item()).isEmpty();
+                    continue;
+                }
                 if (engrave && menu.material().is(com.snolred.wildplus.registry.ModItems37.ENGRAVE_EXPANDER.get())) { // 5.3.2 각인 확장석
                     b.setMessage(Component.literal("칸 늘리기"));
                     b.style(UiButton.TEAL);
@@ -194,7 +200,10 @@ public class EnhanceScreen extends AbstractContainerScreen<EnhanceMenu> {
             } else if (sp.get(i) == EnhanceMenu.BTN_ENGRAVE) {
                 String kind = EnhanceMenu.engraveKind(menu.material());
                 int slots = com.snolred.wildplus.event.RubyGear.engraveSlots(item);
-                String label = menu.material().is(com.snolred.wildplus.registry.ModItems37.ENGRAVE_EXPANDER.get())
+                String e2 = com.snolred.wildplus.event.RubyGear.engraving2(item), e1 = com.snolred.wildplus.event.RubyGear.engraving(item);
+                String label = menu.material().is(com.snolred.wildplus.registry.ModItems39.ENGRAVE_ERASER.get())
+                        ? (!e2.isEmpty() || !e1.isEmpty() ? "✦ 지우기: " + EnhanceMenu.engraveName(!e2.isEmpty() ? e2 : e1) : "✦ 지울 각인 없음")
+                        : menu.material().is(com.snolred.wildplus.registry.ModItems37.ENGRAVE_EXPANDER.get())
                         ? (slots >= 2 ? "✦ 이미 각인 2칸" : "✦ 각인 칸 확장 1 → 2칸")
                         : !kind.isEmpty() ? "✦ " + EnhanceMenu.engraveName(kind)
                         : !com.snolred.wildplus.event.RubyGear.canEngraveMore(item) ? "✦ 각인 칸 가득 (확장석 필요)" : "✦ 각인 (각인석 필요)";

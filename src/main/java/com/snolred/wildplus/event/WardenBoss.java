@@ -169,6 +169,7 @@ public final class WardenBoss {
         for (ServerPlayer p : all) {
             drop(lv, w.position(), new ItemStack(ModItems25.STONES.get(ks[r.nextInt(ks.length)]).get()));
             if (r.nextFloat() < 0.3F) drop(lv, w.position(), new ItemStack(ModItems37.ENGRAVE_EXPANDER.get()));
+            if (r.nextFloat() < 0.5F) drop(lv, w.position(), new ItemStack(com.snolred.wildplus.registry.ModItems39.ENGRAVE_ERASER.get()));
             p.sendSystemMessage(Component.literal("✦ 고대의 워든을 쓰러뜨렸어요! 고대 각인석을 얻었어요").withStyle(ChatFormatting.DARK_AQUA, ChatFormatting.BOLD));
         }
         drop(lv, w.position(), new ItemStack(Items.ECHO_SHARD, 4 + r.nextInt(5)));

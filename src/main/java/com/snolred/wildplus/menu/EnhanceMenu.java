@@ -100,7 +100,8 @@ public class EnhanceMenu extends AbstractContainerMenu {
         if (stack.is(com.snolred.wildplus.registry.ModItems9.STAR_RUBY_SWORD.get())
                 && com.snolred.wildplus.event.RubyGear.trueLevel(stack) < 4) out.add(BTN_TRUE_DMG);
         if ((com.snolred.wildplus.event.RubyGear.isStar(stack) || com.snolred.wildplus.event.Engraves.engravable(stack))
-                && (com.snolred.wildplus.event.RubyGear.canEngraveMore(stack) || com.snolred.wildplus.event.RubyGear.engraveSlots(stack) < 2)) out.add(BTN_ENGRAVE);
+                && (com.snolred.wildplus.event.RubyGear.canEngraveMore(stack) || com.snolred.wildplus.event.RubyGear.engraveSlots(stack) < 2
+                        || !com.snolred.wildplus.event.RubyGear.engraving(stack).isEmpty())) out.add(BTN_ENGRAVE);
         if (com.snolred.wildplus.event.RubyGear.lifestealable(stack)
                 && com.snolred.wildplus.event.RubyGear.lifesteal(stack) < LIFESTEAL_MAX) out.add(BTN_LIFESTEAL);
         return out;
@@ -149,6 +150,24 @@ public class EnhanceMenu extends AbstractContainerMenu {
                 input.setChanged();
                 sp.level().playSound(null, sp.blockPosition(), SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 1.0F, 0.8F);
                 sp.sendSystemMessage(Component.literal("✦ 각인 칸이 2칸으로 늘었어요! 다른 각인을 하나 더 새길 수 있어요").withStyle(ChatFormatting.LIGHT_PURPLE));
+                return true;
+            }
+            // 5.3.6 해제 각인석: 마지막에 새긴 각인 하나를 지움 (2칸이면 두 번째부터, 칸 수는 그대로)
+            if (input.getItem(1).is(com.snolred.wildplus.registry.ModItems39.ENGRAVE_ERASER.get())) {
+                String e1 = com.snolred.wildplus.event.RubyGear.engraving(stack), e2 = com.snolred.wildplus.event.RubyGear.engraving2(stack);
+                if (e1.isEmpty() && e2.isEmpty()) {
+                    sp.sendOverlayMessage(Component.literal("지울 각인이 없어요").withStyle(ChatFormatting.RED));
+                    return true;
+                }
+                String gone = !e2.isEmpty() ? e2 : e1;
+                input.getItem(1).shrink(1);
+                net.minecraft.world.item.component.CustomData.update(net.minecraft.core.component.DataComponents.CUSTOM_DATA, stack, tag -> {
+                    if (!e2.isEmpty()) tag.remove(com.snolred.wildplus.event.RubyGear.ENGRAVE2);
+                    else tag.remove(com.snolred.wildplus.event.RubyGear.ENGRAVE);
+                });
+                input.setChanged();
+                sp.level().playSound(null, sp.blockPosition(), SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, 1.0F, 0.8F);
+                sp.sendSystemMessage(Component.literal("✦ " + engraveName(gone) + "을(를) 지웠어요 · 빈 칸에 다른 각인을 새길 수 있어요").withStyle(ChatFormatting.LIGHT_PURPLE));
                 return true;
             }
             String kind = engraveKind(input.getItem(1));
@@ -297,7 +316,7 @@ public class EnhanceMenu extends AbstractContainerMenu {
                 || s.is(com.snolred.wildplus.registry.ModItems7.RUBY_BLOCK.get()) || s.is(com.snolred.wildplus.registry.ModItems11.SAPPHIRE_BLOCK.get())
                 || s.is(com.snolred.wildplus.registry.ModItems2.MYTHRIL_BLOCK.get()) || s.is(com.snolred.wildplus.registry.ModItems5.DRAGON_KING_FISH.get()) || s.is(com.snolred.wildplus.registry.ModItems12.LIFE_CRYSTAL.get())
                 || s.is(com.snolred.wildplus.registry.ModItems.BLOODSTEEL_INGOT.get()) || !engraveKind(s).isEmpty()
-                || s.is(com.snolred.wildplus.registry.ModItems37.ENGRAVE_EXPANDER.get())) {
+                || s.is(com.snolred.wildplus.registry.ModItems37.ENGRAVE_EXPANDER.get()) || s.is(com.snolred.wildplus.registry.ModItems39.ENGRAVE_ERASER.get())) {
             if (!moveItemStackTo(s, 1, 2, false)) return ItemStack.EMPTY;
         } else {
             if (!moveItemStackTo(s, 0, 1, false)) return ItemStack.EMPTY;

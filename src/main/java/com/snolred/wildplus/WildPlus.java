@@ -89,6 +89,7 @@ public class WildPlus {
         com.snolred.wildplus.registry.ModItems36.init();
         com.snolred.wildplus.registry.ModItems37.init();
         com.snolred.wildplus.registry.ModItems38.init();
+        com.snolred.wildplus.registry.ModItems39.init();
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
         ModMenus.MENUS.register(modEventBus);

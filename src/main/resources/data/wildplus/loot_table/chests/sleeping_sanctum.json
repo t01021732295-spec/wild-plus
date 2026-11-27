@@ -112,6 +112,11 @@
               }
             }
           ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "wildplus:engrave_eraser",
+          "weight": 2
         }
       ]
     },

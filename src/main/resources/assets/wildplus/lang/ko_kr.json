@@ -1489,5 +1489,7 @@
   "block.wildplus.score_tablet": "악보 석판",
   "block.wildplus.sanctum_altar": "성소 제단",
   "item.wildplus.silence_incense": "침묵 향",
-  "tooltip.wildplus.silence_incense": "우클릭: 나와 8칸 안 친구들의 소음을 0으로\n30초 동안 소음이 20% 만 오름 (딥다크)"
+  "tooltip.wildplus.silence_incense": "우클릭: 나와 8칸 안 친구들의 소음을 0으로\n30초 동안 소음이 20% 만 오름 (딥다크)",
+  "item.wildplus.engrave_eraser": "해제 각인석",
+  "tooltip.wildplus.engrave_eraser": "강화대 재료 칸에 넣고 각인 버튼\n장비에 새긴 각인을 하나 지워요 (나중에 새긴 것부터)\n각인 칸 수는 그대로 · 고대 도시 상자, 고대의 워든"
 }
